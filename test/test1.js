@@ -4,8 +4,8 @@ const IP = "127.0.0.1";
 const PORT = "8545";
 const ENDPOINT = "http://"+IP+":"+PORT;
 
-const testprovider = require("../http_provider");
 
+const validFormat= require("../validFormat");
 
 var chai = require('chai');
 var chaiMatchPattern = require('chai-match-pattern');
@@ -23,9 +23,6 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 	}
 }
 
-var validFormat= require("../validFormat");
-
-
 /*
 	validation handlers
 */
@@ -42,6 +39,7 @@ function validateRes(done,callback){
 
 
 describe("http_smoke_test",()=>{
+	const testprovider = require("../http_provider");
 	it("eth_getSyncing",(done)=>{
 		testprovider(ENDPOINT,"eth_Syncing_smoke","eth_syncing",[])
 			.then((resp)=>{
@@ -78,5 +76,15 @@ describe("http_smoke_test",()=>{
 			},(err)=>{
 				done(err);
 			});
+	});
+
+	it("eth_blockNumber",(done)=>{
+		testprovider(ENDPOINT,"eth_blockNumber_smoke","eth_blockNumber",[])
+			.then((resp)=>{
+				console.log(resp);
+			},(err)=>{
+				done(err);
+			});
+			done();
 	});
 });
