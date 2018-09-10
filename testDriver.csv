@@ -1,0 +1,4 @@
+prefix,id,method,params,valid_method,valid_type,format_name
+eth_smoke,2,eth_syncing,[],format,“false”,
+eth_smoke,8,eth_accounts,[],format,“array”,ACCOUNT_FORMAT
+eth_smoke,12,eth_getBlockByNumber,"[“latest”,true]",format,“object”,VALID_BLOCK_OBJECT
