@@ -5,6 +5,8 @@
     "chai": "^4.1.2",
     "chai-json-pattern": "^1.1.0",
     "chai-match-pattern": "^1.1.0",
+    "csv-parse": "^3.0.0",
+    "fs": "0.0.1-security",
     "mocha": "^5.2.0",
     "xhr": "^2.5.0",
     "xhr2": "^0.1.4"

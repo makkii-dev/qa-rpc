@@ -44,6 +44,9 @@ const VALID_SYNCING_INFO = {
 };
 
 
+const VALID_ERROR = {
+};
+
 module.exports={
 	SINGLE:{
 		TRANSATION_FORMAT:transaction_format,
