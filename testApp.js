@@ -1,6 +1,6 @@
 //test settings
 var logger = new (require("./logger"))();
-logger.CONSOLE_LOG = false;
+logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 
 //test environment variables
@@ -8,12 +8,15 @@ const JSONRPC_VERSION='2.0';
 const IP = "127.0.0.1";
 const PORT = "8545";
 const ENDPOINT = "http://"+IP+":"+PORT;
+const IPC_PATH = "/home/aion-aisa-08/.aion/jsonrpc.ipc";
 const DRIVER_PATH = "./testDriver.csv";
 
 // internal dependencies
 const validFormat= require("./validFormat");
 var readCSVDriver = require("./readCSV");
 const testprovider = require("./http_provider");
+//const testprovider = require("./ipc_provider");
+//const testprovider = require("./socket_provider");
 var utils = require("./utils")
 
 //validate tools
@@ -70,12 +73,12 @@ var data = readCSVDriver(DRIVER_PATH);
 logger.log("Find "+data.length+" testcases:");
 
 	data.forEach((testRow)=>{
-		describe("callback",()=>{
+		describe("tests",()=>{
 			var requestID = testRow.prefix+"-"+testRow.id;
 			if(testRow.execute=='x'){
 				it(testRow.prefix+testRow.method+testRow.id,(done)=>{
 				logger.log("\n test log for "+testRow.prefix+testRow.method+testRow.id);	
-				testprovider(ENDPOINT,requestID,testRow.method, formParam(testRow.params),logger)
+				testprovider(ENDPOINT,requestID,testRow.method, formParam(testRow.params),JSONRPC_VERSION,logger)
 						.then((resp)=>{
 							chai.expect(resp).contains({id:requestID,jsonrpc:JSONRPC_VERSION});
 							try{
@@ -86,19 +89,19 @@ logger.log("Find "+data.length+" testcases:");
 									case "format":
 										switch(testRow.valid_type){
 											case "array":
-												resp.result.forEach((item)=>{chai.assert(item,validFormat.SINGLE[testRow.format_name]);});
+												resp.result.forEach((item)=>{chai.assert.match(item,validFormat.SINGLE[testRow.format_name]);});
 												break;
 											case "object":
 												
 												Object.entries(resp.result).forEach((property)=>{
-													chai.assert(property[1],validFormat.OBJECT[testRow.format_name][property[0]]);
+													chai.assert.match(property[1],validFormat.OBJECT[testRow.format_name][property[0]]);
 												});
 												
 												break;
 											case "value":
-										
-												chai.assert(resp.result,validFormat.SINGLE[testRow.format_name]);
-												
+												//logger.log(validFormat.SINGLE[testRow.format_name]);
+												chai.assert.match(resp.result,validFormat.SINGLE[testRow.format_name]);
+												logger.log(resp.result+testRow.format_name+validFormat.SINGLE[testRow.format_name].test(resp.result))
 												break;
 											default:
 

@@ -7,10 +7,10 @@ unit test||||||||
 |x|eth_smoke|4|eth_coinbase||format|value|ACCOUNT_FORMAT
 |x|eth_smoke|21|eth_call|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x0fff3,gasPrice:0x03,value:0x09,data:0x2345}	pending|format|value|CONTRACT_VALUE_FORMAT
 |x|eth_smoke|9|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	earliest|format|value|BALANCE_FORMAT
-||eth_smoke|11|eth_getBlockByHash|"[‘’,’true’]"|format|object|VALID_BLOCK_OBJECT
-||eth_smoke|18|eth_getCode|"[‘’,’latest’]"|format|value|HEX
-||eth_smoke|22|eth_estimateGas|"[{‘from’:’0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c’,’to’:’0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334’,’gas’:’0x03’,’gasPrice’:’0x03’,’value’:’0x09’,’data’:’0x2345’},’pending’]"|format|value|HEX
-||eth_smoke|46|eth_sendTransaction|"[{‘from’:’0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c’,’to’:’0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334’,’gas’:’0x03’,’gasPrice’:’0x03’,’value’:’0x09’,’data’:’0x2345’,’nonce’:’0x0’,’condition’:{‘’block’:’0x0’,time:’0x0’}}]"|format|value|TRANSACTION_FORMAT
+|x|eth_smoke|11|eth_getBlockByHash|0xef32028308d0dc0376be3ddde8ec56fd23d1142300441afc459c3c6bdc39a7d1	true|format|object|VALID_BLOCK_OBJECT
+|x|eth_smoke|18|eth_getCode|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	latest|format|value|HEX
+||eth_smoke|22|eth_estimateGas|[{‘from’:’0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c’,’to’:’0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334’,’gas’:’0x03’,’gasPrice’:’0x03’,’value’:’0x09’,’data’:’0x2345’},’pending’]|format|value|HEX
+||eth_smoke|46|eth_sendTransaction|[{‘from’:’0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c’,’to’:’0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334’,’gas’:’0x03’,’gasPrice’:’0x03’,’value’:’0x09’,’data’:’0x2345’,’nonce’:’0x0’,’condition’:{‘’block’:’0x0’,time:’0x0’}}]|format|value|TRANSACTION_FORMAT
 ||eth_smoke|19|eth_sendRawTransaction|[‘0x000001’]|format|value|TRANSACTION_FORMAT
 ||eth_smoke|13|eth_getTransactionCount||format||
 ||eth_smoke|14|eth_getBlockTransactionCountByHash||format||
@@ -29,3 +29,19 @@ unit test||||||||
 ||eth_smoke|10|eth_getStorageAt||format||
 ||eth_smoke|37|eth_newFilter||format||
 ||eth_smoke|38|eth_newBlockFilter||format||
+||eth_smoke|39|eth_newPendingTransactionFilter||||
+||eth_smoke|42|eth_uninstallFilter||||
+||eth_smoke|40|eth_getFilterChanges||||
+||eth_smoke|41|eth_getFilterLogs||||
+||eth_smoke|33|eth_getLogs||||
+|||35|submitblock||||
+|||34|getblocktemplate||||
+||web3|1|clientVersion||||
+||web3|2|sha3||||
+||net|1|version||||
+||net|3|net_listening||||
+||net|2|net_peerCount||||
+||Personal|2|personal_newAccount||||
+||Personal|1|personal_listAccounts||||
+||Personal|4|personal_lockAccount||||
+||Personal|3|personal_unlockAccount||||

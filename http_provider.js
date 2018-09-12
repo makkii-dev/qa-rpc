@@ -1,10 +1,10 @@
 const HTTP_PROVIDER = require("xmlhttprequest").XMLHttpRequest;
-const JSONRPC_VERSION='2.0';
 
-function requestBody(id,method,params){
-	return {id:id,method:method,params:params,jsonrpc:JSONRPC_VERSION};
+
+function requestBody(id,method,params,rpc_version){
+	return {id:id,method:method,params:params,jsonrpc:rpc_version};
 }
-var http_provider = (endpoint, request_id, request_method, request_params,logger)=>{
+var http_provider = (endpoint, request_id, request_method, request_params,rpc_version,logger)=>{
 
 	return new Promise((resolve, reject)=>{
 
@@ -12,8 +12,8 @@ var http_provider = (endpoint, request_id, request_method, request_params,logger
 		provider.open("POST",endpoint);
 		provider.setRequestHeader("Content-Type", "application/json");
 		logger.log("[HTTP Request]:");
-		logger.log(JSON.stringify(requestBody(request_id,request_method,request_params)));
-		provider.send(JSON.stringify(requestBody(request_id,request_method,request_params)));
+		logger.log(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
+		provider.send(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
 		provider.onreadystatechange = ()=>{
 			 if(provider.readyState === 4){
 				if(provider.status==200){
