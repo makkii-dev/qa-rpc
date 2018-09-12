@@ -1,0 +1,551 @@
+Find 59 testcases:
+
+ test log for eth_smokeeth_syncing2
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-2","method":"eth_syncing","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_accounts7
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-7","method":"eth_accounts","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getBlockByNumber12
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-12","method":"eth_getBlockByNumber","params":["latest",true],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_blockNumber8
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-8","method":"eth_blockNumber","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_coinbase4
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-4","method":"eth_coinbase","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_call21
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-21","method":"eth_call","params":[{"from":"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","to":"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334","gas":"0x0fff3","gasPrice":"0x03","value":"0x09","data":"0x2345"},"pending"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getBalance9
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-9","method":"eth_getBalance","params":["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","earliest"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getBlockByHash11
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-11","method":"eth_getBlockByHash","params":["0xef32028308d0dc0376be3ddde8ec56fd23d1142300441afc459c3c6bdc39a7d1",true],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getCode18
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-18","method":"eth_getCode","params":["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","latest"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_estimateGas22
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-22","method":"eth_estimateGas","params":[{"from":"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","to":"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334","gas":"0x03","gasPrice":"0x03","value":"0x09","data":"0x2345"},"pending"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_estimateGas22-2
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-22-2","method":"eth_estimateGas","params":[{"from":"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","to":"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334","gas":"0x03","gasPrice":"0x03","value":"0x09","data":"0x2345"},"latest"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_sendTransaction46-full
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-46-full","method":"eth_sendTransaction","params":[{"from":"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","to":"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334","gas":"0xf3","gasPrice":"0x03","value":"0xf9","data":"0x2345","nonce":"0x0","condition":"{block","time":"0x0}"}],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_sendTransaction46-locked
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-46-locked","method":"eth_sendTransaction","params":[{"from":"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","to":"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334","gas":"0xf3","gasPrice":"0x03","value":"0xf9","data":"0x2345","nonce":"0x0"}],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_sendRawTransaction19
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-19","method":"eth_sendRawTransaction","params":["0x000001"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_sendRawTransaction19-error
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-19-error","method":"eth_sendRawTransaction","params":["0x0000909090"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionCount13
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-13","method":"eth_getTransactionCount","params":["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","latest"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionCount13_1
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-13_1","method":"eth_getTransactionCount","params":["0xa064f2fbf5d703733d723ba5f08109d96196467331d5b4568835a634e81c5715"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionCount13_2
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-13_2","method":"eth_getTransactionCount","params":["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","0x0"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getBlockTransactionCountByHash14
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-14","method":"eth_getBlockTransactionCountByHash","params":["0xef32028308d0dc0376be3ddde8ec56fd23d1142300441afc459c3c6bdc39a7d1"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getBlockTransactionCountByNumber15
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-15","method":"eth_getBlockTransactionCountByNumber","params":["0x0000000000000000000000000000000000000000000000000000000000000123"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getBlockTransactionCountByNumber15_1
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-15_1","method":"eth_getBlockTransactionCountByNumber","params":["0xd23"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionByHash23
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-23","method":"eth_getTransactionByHash","params":["0x138ab73bd335643bb40961cf2bf3176b815b7bc1d8f8d88c7199bab291821018"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionByHash23
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-23","method":"eth_getTransactionByHash","params":["0x764e84e72a51ed397418f159df52d42eb59d6be81ecba2ca21bf847ffcf84821"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionByBlockHashAndIndex24
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-24","method":"eth_getTransactionByBlockHashAndIndex","params":["0x5b91c94761790802b21baa384f4cfa6145b62b8140f778dd79e6d72577708163","0x0"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionByBlockHashAndIndex24_missing_param
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-24_missing_param","method":"eth_getTransactionByBlockHashAndIndex","params":["0x5b91c94761790802b21baa384f4cfa6145b62b8140f778dd79e6d72577708163"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionByBlockNumberAndIndex25
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-25","method":"eth_getTransactionByBlockNumberAndIndex","params":["0x0123132","0x0"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionReceipt26
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-26","method":"eth_getTransactionReceipt","params":["0x138ab73bd335643bb40961cf2bf3176b815b7bc1d8f8d88c7199bab291821018"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getTransactionReceipt26_mock
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-26_mock","method":"eth_getTransactionReceipt","params":["0x138ab73bd335643bb40961cf2bf3176b815b7bc1d8f8d88c7199bab291821018"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_protocolVersion1
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-1","method":"eth_protocolVersion","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_mining5
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-5","method":"eth_mining","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_hashrate3
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-3","method":"eth_hashrate","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_submitHashrate36
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-36","method":"eth_submitHashrate","params":["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","0x0000000000000000000000000000000000000000000000000000000000000001"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_gasPrice6
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-6","method":"eth_gasPrice","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_sign45
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-45","method":"eth_sign","params":["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","0x0d528727daff2f63"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getStorageAt10
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-10","method":"eth_getStorageAt","params":["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c","0x02"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_newFilter37_min
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-37_min","method":"eth_newFilter","params":[{}],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_newFilter37
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-37","method":"eth_newFilter","params":[{"fromBlock":"latest","toBlock":"earliest","limit":3,"address":"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c"}],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_newBlockFilter38
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-38","method":"eth_newBlockFilter","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_newPendingTransactionFilter39
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-39","method":"eth_newPendingTransactionFilter","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_uninstallFilter42
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-42","method":"eth_uninstallFilter","params":["0x07"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getFilterChanges40
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-40","method":"eth_getFilterChanges","params":["0x01"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getFilterLogs41
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-41","method":"eth_getFilterLogs","params":["0x00"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for eth_smokeeth_getLogs33
+[object Object]
+[HTTP Request]:
+{"id":"eth_smoke-33","method":"eth_getLogs","params":[{}],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for submitblock35
+[object Object]
+[HTTP Request]:
+{"id":"-35","method":"submitblock","params":["0xffffffff00001111","0x0000111122223333444455556666777788889999aaaabbbbccccddddeeeeffff","0x0000111122223333444455556666777788889999aaaabbbbccccddddeeeeffff"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for getblocktemplate34
+[object Object]
+[HTTP Request]:
+{"id":"-34","method":"getblocktemplate","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for web3clientVersion1
+[object Object]
+[HTTP Request]:
+{"id":"web3-1","method":"clientVersion","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for web3sha32
+[object Object]
+[HTTP Request]:
+{"id":"web3-2","method":"sha3","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for netnet_version1
+[object Object]
+[HTTP Request]:
+{"id":"net-1","method":"net_version","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for netnet_listening3
+[object Object]
+[HTTP Request]:
+{"id":"net-3","method":"net_listening","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for netnet_peerCount2
+[object Object]
+[HTTP Request]:
+{"id":"net-2","method":"net_peerCount","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for Personalpersonal_newAccount2
+[object Object]
+[HTTP Request]:
+{"id":"Personal-2","method":"personal_newAccount","params":["password"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for Personalpersonal_listAccounts1
+[object Object]
+[HTTP Request]:
+{"id":"Personal-1","method":"personal_listAccounts","params":[],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for Personalpersonal_unlockAccount3
+[object Object]
+[HTTP Request]:
+{"id":"Personal-3","method":"personal_unlockAccount","params":["0xa0eea988633a316454ef0236027208b041d9e71cf72e8d24ec3a0135c92e9234","password",0],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for Personalpersonal_lockAccount4
+[object Object]
+[HTTP Request]:
+{"id":"Personal-4","method":"personal_lockAccount","params":["0xa0eea988633a316454ef0236027208b041d9e71cf72e8d24ec3a0135c92e9234","passwo"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+
+ test log for Personalpersonal_lockAccount4
+[object Object]
+[HTTP Request]:
+{"id":"Personal-4","method":"personal_lockAccount","params":["0xa0eea988633a316454ef0236027208b041d9e71cf72e8d24ec3a0135c92e9234","password"],"jsonrpc":"2.0"}
+[HTTP_PROVIDER ERROR]:
+Error: connect ECONNREFUSED 127.0.0.1:8545
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
