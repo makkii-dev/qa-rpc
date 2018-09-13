@@ -5,7 +5,7 @@ pipeline {
         pollSCM('* * * * *')
     }
     environment { 
-        
+        MY_ENV='${env.HOME}/my_env'
         JAVA_ARGS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
         JENKINS_JAVA_OPTIONS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
     }
@@ -13,7 +13,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'set up dependencies..'
-                sh 'export MY_ENV=$HOME/my_env'
                 sh 'printenv'
                 sh 'npm install'
             }
