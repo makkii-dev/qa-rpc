@@ -2,6 +2,7 @@ pipeline {
     agent any
     triggers {
         cron('H/20 * * * 1-5')
+        pollSCM('* * * * *')
     }
     environment { 
         MY_ENV='${HOME}/my_env'
