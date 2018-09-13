@@ -37,7 +37,7 @@ pipeline {
                           message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. Grab the generated builds at ${env.BUILD_URL}"
             }
             failure {
-                slackSend channel: '#ci',
+                slackSend channel: '@Miao',
                 color: 'danger', 
                 message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}"
             }
