@@ -19,8 +19,28 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh 'npm start'
+                timeout(5){
+                    sh 'npm start'
+                }
+                
+            }
+        }
+        post{
+            always{
+                cleanWs();
+            }
+            success{
+                slackSend channel: '@Miao',
+                          color: 'good',
+                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. Grab the generated builds at ${env.BUILD_URL}"
+            }
+            failure {
+                slackSend channel: '#ci',
+                color: 'danger', 
+                message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}"
             }
         }
     }
 }
+
+
