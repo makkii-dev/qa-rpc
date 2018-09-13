@@ -1,12 +1,18 @@
 pipeline {
     agent any
-
+    triggers {
+        cron('H/3 * * * 1-5')
+    }
+    environment { 
+        MY_ENV='${HOME}/my_env'
+        JAVA_ARGS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
+        JENKINS_JAVA_OPTIONS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
+    }
     stages {
         stage('Build') {
             steps {
                 echo 'set up dependencies..'
-                sh 'export MY_ENV=$HOME/my_env'
-                sh 'printenv'
+                sh 'MY_ENV'
                 sh 'npm install'
             }
         }
@@ -14,15 +20,6 @@ pipeline {
             steps {
                 echo 'Testing..'
                 sh 'npm test'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            
-                sh 'npm start'
-                
-                
             }
         }
        
