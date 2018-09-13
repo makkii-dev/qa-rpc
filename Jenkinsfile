@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'set up dependencies..'
-                sh 'MY_ENV'
+                echo '$MY_ENV'
                 sh 'npm install'
             }
         }
