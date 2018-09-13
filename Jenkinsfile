@@ -25,7 +25,9 @@ pipeline {
                 
             }
         }
-        post{
+       
+    }
+     post{
             always{
                 cleanWs();
             }
@@ -40,7 +42,6 @@ pipeline {
                 message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}"
             }
         }
-    }
 }
 
 
