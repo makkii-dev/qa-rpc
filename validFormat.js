@@ -13,7 +13,7 @@ var HEX=/^0x[0-9a-f]+$/;
 
 const transaction_format=H160;
 const blockHash_format=H160;
-const account_format=H160;
+const account_format=H256;
 
 const VALID_BLOCK_OBJECT={
 	difficulty:HEX,
@@ -60,6 +60,29 @@ const VALID_TRANSACTION_RECEIPT = {
         transactionIndex: HEX
 }
 
+
+/*transaction_block: {
+	"blockHash":null,
+	"blockNumber":null,
+	"chainId":null,
+	"condition":null,
+	"creates":null,
+	"from":"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c",
+	"gas":"0xffffff",
+	"gasPrice":"0x3",
+	"hash":"0x4899fd166e6dfb08a473c0e9e6b565832567f99c6d2a767dda08c2b4b6ba7401",
+	"input":"0x2345",
+	"nonce":"0x0",
+	"publicKey":"0x8bc5c4e5599afac7cb0efcb0010540017dda3e80870bb543b356867b2a8cacbf",
+	"raw":"0xf89880a0a054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad2533481f982234588000575b7455e451c83ffffff0301b8608bc5c4e5599afac7cb0efcb0010540017dda3e80870bb543b356867b2a8cacbf104883b7b23b1b5029bce3ea5cfc5bf1d72108fe197b68802bc9b685a7067b88e2109278631773933dd66f28629b62dd193e665f7c8c7baa0c962c91c4e5fc03",
+	"sig":"0x8bc5c4e5599afac7cb0efcb0010540017dda3e80870bb543b356867b2a8cacbf104883b7b23b1b5029bce3ea5cfc5bf1d72108fe197b68802bc9b685a7067b88e2109278631773933dd66f28629b62dd193e665f7c8c7baa0c962c91c4e5fc03",
+	"standardV":"0x0",
+	"timestamp":"0x000575b7455e451c",
+	"to":"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334",
+	"transactionIndex":null,
+	"value":"0xf9"
+}*/
+
 const VALID_WORKTEMPLATE={
 	blockBaseReward:HEX,
  	blockTxFee:HEX,
@@ -72,7 +95,7 @@ const VALID_WORKTEMPLATE={
 
 module.exports={
 	SINGLE:{
-		TRANSATION_FORMAT:transaction_format,
+		TRANSACTION_FORMAT:transaction_format,
 		ACCOUNT_FORMAT:account_format,
 		HEX:HEX,
 		H160:H160,
@@ -93,14 +116,19 @@ module.exports={
 			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
 			data:"NotUnlocked"
 		},
-		ERROR_32602:{
+		ERROR_32602:`{
 			code:-32602,
 			message:_.isString
-		},
+			...
+		}`,
 		WRONG_PW_ERROR:{
 			code:-32023,
 			message:"Unable to lock the account",
 			data:"InvalidPassword"
+		},
+		INVALID_METHOD:{
+			code:-32601,
+			message:"Method not found"
 		}
 	},
 	

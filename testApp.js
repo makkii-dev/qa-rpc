@@ -1,12 +1,12 @@
 //test settings
 var logger = new (require("./logger"))();
-logger.CONSOLE_LOG = false;
+logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 
 //test environment variables
 const JSONRPC_VERSION='2.0';
 const IP = "127.0.0.1";
-const PORT = "8546";
+const PORT = "8545";
 const ENDPOINT = "http://"+IP+":"+PORT;
 const IPC_PATH = "/home/aion-aisa-08/.aion/jsonrpc.ipc";
 const DRIVER_PATH = "./testDriver.csv";
@@ -14,8 +14,8 @@ const DRIVER_PATH = "./testDriver.csv";
 // internal dependencies
 const validFormat= require("./validFormat");
 var readCSVDriver = require("./readCSV");
-//const testprovider = require("./http_provider");
-const testprovider = require("./ipc_provider");
+const testprovider = require("./http_provider");
+//const testprovider = require("./ipc_provider");
 //const testprovider = require("./socket_provider");
 var utils = require("./utils")
 
@@ -86,7 +86,7 @@ logger.log("Find "+data.length+" testcases:");
 				currentMethod = testRow.method;
 				logger.log("\n test log for "+testRow.prefix+testRow.method+testRow.id);
 				logger.log(testRow);	
-				testprovider(IPC_PATH,requestID,testRow.method, formParam(testRow.params),JSONRPC_VERSION,logger)
+				testprovider(ENDPOINT,requestID,testRow.method, formParam(testRow.params),JSONRPC_VERSION,logger)
 						.then((resp)=>{
 							chai.expect(resp).contains({id:requestID,jsonrpc:JSONRPC_VERSION});
 							try{
