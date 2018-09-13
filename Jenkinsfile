@@ -19,9 +19,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                timeout(5){
-                    sh 'npm start'
-                }
+            
+                sh 'npm start'
+                
                 
             }
         }
