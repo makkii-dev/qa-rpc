@@ -1,7 +1,7 @@
 pipeline {
     agent any
     triggers {
-        cron('H/3 * * * 1-5')
+        cron('H/20 * * * 1-5')
     }
     environment { 
         MY_ENV='${HOME}/my_env'
@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'set up dependencies..'
-                echo '$MY_ENV'
+                sh 'echo $MY_ENV'
                 sh 'npm install'
             }
         }
