@@ -5,7 +5,7 @@ pipeline {
         pollSCM('* * * * *')
     }
     environment { 
-        MY_ENV='${env.HOME}/my_env'
+        MY_ENV="${env.HOME}/my_env"
         JAVA_ARGS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
         JENKINS_JAVA_OPTIONS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
     }
