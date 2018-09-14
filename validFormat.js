@@ -11,7 +11,7 @@ var HEX=/^0x[0-9a-f]+$/;
 
 
 
-const transaction_format=H160;
+const transaction_format=/^0x[0-9a-f]{64}$/;
 const blockHash_format=H160;
 const account_format=H256;
 
