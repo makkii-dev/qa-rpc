@@ -1,12 +1,12 @@
 TestSet|execute|prefix|id|method|params|valid_method|valid_type|format_name
 unit test||||||||
 ||eth_smoke|2|eth_syncing||value||false
-||eth_smoke|7|eth_accounts||format|array|ACCOUNT_FORMAT
+|x|eth_smoke|7|eth_accounts||format|array|ACCOUNT_FORMAT
 ||eth_smoke|12|eth_getBlockByNumber|latest	true|format|object|VALID_BLOCK_OBJECT
 ||eth_smoke|8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT
 ||eth_smoke|4|eth_coinbase||format|value|ACCOUNT_FORMAT
 ||eth_smoke|21|eth_call|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x0fff3,gasPrice:0x03,value:0x09,data:0x2345}	pending|format|value|CONTRACT_VALUE_FORMAT
-||eth_smoke|9|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	earliest|format|value|BALANCE_FORMAT
+|x|eth_smoke|9|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	earliest|format|value|BALANCE_FORMAT
 ||eth_smoke|11|eth_getBlockByHash|0xef32028308d0dc0376be3ddde8ec56fd23d1142300441afc459c3c6bdc39a7d1	true|format|object|VALID_BLOCK_OBJECT
 ||eth_smoke|18|eth_getCode|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	latest|format|value|HEX
 ||eth_smoke|22|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:0x03,value:0x09,data:0x2345}	pending|format|value|HEX
@@ -67,15 +67,4 @@ test transaction||||||||
 ||eth_smoke|9|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	latest|format|value|BALANCE_FORMAT
 
 ||transaction|13|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|format|value|HEX
-||transaction|23|eth_getTransactionByHash|0x4899fd166e6dfb08a473c0e9e6b565832567f99c6d2a767dda08c2b4b6ba7401|value||nulltest 
-
-filter||||||||
-||filter|3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	password	0|value||true
-||filter|39|eth_newPendingTransactionFilter||format|value|HEX
-||filter|42|eth_uninstallFilter|0x07|value||true
-||filter|41|eth_getFilterLogs|0x00|format|value|ARRAY
-||filter|40|eth_getFilterChanges|0x01|format|value|ARRAY
-||filter|46-full|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:0x01}|format|value|TRANSACTION_FORMAT
-||transaction|4|personal_lockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	password|value||true
-
-
+||transaction|23|eth_getTransactionByHash|0x4899fd166e6dfb08a473c0e9e6b565832567f99c6d2a767dda08c2b4b6ba7401|value||null
