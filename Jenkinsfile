@@ -1,21 +1,24 @@
 pipeline {
     agent any
-    triggers {
-        cron('H/50 * * * 1-5')
-        pollSCM('* * * * *')
-        upstream(upstreamProjects: 'aion_rust', threshold: hudson.model.Result.SUCCESS) 
-    }
     environment { 
-        MY_ENV="${env.HOME}/my_env"
         JAVA_ARGS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
         JENKINS_JAVA_OPTIONS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
+        
         // aion_rust project configures
-        AION_RUST_DIR= "${WORKSPACE}/../aion_rust"
+        TARGET_NAME="aion_rust_test_deploy"
+        AION_RUST_DIR="${WORKSPACE}/../${TARGET_NAME}"
         TESTNET_CONFIG="${AION_RUST_DIR}/aion/cli/config_testnet.toml"
         FS_VM_DIR="${AION_RUST_DIR}/vms/fastvm/native/rust_evm_intf/dist"
         LD_LIBRARY_PATH="${env.FS_VM_DIR}:${env.LD_LIBRARY_PATH}"
         LIBRARY_PATH="${env.FS_VM_DIR}"
     }
+
+    triggers {
+        cron('H/50 * * * 1-5')
+        pollSCM('* * * * *')
+        upstream(upstreamProjects: ${TARGET_NAME}, threshold: hudson.model.Result.SUCCESS) 
+    }
+
     stages {
         stage('Build') {
             steps {
