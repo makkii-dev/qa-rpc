@@ -1,8 +1,7 @@
 //export result
 
 //read in csv
-
-
+var BigNumber = require("bignumber.js");
 
 
 module.exports={
@@ -26,6 +25,8 @@ module.exports={
 			
 		});
 		return obj;
-	}
+	},
+	getBigNumber:(number)=>{return new BigNumber(number);},
+	isBIGNUMBER:()=>{return {test:(value)=>{return BigNumber.isBigNumber(value);}};}
 
 }

@@ -2,11 +2,13 @@ var chaiMatchPattern = require('chai-match-pattern');
 var chai= require("chai");
 chai.use(chaiMatchPattern);
 var _ = chaiMatchPattern.getLodashModule();
+var utils = require("./utils");
 
 
 var H160= /^0x[0-9a-f]{1,160}$/;
 var H256= /^0x[0-9a-f]{1,256}$/;
 var HEX=/^0x[0-9a-f]+$/;
+
 
 
 
@@ -81,7 +83,35 @@ const VALID_TRANSACTION_RECEIPT = {
 	"to":"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334",
 	"transactionIndex":null,
 	"value":"0xf9"
-}*/
+}
+
+
+const expectblk_tx = {
+	difficulty:expect.any(BigNumber),
+	extraData:expect.anything(),
+	gasLimit:expect.anything(),
+	gasUsed:expect.anything(),
+	hash:expect.anything(),
+	logsBloom:expect.anything(),
+	miner:expect.anything(),
+	nonce:expect.anything(),
+	number:expect.any(Number),
+	parentHash:expect.anything(),
+	receiptsRoot:expect.anything(),
+	size:expect.any(Number),
+	solution:expect.anything(),
+	stateRoot:expect.anything(),
+	timestamp:expect.any(Number),
+	totalDifficulty:expect.any(BigNumber),
+	transactions:expect.arrayContaining([expect.objectContaining(expect_tx)]),
+	transactionsRoot:expect.anything(),
+	nrgLimit:expect.anything(),
+	nrgUsed:expect.anything(),
+}
+
+
+
+*/
 
 const VALID_WORKTEMPLATE={
 	blockBaseReward:HEX,
@@ -100,7 +130,7 @@ module.exports={
 		HEX:HEX,
 		H160:H160,
 		CONTRACT_VALUE_FORMAT:HEX,
-		BALANCE_FORMAT:HEX,
+		BALANCE_FORMAT:utils.isBIGNUMBER,
 		BLOCK_NUMBER_FORMAT:H160,
 		BOOLEAN:_.isBoolean,
 		ARRAY:_.isArray,

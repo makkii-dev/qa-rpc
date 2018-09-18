@@ -41,6 +41,11 @@ var RUNTIME_VARIABLES=(()=>{
 			self.newAccount = resp.result;
 			self.newPassword = req[1];
 			break;
+		case "eth_getBlockByNumber":
+			self.blockHash = resp.result.hash;
+			break;
+		case "eth_getTransactionCount":
+
 	}
 }
 	return self;
@@ -56,28 +61,12 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 	}
 }
 
-/*
-	validation handlers
-*/
-
-// function validateRes(done,callback){
-// 	try{
-// 		callback();
-// 		done()
-// 	}catch(e){
-// 		done(e);
-// 		console.error(e);
-// 		logger.log("[Validation Error]:");
-// 		logger.log(e);
-// 		//done(e);
-// 	}
-// }
 
 function formParam(str){
 	if((currentMethod=='eth_uninstallFilter'||currentMethod=='eth_getFilterLogs'||currentMethod == "eth_getFilterChanges")){
 		return str.length==0?[RUNTIME_VARIABLES.lastFilterID]:[str];
 	} 
-	if(str.length==0)return[];
+	if(str==undefined)return[];
 	//logger.log(param);
 	var param =  str.split('\t');
 	//logger.log(JSON.stringify(param));
@@ -86,7 +75,7 @@ function formParam(str){
 		else if(param[i]=="false")param[i]=false;
 		else if(/^{\S*}$/.test(param[i])) {
 			param[i] = utils.str2Obj(param[i],",",":");
-		}else if(currentMethod=="personal_unlockAccount" && i == 2){
+		}else if((currentMethod=="personal_unlockAccount" && i == 2)/*||(currentMethod=="eth_getBlockByNumber" && i==0)*/){
 			param[i]= parseInt(param[i]);
 		}
 	}
@@ -132,7 +121,12 @@ logger.log("Find "+data.length+" testcases:");
 												break;
 											case "value":
 												chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
-												if(testRow.arraySize!=''){chai.expect(resp.result).to.have.lengthOf(parseInt(testRow.arraySize));}
+												if(testRow.arraySize){chai.expect(resp.result).to.have.lengthOf(parseInt(testRow.arraySize));}
+												if(testRow.arrayValue){
+													testRow.arrayValue.forEach((oneValue)=>{
+														chai.expect(resp.result).to.contains(oneValue);
+													});
+												}
 												break;
 											case "error":
 												chai.expect(resp.error).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
