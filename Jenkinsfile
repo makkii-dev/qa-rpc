@@ -9,12 +9,27 @@ pipeline {
         MY_ENV="${env.HOME}/my_env"
         JAVA_ARGS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
         JENKINS_JAVA_OPTIONS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
+        // aion_rust project configures
+        AION_RUST_DIR= "${WORKSPACE}/../aion_rust"
+        TESTNET_CONFIG="${AION_RUST_DIR}/aion/cli/config_testnet.toml"
+        FS_VM_DIR="${AION_RUST_DIR}/vms/fastvm/native/rust_evm_intf/dist"
+        LD_LIBRARY_PATH="${env.FS_VM_DIR}:${env.LD_LIBRARY_PATH}"
+        LIBRARY_PATH="${env.FS_VM_DIR}"
     }
     stages {
         stage('Build') {
             steps {
                 echo 'set up dependencies..'
                 sh 'npm install'
+            }
+        }
+        stage('Prepare Testing'){
+            steps{
+                echo "start aionminer"
+                sh 'nohup /run/aionminer -l 172.105.202.95:8009 -u 0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 -d 0 -t 1 &'
+                echo "start aion_rust"
+                sh 'nohup ${AION_RUST_DIR}/target/release/aion --config=${TESTNET_CONFIG} &'
+                sh 'sleep 7'
             }
         }
         stage('Test') {
@@ -30,10 +45,10 @@ pipeline {
             success{
                 slackSend channel: '@Miao',
                           color: 'good',
-                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. \nGrab the generated builds at ${env.BUILD_URL}\nCommit: ${GIT_COMMIT}\n Commit by ${GIT_COMMITTER_NAME}"
+                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. \nGrab the generated builds at ${env.BUILD_URL}\nCommit: ${GIT_COMMIT}"
             }
             failure {
-                cleanWs()
+                //cleanWs()
                 slackSend channel: '@Miao',
                 color: 'danger', 
                 message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}"
