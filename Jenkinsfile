@@ -3,6 +3,7 @@ pipeline {
     triggers {
         cron('H/50 * * * 1-5')
         pollSCM('* * * * *')
+        upstream(upstreamProjects: 'aion_rust', threshold: hudson.model.Result.SUCCESS) 
     }
     environment { 
         MY_ENV="${env.HOME}/my_env"
@@ -13,7 +14,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'set up dependencies..'
-                sh 'printenv'
                 sh 'npm install'
             }
         }
@@ -26,15 +26,14 @@ pipeline {
        
     }
      post{
-            always{
-                cleanWs();
-            }
+
             success{
                 slackSend channel: '@Miao',
                           color: 'good',
-                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. Grab the generated builds at ${env.BUILD_URL}"
+                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. \nGrab the generated builds at ${env.BUILD_URL}\nCommit: ${GIT_COMMIT}\n Commit by ${GIT_COMMITTER_NAME}"
             }
             failure {
+                cleanWs()
                 slackSend channel: '@Miao',
                 color: 'danger', 
                 message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}"
