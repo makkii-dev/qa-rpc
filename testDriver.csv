@@ -2,7 +2,7 @@ TestSet|execute|prefix|id|method|params|valid_method|valid_type|format_name|arra
 unit test||||||||||
 ||eth_smoke|2|eth_syncing||value||false||
 ||eth_smoke|7|eth_accounts||format|array|ACCOUNT_FORMAT||
-||eth_smoke|12|eth_getBlockByNumber|0x0	true|format|object|VALID_BLOCK_OBJECT||
+|x|eth_smoke|12|eth_getBlockByNumber|0x0	true|format|object|VALID_BLOCK_OBJECT||
 ||eth_smoke|8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||
 ||eth_smoke|4|eth_coinbase||format|value|ACCOUNT_FORMAT||
 ||eth_smoke|21|eth_call|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x0fff3,gasPrice:0x03,value:0x09,data:0x2345}	pending|format|value|CONTRACT_VALUE_FORMAT||
@@ -19,7 +19,7 @@ unit test||||||||||
 ||eth_smoke|13|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	0x0|format|value|HEX||
 ||eth_smoke|13_1|eth_getTransactionCount|0xa064f2fbf5d703733d723ba5f08109d96196467331d5b4568835a634e81c5715|format|value|HEX||
 ||eth_smoke|13_2|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	0x0|format|value|HEX||
-||eth_smoke|14|eth_getBlockTransactionCountByHash|0xef32028308d0dc0376be3ddde8ec56fd23d1142300441afc459c3c6bdc39a7d1|format|value|HEX||
+||eth_smoke|14||0xef32028308d0dc0376be3ddde8ec56fd23d1142300441afc459c3c6bdc39a7d1|format|value|HEX||
 |x|eth_smoke|15|eth_getBlockTransactionCountByNumber|0x0000000000000000000000000000000000000000000000000000000000000000|format|value|HEX||
 ||eth_smoke|23|eth_getTransactionByHash|0x138ab73bd335643bb40961cf2bf3176b815b7bc1d8f8d88c7199bab291821018|value||null||
 ||eth_smoke|23|eth_getTransactionByHash|0x764e84e72a51ed397418f159df52d42eb59d6be81ecba2ca21bf847ffcf84821|value||null||
@@ -48,9 +48,9 @@ unit test||||||||||
 |||34|getblocktemplate||format|object|VALID_WORKTEMPLATE||
 ||web3|1|clientVersion||||||
 ||web3|2|sha3||||||
-||net|1|net_version||format|value|STRING||
-||net|3|net_listening||format|value|BOOLEAN||
-||net|2|net_peerCount||format|value|HEX||
+|x|net|1|net_version||format|value|STRING||
+|x|net|3|net_listening||format|value|BOOLEAN||
+|x|net|2|net_peerCount||format|value|HEX||
 ||Personal|2|personal_newAccount|password|format|value|HEX||
 ||Personal|1|personal_listAccounts||format|array|ACCOUNT_FORMAT||
 ||Personal|3|personal_unlockAccount|0xa0eea988633a316454ef0236027208b041d9e71cf72e8d24ec3a0135c92e9234	password	0|format|value|BOOLEAN||

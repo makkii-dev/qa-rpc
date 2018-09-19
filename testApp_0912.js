@@ -42,9 +42,9 @@ var RUNTIME_VARIABLES=(()=>{
 			self.newPassword = req[1];
 			break;
 		case "eth_getBlockByNumber":
+		case "eth_getBlockTransactionCountByNumber":
 			self.blockHash = resp.result.hash;
 			break;
-		case "eth_getTransactionCount":
 
 	}
 }
@@ -64,8 +64,10 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 
 function formParam(str){
 	if((currentMethod=='eth_uninstallFilter'||currentMethod=='eth_getFilterLogs'||currentMethod == "eth_getFilterChanges")){
-		return str.length==0?[RUNTIME_VARIABLES.lastFilterID]:[str];
+		return str==undefined?[RUNTIME_VARIABLES.lastFilterID]:[str];
 	} 
+	if(currentMethod=='eth_getBlockTransactionCountByHash') return str==undefined?[RUNTIME_VARIABLES.blockHash]:[str];
+	if(currentMethod=='eth_getBlockByHash' && str == undefined)
 	if(str==undefined)return[];
 	//logger.log(param);
 	var param =  str.split('\t');
@@ -79,6 +81,7 @@ function formParam(str){
 			param[i]= parseInt(param[i]);
 		}
 	}
+
 	return param;
 }
 
