@@ -67,8 +67,14 @@ function formParam(str){
 		return str==undefined?[RUNTIME_VARIABLES.lastFilterID]:[str];
 	} 
 	if(currentMethod=='eth_getBlockTransactionCountByHash') return str==undefined?[RUNTIME_VARIABLES.blockHash]:[str];
-	if(currentMethod=='eth_getBlockByHash' && str == undefined)
-	if(str==undefined)return[];
+	if(currentMethod=='eth_getBlockByHash'){
+		if(str===undefined) return [RUNTIME_VARIABLES.blockHash];
+		let params =  str.split('\t');
+		if(/^0x[0-9a-f]$/.test(params[0])) return params;
+		params[0]=RUNTIME_VARIABLES.blockHash;
+		return params;
+	} 
+	if(str===undefined) return[];
 	//logger.log(param);
 	var param =  str.split('\t');
 	//logger.log(JSON.stringify(param));
