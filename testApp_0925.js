@@ -4,20 +4,16 @@ logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 
 var process = require('process');
-//test environment variables
-const JSONRPC_VERSION='2.0';
-const IP = "127.0.0.1";
-const PORT = "8545";
-const ENDPOINT = "http://"+IP+":"+PORT;
-const IPC_PATH = "/home/aion-aisa-08/.aion/jsonrpc.ipc";
-const DRIVER_PATH = "./testDriver.csv";
+
+//test arguements variables
+var DRIVER_PATH = "./testDriver.csv";
+var provider_type;
 
 // internal dependencies
 const validFormat= require("./validFormat");
 var readCSVDriver = require("./readCSV");
-const testprovider = require("./http_provider");
-//const testprovider = require("./ipc_provider");
-//const testprovider = require("./socket_provider");
+const Provider = require("./provider");
+
 var utils = require("./utils");
 
 //validate tools
@@ -57,7 +53,7 @@ var RUNTIME_VARIABLES=(()=>{
 var EXPECT_RESP= (req_id, expect_result)=>{
 	return {
 		id: req_id,
-		jsonrpc:JSONRPC_VERSION,
+		jsonrpc:cur_provider.rpc_version,
 		result: expect_result
 	}
 }
@@ -70,28 +66,51 @@ function formParam(str){
 	if(currentMethod=='eth_getBlockTransactionCountByHash') return str==undefined?[RUNTIME_VARIABLES.blockHash]:[str];
 	if(currentMethod=='eth_getBlockByHash'){
 		if(str===undefined) return [RUNTIME_VARIABLES.blockHash];
-		let params =  str.split('\t');
+		let params =  str.split(' ');
 		if(/^0x[0-9a-f]$/.test(params[0])) return params;
 		params[0]=RUNTIME_VARIABLES.blockHash;
 		return params;
 	} 
 	if(str===undefined) return[];
 	//logger.log(param);
-	var param =  str.split('\t');
+	var param =  str.split(' ');
 	//logger.log(JSON.stringify(param));
 	for(let i = 0; i < param.length;i++){
 		if(param[i]=="true")param[i]=true;
 		else if(param[i]=="false")param[i]=false;
 		else if(/^{\S*}$/.test(param[i])) {
 			param[i] = utils.str2Obj(param[i],",",":");
+			
+			if(currentMethod == 'eth_sendTransaction'||currentMethod=="eth_signTransaction"){
+				if(param[i].value) param[i].value = utils.dec2Hex(parseInt(param[i].value));
+				if(param[i].gas) param[i].gas = utils.dec2Hex(parseInt(param[i].gas));
+				if(param[i].gasPrice) param[i].gasPrice = utils.dec2Hex(parseInt(param[i].gasPrice));
+			}
+			
 		}else if((currentMethod=="personal_unlockAccount" && i == 2)/*||(currentMethod=="eth_getBlockByNumber" && i==0)*/){
 			param[i]= parseInt(param[i]);
+		}else if(currentMethod == "eth_sign" && i==1){
+			param[i] = utils.string2Hex(param[i]);
 		}
 	}
 
 	return param;
 }
+//load arguements from process and create provider
 
+for(let i = 0; i < process.argv.length; i++){
+	if(provider_type && DRIVER_PATH) break;
+	if(process.argv[i]=='--type') {
+		provider_type= process.argv[++i];
+		continue;
+	}
+	if(process.argv[i]== "--testsuite"){
+		DRIVER_PATH = process.argv[++i];
+		continue;
+	}
+}
+
+var cur_provider = new Provider({type:provider_type,logger:logger});
 //read driver file
 var data = readCSVDriver(DRIVER_PATH);
 
@@ -107,9 +126,9 @@ logger.log("Find "+data.length+" testcases:");
 				var params = formParam(testRow.params);
 				logger.log("\n test log for "+testRow.prefix+testRow.method+testRow.id);
 				logger.log(testRow);	
-				testprovider(ENDPOINT,requestID,testRow.method, params, JSONRPC_VERSION,logger)
+				cur_provider.sendRequest(requestID,testRow.method, params)
 						.then((resp)=>{
-							chai.expect(resp).contains({id:requestID,jsonrpc:JSONRPC_VERSION});
+							chai.expect(resp).contains({id:requestID,jsonrpc:cur_provider.rpc_version});
 							try{
 								switch(testRow.valid_method){
 									case "value":

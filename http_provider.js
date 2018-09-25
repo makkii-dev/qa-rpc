@@ -5,7 +5,7 @@ function requestBody(id,method,params,rpc_version){
 	return {id:id,method:method,params:params,jsonrpc:rpc_version};
 }
 var http_provider = (endpoint, request_id, request_method, request_params,rpc_version,logger)=>{
-
+	logger.log(endpoint);
 	return new Promise((resolve, reject)=>{
 
 		var provider = new HTTP_PROVIDER();

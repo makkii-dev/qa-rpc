@@ -18,7 +18,7 @@ pipeline {
     triggers {
         cron('H H H H H')
         pollSCM('H H H H H')
-        upstream(upstreamProjects:"aion_rust_test_deploy", threshold: hudson.model.Result.SUCCESS) 
+        upstream(upstreamProjects:"aion_rust", threshold: hudson.model.Result.SUCCESS) 
     }
 
     stages {
@@ -40,7 +40,7 @@ pipeline {
                 sh 'nohup ${AION_RUST_DIR}/target/release/aion --config=${TESTNET_CONFIG} --chain=${TESTNET_JSON} &'
                 sh 'sleep 15'
                 echo 'Testing..'
-                sh 'yarn test --detectOpenHandles'
+                sh 'npm test --detectOpenHandles'
                 
             }
         }

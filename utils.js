@@ -9,7 +9,16 @@ module.exports={
 	//conversion
 	hex2Dec:(hex)=>{return parseInt(num);},
 	dec2Hex:(number)=>{return "0x"+number.toString(16);},
-
+	string2Hex:(str)=>{
+		if(/^0x/.test(str)) return str;
+		hex = "0x";
+		for(let i=0; i < str.length;i++){
+			let ext = str.charCodeAt(i).toString(16);
+			ext=(ext.length==2)?ext:'0'+ext;
+			hex = hex+ext;
+		}
+		return hex;
+	},
 	//
 	str2Obj:(str,delimiter,separator)=>{
 		str = str.substring(1,str.length-1);
