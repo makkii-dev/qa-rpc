@@ -36,6 +36,15 @@ module.exports={
 		return obj;
 	},
 	getBigNumber:(number)=>{return new BigNumber(number);},
-	isBIGNUMBER:()=>{return {test:(value)=>{return BigNumber.isBigNumber(value);}};}
-
+	isBIGNUMBER:()=>{
+		return {test:(value)=>{return BigNumber.isBigNumber(value);}};
+	},
+	isValidTimeStamp:()=>{
+		return {test:(ts)=>{
+			if(!/^0x/.test(ts)|| ts.length !== 16) return false;
+			ts = parseInt(ts);
+			let cur_ts =Date.now();
+			return (cur_ts>ts && ts > cur_ts-2000);
+		}};
+	}
 }

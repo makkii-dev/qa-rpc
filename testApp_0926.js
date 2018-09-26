@@ -1,7 +1,7 @@
 //test settings
 var logger = new (require("./utils/logger"))();
 logger.CONSOLE_LOG = true;
-logger.FILE_LOG = false;
+logger.FILE_LOG = true;
 
 var process = require('process');
 
@@ -15,7 +15,7 @@ const validFormat= require("./utils/validFormat");
 var readCSVDriver = require("./utils/readCSV");
 const Provider = require("./utils/provider");
 var utils = require("./utils/utils");
-var Helper = require("./utils/helper");
+var Helper = require("./utils/helper1");
 
 //validate tools
 var chai = require('chai');
@@ -91,6 +91,7 @@ function formParam(str){
 	for(let i = 0; i < param.length;i++){
 		if(param[i]=="true") param[i]=true;
 		else if(param[i]=="false") param[i]=false;
+		else if(param[i]=="null") param[i]=null;
 		else if(/^{\S*}$/.test(param[i])) {
 			param[i] = utils.str2Obj(param[i],",",":");
 			
@@ -130,79 +131,87 @@ var data = readCSVDriver(DRIVER_PATH);
 //verify driver file
 logger.log("Find "+data.length+" testcases:");
 
-	data.forEach((testRow)=>{
-		describe("tests",()=>{
-			var requestID = testRow.prefix+"-"+testRow.id;
-			if(testRow.execute=='x'){
-				it(testRow.prefix+testRow.method+testRow.id,(done)=>{
-				currentMethod = testRow.method;
-				var params = formParam(testRow.params);
-				logger.log("\n test log for ");
-				logger.log(testRow);	
-				if(testRow.helper){
-				 	helper[testRow.helper](testRow.timeout);
-				}	
-				cur_provider.sendRequest(requestID,testRow.method, params)
-						.then((resp)=>{
-							chai.expect(resp).contains({id:requestID,jsonrpc:cur_provider.rpc_version});
-							try{
-								switch(testRow.valid_method){
-									case "value":
-										chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));
-										break;
-									case "exactvalue":
-										chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,testRow.format_name));
-										break;
-									case "format":
-										switch(testRow.valid_type){
-											case "array":
-												
-												resp.result.forEach((item)=>{
-													chai.expect(item).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
-												});
-												break;
-											case "object":
-												chai.expect(resp.result).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
-												break;
-											case "value":
-												chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
-												if(testRow.arraySize){chai.expect(resp.result).to.have.lengthOf(parseInt(testRow.arraySize));}
-												if(testRow.arrayValue){
-													testRow.arrayValue.forEach((oneValue)=>{
-														chai.expect(resp.result).to.contains(oneValue);
-													});
-												}
-												break;
-											case "error":
-												chai.expect(resp.error).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
-
-											default:
-
-										}
-										break;
-									default:
-										chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));;
-								}
-
-								RUNTIME_VARIABLES.update(currentMethod,resp,params);
-								done();
-							}catch(e){
-								logger.log("[Validation Error]:");
-								logger.log(e);
-								done(e);
-							}
-					},(err)=>{
-						logger.log("[HTTP ERROR]:")
-						logger.log(JSON.stringify(err));
-						done(err);
-					})
+data.forEach((testRow)=>{
+	describe("tests",()=>{
+		var requestID = testRow.prefix+"-"+testRow.id;
+		if(testRow.execute=='x'){
+			it(testRow.prefix+testRow.method+testRow.id, (done_1)=>{
+			currentMethod = testRow.method;
+			var params = formParam(testRow.params);
+			logger.log("\n test log for ");
+			logger.log(testRow);	
+			if(testRow.helper){
+				helper[testRow.helper](testRow.timeout).then(()=>{
+					runOneRow(testRow,requestID, params,done_1);
 				});
+			}else{
+				runOneRow(testRow,requestID, params,done_1);
 			}
-		});
-		
 
-	})
+			}).timeout(30*1000);
+		}
+	});
+
+
+});
+
+function runOneRow(testRow,requestID, params,done){
+	cur_provider.sendRequest(requestID,testRow.method, params)
+		.then((resp)=>{
+			chai.expect(resp).contains({id:requestID,jsonrpc:cur_provider.rpc_version});
+			try{
+				switch(testRow.valid_method){
+					case "value":
+						chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));
+						break;
+					case "exactvalue":
+						chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,testRow.format_name));
+						break;
+					case "format":
+						switch(testRow.valid_type){
+							case "array":
+
+								resp.result.forEach((item)=>{
+									chai.expect(item).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
+								});
+								break;
+							case "object":
+								chai.expect(resp.result).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
+								break;
+							case "value":
+								chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
+								if(testRow.arraySize){chai.expect(resp.result).to.have.lengthOf(parseInt(testRow.arraySize));}
+								if(testRow.arrayValue){
+									testRow.arrayValue.forEach((oneValue)=>{
+										chai.expect(resp.result).to.contains(oneValue);
+									});
+								}
+								break;
+							case "error":
+								chai.expect(resp.error).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
+
+							default:
+
+						}
+						break;
+					default:
+						if(testRow.formate_name)
+						chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));;
+				}
+
+				RUNTIME_VARIABLES.update(currentMethod,resp,params);
+				
+			}catch(e){
+				logger.log("[Validation Error]:");
+				logger.log(e);
+				throw e;
+			}
+	},(err)=>{
+		logger.log("[HTTP ERROR]:")
+		logger.log(JSON.stringify(err));
+		throw e;
+		
+	}).then(()=>{done();},(e)=>{done(e);});
+}
 	
-					
-//});
 

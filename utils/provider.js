@@ -1,4 +1,4 @@
-const PATHS = require('./providers_config.json');
+const PATHS = require('./providers/providers_config.json');
 
 class Provider{
 	constructor(options){
@@ -15,20 +15,20 @@ class Provider{
 		}
 		switch(this.type){
 			case 'ipc':
-				this.provider = require('./ipc_provider');
+				this.provider = require('./providers/ipc_provider');
 				break;
 			case 'websocket':
-				this.provider = require('./socket_provider');
+				this.provider = require('./providers/socket_provider');
 				break;
 			default:
-				this.provider = require('./http_provider');
+				this.provider = require('./providers/http_provider');
 				
 		}
 		this.rpc_version = "2.0";
 		this.path = PATHS[this.type];
 	}
-	sendRequest(id,method,params){
-		return this.provider(this.path, id, method, params, this.rpc_version, this.logger);
+	sendRequest(id,method,params,timeout){
+		return this.provider(this.path, id, method, params, this.rpc_version, this.logger,timeout);
 	}
 }
 

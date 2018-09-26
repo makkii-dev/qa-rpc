@@ -3,11 +3,11 @@ smoke test|||||||||||||
 ||create account|smoke|||2|personal_newAccount|password|format|value|HEX||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||
 ||unlock account|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN||
-||check account unlocked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||
+||check account unlocked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|exactvalue||true||
 ||lock account|smoke|||4|personal_lockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|BOOLEAN||
-||check account locked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||false||
+||check account locked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|exactvalue||false||
 ||estimate gas for a transaction with only {from,to,value}|smoke|||22|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:0x03,value:0x09,data:0x2345} pending|format|value|HEX||
-||unlock account_for transactions|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|value||true||
+||unlock account_for transactions|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|exactvalue||true||
 ||send transaction with default gas limit & gas price {from, to, value=1 }|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:0x1}|format|value|TRANSACTION_FORMAT||
 ||send transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:1,value:1}|format|value|TRANSACTION_FORMAT||
 ||sign message{message =aion web3 rust test }(outcome expected=h192exact)|smoke|||45|eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c aion_web3_rust_test|format|value|HEX||
@@ -19,29 +19,29 @@ smoke test|||||||||||||
 |||smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:0x02}|format|value|TRANSACTION_FORMAT||
 |||smoke|||40|eth_getFilterChanges||format|value|ARRAY|2|
 |||smoke|||41|eth_getFilterLogs||format|value|ARRAY|2|
-|||smoke|||42|eth_uninstallFilter||value||true||
-|x||smoke|||34|getblocktemplate||format|object|VALID_WORKTEMPLATE||
-|x|new block filter(wait a while to get validate new block)|smoke|||38|eth_newBlockFilter||format|value|HEX||
-|x||smoke|30|WaitNewBlock|40|eth_getFilterChanges||format|value|ARRAY|1|
-|x||smoke|||41|eth_getFilterLogs||format|value|ARRAY|1|
-|||smoke|||42|eth_uninstallFilter||value||true||
+|||smoke|||42|eth_uninstallFilter||exactvalue||true||
+|||smoke|||34|getblocktemplate||format|object|VALID_WORKTEMPLATE||
+||new block filter(wait a while to get validate new block)|smoke|||38|eth_newBlockFilter||format|value|HEX||
+|||smoke|20|WaitNewBlock|40|eth_getFilterChanges||format|value|ARRAY|1|
+|||smoke|30||41|eth_getFilterLogs||format|value|ARRAY|1|
+|||smoke|||42|eth_uninstallFilter||exactvalue||true||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||
 ||get coinbase|smoke|||4|eth_coinbase||format|value|ACCOUNT_FORMAT||
 ||check if mining|smoke|||5|eth_mining||format|value|BOOLEAN||
 ||get hashrate|smoke|||3|eth_hashrate||format|value|HEX||
 ||submit hashrate|smoke|||36|eth_submitHashrate|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0000000000000000000000000000000000000000000000000000000000000001|format|value|BOOLEAN||
-||get syncing object|smoke|||2|eth_syncing||value||false||
+||get syncing object|smoke|||2|eth_syncing||exactvalue||false||
 ||get gas prices|smoke|||6|eth_gasPrice||format|value|HEX||
 ||get eth account list|smoke|||7|eth_accounts||format|array|ACCOUNT_FORMAT||
-||get protocol version|smoke|||1|eth_protocolVersion||exactvalue||0||
+||get protocol version|smoke|||1|eth_protocolVersion||exactvalue||false||
 ||get balance block (latest)|smoke|||9_latest|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|BALANCE_FORMAT||
 ||get balance block (earliest)|smoke|||9_earliest|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|format|value|BALANCE_FORMAT||
 ||get balance block (pending)|smoke|||9_pending|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|format|value|BALANCE_FORMAT||
 ||get balance block (number)(hex)|smoke|||9_number|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0|format|value|BALANCE_FORMAT||
-||get code at address|smoke|||18|eth_getCode|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|HEX||
+||get code at address|smoke|||18|eth_getCode|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|BINARY||
 ||get compilers|smoke|||0|eth_getCompilers||format|value|ARRAY||Solidity
-||get block by number include Tx object|smoke|||12|eth_getBlockByNumber|0x0 true|format|object|VALID_BLOCK_OBJECT||
-||get block by hash include Tx object|smoke|||11|eth_getBlockByHash|0xef32028308d0dc0376be3ddde8ec56fd23d1142300441afc459c3c6bdc39a7d1 true|format|object|VALID_BLOCK_OBJECT||
+||get block by number include Tx object|smoke|||12|eth_getBlockByNumber|0xcd true|format|object|VALID_BLOCK_OBJECT||
+||get block by hash include Tx object|smoke|||11|eth_getBlockByHash| true|format|object|VALID_BLOCK_OBJECT||
 ||get transaction count by address and by block number|smoke|||13|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|format|value|HEX||
 ||get block Tx count by number(0x0)|smoke|||15|eth_getBlockTransactionCountByNumber|0x0000000000000000000000000000000000000000000000000000000000000000|format|value|HEX||
 ||get block Tx count by hash|smoke|||23|eth_getTransactionByHash||value||null||
@@ -50,11 +50,30 @@ smoke test|||||||||||||
 ||get peer count|smoke|||2|net_peerCount||format|value|HEX||
 test personal|||||||||||||
 ||list account|personal|||1|personal_listAccounts||format|value|ARRAY|10|
-||create account w/out password|personal|||2|personal_newAccount||||||
-||create account with password|||||||format||||
-||list account(size + 1)|||||||||||
-||unlock account with 10 sec|||||||||||
-||check account unlocked|||||||||||
-||check account unlocked||10|||||||||
+||(negative)create account w/out password|personal|||2-nopass|personal_newAccount||format|error|||
+||create account with password|personal|||2-pos|personal_newAccount|password|format|value|ACCOUNT_FORMAT||
+||list account(size + 1)|personal|||1|personal_listAccounts||format|value|ARRAY|11|
+||(negative)unlock account w/ wrong password|personal|||3-wropass|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong|format|error|||
+||unlock account with 10 sec|personal|||3-10sec|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|exactvalue||true||
+||check account unlocked|personal|||5-unlock|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||
+||check account locked after 10 sec|personal|15|delay|5-lock|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||false||
+||(negative)unlock account w/out password|personal|||3-nopass|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|format|error|||
+||(negative)unlock invalid account|personal|||3-invalidacc|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2d password 0|format|error|||
+||(negative)unlock account w/out params|personal|||3-noparams|personal_unlockAccount||format|error|||
+|x|unlock account w/out timeout|personal|||3-wropass|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|error|||
+|x|unlock account w/ timeout==null|personal|||3-wropass|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|format||||
 test filter|||||||||||||
-|x|got logs|new|||0|eth_getLogs|{}|format|value|ARRAY||
+||new filter maximum params|filter|||37-max|eth_newFilter|{fromBlock:latest,toBlock:earliest,limit:3,address:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,topics:[]} |||||
+||new filter minimum params|filter|||37-min|eth_newFilter|{}|||||
+||check filter changes|filter|||42-pos|eth_getFilterChanges||format|value|ARRAY|0|
+||check filter logs|filter|||42-neg|eth_getFilterlogs||format|value|ARRAY|0|
+||uninstall exited filter|filter|||42-pos|eth_uninstallFilter||||||
+||uninstall unexited filter|filter|||42-neg|eth_uninstallFilter|0x0|||||
+||new block filter|filter|||38|eth_newBlockFilter||||||
+||new pending transaction filter|filter||||||||||
+|||||||||||||
+||got logs|new|||0|eth_getLogs|{}|format|value|ARRAY||
+|||||||personal_sign|0x00000000 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|HEX||
+|||||||personal_signTransaction||||||
+|||||||personal_sendTransaction||||||
+|||||||personal_signAndSendTransaction||||||
