@@ -1,0 +1,11 @@
+{
+"code":-32602,
+"message":"Invalid params: invalid type: map, expected a 0x-prefixed, hex-encoded vector of bytes."
+}
+
+{
+"code":-32602,
+"message":"Invalid RLP.",
+"data":"RlpExpectedToBeList"
+}
+

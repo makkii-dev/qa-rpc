@@ -1,3 +1,21 @@
-node_modules/mocha/bin/mocha testApp_0925.js [[--type (providertype)]] [[--testsuite (csv_file)]] [[--reporter mocha-junit-reporter]][[--reporter-options mochaFile=path/to/result.xml]]
+** RUN Test **
 
-providertype: accept http default(http) websocket ipc
+```bash
+node_modules/mocha/bin/mocha <testApp_0925.js> [[--type <providertype>]] [[--testsuite <csv_file>]] [[--reporter mocha-junit-reporter]][[--reporter-options mochaFile=path/to/result.xml]]
+```
+
+provider type: accept http, default, websocket, ipc. Default type is http
+
+** Error format **
+See all of validation format in utils/validFormat.js
+
+LOCKED_ERROR
+PARAMS_FORMAT_ERROR
+WRONG_PW_ERROR
+INVALID_ACC_ERROR
+INVALID_METHOD
+
+
+**Notes**:
+* unlock account w/out timeout (currently is invalid): rust has some problems to overload method with different number of parameters
+* unlock account with timeout: if an account unlock time has expired while no transaction is sent by that account since then, isAccountUnlocked will still show this account is unlocked.

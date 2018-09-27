@@ -9,7 +9,6 @@ var process = require('process');
 var DRIVER_PATH = "./test_cases/testDriver.csv";
 var provider_type;
 
-
 // internal dependencies
 const validFormat= require("./utils/validFormat");
 var readCSVDriver = require("./utils/readCSV");
@@ -25,9 +24,7 @@ var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
 
 
-//runtime variable:
-//var currentMethod,lastTransactionHash,newAccount,newPassword;
-
+//runtime variables:
 var helper;
 var RUNTIME_VARIABLES=(()=>{
 	var self = this;
@@ -70,7 +67,10 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 	}
 }
 
-
+/**
+* formParam: parse string of params to an array
+* @param: str(String) params string in csv file
+**/
 function formParam(str){
 	if((currentMethod=='eth_uninstallFilter'||currentMethod=='eth_getFilterLogs'||currentMethod == "eth_getFilterChanges")){
 		return str==undefined?[RUNTIME_VARIABLES.lastFilterID]:[str];
@@ -109,22 +109,25 @@ function formParam(str){
 	}
 	return param;
 }
-//load arguements from process and create provider
 
+
+
+//load arguements from command line and create a provider
 for(let i = 0; i < process.argv.length; i++){
 	if(provider_type && DRIVER_PATH) break;
 	if(process.argv[i]=='--type') {
 		provider_type= process.argv[++i];
 		continue;
-	}
-	if(process.argv[i]== "--testsuite"){
+	}else if(process.argv[i]== "--testsuite"){
 		DRIVER_PATH = process.argv[++i];
 		continue;
 	}
 }
-
+provider_type=provider_type||'default';
 var cur_provider = new Provider({type:provider_type,logger:logger});
 helper = new Helper({provider:cur_provider,logger:logger});
+
+
 //read driver file
 var data = readCSVDriver(DRIVER_PATH);
 
@@ -135,17 +138,17 @@ data.forEach((testRow)=>{
 	describe("tests",()=>{
 		var requestID = testRow.prefix+"-"+testRow.id;
 		if(testRow.execute=='x'){
-			it(testRow.prefix+testRow.method+testRow.id, (done_1)=>{
+			it(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
 			currentMethod = testRow.method;
 			var params = formParam(testRow.params);
 			logger.log("\n test log for ");
 			logger.log(testRow);	
 			if(testRow.helper){
 				helper[testRow.helper](testRow.timeout).then(()=>{
-					runOneRow(testRow,requestID, params,done_1);
+					runOneRow(testRow,requestID, params,done);
 				});
 			}else{
-				runOneRow(testRow,requestID, params,done_1);
+				runOneRow(testRow,requestID, params,done);
 			}
 
 			}).timeout(30*1000);

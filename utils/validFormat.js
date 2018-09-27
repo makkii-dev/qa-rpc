@@ -155,7 +155,12 @@ module.exports={
 			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
 			data:"NotUnlocked"
 		},
-		ERROR_32602:`{
+		LOCKED_INVALID_ACC_ERROR:{
+			code:-32020,
+			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
+			data:"SStore(InvalidAccount)"
+		},
+		PARAMS_FORMAT_ERROR:`{
 			code:-32602,
 			message:_.isString
 			...
@@ -164,6 +169,11 @@ module.exports={
 			code:-32023,
 			message:"Unable to lock the account",
 			data:"InvalidPassword"
+		},
+		INVALID_ACC_ERROR:{
+			code: -32023,
+		  	message: 'Unable to unlock the account.',
+		  	data: 'InvalidAccount'
 		},
 		INVALID_METHOD:{
 			code:-32601,

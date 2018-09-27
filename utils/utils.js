@@ -2,13 +2,40 @@
 
 //read in csv
 var BigNumber = require("bignumber.js");
+function str2Obj(str,delimiter,separator){
+		
+		str = str.substring(1,str.length-1);
+		
+		var obj = {};
+		if(str.length ===0) return obj;
+		str.split(delimiter).forEach((item)=>{
+			var pair = item.split(separator);
+			if(pair[0]=='limit' || pair[0]=='block'){
+				obj[pair[0]] = parseInt(pair[1]);
+			}else if(pair[0]=='time'){
+				obj[pair[0]] = Date.now();
+			}else{
+				if(/^{\S*}$/.test(pair[1])){
+					pair[1]= str2Obj(pair[1],'+','-');
+				}
+				obj[pair[0]] = pair[1];
+			}
+			
+		});
+		return obj;
+}
+function dec2Hex(number){
+	return "0x"+number.toString(16);
+}
+function getTimeStampHex(){
+	return dec2Hex(Date.now());
+}
 
-
-module.exports={
+var Utils={
 
 	//conversion
 	hex2Dec:(hex)=>{return parseInt(num);},
-	dec2Hex:(number)=>{return "0x"+number.toString(16);},
+	dec2Hex:dec2Hex,
 	string2Hex:(str)=>{
 		if(/^0x/.test(str)) return str;
 		hex = "0x";
@@ -20,21 +47,7 @@ module.exports={
 		return hex;
 	},
 	//
-	str2Obj:(str,delimiter,separator)=>{
-		str = str.substring(1,str.length-1);
-		var obj = {};
-		if(str.length ===0) return obj;
-		str.split(delimiter).forEach((item)=>{
-			var pair = item.split(separator);
-			if(pair[0]=='limit'){
-				obj.limit = parseInt(pair[1]);
-			}else{
-				obj[pair[0]] = pair[1];
-			}
-			
-		});
-		return obj;
-	},
+	str2Obj:str2Obj,
 	getBigNumber:(number)=>{return new BigNumber(number);},
 	isBIGNUMBER:()=>{
 		return {test:(value)=>{return BigNumber.isBigNumber(value);}};
@@ -48,3 +61,5 @@ module.exports={
 		}};
 	}
 }
+
+module.exports = Utils;
