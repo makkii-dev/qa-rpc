@@ -12,7 +12,7 @@ class Helper{
 	/*
 	Usage: 
 	*/
-	WaitNewBlock(timeout){
+	WaitNewBlock(timeout,a,b,c){
 		var oldBlockNo,newBlockNo;
 		var self = this;
 
@@ -22,7 +22,7 @@ class Helper{
 				oldBlockNo = resp.result;
 				console.log(resp);
 			});
-			console.log("-----------"+JSON.stringify(oldBlockNo));
+			console.log("-----------"+oldBlockNo);
 			var checkblock = ()=>{
 
 				self.provider.sendRequest("helper","eth_blockNumber",[]).then((resp)=>{
@@ -31,37 +31,44 @@ class Helper{
 					if(parseInt(newBlockNo) > parseInt(oldBlockNo)){
 						console.log("-----true------"+oldBlockNo+" "+newBlockNo);
 						clearInterval(checkloop);
-						resolve();
+						resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});
 					}
 				});
 
 			}
-			var checkloop = setInterval(checkblock,2000);
-			setTimeout(()=>{clearInterval(checkloop);resolve()},parseInt(timeout)*1000);
+			var checkloop = setInterval(checkblock,3000);
+			setTimeout(()=>{clearInterval(checkloop);resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c})},parseInt(timeout)*1000);
 		});
 	}
 	
 	/*
 		Usage: 
 	*/
-	delay(timeout){
+	delay(timeout,a,b,c){
 		return new Promise((resolve,reject)=>{
-			setTimeout(resolve,parseInt(timeout)*1000);
+			setTimeout(()=>{return resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c})},parseInt(timeout)*1000);
 		})
 	}
 	
 	/*
 		Usage: 
 	*/
-	createAccount(options,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES,done){
-		let account = aionAccount.createKeyPair(options);
-		account.addr = aionAccount.createA0Address(account.publicKey);
-		RUNTIME_VARIABLES.update("pairKeyCreateAcc",account);
-		Promise.resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES,done:done});
+	createPKAccount(option,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES){
+		console.log(option);
+		return new Promise((resolve,reject)=>{
+			let account = aionAccount.createKeyPair(option);
+			account.addr = aionAccount.createA0Address(account.publicKey);
+			RUNTIME_VARIABLES.update("pairKeyCreateAcc", account);
+			console.log(JSON.stringify(RUNTIME_VARIABLES));
+			testRow.params[0].to = testRow.params[0].to||account.addr;
+			resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+		});
 	}
 	
-	default(param,a,b,c,done){
-		Promise.resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c,done:done});
+
+	
+	default(param,a,b,c){
+		return new Promise((resolve,reject)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});});
 	}
 	
 	

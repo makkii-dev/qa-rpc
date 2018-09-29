@@ -21,3 +21,5 @@ INVALID_METHOD
 * unlock account with timeout: if an account unlock time has expired while no transaction is sent by that account since then, isAccountUnlocked will still show this account is unlocked.
 * sendTransaction without "to" field causes socket connection refuse
 * sendTransaction with empty obj: kernel will consider find null account, which is not unlocked
+* default gas use for each tx is 21,000
+* to calculate tx sender's balance = old_balance - sendValue - gas * gasPrice;

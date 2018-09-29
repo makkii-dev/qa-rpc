@@ -3,11 +3,13 @@ var AionLong = rlp.AionLong;
 var aionLib = require('../packages/aion-lib/src/index.js');
 var blake2b256 = aionLib.crypto.blake2b256;
 var toBuffer = aionLib.formats.toBuffer;
-var Buffer = aionLib.formatsBuffer;
-var bufferToZeroXHex = aionLib.formats.bufferToZeroXHEX;
+var Buffer = aionLib.formats.Buffer;
+
+var bufferToZeroXHex = aionLib.formats.bufferToZeroXHex;
 var nacl = aionLib.crypto.nacl;
 var aionPubSigLen = aionLib.accounts.aionPubSigLen;
-
+var removeLeadingZeroX = aionLib.formats.removeLeadingZeroX;
+var BN = require('bn.js');
 
 
 
@@ -40,14 +42,14 @@ function getTimeStampHex(){
 	return dec2Hex(Date.now());
 }
 
-function getCurretNonce(provider, accAddr){
+function getCurrentNonce(provider, accAddr){
 	return provider.sendRequest("utils-getValidNonceValue", "eth_getTransactionCount",[accAddr]);
 }
 function getGasPrice(provider){
 	return provider.sendRequest("utils-getGasPrice","eth_gasPrice",[]);
 }
 
-function getGasPrice(provider,accAddr){
+function getBalance(provider,accAddr){
 	return provider.sendRequest("utils-getBalance","eth_getBalance",[accAddr]);
 }
 
@@ -56,19 +58,18 @@ function getGasPrice(provider,accAddr){
 	@param txObj(Object):{to: accAddr, value: number, data: number, gas: number, gasPrice:account, nonce:hex,type:?, timestamp:Date.now()*1000} 
 	@param account(Object){_privateKey: number, privateKey:hex, publicKey:buffer?, addr:accountAddress}
 */
-
-
 async function getRawTx(provider,txObj,account){
 	let preEncodeSeq = [];
 	let expectSeq =['nonce','to','value','data','timestamp','gas','gasPrice','type'];
-	txObj.timestamp = tx.timestamp || Date.now() * 1000;
+	txObj.timestamp = txObj.timestamp || Date.now() * 1000;
 	txObj.type = toAionLong(txObj.type || 1);
 	txObj.nonce = txObj.nonce || (await getCurrentNonce(provider,account.addr)).result;
 	txObj.gas = toAionLong(txObj.gas);
 	txObj.gasPrice = txObj.gasPrice || (await getGasPrice(provider)).result;
-	txObj.gasPrice = toAionLong(toObj.gasPrice);
+	console.log(txObj.gasPrice);
+	txObj.gasPrice = toAionLong(txObj.gasPrice);
 
-	expectSeq.foreach((property)=>{preEncodeSeq.push(txObj[property]);});
+	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
 	
 	let rlpEncoded = rlp.encode(preEncodeSeq);
 	let hash = blake2b256(rlpEncoded);
@@ -77,13 +78,45 @@ async function getRawTx(provider,txObj,account){
 	let aionPubSig = Buffer.concat([account.publicKey,signature],aionPubSigLen);
 	let rawTx = rlp.decode(rlpEncoded).concat(aionPubSig);
 	let rawTransaction = rlp.encode(rawTx);
-	return {
+	
+	console.log("getRawTx:"+JSON.stringify( {
 		messageHash:bufferToZeroXHex(hash),
-		signature:bufferToZeraXHex(aionPubSig),
+		signature:bufferToZeroXHex(aionPubSig),
 		rawTransaction:bufferToZeroXHex(rawTransaction)
-	}
+	}));
+	return Promise.resolve({
+		messageHash:bufferToZeroXHex(hash),
+		signature:bufferToZeroXHex(aionPubSig),
+		rawTransaction:bufferToZeroXHex(rawTransaction)
+	});
 }
 
+var toAionLong = function (val) {
+    var num;
+
+    if (
+        val === undefined ||
+        val === null ||
+        val === '' ||
+        val === '0x'
+    ) {
+      return null;
+    }
+
+    if (typeof val === 'string') {
+        if (/^0x[0-9a-f]+$/.test(val)||/^0x[0-9A-F]+$/.test(val)) {
+            num = new BN(removeLeadingZeroX(val), 16);
+        } else {
+            num = new BN(val, 10);
+        }
+    }
+
+    if (typeof val === 'number') {
+      num = new BN(val);
+    }
+
+    return new AionLong(num);
+};
 
 
 var Utils={
@@ -117,7 +150,8 @@ var Utils={
 	},
 	getGasPrice:getGasPrice,
 	getRawTx:getRawTx,
-	getCurrentNonce:getCurrentNonce
+	getCurrentNonce:getCurrentNonce,
+	getBalance:getBalance
 }
 
 module.exports = Utils;
