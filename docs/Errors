@@ -9,3 +9,10 @@
 "data":"RlpExpectedToBeList"
 }
 
+
+////gas too low
+{
+"code":-32010,
+"message":"Transaction gas is too low. There is not enough gas to cover minimal cost of the transaction (minimal: 21000, got: 10000). Try increasing supplied gas."
+}
+

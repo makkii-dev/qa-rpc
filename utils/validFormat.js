@@ -150,6 +150,7 @@ module.exports={
 		VALID_TRANSACTION_RECEIPT:VALID_TRANSACTION_RECEIPT,
 		VALID_WORKTEMPLATE:VALID_WORKTEMPLATE,
 		VALID_SIGN_TRANSACTION:VALID_SIGN_TRANSACTION,
+		VALID_TX:TX_OBJECT,
 		LOCKED_ERROR:{
 			code:-32020,
 			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
@@ -167,7 +168,7 @@ module.exports={
 		}`,
 		WRONG_PW_ERROR:{
 			code:-32023,
-			message:"Unable to lock the account",
+			message:_.isString,
 			data:"InvalidPassword"
 		},
 		INVALID_ACC_ERROR:{
@@ -178,7 +179,16 @@ module.exports={
 		INVALID_METHOD:{
 			code:-32601,
 			message:"Method not found"
+		},
+		GAS_LOW_ERROR:{
+			code:-32010,
+			message:/^Transaction gas is too low. There is not enough gas to cover minimal cost of/
+		},
+		NOT_ENOUGH_BALANCE_ERROR:{
+			code:-32010,
+			message:/^Insufficient funds. The account you tried to send transaction from does not have enough funds/
 		}
+
 	},
 	
 

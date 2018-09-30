@@ -1,4 +1,5 @@
 //test settings
+"use strict"
 var logger = new (require("./utils/logger"))();
 logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
@@ -26,7 +27,6 @@ var RLP = require("rlp");
 
 
 //runtime variables:
-var helper;
 var RUNTIME_VARIABLES=(()=>{
 	var self = this;
 	this.name = "RUNTIME_VARIABLES";
@@ -47,10 +47,10 @@ var RUNTIME_VARIABLES=(()=>{
 				break;
 			case "eth_sendRawTransaction":
 			case "eth_sendTransaction":
-				self.transactionHash = resp.result;
+				self.txHash = resp.result;
 				break;
 			case "eth_signTransaction":
-				self.transactionHash = resp.result.tx.hash;
+				self.txHash = resp.result.tx.hash;
 				break;
 			case "pairKeyCreateAcc":
 				self.account = resp;
@@ -63,6 +63,8 @@ var RUNTIME_VARIABLES=(()=>{
 	return self;
 })();
 
+
+
 var VERIFY_VARIABLES =(()=>{
 	var self = this;
 	this.vals = {};
@@ -74,6 +76,8 @@ var VERIFY_VARIABLES =(()=>{
 })();
 
 
+
+
 var EXPECT_RESP= (req_id, expect_result)=>{
 	return {
 		id: req_id,
@@ -82,13 +86,17 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 	}
 }
 
+
+
 /**
 * formParam: parse string of params to an array
 * @param: str(String) params string in csv file
 **/
 function formParam(str,currentMethod){
+	logger.log(str);
+	logger.log(currentMethod);
 	if((currentMethod=='eth_uninstallFilter'||currentMethod=='eth_getFilterLogs'||currentMethod == "eth_getFilterChanges")){
-		return str==undefined?[RUNTIME_VARIABLES.lastFilterID]:[str];
+		return str===undefined||str===null?[RUNTIME_VARIABLES.lastFilterID]:[str];
 	} 
 	if(currentMethod=='eth_getBlockTransactionCountByHash') return str==undefined?[RUNTIME_VARIABLES.blockHash]:[str];
 	if(currentMethod=='eth_getBlockByHash'){
@@ -99,6 +107,7 @@ function formParam(str,currentMethod){
 		if(params[1]) params[1] = JSON.parse(params[1]);
 		return params;
 	} 
+	if(currentMethod == 'eth_getTransactionByHash') return str == undefined? [RUNTIME_VARIABLES.txHash]:[str];
 	if(str===undefined) return[];
 	//logger.log(param);
 	var param =  str.split(' ');
@@ -110,7 +119,7 @@ function formParam(str,currentMethod){
 		else if(/^{\S*}$/.test(param[i])) {
 			param[i] = utils.str2Obj(param[i],",",":");
 			
-			if(currentMethod == 'eth_sendTransaction'||currentMethod=="eth_signTransaction"){
+			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction"){
 				if(param[i].value) param[i].value = utils.dec2Hex(parseInt(param[i].value));
 				if(param[i].gas) param[i].gas = utils.dec2Hex(parseInt(param[i].gas));
 				if(param[i].gasPrice) param[i].gasPrice = utils.dec2Hex(parseInt(param[i].gasPrice));
@@ -139,9 +148,9 @@ for(let i = 0; i < process.argv.length; i++){
 }
 provider_type=provider_type||'default';
 var cur_provider = new Provider({type:provider_type,logger:logger});
-helper = new Helper({provider:cur_provider,logger:logger});
-var valFunc = new validationFunc(cur_provider);
-
+var helper = new Helper({provider:cur_provider,logger:logger});
+var valFunc = new validationFunc(cur_provider,logger);
+console.log(helper);
 
 //read driver file
 var data = readCSVDriver(DRIVER_PATH);
@@ -151,52 +160,42 @@ logger.log("Find "+data.length+" testcases:");
 
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{
-/*		
-		var requestID = testRow.prefix+"-"+testRow.id;
-		if(testRow.execute=='x'){
-			it(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
-			currentMethod = testRow.method;
-			var params = formParam(testRow.params);
-			logger.log("\n test log for ");
-			logger.log(testRow);	
-			if(testRow.helper){
-				helper[testRow.helper](testRow.timeout).then((pre_process_variables)=>{
-					if(pre_process_variables){
-						
-					}
-					runOneRow(testRow,requestID, params,done);
-				});
-			}else{
-				runOneRow(testRow,requestID, params,done);
-			}
 
-			}).timeout(30*1000);
-		}
-*/
 		testSuite.tests.forEach((testRow)=>{
-		
-			testRow.params =formParam(testRow.params,testRow.method);
+						
 			step(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
+				
+				testRow.params = formParam(testRow.params,testRow.method);
+			
 				var helperfunc = testRow.helper? helper[testRow.helper]:(params,a,b,c,done)=>{ return new Promise((resolve)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});})};
-				var helperParams = testRow.helper_params? formParam(testRow.helper_params)[0]:null;
+				
+				var helperParams;
+				if(testRow.helper_params!=undefined){
+					helperParams = formParam(testRow.helper_params)[0];
+				}else{
+					helperParams = null;
+				}
+								
 				var validPreFunc = (testRow.validateFunction && valFunc[testRow.validateFunction])? valFunc[testRow.validateFunction].pre: valFunc.default;
+				
 				var validPostFunc = (testRow.validateFunction && valFunc[testRow.validateFunction])? valFunc[testRow.validateFunction].post: valFunc.default;
+				
+				//helper function
 				helperfunc(helperParams,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)
-					.then(validPreFunc,(e,done)=>{throw e;})
+					//validation pre func
+					.then(validPreFunc,(e)=>{throw e;})
+					//test body and format validate
 					.then(runOneRow,(e)=>{throw e;})
+					//validation post func
 					.then(validPostFunc,(e)=>{throw e})
 					.then(()=>{
-					if(testRow.helper !== undefined && testRow.helper == 'createPKAccount'){
-						VERIFY_VARIABLES.vals.fromAcc = RUNTIME_VARIABLES.account.addr;
-					}
-					
-					
-					done();},(e)=>{done(e)});
-			//helper func
-			//valid pre func
-			//main && valid format
-			//valid post func
-				
+						if(testRow.helper !== undefined && testRow.helper == 'createPKAccount'){
+							VERIFY_VARIABLES.vals.fromAcc = RUNTIME_VARIABLES.account.addr;
+						}
+						done();
+					},(e)=>{done(e)});
+			
+
 			},40*1000);
 		});
 	
@@ -218,10 +217,10 @@ function runOneRow(obj){
 		return new Promise((resolve)=>{
 			logger.log(RUNTIME_VARIABLES.account);
 			if(method==='eth_sendRawTransaction' && RUNTIME_VARIABLES.account!==undefined){
-				utils.getRawTx(cur_provider,testRow.params[0],RUNTIME_VARIABLES.account).then( (rawTxObj)=>{
+				utils.getRawTx(cur_provider,testRow.params[0],RUNTIME_VARIABLES.account).then( (txObj)=>{
 
-						RUNTIME_VARIABLES.rawTx = rawTxObj;
-						RUNTIME_VARIABLES.actualTx = testRow.params[0];
+						RUNTIME_VARIABLES.rawTx = txObj.raw;
+						VERIFY_VARIABLES.vals.actualTx = txObj.readable;
 						VERIFY_VARIABLES.vals.toAcc = RUNTIME_VARIABLES.actualTx.to;
 						console.log("\nvpreprocess\n");
 						console.log(RUNTIME_VARIABLES.rawTx);

@@ -59,16 +59,20 @@ function getBalance(provider,accAddr){
 	@param account(Object){_privateKey: number, privateKey:hex, publicKey:buffer?, addr:accountAddress}
 */
 async function getRawTx(provider,txObj,account){
+	let result = {};
 	let preEncodeSeq = [];
 	let expectSeq =['nonce','to','value','data','timestamp','gas','gasPrice','type'];
 	txObj.timestamp = txObj.timestamp || Date.now() * 1000;
-	txObj.type = toAionLong(txObj.type || 1);
 	txObj.nonce = txObj.nonce || (await getCurrentNonce(provider,account.addr)).result;
-	txObj.gas = toAionLong(txObj.gas);
 	txObj.gasPrice = txObj.gasPrice || (await getGasPrice(provider)).result;
 	console.log(txObj.gasPrice);
+	result.readable = txObj;
+	
+	
 	txObj.gasPrice = toAionLong(txObj.gasPrice);
-
+	txObj.gas = toAionLong(txObj.gas);
+	txObj.type = toAionLong(txObj.type || 1);
+	
 	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
 	
 	let rlpEncoded = rlp.encode(preEncodeSeq);
@@ -79,21 +83,17 @@ async function getRawTx(provider,txObj,account){
 	let rawTx = rlp.decode(rlpEncoded).concat(aionPubSig);
 	let rawTransaction = rlp.encode(rawTx);
 	
-	console.log("getRawTx:"+JSON.stringify( {
+	result.raw = {
 		messageHash:bufferToZeroXHex(hash),
 		signature:bufferToZeroXHex(aionPubSig),
 		rawTransaction:bufferToZeroXHex(rawTransaction)
-	}));
-	return Promise.resolve({
-		messageHash:bufferToZeroXHex(hash),
-		signature:bufferToZeroXHex(aionPubSig),
-		rawTransaction:bufferToZeroXHex(rawTransaction)
-	});
+	};
+	console.log("getRawTx:"+JSON.stringify(result));
+	return Promise.resolve(result);
 }
 
 var toAionLong = function (val) {
     var num;
-
     if (
         val === undefined ||
         val === null ||
