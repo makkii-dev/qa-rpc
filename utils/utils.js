@@ -4,6 +4,7 @@ var aionLib = require('../packages/aion-lib/src/index.js');
 var blake2b256 = aionLib.crypto.blake2b256;
 var toBuffer = aionLib.formats.toBuffer;
 var Buffer = aionLib.formats.Buffer;
+var keccak256 = aionLib.crypto.keccak256;
 
 var bufferToZeroXHex = aionLib.formats.bufferToZeroXHex;
 var nacl = aionLib.crypto.nacl;
@@ -118,6 +119,21 @@ var toAionLong = function (val) {
     return new AionLong(num);
 };
 
+// assume params are primary element
+var createContractCall = (funcABI, params)=>{
+	let funcStr = funcABI.name+"(";
+	funcABI.inputs.forEach((input)=>{
+		funcStr += input.type + ',';
+	});
+	funcStr = funcStr.replace(/,$/,')');
+	let funcSign = keccak256(funcStr).substring(0,8);
+	console.log(funcSign);
+	params.forEach((param)=>{
+		funcSign += keccak256(param);
+	});
+	
+	return "0x"+funcSign;
+}
 
 var Utils={
 

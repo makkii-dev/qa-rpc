@@ -85,5 +85,22 @@ Helper.prototype.default = (param,a,b,c)=>{
 	return new Promise((resolve)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});});
 }
 
+Helper.prototype.newContract = (params,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)=>{
+	return new Promise((resolve)=>{
+		testRow.params[0].data = RUNTIME_VARIABLES.contract.code;
+		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+	})
+}
+
+Helper.prototype.prepareContract(params,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES) =>{
+	return new Promise((resolve)=>{
+		let constractl
+		testRow.params[0].to = RUNTIME.contractAddress;
+		
+	
+	});
+}
+
+
 
 module.exports=Helper;

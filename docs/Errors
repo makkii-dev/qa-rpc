@@ -16,3 +16,11 @@
 "message":"Transaction gas is too low. There is not enough gas to cover minimal cost of the transaction (minimal: 21000, got: 10000). Try increasing supplied gas."
 }
 
+//empty condition
+{"jsonrpc":"2.0","error":{"code":-32602,"message":"Invalid params: invalid value: map, expected map with a single key."},"id":"tx-46_cond"}
+
+// too much gas
+
+{"jsonrpc":"2.0","error":{"code":-32010,"message":"Insufficient funds. The account you tried to send transaction from does not have enough funds. Required 5238095100000000000000 and got: 1337000000000000000000."},"id":"tx-46_gas_over_bal"}
+
+

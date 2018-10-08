@@ -5,7 +5,7 @@ logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 
 var process = require('process');
-
+const fs = require('fs');
 //test arguements variables
 var DRIVER_PATH = "./test_cases/testDriver.csv";
 var provider_type;
@@ -48,12 +48,26 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_sendRawTransaction":
 			case "eth_sendTransaction":
 				self.txHash = resp.result;
+				if(/contract/.test(resp.id)){
+					self.contract.hash = resp.result;
+				}
 				break;
 			case "eth_signTransaction":
 				self.txHash = resp.result.tx.hash;
 				break;
 			case "pairKeyCreateAcc":
 				self.account = resp;
+				break;
+			case "eth_compileSolidity":
+				self.contract = {};
+				self.contract.code ="0x"+ resp.result["Recursive"].code;
+				self.contract.abi = resp.result["Recursive"].info.abiDefinition;
+				break;
+			case "eth_getTransactionReceipt":
+				self.contractAddress = resp.result.creates;
+				break;
+			case "eth_getTransactionByHash":
+				self.contractAddress = resp.result.contractAddress;
 				break;
 		}
 	}
@@ -98,6 +112,13 @@ function formParam(str,currentMethod){
 	if((currentMethod=='eth_uninstallFilter'||currentMethod=='eth_getFilterLogs'||currentMethod == "eth_getFilterChanges")){
 		return str===undefined||str===null?[RUNTIME_VARIABLES.lastFilterID]:[str];
 	} 
+	if(currentMethod == 'eth_compileSolidity'){
+		let constract = fs.readFileSync(__dirname + '/testContracts/'+str, {
+    		encoding: 'utf8'
+		});
+		logger.log(constract);
+		return [constract];
+	}
 	if(currentMethod=='eth_getBlockTransactionCountByHash') return str==undefined?[RUNTIME_VARIABLES.blockHash]:[str];
 	if(currentMethod=='eth_getBlockByHash'){
 		if(str===undefined) return [RUNTIME_VARIABLES.blockHash];
@@ -107,7 +128,7 @@ function formParam(str,currentMethod){
 		if(params[1]) params[1] = JSON.parse(params[1]);
 		return params;
 	} 
-	if(currentMethod == 'eth_getTransactionByHash') return str == undefined? [RUNTIME_VARIABLES.txHash]:[str];
+	if(currentMethod == 'eth_getTransactionByHash' || currentMethod == "eth_getTransactionReceipt") return str == undefined? [RUNTIME_VARIABLES.txHash]:[str];
 	if(str===undefined) return[];
 	//logger.log(param);
 	var param =  str.split(' ');

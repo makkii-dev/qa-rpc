@@ -15,10 +15,11 @@ var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2==
 
 
 
-const transaction_format=/^0x[0-9a-f]{64}$/;
-const blockHash_format=H160;
-const account_format=H256;
-const public_key=H64;
+const code_format = /^[0-9a-f]+$/;
+const transaction_format = /^0x[0-9a-f]{64}$/;
+const blockHash_format = H160;
+const account_format = H256;
+const public_key = H64;
 
 const VALID_BLOCK_OBJECT={
 	difficulty:HEX,
@@ -120,6 +121,19 @@ const expectblk_tx = {
 
 */
 
+const COMPILE_RESUILT={
+	Recursive:{
+		code:code_format,
+		info:{
+			abiDefinition:_.isArray,
+			compilerVersion:_.isString,
+			language:_.isString,
+			languageVersion:_.isString,
+			source:_.isString
+		}
+	}
+}
+
 const VALID_WORKTEMPLATE={
 	blockBaseReward:HEX,
  	blockTxFee:HEX,
@@ -151,6 +165,7 @@ module.exports={
 		VALID_WORKTEMPLATE:VALID_WORKTEMPLATE,
 		VALID_SIGN_TRANSACTION:VALID_SIGN_TRANSACTION,
 		VALID_TX:TX_OBJECT,
+		COMPILE_RESUILT:COMPILE_RESUILT,
 		LOCKED_ERROR:{
 			code:-32020,
 			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
@@ -188,8 +203,7 @@ module.exports={
 			code:-32010,
 			message:/^Insufficient funds. The account you tried to send transaction from does not have enough funds/
 		}
-
-	},
+	}
 	
 
 	
