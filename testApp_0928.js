@@ -61,7 +61,16 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_compileSolidity":
 				self.contract = {};
 				self.contract.code ="0x"+ resp.result["Recursive"].code;
-				self.contract.abi = resp.result["Recursive"].info.abiDefinition;
+
+					
+				resp.result["Recursive"].info.abiDefinition.forEach((item)=>{
+					if(item.type == "function"){
+						self.contract.func[item.name] = item;
+					}else{
+						self.contract.event[item.name] = item;
+					}
+				})
+				
 				break;
 			case "eth_getTransactionReceipt":
 				self.contractAddress = resp.result.creates;
@@ -192,7 +201,7 @@ data.forEach((testSuite)=>{
 				
 				var helperParams;
 				if(testRow.helper_params!=undefined){
-					helperParams = formParam(testRow.helper_params)[0];
+					helperParams = formParam(testRow.helper_params);
 				}else{
 					helperParams = null;
 				}

@@ -1,5 +1,6 @@
 var aionLib = require('../packages/aion-lib/src/index');
-var aionAccount = aionLib.accounts
+var aionAccount = aionLib.accounts;
+var utils = require("./utils");
 
 
 
@@ -22,6 +23,7 @@ Helper.prototype.WaitNewBlock =  (timeout,a,b,c)=>{
 	console.log(this);
 	var provider = this.provider;
 	var _id = b!==undefined? "helper"+b.id:"helper";
+	if(Array.isArray(timeout)) timeout = timeout[0];
 	console.log("timeout:"+timeout);
 
 	timeout = parseInt(timeout);
@@ -59,6 +61,7 @@ Helper.prototype.WaitNewBlock =  (timeout,a,b,c)=>{
 
 
 Helper.prototype.delay= (timeout,a,b,c)=>{
+	if(Array.isArray(timeout)) timeout = timeout[0];
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
 		for(let i =1;i <parseInt(timeout);i++) setTimeout(()=>{console.log(i)},1000);
@@ -71,6 +74,7 @@ Helper.prototype.delay= (timeout,a,b,c)=>{
 
 Helper.prototype.createPKAccount = (option,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)=>{
 	console.log(option);
+	if(Array.isArray(option)) option = option[0];
 	return new Promise((resolve)=>{
 		let account = aionAccount.createKeyPair(option);
 		account.addr = aionAccount.createA0Address(account.publicKey);
@@ -92,11 +96,12 @@ Helper.prototype.newContract = (params,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLE
 	})
 }
 
-Helper.prototype.prepareContract(params,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES) =>{
+Helper.prototype.prepareContractCall(options,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES) =>{
+
 	return new Promise((resolve)=>{
 		let constractl
-		testRow.params[0].to = RUNTIME.contractAddress;
-		
+		testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
+		testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[options[0]],)
 	
 	});
 }

@@ -49,6 +49,8 @@ smoke test|x|||||||||||||
 ||check if listening|smoke|||3|net_listening||format|value|BOOLEAN|||
 ||get peer count|smoke|||2|net_peerCount||format|value|HEX|||
 ||Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT|||
+|||smoke||||eth_subscribe|newHeads||||||
+|||||||eth_unsubscribe|||||||
 test personal account||||||||||||||
 ||list account|personal_account|||1|personal_listAccounts||format|value|ARRAY|10||
 ||(negative)create account w/out password|personal_account|||2-nopass|personal_newAccount||format|error|PARAMS_FORMAT_ERROR|||
@@ -138,9 +140,16 @@ transactions||||||||||||||
 ||got logs|new|||0|eth_getLogs|{}|format|value|ARRAY|||
 ||||||||||||||
 ||||||||||||||
-contract||||||||||||||
+contract|x|||||||||||||
 |x|Compile a solidity contract|contract||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT|||
 |x|unlock account|contract|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN|||
 |x|send some value(1000) |contract||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT|||
-|x|get Transaction by hash|contract|20|WaitNewBlock|23|eth_getTransactionByHash|||||||
-|x||contract||prepareContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||
+|x|get Transaction Receipt|contract|20|WaitNewBlock|26|eth_getTransactionReceipt|||||||
+|x|call contract|contract||prepareContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||
+|x|get Transaction Receipt|contract|20|WaitNewBlock|26|eth_getTransactionReceipt|||||||
+||||||||||||||
+||||||||||||||
+test|x|||||||||||||
+|x|test call||||||||||||
+|||||||eth_call|||||||
+|||||||eth_getLogs|||||||

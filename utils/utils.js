@@ -120,7 +120,7 @@ var toAionLong = function (val) {
 };
 
 // assume params are primary element
-var createContractCall = (funcABI, params)=>{
+var getContractFuncData = (funcABI, params)=>{
 	let funcStr = funcABI.name+"(";
 	funcABI.inputs.forEach((input)=>{
 		funcStr += input.type + ',';
@@ -167,7 +167,8 @@ var Utils={
 	getGasPrice:getGasPrice,
 	getRawTx:getRawTx,
 	getCurrentNonce:getCurrentNonce,
-	getBalance:getBalance
+	getBalance:getBalance,
+	getContractFuncData:getContractFuncData
 }
 
 module.exports = Utils;
