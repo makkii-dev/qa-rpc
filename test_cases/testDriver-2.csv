@@ -1,5 +1,5 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction
-smoke test||||||||||||||
+smoke test|x|||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT|||
 ||create account|smoke|||2|personal_newAccount|password|format|value|HEX|||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT|||
@@ -49,8 +49,22 @@ smoke test||||||||||||||
 ||check if listening|smoke|||3|net_listening||format|value|BOOLEAN|||
 ||get peer count|smoke|||2|net_peerCount||format|value|HEX|||
 ||Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT|||
-|||smoke||||eth_subscribe|newHeads||||||
+||subscribe newHeads|smoke||||eth_subscribe|newHeads|format|value|HEX|||
+||subscribe logs|smoke||||eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}||||||
 |||||||eth_unsubscribe|||||||
+||get Logs from first block to current block|smoke||||eth_getLogs|{fromBlock:earliest,toBlock:latest}||||||
+|||||||eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da||||||
+|||||||eth_submitWork|||||||
+|||||||eth_getStorageAt|||||||
+|||||||personal_ecRecover|||||||
+|||||||personal_signAndSendTransaction|||||||
+|||||||submitblock|||||||
+|x||||||rpc_modules|||||||
+|x|get Kernel version|smoke||||web3_clientVersion||exactvalue||Aion(R)/v/x86_64-linux-gnu/rustc-1.28.0|||
+||||||||||||||
+||||||||||||||
+||||||||||||||
+||||||||||||||
 test personal account||||||||||||||
 ||list account|personal_account|||1|personal_listAccounts||format|value|ARRAY|10||
 ||(negative)create account w/out password|personal_account|||2-nopass|personal_newAccount||format|error|PARAMS_FORMAT_ERROR|||
@@ -118,11 +132,11 @@ transactions||||||||||||||
 ||unlock account w/ timeout==null; unlock account for only once|regularTX|||3-once|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password null|value||true|||
 ||send some value(1000) |regularTX|||46_value2|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:3000}|format|value|TRANSACTION_FORMAT|||balanceValidate
 ||||||||||||||
-|||||||personal_sign|0x00000000 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|HEX|||
+|x||||||personal_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|HEX|||
 |||||||personal_signTransaction|||||||
 |||||||personal_sendTransaction|||||||
 |||||||personal_signAndSendTransaction|||||||
-|||||||compiler|||||||
+||||||||||||||
 ||||||||||||||
 PairKey transactions||||||||||||||
 ||unlock account w/ timeout==null; unlock account for only once|PairKey-raw|||3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true|||
@@ -140,15 +154,13 @@ transactions||||||||||||||
 ||got logs|new|||0|eth_getLogs|{}|format|value|ARRAY|||
 ||||||||||||||
 ||||||||||||||
-contract|x|||||||||||||
-|x|Compile a solidity contract|contract||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT|||
-|x|unlock account|contract|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN|||
-|x|deploy a contract|contract||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT|||
-|x|get Transaction Receipt|contract|40 0|WaitNewBlock|26|eth_getTransactionReceipt|||||||
-|x|call contract|contract|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||
-|x|get Transaction Receipt|contract|40 1|WaitNewBlock|26|eth_getTransactionReceipt|||||||
-|x|call contract|contract|f _contractAddress 11|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||
-|x|get Transaction Receipt|contract|40 1|WaitNewBlock|26|eth_getTransactionReceipt|||||||
+contract||||||||||||||
+||Compile a solidity contract|contract||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT|||
+||unlock account|contract|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN|||
+||deploy the contract by sendTransaction|contract||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT|||
+||get Transaction Receipt|contract|40 0|WaitNewBlock|26|eth_getTransactionReceipt|||||||
+||call contract|contract|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||
+||get Transaction Receipt|contract|40 1|WaitNewBlock|26|eth_getTransactionReceipt|||||||
 ||||||||||||||
 pending test||||||||||||||
 ||test call||||||||||||

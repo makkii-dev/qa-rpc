@@ -11,10 +11,30 @@ var nacl = aionLib.crypto.nacl;
 var aionPubSigLen = aionLib.accounts.aionPubSigLen;
 var removeLeadingZeroX = aionLib.formats.removeLeadingZeroX;
 var BN = require('bn.js');
-
-
-
 var BigNumber = require("bignumber.js");
+
+var paramTypeBytes = new RegExp(/^bytes([0-9]*)$/);
+var paramTypeNumber = new RegExp(/^[0-9]*$/);
+var paramTypeArray = new RegExp(/^(.*)\[([0-9]*)\]$/);
+
+function padZeros(value, length) {
+    value = arrayify(value);
+
+    if (length < value.length) { throw new Error('cannot pad'); }
+
+    var result = Buffer.alloc(length);
+    result.set(value, length - value.length);
+    return result;
+}
+
+function bigNumberify(val) {
+  return new BN(val);
+}
+function arrayify(value) {
+    return toBuffer(value);
+}
+
+
 function str2Obj(str,delimiter,separator){
 		
 		str = str.substring(1,str.length-1);
@@ -121,6 +141,7 @@ var toAionLong = function (val) {
 
 // assume params are primary element
 var getContractFuncData = (funcABI, params)=>{
+	console.log(params);
 	let funcStr = funcABI.name+"(";
 	funcABI.inputs.forEach((input)=>{
 		funcStr += input.type + ',';
@@ -129,7 +150,14 @@ var getContractFuncData = (funcABI, params)=>{
 	let funcSign = keccak256(funcStr).substring(0,8);
 	console.log(funcSign);
 	params.forEach((param)=>{
-		funcSign += keccak256(param);
+		console.log(param);
+		if(paramTypeNumber.test(param)){
+			funcSign += padZeros(arrayify(bigNumberify(param).toTwos(128).maskn(128)), 16).toString("hex");
+			console.log( padZeros(arrayify(bigNumberify(param).toTwos(128).maskn(128)), 16).toString("hex"));
+		}else{
+			console.log(Buffer.from(arrayify(aionLib.accounts.createChecksumAddress(param))).toString("hex"));
+			funcSign += Buffer.from(arrayify(aionLib.accounts.createChecksumAddress(param))).toString("hex");
+		}
 	});
 	
 	return "0x"+funcSign;

@@ -18,12 +18,21 @@ Helper.prototype._init = (provider,logger)=>{
 	this.provider = provider;
 }
 
-Helper.prototype.WaitNewBlock =  (timeout,a,b,c)=>{
+Helper.prototype.WaitNewBlock =  (options,a,b,c)=>{
 	var oldBlockNo,newBlockNo;
 	console.log(this);
 	var provider = this.provider;
 	var _id = b!==undefined? "helper"+b.id:"helper";
-	if(Array.isArray(timeout)) timeout = timeout[0];
+	let newBlockNum=0;
+	
+	let timeout = 100;
+	
+	if(options !=null){
+		timeout = options[0];
+		if(timeout.length >1)
+			newBlockNum = options[1];
+			
+	}	
 	console.log("timeout:"+timeout);
 
 	timeout = parseInt(timeout);
@@ -40,7 +49,7 @@ Helper.prototype.WaitNewBlock =  (timeout,a,b,c)=>{
 				provider.sendRequest(_id,"eth_blockNumber",[]).then((resp)=>{
 					newBlockNo= resp.result;
 					console.log("-----------"+oldBlockNo+" "+newBlockNo);
-					if(parseInt(newBlockNo) > parseInt(oldBlockNo)){
+					if(parseInt(newBlockNo) > parseInt(oldBlockNo)+ newBlockNum){
 						console.log("-----reached------"+oldBlockNo+" "+newBlockNo);
 						clearInterval(checkloop);
 						resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});
@@ -96,12 +105,27 @@ Helper.prototype.newContract = (params,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLE
 	})
 }
 
-Helper.prototype.prepareContractCall(options,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES) =>{
+Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES) =>{
+	
 
 	return new Promise((resolve)=>{
-		let constractl
+		let newOptions = options.map((value)=>{
+//			if(!isNaN(value) && !/^0x/.test(value)){
+//				return parseInt(value);
+//			}
+			if(typeof value === 'string' && /^_/.test(value) && RUNTIME_VARIABLES[value.substring(1)]!==undefined){
+				console.log("replace with new value");
+				value =  RUNTIME_VARIABLES[value.substring(1)];
+			}
+			console.log(value);
+			return value;
+		})
+
+		console.log(newOptions);
 		testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
-		testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[options[0]],)
+		testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[newOptions[0]],newOptions.slice(1));
+		console.log(JSON.stringify(testRow.params));
+		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 	
 	});
 }

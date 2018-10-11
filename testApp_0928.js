@@ -65,18 +65,22 @@ var RUNTIME_VARIABLES=(()=>{
 					
 				resp.result["Recursive"].info.abiDefinition.forEach((item)=>{
 					if(item.type == "function"){
+						self.contract.func = {};
 						self.contract.func[item.name] = item;
 					}else{
+						self.contract.event = {};
 						self.contract.event[item.name] = item;
 					}
 				})
 				
 				break;
 			case "eth_getTransactionReceipt":
-				self.contractAddress = resp.result.creates;
+				if(resp.result.contractAddress !==undefined && resp.result.contractAddress !==null)
+					self.contractAddress = resp.result.contractAddress;
 				break;
 			case "eth_getTransactionByHash":
-				self.contractAddress = resp.result.contractAddress;
+				if(resp.result.creates!==undefined && resp.result.creates!==null)
+				self.contractAddress = resp.result.creates;
 				break;
 		}
 	}
@@ -213,17 +217,33 @@ data.forEach((testSuite)=>{
 				//helper function
 				helperfunc(helperParams,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)
 					//validation pre func
-					.then(validPreFunc,(e)=>{throw e;})
+					.then(validPreFunc,(e)=>{console.log("after help:"+e)})
+					.catch((e)=>{
+						console.log("validPre:"+e);
+
+					})
 					//test body and format validate
 					.then(runOneRow,(e)=>{throw e;})
+					.catch((e)=>{
+						console.log("main:"+e);
+
+					})
 					//validation post func
 					.then(validPostFunc,(e)=>{throw e})
+					.catch((e)=>{
+						console.log("validPost:"+e);
+
+					})
 					.then(()=>{
 						if(testRow.helper !== undefined && testRow.helper == 'createPKAccount'){
 							VERIFY_VARIABLES.vals.fromAcc = RUNTIME_VARIABLES.account.addr;
 						}
 						done();
-					},(e)=>{done(e)});
+					})
+					.catch((e)=>{
+						console.log(e);
+						done(e);
+					});
 			
 
 			},40*1000);
@@ -319,9 +339,6 @@ function runOneRow(obj){
 				}catch(e){
 					reject(e);
 				}
-		},(err)=>{
-			reject(err);
-
 		});
 	});
 }
