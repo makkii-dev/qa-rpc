@@ -35,6 +35,7 @@ var RUNTIME_VARIABLES=(()=>{
 		switch(method){
 			case "eth_newPendingTransactionFilter":
 			case "eth_newBlockFilter":
+			case "eth_newFilter":
 				self.lastFilterID = resp.result;
 				break;
 			case "personal_newAccount":
@@ -42,7 +43,7 @@ var RUNTIME_VARIABLES=(()=>{
 				self.newPassword = req[1];
 				break;
 			case "eth_getBlockByNumber":
-			case "eth_getBlockTransactionCountByNumber":
+			//case "eth_getBlockTransactionCountByNumber":
 				self.blockHash = resp.result.hash;
 				break;
 			case "eth_sendRawTransaction":
@@ -120,9 +121,11 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 * @param: str(String) params string in csv file
 **/
 function formParam(str,currentMethod){
-	logger.log(str);
-	logger.log(currentMethod);
+	logger.log("\n----parse params-----------------------\nparams:"+str);
+	logger.log("currentMethod:"+currentMethod);
+	logger.log("RUNTIME_VARIABLES: "+ JSON.stringify(RUNTIME_VARIABLES)+"\n-----------------------------");
 	if((currentMethod=='eth_uninstallFilter'||currentMethod=='eth_getFilterLogs'||currentMethod == "eth_getFilterChanges")){
+
 		return str===undefined||str===null?[RUNTIME_VARIABLES.lastFilterID]:[str];
 	} 
 	if(currentMethod == 'eth_compileSolidity'){
@@ -218,22 +221,13 @@ data.forEach((testSuite)=>{
 				helperfunc(helperParams,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)
 					//validation pre func
 					.then(validPreFunc,(e)=>{console.log("after help:"+e)})
-					.catch((e)=>{
-						console.log("validPre:"+e);
 
-					})
 					//test body and format validate
 					.then(runOneRow,(e)=>{throw e;})
-					.catch((e)=>{
-						console.log("main:"+e);
 
-					})
 					//validation post func
 					.then(validPostFunc,(e)=>{throw e})
-					.catch((e)=>{
-						console.log("validPost:"+e);
 
-					})
 					.then(()=>{
 						if(testRow.helper !== undefined && testRow.helper == 'createPKAccount'){
 							VERIFY_VARIABLES.vals.fromAcc = RUNTIME_VARIABLES.account.addr;

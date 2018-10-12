@@ -38,7 +38,7 @@ function arrayify(value) {
 function str2Obj(str,delimiter,separator){
 		
 		str = str.substring(1,str.length-1);
-		
+		console.log(str);
 		var obj = {};
 		if(str.length ===0) return obj;
 		str.split(delimiter).forEach((item)=>{
@@ -47,6 +47,8 @@ function str2Obj(str,delimiter,separator){
 				obj[pair[0]] = parseInt(pair[1]);
 			}else if(pair[0]=='time'){
 				obj[pair[0]] = Date.now();
+			}else if(/^\[\S*\]$/.test(pair[1])){
+				obj[pair[0]] = str2Arr(pair[1],',');
 			}else{
 				if(/^{\S*}$/.test(pair[1])){
 					pair[1]= str2Obj(pair[1],'+','-');
@@ -55,6 +57,21 @@ function str2Obj(str,delimiter,separator){
 			}
 		});
 		return obj;
+}
+
+function str2Arr(str,delimiter){
+	console.log(str);
+	str = str.substring(1,str.length-1);
+	var arr = [];
+	if(str.length == 0) return arr;
+	str.split(delimiter).forEach((item)=>{
+		if(/^{\S*}$/.test(item)){
+			arr.push(str2Obj(item,',',":"));
+		}else{
+			arr.push(item);
+		}
+	});
+	return arr;
 }
 function dec2Hex(number){
 	return "0x"+number.toString(16);

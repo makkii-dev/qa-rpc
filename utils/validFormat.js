@@ -8,7 +8,7 @@ var utils = require("./utils");
 var H160= /^0x[0-9a-f]{1,160}$/;
 var H256= /^0x[0-9a-f]{1,256}$/;
 var H64=/^0x[0-9a-f]{64}$/;
-var HEX=/^0x[0-9a-f]+$/;
+var HEX=/^0x[0-9a-f]*$/;
 var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2===0)}};
 
 
@@ -66,12 +66,16 @@ const VALID_TRANSACTION_RECEIPT = {
         transactionIndex: HEX
 }
 
+
+const NULL_N_HEX = ()=>{
+		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
+	}
 const TX_OBJECT= {
-	blockHash:_.isNull,
-	blockNumber:_.isNull,
-	chainId:_.isNull,
+	blockHash:NULL_N_HEX,
+	blockNumber:NULL_N_HEX,
+	chainId:NULL_N_HEX,
 	condition:_.isNull,
-	creates:_.isNull,
+	creates:NULL_N_HEX,
 	from:account_format,
 	gas:HEX,
 	gasPrice:HEX,
@@ -84,8 +88,26 @@ const TX_OBJECT= {
 	standardV:HEX,
 	timestamp:utils.isValidTimeStamp,
 	to:account_format,
-	transactionIndex:_.isNull,
+	transactionIndex:NULL_N_HEX,
 	value:HEX
+}
+
+const VALID_TX_RECEIPT = {
+	blockHash:NULL_N_HEX,
+	blockNumber:NULL_N_HEX,
+	contractAddress:NULL_N_HEX,
+	cumulativeGasUsed:HEX,
+	from:HEX,
+	gasLimit:HEX,
+	gasPrice:HEX,
+	gasUsed:HEX,
+	logs:_.isArray,
+	logsBloom:HEX,
+	output:/^0x[0-9]*/,
+	root:HEX,
+	to:_.isNull,
+	transactionHash:HEX,
+	transactionIndex:HEX
 }
 
 const VALID_SIGN_TRANSACTION = {
@@ -117,9 +139,10 @@ const expectblk_tx = {
 	nrgUsed:expect.anything(),
 }
 
-
-
 */
+
+
+
 
 const COMPILE_RESUILT={
 	Recursive:{
@@ -144,6 +167,7 @@ const VALID_WORKTEMPLATE={
 }
 
 
+
 module.exports={
 	SINGLE:{
 		TRANSACTION_FORMAT:transaction_format,
@@ -166,6 +190,16 @@ module.exports={
 		VALID_SIGN_TRANSACTION:VALID_SIGN_TRANSACTION,
 		VALID_TX:TX_OBJECT,
 		COMPILE_RESUILT:COMPILE_RESUILT,
+		VALID_TX_RECEIPT:VALID_TX_RECEIPT,
+		RPC_MODULES:{
+			eth:_.isString,
+			net:_.isString,
+			personal:_.isString,
+			pubsub:_.isString,
+			rpc:_.isString,
+			stratum:_.isString,
+			web3:_.isString
+		},
 		LOCKED_ERROR:{
 			code:-32020,
 			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
@@ -204,8 +238,6 @@ module.exports={
 			message:/^Insufficient funds. The account you tried to send transaction from does not have enough funds/
 		}
 	}
-	
-
 	
 };
 /*

@@ -3,7 +3,7 @@ smoke test|x|||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT|||
 ||create account|smoke|||2|personal_newAccount|password|format|value|HEX|||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT|||
-||unlock account|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN|||
+|x|unlock account|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN|||
 ||check account unlocked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true|||
 ||lock account|smoke|||4|personal_lockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|BOOLEAN|||
 ||check account locked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||false|||
@@ -48,18 +48,17 @@ smoke test|x|||||||||||||
 ||get net version|smoke|||1|net_version||format|value|STRING|||
 ||check if listening|smoke|||3|net_listening||format|value|BOOLEAN|||
 ||get peer count|smoke|||2|net_peerCount||format|value|HEX|||
-||Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT|||
-||subscribe newHeads|smoke||||eth_subscribe|newHeads|format|value|HEX|||
-||subscribe logs|smoke||||eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}||||||
-|||||||eth_unsubscribe|||||||
-||get Logs from first block to current block|smoke||||eth_getLogs|{fromBlock:earliest,toBlock:latest}||||||
-|||||||eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da||||||
+|x|Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT|||
+skip||subscribe newHeads|smoke||||eth_subscribe|newHeads|format|value|HEX|||
+skip||subscribe logs|smoke||||eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}||||||
+skip||unsubscribe|||||eth_unsubscribe|||||||
+|x|get Logs from first block to current block|smoke||||eth_getLogs|{fromBlock:earliest,toBlock:latest}||||||
+|x|sign a message when account is unlocked|||||eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da||||||
 |||||||eth_submitWork|||||||
-|||||||eth_getStorageAt|||||||
-|||||||personal_ecRecover|||||||
-|||||||personal_signAndSendTransaction|||||||
+|x|getStorageAt|||||eth_getStorageAt|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0 latest||||||
+|x|sign a message using a personal|||||personal_signAndSendTransaction|||||||
 |||||||submitblock|||||||
-|x||||||rpc_modules|||||||
+|x|get all available RPC modules and its version|smoke||||rpc_modules|||||||
 |x|get Kernel version|smoke||||web3_clientVersion||exactvalue||Aion(R)/v/x86_64-linux-gnu/rustc-1.28.0|||
 ||||||||||||||
 ||||||||||||||

@@ -29,11 +29,12 @@ Helper.prototype.WaitNewBlock =  (options,a,b,c)=>{
 	
 	if(options !=null){
 		timeout = options[0];
-		if(timeout.length >1)
-			newBlockNum = options[1];
+		if(options.length >1)
+			newBlockNum = parseInt(options[1]);
 			
 	}	
 	console.log("timeout:"+timeout);
+	console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
 
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
