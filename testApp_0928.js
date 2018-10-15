@@ -264,7 +264,7 @@ function runOneRow(obj){
 				utils.getRawTx(cur_provider,testRow.params[0],RUNTIME_VARIABLES.account).then( (txObj)=>{
 
 						RUNTIME_VARIABLES.rawTx = txObj.raw;
-						VERIFY_VARIABLES.vals.actualTx = txObj.readable;
+						RUNTIME_VARIABLES.actualTx = txObj.readable;
 						VERIFY_VARIABLES.vals.toAcc = RUNTIME_VARIABLES.actualTx.to;
 						console.log("\nvpreprocess\n");
 						console.log(RUNTIME_VARIABLES.rawTx);

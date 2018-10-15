@@ -106,10 +106,17 @@ async function getRawTx(provider,txObj,account){
 	console.log(txObj.gasPrice);
 	result.readable = txObj;
 	
+	if(!/^0x/.test(txObj.value)) txObj.value = '0x'+parseInt(txObj.value).toString(16);
+	if(!/^0x/.test(txObj.gasPrice)) txObj.gasPrice = '0x'+ parseInt(txObj.gasPrice).toString(16);
+	if(!/^0x/.test(txObj.gas)) txObj.gas = '0x'+parseInt(txObj.gas).toString(16);
+	
+	console.log(txObj);
 	
 	txObj.gasPrice = toAionLong(txObj.gasPrice);
 	txObj.gas = toAionLong(txObj.gas);
 	txObj.type = toAionLong(txObj.type || 1);
+	
+	console.log(txObj);
 	
 	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
 	

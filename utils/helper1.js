@@ -74,7 +74,7 @@ Helper.prototype.delay= (timeout,a,b,c)=>{
 	if(Array.isArray(timeout)) timeout = timeout[0];
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
-		for(let i =1;i <parseInt(timeout);i++) setTimeout(()=>{console.log(i)},1000);
+		console.log(`wait for : ${timeout} seconds`);
 		setTimeout(()=>{
 			console.log("\nin delay");
 			resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});

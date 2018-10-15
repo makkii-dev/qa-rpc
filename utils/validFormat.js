@@ -105,7 +105,7 @@ const VALID_TX_RECEIPT = {
 	logsBloom:HEX,
 	output:/^0x[0-9]*/,
 	root:HEX,
-	to:_.isNull,
+	to:NULL_N_HEX,
 	transactionHash:HEX,
 	transactionIndex:HEX
 }

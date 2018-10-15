@@ -2,6 +2,10 @@
 
 ```bash
 node_modules/mocha/bin/mocha <testApp_0925.js> [[--type <providertype>]] [[--testsuite <path/to/csv_file>]] [[--reporter mocha-junit-reporter]][[--reporter-options mochaFile=path/to/result.xml]]
+
+
+node_modules/mocha/bin/mocha testApp_0928 --testsuite test_cases/testDriver.csv --type http --require mocha-steps --no-timeouts
+
 ```
 
 provider type: accept http, default, websocket, ipc. Default type is http
