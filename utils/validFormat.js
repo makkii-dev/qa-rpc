@@ -12,9 +12,6 @@ var HEX=/^0x[0-9a-f]*$/;
 var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2===0)}};
 
 
-
-
-
 const code_format = /^[0-9a-f]+$/;
 const transaction_format = /^0x[0-9a-f]{64}$/;
 const blockHash_format = H160;
@@ -176,7 +173,7 @@ module.exports={
 		H160:H160,
 		CONTRACT_VALUE_FORMAT:HEX,
 		BALANCE_FORMAT:utils.isBIGNUMBER,
-		BLOCK_NUMBER_FORMAT:H160,
+		BLOCK_NUMBER_FORMAT:HEX,
 		BOOLEAN:_.isBoolean,
 		ARRAY:_.isArray,
 		STRING:_.isString,
