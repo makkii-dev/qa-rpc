@@ -61,8 +61,11 @@ var RUNTIME_VARIABLES=(()=>{
 				break;
 			case "eth_compileSolidity":
 				self.contract = {};
-				self.contract.code ="0x"+ resp.result["Recursive"].code;
-
+				if(/^0x/.test(resp.result["Recursive"].code)){
+				 	self.contract.code = resp.result["Recursive"].code
+				}else{
+					self.contract.code ="0x"+ resp.result["Recursive"].code;
+				}
 					
 				resp.result["Recursive"].info.abiDefinition.forEach((item)=>{
 					if(item.type == "function"){

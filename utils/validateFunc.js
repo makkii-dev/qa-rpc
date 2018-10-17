@@ -52,7 +52,7 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc;
 	let toAcc = obj.testRow.params[0].to || obj.VERIFY_VARIABLES.vals.toAcc;
 	
-	await self.helper.WaitNewBlock([70,1]);
+	await self.helper.WaitNewBlock([70,3]);
 	//await self.helper.delay([10]);
 	
 	let newFromBal = new BN((await utils.getBalance(self.provider, fromAcc)).result.substring(2),16);
@@ -62,8 +62,8 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	self.logger.log(newToBal.toString(16));
 	self.logger.log(obj.VERIFY_VARIABLES.vals);
 	
-	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.substring(2),16): new BN(0,16);
-	let gas = new BN(21000,10);
+	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.substring(2),16): obj.testRow.params[0].gasPrice? new BN(obj.testRow.params[0].gasPrice.substring(2),16):new BN(0,16);
+	let gas = new BN('21000',10);
 	let fromChanges = obj.VERIFY_VARIABLES.vals.changeValue.add(gas.mul(gasPrice));
 	
 	let checkFrom = obj.VERIFY_VARIABLES.vals.fromBal.isub(fromChanges);
@@ -71,10 +71,10 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 
 	self.logger.log(checkFrom.toString(16));
 	self.logger.log(checkTo.toString(16));
-	self.logger.log(obj.VERIFY_VARIABLES.vals.changeValue.toString(10))
+	self.logger.log(gas.mul(gasPrice).toString(10))
 
 	try{
-		//chai.expect(newFromBal.eq(checkFrom)).to.be.true;
+		chai.expect(newFromBal.eq(checkFrom)).to.be.true;
 		chai.expect(newToBal.eq(checkTo)).to.be.true;
 		obj.VERIFY_VARIABLES.reset();
 		return Promise.resolve();

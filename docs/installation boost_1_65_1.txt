@@ -1,0 +1,10 @@
+plz install boost and jsoncpp-dev in case there is build failure
+
+Install Boost 1.65.1
+
+wget https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2 \
+&& tar xf boost_1_65_1.tar.bz2 \
+&& cd boost_1_65_1 \
+&& ./bootstrap.sh; ./b2 \
+&& sudo ./b2 install \
+&& sudo apt install libjsoncpp-dev
