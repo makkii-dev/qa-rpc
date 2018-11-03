@@ -24,6 +24,7 @@ var chaiMatchPattern = require('chai-match-pattern');
 chai.use(chaiMatchPattern);
 var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
+var runMethod = it;
 
 
 //runtime variables:
@@ -54,20 +55,24 @@ var RUNTIME_VARIABLES=(()=>{
 				}
 				break;
 			case "eth_signTransaction":
+				console.log(resp.result.tx);
 				self.txHash = resp.result.tx.hash;
+				self.txRaw = resp.result.tx.raw;
 				break;
 			case "pairKeyCreateAcc":
 				self.account = resp;
 				break;
 			case "eth_compileSolidity":
 				self.contract = {};
-				if(/^0x/.test(resp.result["Recursive"].code)){
-				 	self.contract.code = resp.result["Recursive"].code
+				let contractname = Object.keys(resp.result)[0];
+				self.contract.name = contractname;
+				if(/^0x/.test(resp.result[contractname].code)){
+				 	self.contract.code = resp.result[contractname].code
 				}else{
-					self.contract.code ="0x"+ resp.result["Recursive"].code;
+					self.contract.code ="0x"+ resp.result[contractname].code;
 				}
 					
-				resp.result["Recursive"].info.abiDefinition.forEach((item)=>{
+				resp.result[contractname].info.abiDefinition.forEach((item)=>{
 					if(item.type == "function"){
 						self.contract.func = {};
 						self.contract.func[item.name] = item;
@@ -184,14 +189,17 @@ for(let i = 0; i < process.argv.length; i++){
 	}else if(process.argv[i]== "--testsuite"){
 		DRIVER_PATH = process.argv[++i];
 		continue;
+	}else if(process.argv[i]== "--step"){
+		runMethod = step;
 	}
 }
 provider_type=provider_type||'default';
 var cur_provider = new Provider({type:provider_type,logger:logger});
 var helper = new Helper({provider:cur_provider,logger:logger});
 var valFunc = new validationFunc(cur_provider,logger);
-console.log(helper);
 
+let newlogfilename = (DRIVER_PATH.match(/\w+\.csv/))[0]
+logger.updatePath(newlogfilename.substring(0,newlogfilename.length-4));
 //read driver file
 var data = readCSVDriver(DRIVER_PATH);
 
@@ -200,10 +208,10 @@ logger.log("Find "+data.length+" testcases:");
 
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{
-
+		logger.updatePath(testSuite.name);
 		testSuite.tests.forEach((testRow)=>{
 						
-			step(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
+			runMethod(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
 				
 				testRow.params = formParam(testRow.params,testRow.method);
 			
@@ -307,6 +315,9 @@ function runOneRow(obj){
 									});
 									break;
 								case "object":
+									if(method=="eth_compileSolidity"){
+										chai.expect(resp.result[obj.RUNTIME_VARIABLES.contract.name]).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
+									}else
 									chai.expect(resp.result).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
 									break;
 								case "value":

@@ -17,6 +17,9 @@ const transaction_format = /^0x[0-9a-f]{64}$/;
 const blockHash_format = H160;
 const account_format = H256;
 const public_key = H64;
+const NULL_N_HEX = ()=>{
+		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
+	}
 
 const VALID_BLOCK_OBJECT={
 	difficulty:HEX,
@@ -47,9 +50,9 @@ const VALID_SYNCING_INFO = {
 };
 
 const VALID_TRANSACTION_RECEIPT = {
-	    blockHash: blockHash_format,
-        blockNumber: _.isString,
-        contractAddress: account_format,
+	    blockHash: NULL_N_HEX,
+        blockNumber: NULL_N_HEX,
+        contractAddress: NULL_N_HEX,
         cumulativeGasUsed: HEX,
         from: account_format,
         to: account_format,
@@ -64,9 +67,7 @@ const VALID_TRANSACTION_RECEIPT = {
 }
 
 
-const NULL_N_HEX = ()=>{
-		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
-	}
+
 const TX_OBJECT= {
 	blockHash:NULL_N_HEX,
 	blockNumber:NULL_N_HEX,
@@ -104,7 +105,8 @@ const VALID_TX_RECEIPT = {
 	root:HEX,
 	to:NULL_N_HEX,
 	transactionHash:HEX,
-	transactionIndex:HEX
+	transactionIndex:HEX,
+	status:HEX
 }
 
 const VALID_SIGN_TRANSACTION = {
@@ -142,7 +144,7 @@ const expectblk_tx = {
 
 
 const COMPILE_RESUILT={
-	Recursive:{
+	
 		code:code_format,
 		info:{
 			abiDefinition:_.isArray,
@@ -151,7 +153,7 @@ const COMPILE_RESUILT={
 			languageVersion:_.isString,
 			source:_.isString
 		}
-	}
+	
 }
 
 const VALID_WORKTEMPLATE={

@@ -1,5 +1,5 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-smoke test|||||||||||||||
+smoke test|x||||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
 ||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||||
@@ -10,10 +10,15 @@ smoke test|||||||||||||||
 ||estimate gas for a transaction with only {from,to,value}|smoke|||22|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:0x03,value:0x09,data:0x2345} pending|format|value|HEX||||
 ||unlock account_for transactions|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|value||true||||
 ||send transaction with default gas limit & gas price {from, to, value=1 }|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
+||get Transaction Receipt|smoke|120 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
 ||send transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:1,value:1}|format|value|TRANSACTION_FORMAT||||
-||sign message{message =aion web3 rust test }(outcome expected=h192exact)|smoke|||45|eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c aion_web3_rust_test|format|value|HEX||||
-||sign transaction with default gas limit & gas price {from, to, value=1 }|smoke|||47|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|object|VALID_SIGN_TRANSACTION||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+||send signed transaction|smoke||||eth_sendRawTransaction||||||||
 ||sign transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||47|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1,gas:1000000,gasPrice:0x1}|format|object|VALID_SIGN_TRANSACTION||||
+||send signed transaction|smoke||||eth_sendRawTransaction||||||||
 ||new pending transaction filter|smoke|||39|eth_newPendingTransactionFilter||format|value|HEX||||
 ||new pending transaction filter1 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
 ||new pending transaction filter2 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
@@ -48,7 +53,7 @@ smoke test|||||||||||||||
 ||get net version|smoke|||1|net_version||format|value|STRING||||
 ||check if listening|smoke|||3|net_listening||format|value|BOOLEAN||||
 ||get peer count|smoke|||2|net_peerCount||format|value|HEX||||
-||Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT||||
+||Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol||object|COMPILE_RESUILT||||
 ||unlock account|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN||||
 ||deploy a contract|smoke||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
 ||get Transaction Receipt|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
@@ -176,8 +181,8 @@ transactions|||||||||||||||
 |||||||||||||||
 |||||||||||||||
 |||||||||||||||
-Contract|||||||||||||||
-||new filter maximum params|contract|||3|eth_newFilter|{topics:[0x66fa32225b641331dff20698cd66d310b3149e86d875926af7ea2f2a9079e80b]}|format|value|HEX||||
+Contract|x||||||||||||||
+||new filter maximum params|contract|||3|eth_newFilter|{topics:[0x66fa32225b641331dff20698cd66d310b3149e86d875926af7ea2f2a9079e80b],fromBlock:earliest,toBlock:latest}|format|value|HEX||||
 ||Compile a solidity contract|contract||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT||||
 ||unlock account|contract|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN||||
 ||deploy a contract|contract||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
@@ -190,12 +195,34 @@ Contract|||||||||||||||
 ||new pending transaction filter5 – uninstall filter||||42|eth_uninstallFilter||value||true||||
 pending test|||||||||||||||
 |||||||||||||||
-|||||||||||||||
-|||||||||||||||
+|x|get logs|xxxx||||eth_getLogs|{fromBlock:0xc10,address:0xa08b2d2228c9f7c319f57db9e1ba3d39a593f8620299277503cad791b7d1be2b}|||||||
+|||||||eth_getLogs||||||||
 |||||||||||||||
 bugs|||||||||||||||
 ||Issue 99: RPC: eth_estimateGas with empty object will cause socket hang up #99|smoke|||22|eth_estimateGas|{}|||||||
-debugs|x||||||||||||||
-||Compile solidity contract|smoke||||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT||||
-||Compile solidity contract|smoke||||eth_compileSolidity|Token_original.sol|format|object|COMPILE_RESUILT||||
-|x|Compile solidity contract|smoke||||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT||||
+debugs|||||||||||||||
+syncing|||||||||||||||
+||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
+||get syncing object |smoke|||2|eth_syncing||||false||||
+||get syncing object (end of syncing false)|smoke|100|delay|2|eth_syncing||||false||||
+||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|x|get Logs from first block to current block|smoke||||eth_getLogs|{fromBlock:earliest,toBlock:latest}|||||||
+|||||||||||||||
+|||||||||||||||
+sign and nonce|||||||||||||||
+||unlock account for test |txtc05|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 100|value||true||||
+||get nonce |txtc05||||eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|||||||
+||sign transaction with default gas limit & gas price {from, to, value=1 }|txtc05|||47|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|object|VALID_SIGN_TRANSACTION||||
+||sign transaction with default gas limit & gas price {from, to, value=1 }|txtc05|||47|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|object|VALID_SIGN_TRANSACTION||||
+||get nonce after sign a transaction|txtc05||||eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|||||||
+||sign message{message =aion web3 rust test }(outcome expected=h192exact)|txtc05|||45|eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c aion_web3_rust_test|format|value|HEX||||
+||get nonce after sign a message|txtc05||||eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|||||||

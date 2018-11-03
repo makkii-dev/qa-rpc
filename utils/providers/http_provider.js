@@ -11,6 +11,7 @@ var http_provider = (endpoint, request_id, request_method, request_params,rpc_ve
 		var provider = new HTTP_PROVIDER();
 		provider.open("POST",endpoint);
 		provider.setRequestHeader("Content-Type", "application/json");
+		//provider.setRequestHeader("")
 		logger.log("[HTTP Request]:");
 		logger.log(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
 		provider.send(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
