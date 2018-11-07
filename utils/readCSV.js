@@ -25,7 +25,6 @@ module.exports = (driver_path)=>{
 			reformData[ts_No].tests.push(item);
 		}
 	});
-	console.log(JSON.stringify(reformData));
 
 	return reformData;
 }

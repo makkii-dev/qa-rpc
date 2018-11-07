@@ -187,6 +187,60 @@ var getContractFuncData = (funcABI, params)=>{
 	return "0x"+funcSign;
 }
 
+
+var waitBlock = (options,provider)=>{
+	var oldBlockNo,newBlockNo;
+
+	var _id="checkBlock";
+	let newBlockNum=0;
+	
+	let timeout = 100;
+	
+	if(options !=null){
+		timeout = options[0];
+		if(options.length >1)
+			newBlockNum = parseInt(options[1]);
+			
+	}	
+	//console.log("timeout:"+timeout);
+	//console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
+
+	timeout = parseInt(timeout);
+	return new Promise((resolve,reject)=>{
+
+		provider.sendRequest(_id,"eth_blockNumber",[]).then((resp)=>{
+			oldBlockNo = resp.result
+			//console.log(resp);
+		}).then(()=>{
+			console.log("-----------"+oldBlockNo);
+			
+			
+			var checkblock = ()=>{
+				provider.sendRequest(_id,"eth_blockNumber",[]).then((resp)=>{
+					newBlockNo= resp.result;
+					console.log("-----------"+oldBlockNo+" "+newBlockNo);
+					if(parseInt(newBlockNo) > parseInt(oldBlockNo)+ newBlockNum){
+						console.log("-----reached------"+oldBlockNo+" "+newBlockNo);
+						clearInterval(checkloop);
+						resolve();
+					}
+				});
+
+			}
+			var checkloop = setInterval(checkblock,5000);
+			
+			setTimeout(()=>{clearInterval(checkloop);resolve()},parseInt(timeout)*1000);
+		
+		});
+		
+
+	});
+}
+
+
+
+
+
 var Utils={
 
 	//conversion
@@ -217,7 +271,8 @@ var Utils={
 	getRawTx:getRawTx,
 	getCurrentNonce:getCurrentNonce,
 	getBalance:getBalance,
-	getContractFuncData:getContractFuncData
+	getContractFuncData:getContractFuncData,
+	waitBlock:waitBlock
 }
 
 module.exports = Utils;

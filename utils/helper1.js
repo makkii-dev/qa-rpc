@@ -20,7 +20,7 @@ Helper.prototype._init = (provider,logger)=>{
 
 Helper.prototype.WaitNewBlock =  (options,a,b,c)=>{
 	var oldBlockNo,newBlockNo;
-	console.log(this);
+	//console.log(this);
 	var provider = this.provider;
 	var _id = b!==undefined? "helper"+b.id:"helper";
 	let newBlockNum=0;
@@ -33,15 +33,15 @@ Helper.prototype.WaitNewBlock =  (options,a,b,c)=>{
 			newBlockNum = parseInt(options[1]);
 			
 	}	
-	console.log("timeout:"+timeout);
-	console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
+	//console.log("timeout:"+timeout);
+	//console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
 
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
 
 		provider.sendRequest(_id,"eth_blockNumber",[]).then((resp)=>{
 			oldBlockNo = resp.result
-			console.log(resp);
+			//console.log(resp);
 		}).then(()=>{
 			console.log("-----------"+oldBlockNo);
 			

@@ -84,7 +84,7 @@ var RUNTIME_VARIABLES=(()=>{
 				
 				break;
 			case "eth_getTransactionReceipt":
-				if(resp.result.contractAddress !==undefined && resp.result.contractAddress !==null)
+				if(resp.result !=null && resp.result.contractAddress !==undefined && resp.result.contractAddress !==null)
 					self.contractAddress = resp.result.contractAddress;
 				break;
 			case "eth_getTransactionByHash":
@@ -200,6 +200,9 @@ var valFunc = new validationFunc(cur_provider,logger);
 
 let newlogfilename = (DRIVER_PATH.match(/\w+\.csv/))[0]
 logger.updatePath(newlogfilename.substring(0,newlogfilename.length-4));
+
+
+
 //read driver file
 var data = readCSVDriver(DRIVER_PATH);
 
@@ -284,6 +287,10 @@ function runOneRow(obj){
 					}
 				);
 
+			}else if(method==='eth_sendRawTransaction' && (params == undefined ||params.length== 0)){
+				testRow.params=[RUNTIME_VARIABLES.txRaw];
+				console.log(testRow.params)
+				resolve(requestID);
 			}else{
 				resolve(requestID);
 			}
