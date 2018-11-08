@@ -27,12 +27,9 @@ Validation.prototype.putProvider=(provider,logger)=>{
 Validation.prototype.balanceValidate={};
 Validation.prototype.balanceValidate.pre = async (obj)=>{
 
-	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc;
+	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc||obj.VERIFY_VARIABLES.account.addr;
 	let toAcc = obj.testRow.params[0].to || obj.VERIFY_VARIABLES.vals.toAcc;
-	
-	console.log(fromAcc);
-	console.log(toAcc);
-	console.log(obj.testRow.params);
+
 	
 	obj.VERIFY_VARIABLES.vals.fromBal = new BN((await utils.getBalance(this.provider, fromAcc)).result.substring(2),16);
 	obj.VERIFY_VARIABLES.vals.toBal = new BN(toAcc===null||toAcc ===undefined ? "0x" : (await utils.getBalance(this.provider, toAcc)).result.substring(2),16);
@@ -49,20 +46,21 @@ Validation.prototype.balanceValidate.pre = async (obj)=>{
 
 Validation.prototype.balanceValidate.post = async (obj)=>{
 	let self = this;
-	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc;
+	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc||obj.VERIFY_VARIABLES.account.addr;
 	let toAcc = obj.testRow.params[0].to || obj.VERIFY_VARIABLES.vals.toAcc;
 	
-	await self.helper.WaitNewBlock([70,3]);
+	await self.helper.WaitNewBlock([120,1]);
 	//await self.helper.delay([10]);
 	
 	let newFromBal = new BN((await utils.getBalance(self.provider, fromAcc)).result.substring(2),16);
 	let newToBal = new BN((await utils.getBalance(self.provider, toAcc)).result.substring(2),16);
 	
-	self.logger.log(newFromBal.toString(16));
-	self.logger.log(newToBal.toString(16));
+	self.logger.log("new from balance: "+newFromBal.toString(16));
+	self.logger.log("new to balance: "+newToBal.toString(16));
 	self.logger.log(obj.VERIFY_VARIABLES.vals);
 	
-	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.substring(2),16): obj.testRow.params[0].gasPrice? new BN(obj.testRow.params[0].gasPrice.substring(2),16):new BN(0,16);
+	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? new BN(obj.testRow.params[0].gasPrice.substring(2),16):new BN(0,16));
+
 	let gas = new BN('21000',10);
 	let fromChanges = obj.VERIFY_VARIABLES.vals.changeValue.add(gas.mul(gasPrice));
 	

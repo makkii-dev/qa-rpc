@@ -211,10 +211,14 @@ logger.log("Find "+data.length+" testcases:");
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{
 		logger.updatePath(testSuite.name);
+		RUNTIME_VARIABLES.reset();
+		VERIFY_VARIABLES.reset();
+		logger.log(RUNTIME_VARIABLES);
+		logger.log(VERIFY_VARIABLES);
 		testSuite.tests.forEach((testRow)=>{
 						
 			runMethod(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
-				
+				logger.log(JSON.stringify(testRow));
 				testRow.params = formParam(testRow.params,testRow.method);
 			
 				var helperfunc = testRow.helper? helper[testRow.helper]:(params,a,b,c,done)=>{ return new Promise((resolve)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});})};

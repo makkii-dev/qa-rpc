@@ -103,7 +103,7 @@ async function getRawTx(provider,txObj,account){
 	txObj.timestamp = txObj.timestamp || Date.now() * 1000;
 	txObj.nonce = txObj.nonce || (await getCurrentNonce(provider,account.addr)).result;
 	txObj.gasPrice = txObj.gasPrice || (await getGasPrice(provider)).result;
-	console.log(txObj.gasPrice);
+	console.log("gasPrice"+txObj.gasPrice);
 	result.readable = txObj;
 	
 	if(!/^0x/.test(txObj.value)) txObj.value = '0x'+parseInt(txObj.value).toString(16);

@@ -1,4 +1,4 @@
-TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
+TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name
 rk-55|x||||||||||
 |x|Compile solidity contract|rk-55|1|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
 |x|Compile solidity contract|rk-55|2|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT

@@ -42,7 +42,7 @@ describe("transactions",()=>{
 					cur_provider.sendRequest("TXTC03-1-3",'eth_signTransaction',[txObj])
 					];
 		let ress = await Promise.all(reqs);
-		console.log(ress);
+		
 		var txs  = ress.filter((item)=>{
 			return typeof item.result == 'Object' || typeof item.result == "object";
 		});
