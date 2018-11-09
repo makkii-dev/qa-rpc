@@ -235,6 +235,10 @@ module.exports={
 		NOT_ENOUGH_BALANCE_ERROR:{
 			code:-32010,
 			message:/^Insufficient funds. The account you tried to send transaction from does not have enough funds/
+		},
+		NONCE_CONFLICT_ERROR:{
+			code:-32010,
+			message:/Transaction gas price is too low. There is another transaction with same nonce in the queue/
 		}
 	}
 	

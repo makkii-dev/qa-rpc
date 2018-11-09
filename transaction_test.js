@@ -3,7 +3,7 @@ var logger = new (require("./utils/logger"))();
 logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 const Provider = require("./utils/provider");
-var utils = require("./utils/utils");
+var utils = require("./utils/utils1");
 var Helper = require("./utils/helper1");
 var chai = require('chai');
 var chaiMatchPattern = require('chai-match-pattern');
@@ -25,13 +25,13 @@ provider_type=provider_type||'default';
 
 var cur_provider = new Provider({type:provider_type,logger:logger});
 var helper = new Helper({provider:cur_provider,logger:logger});
-
+var txObj = {from:"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c",to:"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334",value:"0x12"}
 
 
 /// main test
 describe("transactions",()=>{
 	
-	var txObj = {from:"0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c",to:"0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334",value:"0x12"}
+	
 	it("TXTC03 -1:nonce -kernel sign multiple transactions",async()=>{
 		var nonce = (await cur_provider.sendRequest("TXTC03-1-nonce","eth_getTransactionCount",["0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c"])).result;
 		nonce = parseInt(nonce);
@@ -82,10 +82,12 @@ describe("transactions",()=>{
 				cur_provider.sendRequest("TXTC04_1","eth_sendTransaction",[txObj]),
 				cur_provider.sendRequest("TXTC04_2","eth_sendTransaction",[txObj]),
 				utils.waitBlock([120,2],cur_provider)
-				
 			]);
 		res = await cur_provider.sendRequest("TXTC04-getTxRpt","eth_getTransactionReceipt",[bigTxHash]);
 		return chai.expect(res.result).not.to.be.null;
 
 	});
+
 })
+
+

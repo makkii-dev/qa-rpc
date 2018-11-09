@@ -1,9 +1,8 @@
-var utils = require("./utils");
+var utils = require("./utils1");
 var chai = require('chai');
 var Helper = require('./helper1');
 var BN = require('bn.js');
 
-const default_gasPrice = 0;
 
 
 var Validation = function(provider,logger){
@@ -38,7 +37,7 @@ Validation.prototype.balanceValidate.pre = async (obj)=>{
 	obj.VERIFY_VARIABLES.vals.changeValue = (/^0x/.test(changeValue))? new BN(changeValue.substring(2),16): new BN( changeValue,10);
 
 	if(obj.testRow.method === "eth_sendTransaction"){
-		obj.VERIFY_VARIABLES.vals.gasPirce = obj.testRow.params[0].gasPrice || default_gasPrice;
+		obj.VERIFY_VARIABLES.vals.gasPirce = obj.testRow.params[0].gasPrice || obj.VERIFY_VARIABLES.defaultGasPrice;
 		obj.VERIFY_VARIABLES.vals.gasPirce = parseInt(obj.VERIFY_VARIABLES.vals.gasPirce);
 	}
 	return Promise.resolve(obj);
@@ -59,9 +58,15 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	self.logger.log("new to balance: "+newToBal.toString(16));
 	self.logger.log(obj.VERIFY_VARIABLES.vals);
 	
-	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? new BN(obj.testRow.params[0].gasPrice.substring(2),16):new BN(0,16));
+	console.log(obj.VERIFY_VARIABLES.defaultGasPrice);
+	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? new BN(obj.testRow.params[0].gasPrice.substring(2),16):new BN(obj.VERIFY_VARIABLES.defaultGasPrice.substr(2),16));
 
-	let gas = new BN('21000',10);
+	let gas = new BN(21000);
+	self.logger.log(gas.toString(10));
+	self.logger.log(gasPrice.toString(10));
+	self.logger.log(obj.VERIFY_VARIABLES.vals.actualTx);
+	self.logger.log(obj.testRow.params[0].gasPrice);
+	
 	let fromChanges = obj.VERIFY_VARIABLES.vals.changeValue.add(gas.mul(gasPrice));
 	
 	let checkFrom = obj.VERIFY_VARIABLES.vals.fromBal.isub(fromChanges);

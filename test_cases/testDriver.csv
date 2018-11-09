@@ -150,15 +150,17 @@ test  transaction|||||||||||||||
 ||(negative)send transaction with gas that exceed account’s balance|tx|||46_gas_over_bal|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:10000000000000}|format|error|NOT_ENOUGH_BALANCE_ERROR||||
 ||(negative)send transaction with gas under mininum requirement|tx|||46_gas_under_limit|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:10}|format|error|GAS_LOW_ERROR||||
 |||||||||||||||
-transactions|x||||||||||||||
-|x|unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
-|x|send some value(1000) |TXTC01|||46_value1|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1000}|format|value|TRANSACTION_FORMAT|||balanceValidate|
-|x|unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password null|value||true||||
-|x|send some value(1000) |TXTC01|||46_value2|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:3000}|format|value|TRANSACTION_FORMAT|||balanceValidate|
-|x|unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
-|x|send some value(1000) |TXTC01|||46_value1|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1000,gasPrice:1}|format|value|TRANSACTION_FORMAT|||balanceValidate|
-|x|unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password null|value||true||||
-|x|send some value(1000) |TXTC01|||46_value2|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:3000,gasPrice:3}|format|value|TRANSACTION_FORMAT|||balanceValidate|
+transactions|||||||||||||||
+||unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
+||send some value(1000) |TXTC01|||46_value1|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1000}|format|value|TRANSACTION_FORMAT|||balanceValidate|
+||unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password null|value||true||||
+||get transaction counts|TXTC03|||1|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|||||||
+||get gas prices|smoke|||6|eth_gasPrice||format|value|HEX||||
+||send some value(3000)|TXTC01|||46_value2|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:3000}|format|value|TRANSACTION_FORMAT|||balanceValidate|
+||unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
+||send some value(1000) |TXTC01|||46_value1|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1000,gasPrice:1}|format|value|TRANSACTION_FORMAT|||balanceValidate|
+||unlock account w/ timeout==null; unlock account for only once|TXTC01|||3-once|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password null|value||true||||
+||send some value(1000) |TXTC01|||46_value2|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:3000,gasPrice:3}|format|value|TRANSACTION_FORMAT|||balanceValidate|
 |||||||||||||||
 personal sign and send|||p_s_s||||||||||||
 |||p_s_s||||personal_sign|0x00000000 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|HEX||||
@@ -168,23 +170,6 @@ PairKey transactions|||||||||||||||
 ||unlock account w/ timeout==null; unlock account for only once|TXTC01-raw|||3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
 ||send some value(200000) to pairkey account |TXTC01-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:200000}||||||balanceValidate|
 ||send some value(1000) from pairKey account|TXTC01-raw|||45|eth_sendRawTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:10,gasPrice:0,gas:21000}||||||balanceValidate|
-||unlock account w/ timeout==null; unlock account for only once -1|TXTC01-raw|10|delay|3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
-||send some value(1000) to pairkey account -1|TXTC01-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:100000}||||||balanceValidate|
-||send some value(1000) from pairKey account -1|TXTC01-raw|10|delay|45|eth_sendRawTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
-||unlock account w/ timeout==null; unlock account for only once -2|TXTC01-raw|10|delay|3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
-||send some value(1000) to pairkey account -2|TXTC01-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:100000}||||||balanceValidate|
-||send some value(1000) from pairKey account -2|TXTC01-raw|10|delay|45|eth_sendRawTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
-||unlock account w/ timeout==null; unlock account for only once -3|TXTC01-raw|10|delay|3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
-||send some value(1000) to pairkey account -3|TXTC01-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:100000}||||||balanceValidate|
-||send some value(1000) from pairKey account -3|TXTC01-raw|10|delay|45|eth_sendRawTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
-||unlock account w/ timeout==null; unlock account for only once -4|TXTC01-raw|10|delay|3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
-||send some value(1000) to pairkey account -4|TXTC01-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:100000}||||||balanceValidate|
-||send some value(1000) from pairKey account -4|TXTC01-raw|10|delay|45|eth_sendRawTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
-transactions|||||||||||||||
-||unlock account w/ timeout==null; unlock account for only once|regularTX|||3-once|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null|value||true||||
-||send some value(1000) |regularTX|||46_value1|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1000}|format|value|TRANSACTION_FORMAT|||balanceValidate|
-||unlock account w/ timeout==null; unlock account for only once|regularTX|||3-once|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password null|value||true||||
-||send some value(1000) |regularTX|||46_value2|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:3000}|format|value|TRANSACTION_FORMAT|||balanceValidate|
 |||||||||||||||
 |||||||||||||||
 |||||||||||||||
@@ -192,7 +177,7 @@ transactions|||||||||||||||
 |||||||||||||||
 |||||||||||||||
 Contract|||||||||||||||
-||new filter maximum params|contract|||3|eth_newFilter|{topics:[0x66fa32225b641331dff20698cd66d310b3149e86d875926af7ea2f2a9079e80b],fromBlock:earliest,toBlock:latest}|format|value|HEX||||
+||new filter maximum params|contract|||3|eth_newFilter|{topics:[0x66fa32225b641331dff20698cd66d310b3149e86d875926af7ea2f2a9079e80b],fromBlock:earliest}|format|value|HEX||||
 ||Compile a solidity contract|contract||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT||||
 ||unlock account|contract|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN||||
 ||deploy a contract|contract||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
@@ -200,17 +185,17 @@ Contract|||||||||||||||
 ||call contract|contract|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
 ||get Transaction Receipt|contract|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
 ||call contract function locally|contract|f _contractAddress 5|prepareContractCall|46_value2|eth_call|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|exactvalue||0x00000000000000000000000000000005||||
-||new pending transaction filter3 – check filter changes||||40|eth_getFilterChanges||format|value|ARRAY||||
-||new pending transaction filter4 – check filter logs||||41|eth_getFilterLogs||format|value|ARRAY||||
-||new pending transaction filter5 – uninstall filter||||42|eth_uninstallFilter||value||true||||
-pending test|||||||||||||||
+||new pending transaction filter3 – check filter changes|contract|||40|eth_getFilterChanges||format|value|ARRAY||||
+||new pending transaction filter4 – check filter logs|contract|||41|eth_getFilterLogs||format|value|ARRAY||||
+||new pending transaction filter5 – uninstall filter|contract|||42|eth_uninstallFilter||value||true||||
+pending test|||contract||||||||||||
 |||||||||||||||
 ||get logs|xxxx||||eth_getLogs|{fromBlock:0xc10,address:0xa08b2d2228c9f7c319f57db9e1ba3d39a593f8620299277503cad791b7d1be2b}|||||||
 |||||||eth_getLogs||||||||
 |||||||||||||||
-bugs|x||||||||||||||
-|x|Issue 99: RPC: eth_estimateGas with empty object will cause socket hang up #99|smoke|||22|eth_estimateGas|{}|||||||
-debugs|||||||||||||||
+bugs|||||||||||||||
+||Issue 99: RPC: eth_estimateGas with empty object will cause socket hang up #99|smoke|||22|eth_estimateGas|{}|||||||
+|||||||||||||||
 syncing|||||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
 ||get syncing object |smoke|||2|eth_syncing||||false||||
@@ -231,8 +216,8 @@ syncing|||||||||||||||
 "TXTC03 -1:nonce -kernel sign multiple transactions
 "|||||||||||||||
 ||get transaction counts|TXTC03|||1|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|||||||
-||unlock account for test |TXTC03|||2|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 1000|value||true||||
-||sign transaction with default gas limit & gas price {from, to, value=1 }|TXTC03|||4|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|object|VALID_SIGN_TRANSACTION||||
+||unlock account for test |TXTC03|||2|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 1000|||||||
+||sign transaction with default gas limit & gas price {from, to, value=1 }|TXTC03|||4|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|||||||
 ||send a transaction without nonce|TXTC03|||5|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|||||||
 ||send a transaction without nonce|TXTC03|||6|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|||||||
 ||get receipt|TXTC03|120 1|WaitNewBlock|7|eth_getTransactionReceipt||||||||
@@ -240,3 +225,14 @@ syncing|||||||||||||||
 ||get tx count in pending block|TXTC03||||eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|||||||
 ||send the signed transaction|TXTC03|||8|eth_sendRawTransaction||||||||
 ||get receipt|TXTC03|120 1|WaitNewBlock|9_earliest|eth_getTransactionReceipt||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+TXTC05: nonce - two transactions with same nonce|||||||||||||||
+||unlock account for test |TXTC05|||pre|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password 100|value||true||||
+||send a transaction with nonce = 400 && gasPrice = 100|TXTC05|||pre|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,nonce:402,gasPrice:100}|format|value|TRANSACTION_FORMAT||||
+||send a transaction with nonce = 400 && gasPrice = 100|TXTC05-1|||same|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,nonce:402,gasPrice:100}|format|error|NONCE_CONFLICT_ERROR||||
+||send a transaction with nonce = 400 && gasPrice = 99|TXTC05-2|||less|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,nonce:402,gasPrice:99}|format|error|NONCE_CONFLICT_ERROR||||
+||send a transaction with nonce = 400 && gasPrice = 101|TXTC05-3|||larger|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,nonce:402,gasPrice:101}|format|value|TRANSACTION_FORMAT||||
+||send a transaction with nonce = 400 && gasPrice = 150|TXTC05-3|||larger|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,nonce:402,gasPrice:101}|format|value|TRANSACTION_FORMAT||||
+||lock account|TXTC05|||post|personal_lockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password|value||true||||

@@ -163,28 +163,78 @@ var toAionLong = function (val) {
     return new AionLong(num);
 };
 
+
 // assume params are primary element
 var getContractFuncData = (funcABI, params)=>{
-	console.log(params);
+	//console.log(params);
+	//console.log(funcABI.inputs);
 	let funcStr = funcABI.name+"(";
 	funcABI.inputs.forEach((input)=>{
 		funcStr += input.type + ',';
 	});
 	funcStr = funcStr.replace(/,$/,')');
+	if(!/\)$/.test(funcStr)) funcStr= funcStr+")";
+	console.log(funcStr)
 	let funcSign = keccak256(funcStr).substring(0,8);
 	console.log(funcSign);
-	params.forEach((param)=>{
-		console.log(param);
-		if(paramTypeNumber.test(param)){
-			funcSign += padZeros(arrayify(bigNumberify(param).toTwos(128).maskn(128)), 16).toString("hex");
-			console.log( padZeros(arrayify(bigNumberify(param).toTwos(128).maskn(128)), 16).toString("hex"));
+	let check = funcSign;
+	let rest = '';
+	params.forEach((param,index)=>{
+		if(funcABI.inputs[index].type=='string'){
+			let offset = (funcABI.inputs[index].type,params.length -1-index) * 32 + rest.length;
+			funcSign += encoder("int",offset);
+			rest += encoder(funcABI.inputs[index].type,param)
 		}else{
-			console.log(Buffer.from(arrayify(aionLib.accounts.createChecksumAddress(param))).toString("hex"));
-			funcSign += Buffer.from(arrayify(aionLib.accounts.createChecksumAddress(param))).toString("hex");
+			funcSign += encoder(funcABI.inputs[index].type,param);
 		}
+		
 	});
-	
-	return "0x"+funcSign;
+	return "0x"+funcSign+rest;
+}
+
+// assume params are primary element
+var getContractConstrData = (funcABI, params)=>{
+
+	let funcSign='';
+	//console.log(funcSign);
+	let check = funcSign;
+	let rest = '';
+	params.forEach((param,index)=>{
+		if(funcABI.inputs[index].type=='string'){
+			let offset = (funcABI.inputs[index].type,params.length -1-index) * 32 + rest.length;
+			funcSign += encoder("int",offset);
+			rest += encoder(funcABI.inputs[index].type,param)
+		}else{
+			funcSign += encoder(funcABI.inputs[index].type,param);
+		}
+		
+	});
+	return funcSign+rest;
+}
+
+
+var encoder = (type, param)=>{
+
+	//console.log(type+":"+(typeof param=='object')?JSON.stringify(param):param);
+	switch(type){
+		case 'uint':
+		case "int":
+		case "uint128":
+			return padZeros(arrayify(bigNumberify(param).toTwos(128).maskn(128)), 16).toString("hex");
+		case "address":
+			return Buffer.from(arrayify(aionLib.accounts.createChecksumAddress(param))).toString("hex");
+		case "bool":
+			return padZeros(arrayify(bigNumberify(param?1:0).toTwos(128).maskn(128)), 16).toString("hex");
+		case "string":
+			let resb = Buffer.concat([
+					padZeros(arrayify(bigNumberify(param.length).toTwos(128).maskn(128)), 16),
+					toBuffer(toUtf8Bytes(param)),
+					Buffer.alloc(16 * Math.ceil(param.length/16) - param.length)
+				])
+			return resb.toString("hex");
+
+	}
+
 }
 
 
@@ -237,12 +287,39 @@ var waitBlock = (options,provider)=>{
 	});
 }
 
+function waitBlockUntil(option,provider){
+	var timeout = 1200, lastBlock = 0;
+	var curBlock;
+	if(Array.isArray(option) && option.length > 0){
+		lastBlock = option[0]|| lastBlock;
+		timeout = option[1] || timeout;
+	}
+	if(typeof timeout != "number") timeout = parseInt(timeout);
+	return 	new Promise((resolve,reject)=>{
+			var checkblock = ()=>{
+				provider.sendRequest("checkBlock","eth_blockNumber",[]).then((resp)=>{
+					curBlock= resp.result;
+					console.log("-----------"+curBlock+" "+lastBlock);
+					if(parseInt(curBlock) >= parseInt(lastBlock)){
+						console.log("-----reached------"+curBlock+" "+lastBlock);
+						clearInterval(checkloop);
+						resolve();
+					}
+				});
+
+			}
+			var checkloop = setInterval(checkblock,5000);
+			setTimeout(()=>{clearInterval(checkloop);resolve()},parseInt(timeout)*1000);
+	});
+}
+
+
 
 function parseContract(resp,contract){
 	contract.func={};
 	contract.event={};
 	contract.constructor={};
-	resp.result[contractName].info.abiDefinition.forEach((item)=>{
+	resp.result[contract.name].info.abiDefinition.forEach((item)=>{
 		if(item.type == "function"){
 			contract.func[item.name] = item;
 		}else if(item.type == 'event'){
@@ -254,7 +331,25 @@ function parseContract(resp,contract){
 	return contract;
 }
 
-
+function getTxReceipt(txHash,provider,timeout){
+	return new Promise((resolve,reject)=>{
+		timeout = timeout || 60;//(sec)
+		var loop =  setInterval(async()=>{
+				let res  = await provider.sendRequest("check receipt", "eth_getTransactionReceipt",[txHash]);
+				console.log(res);
+				timeout--;
+				if(res.result !==undefined && res.result != null){
+					clearInterval(loop);
+					console.log("[deploy contract address]\t"+res.result.contractAddress);
+					resolve(res.result.contractAddress);
+				}
+				if(timeout == 0){
+					clearInterval(loop);
+					reject(new Error("[get tx receipt] TIMEOUT"));
+				}
+			},1000);
+	});
+}
 
 
 
@@ -290,7 +385,9 @@ var Utils={
 	getBalance:getBalance,
 	getContractFuncData:getContractFuncData,
 	waitBlock:waitBlock,
-	parseContract:parseContract
+	parseContract:parseContract,
+	getTxReceipt:getTxReceipt,
+	waitBlockUntil:waitBlockUntil
 }
 
 module.exports = Utils;
