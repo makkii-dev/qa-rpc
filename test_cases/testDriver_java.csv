@@ -1,5 +1,5 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-smoke test|x||||||||||||||
+smoke test|||||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
 ||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||||
@@ -139,23 +139,23 @@ personal sign and send|||p_s_s||||||||||||
 |||p_s_s||||personal_sign|0x00000000 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|HEX||||
 |||p_s_s||||personal_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1000} password|||||||
 |||p_s_s||||personal_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1000} password|||||||
-PairKey transactions|x||||||||||||||
-|x|unlock account w/ timeout==null; unlock account for only once|PairKey-raw|||3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
-|x|send some value(200000) to pairkey account |PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000}|||||||
-|x|get Transaction Receipt|contract|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
-|x|send some value(1000) from pairKey account|PairKey-raw|||45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:0,gas:21000}||||||balanceValidate|
-|x|unlock account w/ timeout==null; unlock account for only once -1|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
-|x|send some value(1000) to pairkey account -1|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
-|x|send some value(1000) from pairKey account -1|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
-|x|unlock account w/ timeout==null; unlock account for only once -2|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
-|x|send some value(1000) to pairkey account -2|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
-|x|send some value(1000) from pairKey account -2|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
-|x|unlock account w/ timeout==null; unlock account for only once -3|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
-|x|send some value(1000) to pairkey account -3|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
-|x|send some value(1000) from pairKey account -3|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
-|x|unlock account w/ timeout==null; unlock account for only once -4|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
-|x|send some value(1000) to pairkey account -4|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
-|x|send some value(1000) from pairKey account -4|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
+PairKey transactions|||||||||||||||
+||unlock account w/ timeout==null; unlock account for only once|PairKey-raw|||3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
+||send some value(200000) to pairkey account |PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000}|||||||
+||get Transaction Receipt|contract|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
+||send some value(1000) from pairKey account|PairKey-raw|||45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:0,gas:21000}||||||balanceValidate|
+||unlock account w/ timeout==null; unlock account for only once -1|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
+||send some value(1000) to pairkey account -1|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
+||send some value(1000) from pairKey account -1|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
+||unlock account w/ timeout==null; unlock account for only once -2|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
+||send some value(1000) to pairkey account -2|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
+||send some value(1000) from pairKey account -2|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
+||unlock account w/ timeout==null; unlock account for only once -3|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
+||send some value(1000) to pairkey account -3|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
+||send some value(1000) from pairKey account -3|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
+||unlock account w/ timeout==null; unlock account for only once -4|PairKey-raw|10|delay|3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
+||send some value(1000) to pairkey account -4|PairKey-raw|{}|createPKAccount|46_value|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:100000,gasPrice:0}||||||balanceValidate|
+||send some value(1000) from pairKey account -4|PairKey-raw|10|delay|45|eth_sendRawTransaction|{to:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,value:10,gasPrice:1,gas:21000}||||||balanceValidate|
 transactions|||||||||||||||
 ||unlock account w/ timeout==null; unlock account for only once|regularTX|||3-once|personal_unlockAccount|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd password null|value||true||||
 ||send some value(1000) |regularTX|||46_value1|eth_sendTransaction|{from:0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd,to:0xa00e36ead7d9d7cc13a75f99af46febed0f6042f7a6e71e6e46dd55c5d8f3c30,value:1000}|format|value|TRANSACTION_FORMAT|||balanceValidate|
@@ -191,3 +191,15 @@ bugs|||||||||||||||
 |||||||||||||||
 debugs|||||||||||||||
 ||Compile solidity contract|smoke||||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT||||
+|||||||||||||||
+|||||||||||||||
+AMO-TS5: unlock an unlocked account with wrong password |x||||||||||||||
+|x|(pre)unlock account|AMO-TS5|||1|personal_unlockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password 0|value||true||||
+|x|(negative)unlock account w/ wrong password|AMO-TS5|||2|personal_unlockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 wrong null|format|error|WRONG_PW_ERROR||||
+|x|check account unlocked by sending tx|AMO-TS5|||3|eth_sendTransaction|{from:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62,value:10}|value||false||||
+|x|(pos)lock account|AMO-TS5|||4|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||
+AMO-TS6:lock a locked account with wrong password|x||||||||||||||
+|x|(pre)lock account|AMO-TS6|||1|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||
+|x|(negative)lock account w/ wrong password|AMO-TS6|||2|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 wrong|format|error|WRONG_PW_ERROR||||
+|x|check account unlocked|AMO-TS6|||3|eth_sendTransaction|{from:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62,value:10}|value||false||||
+|x|(pos)lock account|AMO-TS6|||4|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||

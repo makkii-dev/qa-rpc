@@ -66,7 +66,7 @@ describe("Filter test scenarios",()=>{
 			await Promise.all([deploy(senderAcc,contract),deploy(senderAcc,contract)]);
 			return chai.expect(contract.address).to.have.length(2);
 		})
-		it("create a filter to this contract address and call 3 methods and check for ",async()=>{
+		it("create a filter containing fromBlock and toBlock to this contract address and call 3 methods and check for filterChanges and filter logs",async()=>{
 			filterID = (await cur_provider.sendRequest("FT-TC3-createFilter","eth_newFilter",[{address:contract.address[0],fromBlock:"earliest",toBlock:"latest"}])).result;
 			let resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
@@ -77,6 +77,51 @@ describe("Filter test scenarios",()=>{
 					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
 					utils.waitBlock([120,2],cur_provider)
 				]);
+			resp = await Promise.all([
+					cur_provider.sendRequest("FT-TC3-getFilterChanges","eth_getFilterChanges",[filterID]),
+					cur_provider.sendRequest("FT-TC3-getFilterLogs","eth_getFilterLogs",[filterID])
+				])
+			return resp.forEach((res,index)=>{
+				logger.log("check result: "+index);
+				chai.expect(res.result).to.have.length(3);
+				res.result.forEach((log)=>{
+					chai.expect(log.address).to.equal(contract.address[0]);
+				});
+			});
+		});
+		it("create a filter only containing fromBlock to this contract address and call 3 methods and check for filterChanges and filter logs",async()=>{
+			filterID = (await cur_provider.sendRequest("FT-TC3-createFilter","eth_newFilter",[{address:contract.address[0],fromBlock:"earliest"}])).result;
+			
+			resp = await Promise.all([
+					cur_provider.sendRequest("FT-TC3-getFilterChanges","eth_getFilterChanges",[filterID]),
+					cur_provider.sendRequest("FT-TC3-getFilterLogs","eth_getFilterLogs",[filterID])
+				])
+			return resp.forEach((res,index)=>{
+				logger.log("check result: "+index);
+				chai.expect(res.result).to.have.length(3);
+				res.result.forEach((log)=>{
+					chai.expect(log.address).to.equal(contract.address[0]);
+				});
+			});
+		});
+		it("create a filter only containing toBlock to this contract address and call 3 methods and check for filterChanges and filter logs",async()=>{
+			filterID = (await cur_provider.sendRequest("FT-TC3-createFilter","eth_newFilter",[{address:contract.address[0],toBlock:"latest"}])).result;
+			
+			resp = await Promise.all([
+					cur_provider.sendRequest("FT-TC3-getFilterChanges","eth_getFilterChanges",[filterID]),
+					cur_provider.sendRequest("FT-TC3-getFilterLogs","eth_getFilterLogs",[filterID])
+				])
+			return resp.forEach((res,index)=>{
+				logger.log("check result: "+index);
+				chai.expect(res.result).to.have.length(3);
+				res.result.forEach((log)=>{
+					chai.expect(log.address).to.equal(contract.address[0]);
+				});
+			});
+		});
+		it("create a filter without from/toBlock field to this contract address and call 3 methods and check for filterChanges and filter logs",async()=>{
+			filterID = (await cur_provider.sendRequest("FT-TC3-createFilter","eth_newFilter",[{address:contract.address[0]}])).result;
+			
 			resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC3-getFilterChanges","eth_getFilterChanges",[filterID]),
 					cur_provider.sendRequest("FT-TC3-getFilterLogs","eth_getFilterLogs",[filterID])
@@ -130,11 +175,16 @@ describe("Filter test scenarios",()=>{
 
 			resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC3-getFilterChanges","eth_getFilterChanges",[filterID]),
-					cur_provider.sendRequest("FT-TC3-getFilterLogs","eth_getFilterLogs",[filterID])
+					cur_provider.sendRequest("FT-TC3-getFilterLogs","eth_getFilterLogs",[filterID]),
+					cur_provider.sendRequest("FT-TC3-getLogs-this-testsuite","eth_getLogs",[{fromBlock:fromBlock,toBlock:"latest"}])
 				])
 			return resp.forEach((res,index)=>{
 				logger.log("check result: "+index);
+				if(index == 2){
+					chai.expect(res.result).to.have.length(6);
+				}else
 				chai.expect(res.result).to.have.length(3);
+
 			});
 		});
 	})

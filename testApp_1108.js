@@ -67,7 +67,7 @@ function formParam(str,currentMethod){
 		else if(param[i]=="false") param[i]=false;
 		else if(param[i]=="null") param[i]=null;
 		else if(/^{\S*}$/.test(param[i])) {
-			param[i] = utils.str2Obj(param[i],",",":");
+			param[i] = utils.str2Obj(param[i],",",":",RUNTIME_VARIABLES);
 			
 			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction"){
 				if(param[i].value) param[i].value = utils.dec2Hex(parseInt(param[i].value));
@@ -76,6 +76,9 @@ function formParam(str,currentMethod){
 				if(param[i].nonce) param[i].nonce = utils.dec2Hex(parseInt(param[i].nonce));
 			}
 			
+		}else if(/^_/.test(param[i])){
+			if(RUNTIME_VARIABLES[param[i].substr(1)]==undefined) throw new Error(param[i]+" is missing");
+			param[i] = RUNTIME_VARIABLES[param[i].substr(1)];
 		}else if((currentMethod=="personal_unlockAccount" && i == 2)/*||(currentMethod=="eth_getBlockByNumber" && i==0)*/){
 			param[i]= parseInt(param[i]);
 		}else if((currentMethod == "eth_sign" && i==1)){
@@ -178,6 +181,9 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_getTransactionByHash":
 				if(resp.result.creates!==undefined && resp.result.creates!==null)
 				self.contractAddress = resp.result.creates;
+				break;
+			case "eth_getTransactionCount":
+				self.nonce = resp.result;
 				break;
 		}
 	}
