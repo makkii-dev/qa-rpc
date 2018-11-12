@@ -185,6 +185,9 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_getTransactionCount":
 				self.nonce = resp.result;
 				break;
+			case "eth_coinbase":
+				self.coinbase = resp.result;
+				break;
 		}
 	}
 	this.reset = ()=>{
@@ -372,6 +375,8 @@ function runOneRow(obj){
 					}
 
 					RUNTIME_VARIABLES.update(method,resp,params);
+					if(resp.result !==undefined)
+						obj.result = resp.result;
 					resolve(obj);
 
 				}catch(e){

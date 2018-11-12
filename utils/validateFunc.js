@@ -86,6 +86,22 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	}
 }
 
+Validation.prototype.validateMining ={};
+
+Validation.prototype.validateMining.pre = async (obj)=>{
+	obj.VERIFY_VARIABLES.vals.beforeBal = new BN((await utils.getBalance(this.provider, obj.RUNTIME_VARIABLES.coinbase)).result.substring(2),16);
+	await this.helper.WaitNewBlock([120]);
+	return Promise.resolve(obj);
+
+}
+Validation.prototype.validateMining.post = async (obj)=>{
+	try{
+		chai.expect((new BN(obj.result.substr(2),16)).gt(obj.VERIFY_VARIABLES.vals.beforeBal)).to.be.true;
+		return Promise.resolve();
+	}catch(e){
+		return Promise.reject(e);
+	}
+}
 
 Validation.prototype.default = (obj)=>{
 //	console.log("\n\n\n------\n\n"+JSON.stringify(obj));

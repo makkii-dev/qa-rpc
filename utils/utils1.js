@@ -172,6 +172,17 @@ var toAionLong = function (val) {
 };
 
 
+function getEvent(funcABI){
+	let event = funcABI.name+"(";
+	funcABI.inputs.forEach((input)=>{
+		event += input.type + ',';
+	});
+	event = event.replace(/,$/,')');
+	if(!/\)$/.test(event)) event= event+")";
+	console.log(event)
+	return keccak256(event);
+}
+
 // assume params are primary element
 var getContractFuncData = (funcABI, params)=>{
 	//console.log(params);
@@ -395,7 +406,8 @@ var Utils={
 	waitBlock:waitBlock,
 	parseContract:parseContract,
 	getTxReceipt:getTxReceipt,
-	waitBlockUntil:waitBlockUntil
+	waitBlockUntil:waitBlockUntil,
+	getEvent:getEvent
 }
 
 module.exports = Utils;
