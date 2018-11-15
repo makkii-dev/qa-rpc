@@ -40,7 +40,7 @@ smoke test|||||||||||||||
 ||get balance block (number)(hex)|smoke|||9_number|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0|format|value|BALANCE_FORMAT||||
 ||get code at address|smoke|||18|eth_getCode|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|BINARY||||
 ||get compilers|smoke|||0|eth_getCompilers||format|value|ARRAY||Solidity||
-||get block by number include Tx object|smoke|||12|eth_getBlockByNumber|0x0 true|format|object|VALID_BLOCK_OBJECT||||
+||get block by number include Tx object|smoke|||12|eth_getBlockByNumber|pending true|format|object|VALID_BLOCK_OBJECT||||
 ||get block by hash include Tx object|smoke|||11|eth_getBlockByHash| true|format|object|VALID_BLOCK_OBJECT||||
 ||get transaction count by address and by block number|smoke|||13|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|format|value|HEX||||
 ||get block Tx count by number(0x0)|smoke|||15|eth_getBlockTransactionCountByNumber|0x0000000000000000000000000000000000000000000000000000000000000000|format|value|HEX||||
@@ -247,12 +247,23 @@ TXTC05-1: nonce - two transactions with same nonce in pending|||||||||||||||
 ||send a transaction with nonce = nextnonce && gasPrice = 1125|TXTC05-4pending|||larger|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,nonce:_nonce,gasPrice:1125}|format|value|TRANSACTION_FORMAT||||
 ||lock account|TXTC05-pending|||post|personal_lockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password|value||true||||
 |||||||||||||||
-Transaction count – smoke|||||||||||||||
-||get tx count in pending block||||pending|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c pending|||||||
-||get tx count in latest block||||latest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|||||||
-||get tx count in earliest block||||earliest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|||||||
-||get tx count in 0x0 block||||0x10|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x10|||||||
+Transaction count – smoke|x||||||||||||||
+|x|get tx count in pending block||||pending|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c pending|||||||
+|x|get tx count in latest block||||latest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|||||||
+|x|get tx count in earliest block||||earliest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|||||||
+|x|get tx count in 0x0 block||||0x10|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x10|||||||
 |||||||||||||||
-AMO-TS02: use account mine aion coins|x||||||||||||||
-|x|get coinbase|AMO-TS02|||1|eth_coinbase||||||||
-|x|validate mining|AMO-TS02|||3|eth_getBalance|_coinbase||||||validateMining|
+AMO-TS02: use account mine aion coins|||||||||||||||
+||get coinbase|AMO-TS02|||1|eth_coinbase||||||||
+||validate mining|AMO-TS02|||3|eth_getBalance|_coinbase||||||validateMining|
+|||||||||||||||
+|||||||||||||||
+smoke getBlockByNumber|||||||||||||||
+||smoke getBlockByNumber-number=0x2|Smoke-getBlock|||0x2|eth_getBlockByNumber|0x2 true|||||||
+||smoke getBlockByNumber-earliest|Smoke-getBlock|||earliest|eth_getBlockByNumber|earliest true|||||||
+||smoke getBlockByNumber-latest|Smoke-getBlock|||latest|eth_getBlockByNumber|latest true|||||||
+||smoke getBlockByNumber-pending|Smoke-getBlock|||pending|eth_getBlockByNumber|pending true|||||||
+||smoke getBlockByNumber-number=0x2-false|Smoke-getBlock|||0x2x|eth_getBlockByNumber|0x2 false|||||||
+||smoke getBlockByNumber-earliest-false|Smoke-getBlock|||earliestx|eth_getBlockByNumber|earliest false|||||||
+||smoke getBlockByNumber-latest-false|Smoke-getBlock|||latestx|eth_getBlockByNumber|latest true|||||||
+||smoke getBlockByNumber-pending-false|Smoke-getBlock|||pendingx|eth_getBlockByNumber|pending false|||||||
