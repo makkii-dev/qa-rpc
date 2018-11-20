@@ -1,25 +1,25 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-smoke test|||||||||||||||
-||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
-||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
-||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||||
-||unlock account|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
-||check account unlocked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||||
-||lock account|smoke|||4|personal_lockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|value|value|true||||
-||check account locked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||false||||
-||estimate gas for a transaction with only {from,to,value}|smoke|||22|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:0x03,value:0x09,data:0x2345} pending|format|value|HEX||||
-||unlock account_for transactions|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|value||true||||
-||send transaction with default gas limit & gas price {from, to, value=1 }|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
-||get Transaction Receipt|smoke|120 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
-||send transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:1,value:1}|format|value|TRANSACTION_FORMAT||||
-||send signed transaction|smoke||||eth_sendRawTransaction||format|value|||||
-||sign transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||47|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1,gas:1000000,gasPrice:0x1}|format|object|VALID_SIGN_TRANSACTION||||
-||send signed transaction|smoke||||eth_sendRawTransaction||||||||
-||new pending transaction filter|smoke|||39|eth_newPendingTransactionFilter||format|value|HEX||||
-||new pending transaction filter1 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
-||new pending transaction filter2 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
-||new pending transaction filter3 – check filter changes|smoke|||40|eth_getFilterChanges||format|value|ARRAY||||
-||new pending transaction filter4 – check filter logs|smoke|||41|eth_getFilterLogs||format|value|ARRAY||||
+smoke test|x||||||||||||||
+|x|get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
+|x|create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
+|x|get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||||
+|x|unlock account|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
+|x|check account unlocked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||||
+|x|lock account|smoke|||4|personal_lockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|value|value|true||||
+|x|check account locked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||false||||
+|x|estimate gas for a transaction with only {from,to,value}|smoke|||22|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:0x03,value:0x09,data:0x2345} pending|format|value|HEX||||
+|x|unlock account_for transactions|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|value||true||||
+|x|send transaction with default gas limit & gas price {from, to, value=1 }|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
+|x|get Transaction Receipt|smoke|120 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
+|x|send transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:1,value:1}|format|value|TRANSACTION_FORMAT||||
+|x|send signed transaction|smoke||||eth_sendRawTransaction||format|value|||||
+|x|sign transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||47|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1,gas:1000000,gasPrice:0x1}|format|object|VALID_SIGN_TRANSACTION||||
+|x|send signed transaction|smoke||||eth_sendRawTransaction||||||||
+|x|new pending transaction filter|smoke|||39|eth_newPendingTransactionFilter||format|value|HEX||||
+|x|new pending transaction filter1 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
+|x|new pending transaction filter2 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
+|x|new pending transaction filter3 – check filter changes|smoke|||40|eth_getFilterChanges||format|value|ARRAY||||
+|x|new pending transaction filter4 – check filter logs|smoke|||41|eth_getFilterLogs||format|value|ARRAY||||
 ||new pending transaction filter5 – uninstall filter|smoke|||42|eth_uninstallFilter||value||true||||
 ||get block template|smoke|||34|getblocktemplate||format|object|VALID_WORKTEMPLATE||||
 ||new block filter(wait a while to get validate new block)|smoke|||38|eth_newBlockFilter||format|value|HEX||||
@@ -247,11 +247,11 @@ TXTC05-1: nonce - two transactions with same nonce in pending|||||||||||||||
 ||send a transaction with nonce = nextnonce && gasPrice = 1125|TXTC05-4pending|||larger|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,nonce:_nonce,gasPrice:1125}|format|value|TRANSACTION_FORMAT||||
 ||lock account|TXTC05-pending|||post|personal_lockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password|value||true||||
 |||||||||||||||
-Transaction count – smoke|x||||||||||||||
-|x|get tx count in pending block||||pending|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c pending|||||||
-|x|get tx count in latest block||||latest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|||||||
-|x|get tx count in earliest block||||earliest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|||||||
-|x|get tx count in 0x0 block||||0x10|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x10|||||||
+Transaction count – smoke|||||||||||||||
+||get tx count in pending block||||pending|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c pending|||||||
+||get tx count in latest block||||latest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|||||||
+||get tx count in earliest block||||earliest|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|||||||
+||get tx count in 0x0 block||||0x10|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x10|||||||
 |||||||||||||||
 AMO-TS02: use account mine aion coins|||||||||||||||
 ||get coinbase|AMO-TS02|||1|eth_coinbase||||||||

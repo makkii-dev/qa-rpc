@@ -16,7 +16,7 @@ contract Counter {
   /* Events */
   event CounterIncreased(bool counter);
   event CounterDecreased(bool counter);
-  event CounterValue(int calls, int count);
+  event CounterValue(int calls, int ct);
 
   /* Functions */
   // Functions are the executable units of code within a contract.

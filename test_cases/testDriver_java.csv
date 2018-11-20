@@ -1,6 +1,6 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-smoke test|||||||||||||||
-||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
+smoke test|x||||||||||||||
+|x|get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
 ||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||||
 ||unlock account|smoke|||3|personal_unlockAccount|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61 password 10|value||true||||
@@ -29,16 +29,16 @@ smoke test|||||||||||||||
 ||get gas prices|smoke|||6|eth_gasPrice||format|value|HEX||||
 ||get eth account list|smoke|||7|eth_accounts||format|array|ACCOUNT_FORMAT||||
 ||get protocol version|smoke|||1|eth_protocolVersion||exactvalue||0||||
-||get balance block (latest)|smoke|||9_latest|eth_getBalance|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd latest|||BALANCE_FORMAT||||
-||get balance block (earliest)|smoke|||9_earliest|eth_getBalance|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61 earliest|format|value|BALANCE_FORMAT||||
+|x|get balance block (latest)|smoke|||9_latest|eth_getBalance|0xa0e1c25be14389abfd30f3b6cdea7055ea3bac6d1b3fc350f761454dfd4760dd latest|||BALANCE_FORMAT||||
+|x|get balance block (earliest)|smoke|||9_earliest|eth_getBalance|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61 earliest|format|value|BALANCE_FORMAT||||
 ||get balance block (pending)|smoke|||9_pending|eth_getBalance|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61 pending|format|value|BALANCE_FORMAT||||
-||get balance block (number)(hex)|smoke|||9_number|eth_getBalance|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61 624|format|value|BALANCE_FORMAT||||
+|x|get balance block (number)(hex)|smoke|||9_number|eth_getBalance|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61 624|format|value|BALANCE_FORMAT||||
 ||get code at address|smoke|||18|eth_getCode|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61 latest|format|value|BINARY||||
 ||get compilers|smoke|||0|eth_getCompilers||format|value|ARRAY||Solidity||
-||get block by number include Tx object|smoke|||12|eth_getBlockByNumber|0x0 true|||VALID_BLOCK_OBJECT||||
+|x|get block by number include Tx object|smoke|||12|eth_getBlockByNumber|2 true|||VALID_BLOCK_OBJECT||||
 ||get block by hash include Tx object|smoke|||11|eth_getBlockByHash| true|format|object|VALID_BLOCK_OBJECT||||
 ||get transaction count by address and by block number|smoke|||13|eth_getTransactionCount|0xa0bb4eb85c6b30dde9d9da327c7477413e1062573db5bbd174d9eaef4a86df61|format|value|HEX||||
-||get block Tx count by number(0x0)|smoke|||15|eth_getBlockTransactionCountByNumber|0x0000000000000000000000000000000000000000000000000000000000000000|format|value|HEX||||
+|x|get block Tx count by number(0x0)|smoke|||15|eth_getBlockTransactionCountByNumber|0x0000000000000000000000000000000000000000000000000000000000000000|format|value|HEX||||
 ||get block Tx count by hash|smoke|||16|eth_getBlockTransactionCountByHash||format|value|HEX||||
 ||get Tx by hash|smoke|||23|eth_getTransactionByHash||format|object|VALID_TX||||
 ||get net version|smoke|||1|net_version||format|value|STRING||||
@@ -193,13 +193,13 @@ debugs|||||||||||||||
 ||Compile solidity contract|smoke||||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT||||
 |||||||||||||||
 |||||||||||||||
-AMO-TS5: unlock an unlocked account with wrong password |x||||||||||||||
-|x|(pre)unlock account|AMO-TS5|||1|personal_unlockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password 0|value||true||||
-|x|(negative)unlock account w/ wrong password|AMO-TS5|||2|personal_unlockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 wrong null|format|error|WRONG_PW_ERROR||||
-|x|check account unlocked by sending tx|AMO-TS5|||3|eth_sendTransaction|{from:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62,value:10}|value||false||||
-|x|(pos)lock account|AMO-TS5|||4|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||
-AMO-TS6:lock a locked account with wrong password|x||||||||||||||
-|x|(pre)lock account|AMO-TS6|||1|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||
-|x|(negative)lock account w/ wrong password|AMO-TS6|||2|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 wrong|format|error|WRONG_PW_ERROR||||
-|x|check account unlocked|AMO-TS6|||3|eth_sendTransaction|{from:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62,value:10}|value||false||||
-|x|(pos)lock account|AMO-TS6|||4|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||
+AMO-TS5: unlock an unlocked account with wrong password |||||||||||||||
+||(pre)unlock account|AMO-TS5|||1|personal_unlockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password 0|value||true||||
+||(negative)unlock account w/ wrong password|AMO-TS5|||2|personal_unlockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 wrong null|format|error|WRONG_PW_ERROR||||
+||check account unlocked by sending tx|AMO-TS5|||3|eth_sendTransaction|{from:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62,value:10}|value||false||||
+||(pos)lock account|AMO-TS5|||4|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||
+AMO-TS6:lock a locked account with wrong password|||||||||||||||
+||(pre)lock account|AMO-TS6|||1|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||
+||(negative)lock account w/ wrong password|AMO-TS6|||2|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 wrong|format|error|WRONG_PW_ERROR||||
+||check account unlocked|AMO-TS6|||3|eth_sendTransaction|{from:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62,value:10}|value||false||||
+||(pos)lock account|AMO-TS6|||4|personal_lockAccount|0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62 password|value||true||||

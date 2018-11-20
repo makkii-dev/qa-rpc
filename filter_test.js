@@ -37,19 +37,18 @@ var deploy = async(sender,contract)=>{
 describe("Filter test scenarios",()=>{
 	var contract = {};
 	contract.address = [];
-	var senderAcc= /*"0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62"//*/"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137";
+	var senderAcc= /*"0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c62";//*/"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137";
 
 	var senderPW = "password";
-
-	contract.file = fs.readFileSync(__dirname + '/testContracts/Counter.sol', {
+	var gasLimit = {};
+/*	contract.file = fs.readFileSync(__dirname + '/testContracts/Counter.sol', {
     		encoding: 'utf8'
-		});
+		});*/
 	
 	before(async()=>{
-		let resp = await cur_provider.sendRequest("pre-condition","eth_compileSolidity",[contract.file]);
-		//let resp = JSON.parse(
-		//		'{"jsonrpc":"2.0","result":{"Counter":{"code":"605060405234156100105760006000fd5b5b3360026000508282909180600101839055555050505b61002c565b61033b8061003b6000396000f30060506040526000356c01000000000000000000000000900463ffffffff1680631a55d28b146100545780635b34b9661461006a578063a87d942c14610080578063f5c5ad83146100aa5761004e565b60006000fd5b34156100605760006000fd5b6100686100c0565b005b34156100765760006000fd5b61007e610199565b005b341561008c5760006000fd5b61009461024b565b6040518082815260100191505060405180910390f35b34156100b65760006000fd5b6100be61025d565b005b6001600160008282825054019250508190909055507f6816b015b746c8c8f573c271468a9bb4b1f0cb04ff12291673f7d2320a4901f76001604051808215151515815260100191505060405180910390a17f09a2ae7b00cae5ecb77463403c1d5d6c03cf6db222a78e22cbcafbe0a1ac9eec6001604051808215151515815260100191505060405180910390a17f62bd5a656ea630f6173e8b6739f7a1d0946d6367fe97c511dc92a0b4de4d20b1600160005054600060005054604051808381526010018281526010019250505060405180910390a15b565b6001600060008282825054019250508190909055506001600160008282825054019250508190909055507f6816b015b746c8c8f573c271468a9bb4b1f0cb04ff12291673f7d2320a4901f76001604051808215151515815260100191505060405180910390a17f62bd5a656ea630f6173e8b6739f7a1d0946d6367fe97c511dc92a0b4de4d20b1600160005054600060005054604051808381526010018281526010019250505060405180910390a15b565b6000600060005054905061025a565b90565b6001600060008282825054039250508190909055506001600160008282825054019250508190909055507f09a2ae7b00cae5ecb77463403c1d5d6c03cf6db222a78e22cbcafbe0a1ac9eec6001604051808215151515815260100191505060405180910390a17f62bd5a656ea630f6173e8b6739f7a1d0946d6367fe97c511dc92a0b4de4d20b1600160005054600060005054604051808381526010018281526010019250505060405180910390a15b5600a165627a7a723058204493a4342a0372449704e2a224dbaa5894b966f44d20488edea8d418aa1db8ad0029","info":{"abiDefinition":[{"anonymous":null,"constant":false,"inputs":[],"name":"incDecCounter","outputs":[],"payable":false,"type":"function"},{"anonymous":null,"constant":false,"inputs":[],"name":"incrementCounter","outputs":[],"payable":false,"type":"function"},{"anonymous":null,"constant":true,"inputs":[],"name":"getCount","outputs":[{"indexed":null,"name":"","type":"int128"}],"payable":false,"type":"function"},{"anonymous":null,"constant":false,"inputs":[],"name":"decrementCounter","outputs":[],"payable":false,"type":"function"},{"anonymous":null,"constant":null,"inputs":[],"name":null,"outputs":null,"payable":false,"type":"constructor"},{"anonymous":false,"constant":null,"inputs":[{"indexed":false,"name":"counter","type":"bool"}],"name":"CounterIncreased","outputs":null,"payable":null,"type":"event"},{"anonymous":false,"constant":null,"inputs":[{"indexed":false,"name":"counter","type":"bool"}],"name":"CounterDecreased","outputs":null,"payable":null,"type":"event"},{"anonymous":false,"constant":null,"inputs":[{"indexed":false,"name":"calls","type":"int128"},{"indexed":false,"name":"count","type":"int128"}],"name":"CounterValue","outputs":null,"payable":null,"type":"event"}]}}},"id":"pre-condition"}'
-		//		);
+		//let resp = await cur_provider.sendRequest("pre-condition","eth_compileSolidity",[contract.file]);
+		let resp = JSON.parse(
+			'{"jsonrpc":"2.0","result":{"Counter":{"code":"605060405234156100105760006000fd5b5b3360026000508282909180600101839055555050505b61002c565b61033b8061003b6000396000f30060506040526000356c01000000000000000000000000900463ffffffff1680631a55d28b146100545780635b34b9661461006a578063a87d942c14610080578063f5c5ad83146100aa5761004e565b60006000fd5b34156100605760006000fd5b6100686100c0565b005b34156100765760006000fd5b61007e610199565b005b341561008c5760006000fd5b61009461024b565b6040518082815260100191505060405180910390f35b34156100b65760006000fd5b6100be61025d565b005b6001600160008282825054019250508190909055507f6816b015b746c8c8f573c271468a9bb4b1f0cb04ff12291673f7d2320a4901f76001604051808215151515815260100191505060405180910390a17f09a2ae7b00cae5ecb77463403c1d5d6c03cf6db222a78e22cbcafbe0a1ac9eec6001604051808215151515815260100191505060405180910390a17f62bd5a656ea630f6173e8b6739f7a1d0946d6367fe97c511dc92a0b4de4d20b1600160005054600060005054604051808381526010018281526010019250505060405180910390a15b565b6001600060008282825054019250508190909055506001600160008282825054019250508190909055507f6816b015b746c8c8f573c271468a9bb4b1f0cb04ff12291673f7d2320a4901f76001604051808215151515815260100191505060405180910390a17f62bd5a656ea630f6173e8b6739f7a1d0946d6367fe97c511dc92a0b4de4d20b1600160005054600060005054604051808381526010018281526010019250505060405180910390a15b565b6000600060005054905061025a565b90565b6001600060008282825054039250508190909055506001600160008282825054019250508190909055507f09a2ae7b00cae5ecb77463403c1d5d6c03cf6db222a78e22cbcafbe0a1ac9eec6001604051808215151515815260100191505060405180910390a17f62bd5a656ea630f6173e8b6739f7a1d0946d6367fe97c511dc92a0b4de4d20b1600160005054600060005054604051808381526010018281526010019250505060405180910390a15b5600a165627a7a72305820bae4fd3d8a13a743d77ad486a07e12795974e6e64a3efd38f56d0aa82f408eab0029","info":{"abiDefinition":[{"anonymous":null,"constant":false,"inputs":[],"name":"incDecCounter","outputs":[],"payable":false,"type":"function"},{"anonymous":null,"constant":false,"inputs":[],"name":"incrementCounter","outputs":[],"payable":false,"type":"function"},{"anonymous":null,"constant":true,"inputs":[],"name":"getCount","outputs":[{"indexed":null,"name":"","type":"int128"}],"payable":false,"type":"function"},{"anonymous":null,"constant":false,"inputs":[],"name":"decrementCounter","outputs":[],"payable":false,"type":"function"},{"anonymous":null,"constant":null,"inputs":[],"name":null,"outputs":null,"payable":false,"type":"constructor"},{"anonymous":false,"constant":null,"inputs":[{"indexed":false,"name":"counter","type":"bool"}],"name":"CounterIncreased","outputs":null,"payable":null,"type":"event"},{"anonymous":false,"constant":null,"inputs":[{"indexed":false,"name":"counter","type":"bool"}],"name":"CounterDecreased","outputs":null,"payable":null,"type":"event"},{"anonymous":false,"constant":null,"inputs":[{"indexed":false,"name":"calls","type":"int128"},{"indexed":false,"name":"ct","type":"int128"}],"name":"CounterValue","outputs":null,"payable":null,"type":"event"}],"language":"Solidity","languageVersion":"0"}}},"id":"pre-condition"}'	);
 
 		contract.name = (Object.keys(resp.result))[0];
 		contract.code = "0x"+resp.result[contract.name].code;
@@ -73,20 +72,30 @@ describe("Filter test scenarios",()=>{
 			get eth_getFilterChanges
 			get eth_getFilterLogs
 		*/
+		
 		var filterID;
 		it("deploy a contract, and get the contract address",async()=>{
 			await Promise.all([deploy(senderAcc,contract),deploy(senderAcc,contract)]);
+			let resps = await Promise.all([
+				cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+				cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+				cur_provider.sendRequest("FT-TC6-meth3","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
+				]);
+			gasLimit.increment = resps[0].result;
+			gasLimit.decrement = resps[1].result;
+			gasLimit.incDec = resps[2].result;
+			console.log(gasLimit);
 			return chai.expect(contract.address).to.have.length(2);
 		})
 		it("create a filter containing fromBlock and toBlock to this contract address and call 3 methods and check for filterChanges and filter logs",async()=>{
 			filterID = (await cur_provider.sendRequest("FT-TC3-createFilter","eth_newFilter",[{address:contract.address[0],fromBlock:"earliest",toBlock:"latest"}])).result;
 			let resp = await Promise.all([
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth1-1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC3-meth1-4","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-5","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-6","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
 					utils.waitBlock([120,2],cur_provider)
 				]);
 			resp = await Promise.all([
@@ -106,12 +115,12 @@ describe("Filter test scenarios",()=>{
 			
 
 			let resp = await Promise.all([
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth1-7","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-8","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-9","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC3-meth1-10","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-11","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth1-12","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
 					utils.waitBlock([120,2],cur_provider)
 				]);
 			resp = await Promise.all([
@@ -129,12 +138,12 @@ describe("Filter test scenarios",()=>{
 		it("FT-TC3-2:create a filter only containing toBlock to this contract address and call 3 methods and check for filterChanges and filter logs",async()=>{
 			filterID = (await cur_provider.sendRequest("FT-TC3-createFilter","eth_newFilter",[{address:contract.address[0],toBlock:"latest"}])).result;
 			let resp = await Promise.all([
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth2-1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth2-2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth2-3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC3-meth2-4","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth2-5","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth2-6","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
 					utils.waitBlock([120,2],cur_provider)
 				]);
 			resp = await Promise.all([
@@ -157,12 +166,12 @@ describe("Filter test scenarios",()=>{
 			if(contract.address.length ==0) await deploy(senderAcc,contract);
 			filterID = (await cur_provider.sendRequest("FT-TC3-createFilter","eth_newFilter",[{address:contract.address[0]}])).result;
 			let resp = await Promise.all([
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth3-1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth3-2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth3-3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC3-meth3-4","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth3-5","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC3-meth3-6","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
 					utils.waitBlock([120,2],cur_provider)
 				]);
 			resp = await Promise.all([
@@ -196,6 +205,16 @@ describe("Filter test scenarios",()=>{
 		var filterID, fromBlock, toBlock,filterID4_1,filterID4_2,filterID4_3;
 		it("FT-TC4-3:log filter catch the log in pending blocks",async()=>{
 			if(contract.address.length ==0) await deploy(senderAcc,contract);
+			if(Object.keys(gasLimit)!=3){
+				let resps = await Promise.all([
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC6-meth3","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
+					]);
+				gasLimit.increment = resps[0].result;
+				gasLimit.decrement = resps[1].result;
+				gasLimit.incDec = resps[2].result;
+			}
 			//get current block number (bn1)
 			let resp = await cur_provider.sendRequest("FT-TC4-fromBlock","eth_blockNumber",[]);
 			fromBlock = resp.result;
@@ -207,13 +226,13 @@ describe("Filter test scenarios",()=>{
 
 			//call methods to create (en1) events, all transactions mined before bn1+5 block being sealed
 			await Promise.all([
-					cur_provider.sendRequest("FT-TC4-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC4-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC4-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC4-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
 					
 					//wait after bn1+5 block being sealed
 					utils.waitBlockUntil([parseInt(fromBlock)+3,120],cur_provider)
 				]);
-			await cur_provider.sendRequest("FT-TC4-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]);
+			await cur_provider.sendRequest("FT-TC4-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]);
 			resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC4-3-getFilterChanges","eth_getFilterChanges",[filterID4_3]),
 					cur_provider.sendRequest("FT-TC4-3-getFilterLogs","eth_getFilterLogs",[filterID4_3]),
@@ -235,10 +254,10 @@ describe("Filter test scenarios",()=>{
 			filterID = resp.result;
 			//call methods to create (en2) events
 			resp = await Promise.all([
-					cur_provider.sendRequest("FT-TC4-meth4","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC4-meth5","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC4-meth6","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					utils.waitBlock([120,1],cur_provider)
+					cur_provider.sendRequest("FT-TC4-meth4","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC4-meth5","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC4-meth6","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					utils.waitBlock([120,2],cur_provider)
 				]);
 
 			resp = await Promise.all([
@@ -265,8 +284,8 @@ describe("Filter test scenarios",()=>{
 			toBlock = (await cur_provider.sendRequest("FT-TC4-3-fromBlock","eth_blockNumber",[])).result;
 			fromBlock = "0x"+(parseInt(toBlock)+7).toString(16);
 			await Promise.all([
-				cur_provider.sendRequest("FT-TC4-3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-				cur_provider.sendRequest("FT-TC4-3-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+				cur_provider.sendRequest("FT-TC4-3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+				cur_provider.sendRequest("FT-TC4-3-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
 				
 				//wait after bn1+5 block being sealed
 				utils.waitBlockUntil([fromBlock,120],cur_provider)
@@ -303,12 +322,22 @@ describe("Filter test scenarios",()=>{
 		*/
 		var filterID,fromBlock;
 		var topics={};
-		before(()=>{
+		before(async()=>{
 			Object.keys(contract.event).forEach((name)=>{
 				topics[name] = {};
 				topics[name].hash = "0x"+utils.getEvent(contract.event[name]);
 				topics[name].counts = 0;
 			});
+			if(Object.keys(gasLimit)!=3){
+				let resps = await Promise.all([
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC6-meth3","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
+					]);
+				gasLimit.increment = resps[0].result;
+				gasLimit.decrement = resps[1].result;
+				gasLimit.incDec = resps[2].result;
+			}
 		});
 
 		it("FT-TC5: log filter catch the log for certain topics", async()=>{
@@ -331,17 +360,17 @@ describe("Filter test scenarios",()=>{
 			//
 
 			resp = await Promise.all([
-					cur_provider.sendRequest("FT-TC5-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth4","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth5","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth6","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth7","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth8","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth9","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC5-meth10","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.incDecCounter,[])}]),
-					utils.waitBlock([120,1],cur_provider)
+					cur_provider.sendRequest("FT-TC5-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC5-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC5-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC5-meth4","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC5-meth5","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC5-meth6","eth_sendTransaction",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC5-meth7","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC5-meth8","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC5-meth9","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC5-meth10","eth_sendTransaction",[{from:senderAcc,to:contract.address[2],data:utils.getContractFuncData(contract.func.incDecCounter,[]),gas:gasLimit.incDec}]),
+					utils.waitBlock([120,2],cur_provider)
 				]);
 			resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC3-getFilterChanges-inc","eth_getFilterChanges",[increaseFilter]), //0
@@ -385,14 +414,24 @@ describe("Filter test scenarios",()=>{
 			fromBlock = (await cur_provider.sendRequest("FT-TC6-get_fromBlock#pre","eth_blockNumber",[])).result;
 			//create a filter;
 			filterID = (await cur_provider.sendRequest("FT-TC6-createFilter-pre","eth_newFilter",[{fromBlock:fromBlock,address:contract.address[0]}])).result;
+			if(Object.keys(gasLimit)!=3){
+				let resps = await Promise.all([
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC6-meth3","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
+					]);
+				gasLimit.increment = resps[0].result;
+				gasLimit.decrement = resps[1].result;
+				gasLimit.incDec = resps[2].result;
+			}
 		});
 
 		it("FT-TC6:generate events e1",async()=>{
 			await Promise.all([
-					cur_provider.sendRequest("FT-TC6-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC6-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC6-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}]),
-					utils.waitBlock([120,1],cur_provider)
+					cur_provider.sendRequest("FT-TC6-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC6-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]),
+					cur_provider.sendRequest("FT-TC6-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[]),gas:gasLimit.incDec}]),
+					utils.waitBlock([120,2],cur_provider)
 				]);
 			let resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC6-getFilterChanges-pre","eth_getFilterChanges",[filterID]), //0
@@ -421,9 +460,9 @@ describe("Filter test scenarios",()=>{
 		it("FT-TC6-1:generate events e2, and recheck filter changes and logs",async()=>{
 			await utils.waitBlock([120],cur_provider);
 			await Promise.all([
-					cur_provider.sendRequest("FT-TC6-1-meth4","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC6-1-meth6","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}]),
-					utils.waitBlock([120,1],cur_provider)
+					cur_provider.sendRequest("FT-TC6-1-meth4","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
+					cur_provider.sendRequest("FT-TC6-1-meth6","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[]),gas:gasLimit.incDec}]),
+					utils.waitBlock([120,2],cur_provider)
 				]);
 			let resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC6-1-getFilterChanges","eth_getFilterChanges",[filterID]), //0
@@ -455,7 +494,7 @@ describe("Filter test scenarios",()=>{
 			let txTo = "0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c";
 			let prefix = isValid? "validTX-":"invalidTX-"
 			for(let i = 0 ; i < txNum; i++){
-				res[i] = cur_provider.sendRequest(prefix+i,"eth_sendTransaction",[{from:txFrom,to:txTo,value:"0x1",gasPrice:"0x0",gas:gasLimit}]);
+				res[i] = cur_provider.sendRequest(prefix+i,"eth_sendTransaction",[{from:txFrom,to:txTo,value:"0x1"/*,gasPrice:"0x0"*/,gas:gasLimit}]);
 			}
 			return res;
 		}
@@ -464,6 +503,16 @@ describe("Filter test scenarios",()=>{
 		var filterID;
 		var t1=50,t2=10,t3=30;
 		it("FT-TC2-1-part1",async()=>{
+			if(Object.keys(gasLimit)!=3){
+				let resps = await Promise.all([
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC6-meth3","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
+					]);
+				gasLimit.increment = resps[0].result;
+				gasLimit.decrement = resps[1].result;
+				gasLimit.incDec = resps[2].result;
+			}
 			filterID = (await cur_provider.sendRequest("FT-TC2-1-createFilter","eth_newPendingTransactionFilter",[])).result;
 			let txs = createTx(t1,senderAcc,true).concat(createTx(t2,senderAcc,false));
 			let txResps = await Promise.all(txs);
@@ -496,6 +545,7 @@ describe("Filter test scenarios",()=>{
 			txResps2.forEach(async(resp)=>{
 				if(fc2.result.indexOf(resp.result) ==-1){
 					let txObj = (await cur_provider.sendRequest(resp.id+"-checkTXmined", "eth_getTransactionByHash",[resp.result])).result;
+
 					if(txObj.blockNumber == null || txObj.blockNumber == "0x") throw new Error(resp.id + "is missing\n");
 				}
 			});

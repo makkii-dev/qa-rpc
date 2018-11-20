@@ -12,7 +12,8 @@ module.exports = (path,request_id,request_method,request_params,rpc_version,logg
 			logger.log("[IPC Request]:");
 			logger.log(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
 
-			connection = net.connect({path:path});
+			let HOME = process.env.HOME;
+			connection = net.connect({path:HOME+path});
 			var result;
 			if(!connection.writable) connection.connect({path:path});
 			connection.write(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
