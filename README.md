@@ -10,6 +10,15 @@ node_modules/mocha/bin/mocha testApp_1108 --testsuite test_cases/testDriver.csv 
 
 provider type: accept http, default, websocket, ipc. Default type is http
 
+testApp_dummy.js: for test rust input
+```bash
+./node_modules/mocha/bin/mocha testApp_dummy.js --testsuite test_cases/rust_java_input.csv --type http  --no-timeouts [--string]
+
+# --string: using integer string for nonce, value, gas, gasPrice, blockNumber, storagePosition; otherwise: using integer(number) for those values
+
+```
+
+
 
 
 ** Error format **

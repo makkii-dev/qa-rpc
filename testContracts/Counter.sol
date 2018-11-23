@@ -9,14 +9,14 @@ contract Counter {
 
   /* State Variables */
   // State variables are values which are permanently stored in contract storage.
-  int private count; // = 0
-  int private called;
+  uint8 count=123; // = 0
+  uint8 called;
   address owner;
 
   /* Events */
   event CounterIncreased(bool counter);
   event CounterDecreased(bool counter);
-  event CounterValue(int calls, int ct);
+  event CounterValue(uint8 calls, uint8 ct);
 
   /* Functions */
   // Functions are the executable units of code within a contract.
@@ -43,7 +43,7 @@ contract Counter {
     CounterDecreased(true);
     CounterValue(called, count);
   }
-  function getCount() public constant returns (int) {
+  function getCount() public constant returns (uint8) {
     return count;
   }
 }

@@ -25,6 +25,8 @@ chai.use(chaiMatchPattern);
 var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
 var runMethod = it;
+var isString = false;
+var isHex = false;
 
 
 
@@ -68,11 +70,16 @@ function formParam(str,currentMethod){
 		else if(/^{\S*}$/.test(param[i])) {
 			param[i] = utils.str2Obj(param[i],",",":",RUNTIME_VARIABLES);
 			
-			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction"){
-				if(param[i].value) param[i].value = JSON.parse(param[i].value);
-				if(param[i].gas) param[i].gas = JSON.parse(param[i].gas);
-				if(param[i].gasPrice) param[i].gasPrice =  JSON.parse(param[i].gasPrice);
-				if(param[i].nonce) param[i].nonce =  JSON.parse(param[i].nonce);
+			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction" || currentMethod=="eth_estimateGasPrice"){
+				if(param[i].value) param[i].value = isString? parseInt(param[i].value).toString(10): parseInt(param[i].value);
+				if(param[i].gas) param[i].gas = isString? parseInt(param[i].gas).toString(10): parseInt(param[i].gas);
+				if(param[i].gasPrice) param[i].gasPrice =  isString? parseInt(param[i].gasPrice).toString(10): parseInt(param[i].gasPrice);
+				if(param[i].nonce) {
+					console.log(RUNTIME_VARIABLES.nonce);
+					param[i].nonce =  isString? parseInt(param[i].nonce).toString(10): parseInt(param[i].nonce);;}
+			}else if(currentMethod == "eth_getLogs" || currentMethod == "eth_newFilter"){
+				if(param[i].fromBlock) param[i].fromBlock = (!/^0x/.test(param[i].fromBlock) && !isNaN(param[i].fromBlock))? (isString? parseInt(param[i].fromBlock).toString(10): parseInt(param[i].fromBlock)):param[i].fromBlock;
+				if(param[i].toBlock) param[i].toBlock = (!/^0x/.test(param[i].toBlock) && !isNaN(param[i].toBlock))? (isString? parseInt(param[i].toBlock).toString(10): parseInt(param[i].toBlock)):param[i].toBlock;
 			}
 			
 		}else if(/^_/.test(param[i])){
@@ -82,8 +89,11 @@ function formParam(str,currentMethod){
 			param[i]= parseInt(param[i]);
 		}else if((currentMethod == "eth_sign" && i==1)){
 			param[i] = param[i];
+		}else if(currentMethod == "eth_getStorageAt" && i == 1){
+
+			param[i] = isHex? param[i]:  (isString? parseInt(param[i]).toString(10): parseInt(param[i]));
 		}else{
-			param[i] = (!/^0x/.test(param[i]) && !isNaN(param[i]))? parseInt(param[i]):param[i];
+			param[i] = (!/^0x/.test(param[i]) && !isNaN(param[i]))? (isString? parseInt(param[i]).toString(10): parseInt(param[i])):param[i];
 		}
 	}
 	return param;
@@ -100,6 +110,10 @@ for(let i = 0; i < process.argv.length; i++){
 		continue;
 	}else if(process.argv[i]== "--step"){
 		runMethod = step;
+	}else if(process.argv[i]== "--string"){
+		isString = true;
+	}else if(process.argv[i] == "--hex"){
+		isHex = true;
 	}
 }
 provider_type=provider_type||'default';
@@ -129,7 +143,7 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_newPendingTransactionFilter":
 			case "eth_newBlockFilter":
 			case "eth_newFilter":
-				self.lastFilterID = resp.result;
+				self.lastFilterID = isHex? resp.result:( isString?parseInt(resp.result).toString(10): parseInt(resp.result));
 				break;
 			case "personal_newAccount":
 				self.newAccount = resp.result;
@@ -138,6 +152,7 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_getBlockByNumber":
 			//case "eth_getBlockTransactionCountByNumber":
 				self.blockHash = resp.result.hash;
+				self.blockNumber =  isString?parseInt(resp.result.number).toString(10): parseInt(resp.result.number);
 				break;
 			case "eth_sendRawTransaction":
 			case "eth_sendTransaction":
@@ -156,24 +171,24 @@ var RUNTIME_VARIABLES=(()=>{
 				break;
 			case "eth_compileSolidity":
 				self.contract = {};
-				let contractname = Object.keys(resp.result)[0];
+				let contractname = (Object.keys(resp.result))[0];
+				console.log(Object.keys(resp.result));
 				self.contract.name = contractname;
 				if(/^0x/.test(resp.result[contractname].code)){
 				 	self.contract.code = resp.result[contractname].code
 				}else{
 					self.contract.code ="0x"+ resp.result[contractname].code;
 				}
-					
+				self.contract.func = {};
+				self.contract.event = {};
 				resp.result[contractname].info.abiDefinition.forEach((item)=>{
 					if(item.type == "function"){
-						self.contract.func = {};
 						self.contract.func[item.name] = item;
 					}else{
-						self.contract.event = {};
 						self.contract.event[item.name] = item;
 					}
 				})
-				
+				console.log(self.contract.func)
 				break;
 			case "eth_getTransactionReceipt":
 				if(resp.result !=null && resp.result.contractAddress !==undefined && resp.result.contractAddress !==null)
@@ -184,10 +199,13 @@ var RUNTIME_VARIABLES=(()=>{
 				self.contractAddress = resp.result.creates;
 				break;
 			case "eth_getTransactionCount":
-				self.nonce = resp.result;
+				self.nonce = isString?parseInt(resp.result).toString(10): parseInt(resp.result);;
 				break;
 			case "eth_coinbase":
 				self.coinbase = resp.result;
+				break;
+			case "eth_blockNumber":
+				self.blockNumber = isString?parseInt(resp.result).toString(10): parseInt(resp.result);
 				break;
 		}
 	}
@@ -231,8 +249,8 @@ data.forEach((testSuite)=>{
 		logger.updatePath(testSuite.name);
 		RUNTIME_VARIABLES.reset();
 		VERIFY_VARIABLES.reset();
-		logger.log(RUNTIME_VARIABLES);
-		logger.log(VERIFY_VARIABLES);
+		//logger.log(RUNTIME_VARIABLES);
+		//logger.log(VERIFY_VARIABLES);
 
 		testSuite.tests.forEach((testRow)=>{
 						
@@ -256,7 +274,7 @@ data.forEach((testSuite)=>{
 				//helper function
 				helperfunc(helperParams,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)
 					//validation pre func
-					.then(validPreFunc,(e)=>{logger.log("after help:"+e)})
+					.then(validPreFunc,(e)=>{logger.log("after help:"+e.stack)})
 
 					//test body and format validate
 					.then(runOneRow,(e)=>{throw e;})
@@ -327,6 +345,11 @@ function runOneRow(obj){
 				return cur_provider.sendRequest(requestID,testRow.method,testRow.params);
 			})
 			.then((resp)=>{
+					if(resp.result !==undefined){
+						RUNTIME_VARIABLES.update(method,resp,params);
+						obj.result = resp.result;
+					}
+
 				chai.expect(resp).contains({id:requestID,jsonrpc:cur_provider.rpc_version});
 				try{
 					switch(testRow.valid_method){
@@ -347,12 +370,16 @@ function runOneRow(obj){
 								case "object":
 									if(method=="eth_compileSolidity"){
 										let contractName = Object.keys(resp.result)[0];
+										console.log(contractname)
 										chai.expect(resp.result[contractName]).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
 									}else
 									chai.expect(resp.result).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
 									break;
 								case "value":
-									chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
+								    if(testRow.format_name)
+										chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
+									else
+										chai.expect(resp).to.have.property("result");
 									if(testRow.arraySize){chai.expect(resp.result).to.have.lengthOf(parseInt(testRow.arraySize));}
 									if(testRow.arrayValue){
 										testRow.arrayValue.forEach((oneValue)=>{
@@ -375,9 +402,7 @@ function runOneRow(obj){
 							chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));;
 					}
 
-					RUNTIME_VARIABLES.update(method,resp,params);
-					if(resp.result !==undefined)
-						obj.result = resp.result;
+					
 					resolve(obj);
 
 				}catch(e){

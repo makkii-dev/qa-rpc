@@ -186,7 +186,7 @@ function getEvent(funcABI){
 // assume params are primary element
 var getContractFuncData = (funcABI, params)=>{
 	//console.log(params);
-	//console.log(funcABI.inputs);
+	console.log(funcABI);
 	let funcStr = funcABI.name+"(";
 	funcABI.inputs.forEach((input)=>{
 		funcStr += input.type + ',';

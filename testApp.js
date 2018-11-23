@@ -156,6 +156,7 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_compileSolidity":
 				self.contract = {};
 				let contractname = Object.keys(resp.result)[0];
+				console.log(contractname);
 				self.contract.name = contractname;
 				if(/^0x/.test(resp.result[contractname].code)){
 				 	self.contract.code = resp.result[contractname].code
@@ -326,6 +327,12 @@ function runOneRow(obj){
 				return cur_provider.sendRequest(requestID,testRow.method,testRow.params);
 			})
 			.then((resp)=>{
+
+				if(resp.result !==undefined){
+					obj.result = resp.result;
+					RUNTIME_VARIABLES.update(method,resp,params);
+				}
+
 				chai.expect(resp).contains({id:requestID,jsonrpc:cur_provider.rpc_version});
 				try{
 					switch(testRow.valid_method){
@@ -347,8 +354,9 @@ function runOneRow(obj){
 									if(method=="eth_compileSolidity"){
 										let contractName = Object.keys(resp.result)[0];
 										chai.expect(resp.result[contractName]).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
-									}else
-									chai.expect(resp.result).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
+									}else{
+										chai.expect(resp.result).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
+									}
 									break;
 								case "value":
 									chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
@@ -374,9 +382,7 @@ function runOneRow(obj){
 							chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));;
 					}
 
-					RUNTIME_VARIABLES.update(method,resp,params);
-					if(resp.result !==undefined)
-						obj.result = resp.result;
+
 					resolve(obj);
 
 				}catch(e){

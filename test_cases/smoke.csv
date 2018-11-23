@@ -2,10 +2,7 @@ TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|val
 smoke test|x||||||||||||||
 |x|get all the accounts in current kernel|smoke|||1|eth_accounts||format|array|ACCOUNT_FORMAT||||
 |x|get the highest block number|smoke|||2|eth_blockNumber||format|value|HEX||||
-|||smoke|||3|eth_call||||||||
 |x|get the coin base|smoke|||4|eth_coinbase||format|value|ACCOUNT_FORMAT||||
-|||smoke|||5|eth_compileSolidity||||||||
-|||smoke|||6|eth_estimateGas||format|value|HEX||||
 |x|get the gas price|smoke|||7|eth_gasPrice||format|value|HEX||||
 |x|get balance for the latest account|smoke|||8-latest|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|HEX||||
 |x|get balance for the earliest account|smoke|||8-earliest|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|format|value|HEX||||
@@ -22,7 +19,7 @@ smoke test|x||||||||||||||
 |x|get block tx counts by number -0x1|smoke|||12-number|eth_getBlockTransactionCountByNumber|0x1|format|value|HEX||||
 |x|get block tx counts by hash|smoke|||11|eth_getBlockTransactionCountByHash|_blockHash|format|value|HEX||||
 |||smoke|||13|eth_getCode||||||||
-|x|get support compiler names|smoke|||14|eth_getCompilers||format|value|ARRAY||Solidity||
+|x|get support compiler names|smoke|||14|eth_getCompilers||format|value|ARRAY||solidity||
 |||smoke|||15|eth_getFilterChanges||||||||
 |||smoke|||16|eth_getFilterLogs||||||||
 |||smoke|||17|eth_getLogs||||||||
@@ -30,17 +27,22 @@ smoke test|x||||||||||||||
 |||smoke|||19|eth_getTransactionByHash||||||||
 |||smoke|||20|eth_getTransactionCount||||||||
 |||smoke|||21|eth_getTransactionReceipt||||||||
-|x|get miner hashrate|smoke|||22|eth_hashrate||||||||
-|||smoke|||23|eth_mining||||||||
+|x|get miner hashrate|smoke|||22|eth_hashrate||format|value|hex||||
+|x|check if current client is mining|smoke|||23|eth_mining||format|valid_type|BOOLEAN||||
 |||smoke|||24|eth_newBlockFilter||||||||
 |||smoke|||25|eth_newFilter||||||||
 |||smoke|||26|eth_newPendingTransactionFilter||||||||
-|||smoke|||27|eth_protocolVersion||||||||
+|x|get Protocol version|smoke|||27|eth_protocolVersion||format|value|STRING||||
 |||smoke|||28|eth_sendRawTransaction||||||||
 |||smoke|||29|eth_sendTransaction||||||||
 |||smoke|||30|eth_sign||||||||
 |||smoke|||31|eth_signTransaction||||||||
 |||smoke|||32|eth_submitHashrate||||||||
 |||smoke|||33|eth_submitWork||||||||
-|||smoke|||34|eth_syncing||||||||
+|x|check if the current client is syncing|smoke|||34|eth_syncing||||||||
 |||smoke|||35|eth_uninstallFilter||||||||
+|||||||||||||||
+|||smoke|||5|eth_compileSolidity||||||||
+|||||||||||||||
+|||smoke|||6|eth_estimateGas||format|value|HEX||||
+|||smoke|||3|eth_call||||||||

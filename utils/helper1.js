@@ -1,6 +1,6 @@
 var aionLib = require('../packages/aion-lib/src/index');
 var aionAccount = aionLib.accounts;
-var utils = require("./utils");
+var utils = require("./utils1");
 
 
 
@@ -123,6 +123,7 @@ Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY
 		})
 
 		console.log(newOptions);
+		console.log(testRow);
 		testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
 		testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[newOptions[0]],newOptions.slice(1));
 		console.log(JSON.stringify(testRow.params));
