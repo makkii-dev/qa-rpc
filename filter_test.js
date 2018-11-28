@@ -242,7 +242,7 @@ describe("Filter test scenarios",()=>{
 			return resp.forEach((res,index)=>{
 				if(index < 3) {
 					logger.log(res.id);
-					chai.expect(res.result).to.have.length(6);
+					chai.expect(res.result).to.have.lengthOf(6);
 				}
 			});
 		});
@@ -274,9 +274,9 @@ describe("Filter test scenarios",()=>{
 			return resp.forEach((res,index)=>{
 				logger.log("check result: "+index);
 				if(index == 2){
-					chai.expect(res.result).to.have.length(12);
+					chai.expect(res.result).to.have.lengthOf(12);
 				}else
-					chai.expect(res.result).to.have.length(6);
+					chai.expect(res.result).to.have.lengthOf(6);
 
 			});
 		})
@@ -303,7 +303,7 @@ describe("Filter test scenarios",()=>{
 
 			return resp.forEach((res,index)=>{
 				logger.log(res.id);
-				chai.expect(res.result).to.have.length(0);
+				chai.expect(res.result).to.have.lengthOf(0);
 
 			});
 
@@ -323,6 +323,7 @@ describe("Filter test scenarios",()=>{
 		var filterID,fromBlock;
 		var topics={};
 		before(async()=>{
+			while(contract.address.length < 3) await deploy(senderAcc,contract);
 			Object.keys(contract.event).forEach((name)=>{
 				topics[name] = {};
 				topics[name].hash = "0x"+utils.getEvent(contract.event[name]);
@@ -341,7 +342,7 @@ describe("Filter test scenarios",()=>{
 		});
 
 		it("FT-TC5: log filter catch the log for certain topics", async()=>{
-			while(contract.address.length < 3) await deploy(senderAcc,contract);
+			
 			
 			let resp = await cur_provider.sendRequest("FT-TC5-fromBlock","eth_blockNumber",[]);
 			fromBlock = resp.result;
@@ -389,15 +390,15 @@ describe("Filter test scenarios",()=>{
 				switch (index){
 					case 0:
 					case 1:
-						chai.expect(res.result).to.have.length(7);
+						chai.expect(res.result).to.have.lengthOf(7);
 						break;
 					case 2:
 					case 3:
-						chai.expect(res.result).to.have.length(4);
+						chai.expect(res.result).to.have.lengthOf(4);
 						break;
 					case 6:
 					case 7:
-						chai.expect(res.result).to.have.length(10);
+						chai.expect(res.result).to.have.lengthOf(10);
 						break;
 				}
 
@@ -409,11 +410,13 @@ describe("Filter test scenarios",()=>{
 
 	describe("FT-TC6: check log filter multiple times",()=>{
 		let filterID,fromBlock;
+		let startTime;
 		before(async()=>{
 			if(contract.address.length ==0) await deploy(senderAcc,contract);
 			fromBlock = (await cur_provider.sendRequest("FT-TC6-get_fromBlock#pre","eth_blockNumber",[])).result;
 			//create a filter;
 			filterID = (await cur_provider.sendRequest("FT-TC6-createFilter-pre","eth_newFilter",[{fromBlock:fromBlock,address:contract.address[0]}])).result;
+			startTime = Date.now();
 			if(Object.keys(gasLimit)!=3){
 				let resps = await Promise.all([
 					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
@@ -433,27 +436,30 @@ describe("Filter test scenarios",()=>{
 					cur_provider.sendRequest("FT-TC6-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[]),gas:gasLimit.incDec}]),
 					utils.waitBlock([120,2],cur_provider)
 				]);
+			console.log("\x1b[46m","Since Filter creation: " + (Date.now()-startTime)/1000 + " sec");
 			let resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC6-getFilterChanges-pre","eth_getFilterChanges",[filterID]), //0
-					cur_provider.sendRequest("FT-TC6-getFilterLogs-pre","eth_getFilterLogs",[filterID])
+					cur_provider.sendRequest("FT-TC6-getFilterLogs-pre","eth_getFilterLogs",[filterID]),
+					cur_provider.sendRequest("FT-TC6-getLogs","eth_getLogs",[{address:contract.address[0],fromBlock:fromBlock}]),
 				]);
 			return resp.forEach((res)=>{
-				chai.expect(res.result).to.have.length(7);
+				chai.expect(res.result).to.have.lengthOf(7);
 			})
 
 		});
 
 		it("FT-TC6:recheck filter changes and logs",async()=>{
 			await utils.waitBlock([120],cur_provider);
+			console.log("\x1b[46m","Since Filter creation: " + (Date.now()-startTime)/1000 + " sec");
 			let resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC6-getFilterChanges","eth_getFilterChanges",[filterID]), //0
 					cur_provider.sendRequest("FT-TC6-getFilterLogs","eth_getFilterLogs",[filterID])
 				]);
 			return resp.forEach((res,index)=>{
 				if(index == 0)
-					chai.expect(res.result).to.have.length(0);
+					chai.expect(res.result).to.have.lengthOf(0);
 				else
-					chai.expect(res.result).to.have.length(7);
+					chai.expect(res.result).to.have.lengthOf(7);
 			});
 		});
 
@@ -464,15 +470,16 @@ describe("Filter test scenarios",()=>{
 					cur_provider.sendRequest("FT-TC6-1-meth6","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[]),gas:gasLimit.incDec}]),
 					utils.waitBlock([120,2],cur_provider)
 				]);
+			console.log("\x1b[46m","Since Filter creation: " + (Date.now()-startTime)/1000 + " sec");
 			let resp = await Promise.all([
 					cur_provider.sendRequest("FT-TC6-1-getFilterChanges","eth_getFilterChanges",[filterID]), //0
 					cur_provider.sendRequest("FT-TC6-1-getFilterLogs","eth_getFilterLogs",[filterID])
 				]);
 			return resp.forEach((res,index)=>{
 				if(index == 0)
-					chai.expect(res.result).to.have.length(5);
+					chai.expect(res.result).to.have.lengthOf(5);
 				else
-					chai.expect(res.result).to.have.length(12);
+					chai.expect(res.result).to.have.lengthOf(12);
 			});
 
 		});
@@ -487,36 +494,39 @@ describe("Filter test scenarios",()=>{
 			call filter changes(fc2) immediately
 		*/
 
-		function createTx(txNum, sender, isValid){
+		function createTx(txNum, sender, isValid,startNonce){
 			let res = new Array(txNum);
 			let txFrom = sender;
-			let gasLimit = isValid ? utils.dec2Hex(22000):"0x10";
+			let gasLimit = isValid ? utils.dec2Hex(21000):"0x10";
 			let txTo = "0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c";
 			let prefix = isValid? "validTX-":"invalidTX-"
 			for(let i = 0 ; i < txNum; i++){
-				res[i] = cur_provider.sendRequest(prefix+i,"eth_sendTransaction",[{from:txFrom,to:txTo,value:"0x1"/*,gasPrice:"0x0"*/,gas:gasLimit}]);
+				res[i] = cur_provider.sendRequest(prefix+i,"eth_sendTransaction",[{from:txFrom,to:txTo,value:"0x1",nonce:utils.dec2Hex(startNonce++),gas:gasLimit}]);
 			}
 			return res;
 		}
 
 
-		var filterID;
+		var filterID, startNonce;
 		var t1=50,t2=10,t3=30;
 		it("FT-TC2-1-part1",async()=>{
 			if(Object.keys(gasLimit)!=3){
 				let resps = await Promise.all([
-					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC6-meth3","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
+					cur_provider.sendRequest("FT-TC2-1-egInc","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC2-1-egDec","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC2-1-egID","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}]),
+					cur_provider.sendRequest("FT-TC2-1-nonce","eth_getTransactionCount",[senderAcc,"latest"])
 					]);
 				gasLimit.increment = resps[0].result;
 				gasLimit.decrement = resps[1].result;
 				gasLimit.incDec = resps[2].result;
+				startNonce = parseInt(resps[3].result);
+				
 			}
 			filterID = (await cur_provider.sendRequest("FT-TC2-1-createFilter","eth_newPendingTransactionFilter",[])).result;
-			let txs = createTx(t1,senderAcc,true).concat(createTx(t2,senderAcc,false));
+			let txs = createTx(t1,senderAcc,true,startNonce).concat(createTx(t2,senderAcc,false,startNonce+t1));
 			let txResps = await Promise.all(txs);
-			let fc1 = await cur_provider.sendRequest("FT-TC2-1-getFilterChanges","eth_getFilterChanges",[]);
+			let fc1 = await cur_provider.sendRequest("FT-TC2-1-getFilterChanges","eth_getFilterChanges",[filterID]);
 			let errors = "";
 			await txResps.forEach(async(resp,index)=>{
 				if(index < t1){
@@ -539,14 +549,14 @@ describe("Filter test scenarios",()=>{
 		});
 
 		it("FT-TC2-1-part2",async()=>{
-			let txResps2 = await Promise.all(createTx(t3,senderAcc,true));
+			let txResps2 = await Promise.all(createTx(t3,senderAcc,true,startNonce+t1));
 			let fc2 = await cur_provider.sendRequest("FT-TC2-1-getFilterChanges","eth_getFilterChanges",[filterID]);
 			if(fc2.result.length > txResps2.length) throw new Error("f2 filters more changes than what expected");
 			txResps2.forEach(async(resp)=>{
 				if(fc2.result.indexOf(resp.result) ==-1){
 					let txObj = (await cur_provider.sendRequest(resp.id+"-checkTXmined", "eth_getTransactionByHash",[resp.result])).result;
 
-					if(txObj.blockNumber == null || txObj.blockNumber == "0x") throw new Error(resp.id + "is missing\n");
+					if(txObj.blockNumber == null || txObj.blockNumber == "0x") throw new Error(resp.id + " is missing\n");
 				}
 			});
 

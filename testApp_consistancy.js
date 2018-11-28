@@ -15,8 +15,8 @@ const validFormat= require("./utils/validFormat");
 var readCSVDriver = require("./utils/readCSV");
 const Provider = require("./utils/provider");
 var utils = require("./utils/utils1");
-var Helper = require("./utils/helper1");
-var validationFunc= require('./utils/validateFunc');
+var Helper = require("./utils/helper");
+//var validationFunc= require('./utils/validateFunc');
 
 //validate tools
 var chai = require('chai');
@@ -26,6 +26,7 @@ var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
 var runMethod = it;
 
+var providers = {list:[]};
 
 
 
@@ -33,7 +34,7 @@ var runMethod = it;
 * formParam: parse string of params to an array
 * @param: str(String) params string in csv file
 **/
-function formParam(str,currentMethod){
+function formParam(str,currentMethod,RUNTIME_VARIABLES){
 	//logger.log("\n----parse params-----------------------\nparams:"+str);
 	//logger.log("currentMethod:"+currentMethod);
 	//logger.log("RUNTIME_VARIABLES: "+ JSON.stringify(RUNTIME_VARIABLES)+"\n-----------------------------");
@@ -102,9 +103,8 @@ for(let i = 0; i < process.argv.length; i++){
 	}
 }
 provider_type=provider_type||'default';
-var cur_provider = new Provider({type:provider_type,logger:logger});
-var helper = new Helper({provider:cur_provider,logger:logger});
-var valFunc = new validationFunc(cur_provider,logger);
+//var helper = new Helper({provider:cur_provider,logger:logger});
+//var valFunc = new validationFunc(cur_provider,logger);
 
 let newlogfilename = (DRIVER_PATH.match(/\w+\.csv/))[0]
 logger.updatePath(newlogfilename.substring(0,newlogfilename.length-4));
@@ -119,9 +119,13 @@ logger.log("Find "+data.length+" testcases:");
 
 
 //runtime variables:
-var RUNTIME_VARIABLES=(()=>{
+function RUNTIMEVARIABLES(obj){
 	var self = this;
 	this.name = "RUNTIME_VARIABLES";
+	Object.keys(obj).forEach((key,index)=>{
+		self[key] = obj[key];
+	});
+
 	this.update=(method,resp,req)=>{
 	
 		switch(method){
@@ -146,7 +150,7 @@ var RUNTIME_VARIABLES=(()=>{
 				}
 				break;
 			case "eth_signTransaction":
-				console.log(resp.result.tx);
+				//console.log(resp.result.tx);
 				self.txHash = resp.result.tx.hash;
 				self.txRaw = resp.result.tx.raw;
 				break;
@@ -156,7 +160,7 @@ var RUNTIME_VARIABLES=(()=>{
 			case "eth_compileSolidity":
 				self.contract = {};
 				let contractname = Object.keys(resp.result)[0];
-				console.log(contractname);
+				//console.log(contractname);
 				self.contract.name = contractname;
 				if(/^0x/.test(resp.result[contractname].code)){
 				 	self.contract.code = resp.result[contractname].code
@@ -167,8 +171,10 @@ var RUNTIME_VARIABLES=(()=>{
 				self.contract.event = {};
 				resp.result[contractname].info.abiDefinition.forEach((item)=>{
 					if(item.type == "function"){
+						
 						self.contract.func[item.name] = item;
 					}else{
+						
 						self.contract.event[item.name] = item;
 					}
 				})
@@ -197,23 +203,7 @@ var RUNTIME_VARIABLES=(()=>{
 		self = Object.create(self);
 	}
 	return this;
-})();
-
-
-
-var VERIFY_VARIABLES =(()=>{
-	var self = this;
-	this.vals = {};
-	this.defaultGasPrice;
-	utils.getGasPrice(cur_provider).then((resp)=>{
-		self.defaultGasPrice = resp.result;
-	})
-	this.reset = ()=>{
-		self.vals = {};
-		return self;
-	};
-	return self;
-})();
+};
 
 
 
@@ -226,59 +216,112 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 	}
 }
 
+function createProviderFromConfig(providers,config_string,name){
+	name = name?name:"default";
+	//if provider with the given name not exist, create one
+	if(providers[name]==undefined){
+		providers.list.push(name);
+		providers[name]={};
+		if(config_string!==undefined){
+			let config_obj = utils.str2Obj(config_string,",",":");
+			providers[name].RUNTIME_VARIABLES = new RUNTIMEVARIABLES(config_obj);
+			providers[name].provider = new Provider({type:config_obj.type,logger:logger}).Path(config_obj.path+":"+config_obj.port);
+
+
+		}else{
+			providers[name].RUNTIME_VARIABLES = new RUNTIMEVARIABLES();
+			providers[name].provider = new Provider({type:provider_type,logger:logger});
+		}
+		providers[name].helper = new Helper({provider:providers[name].provider,logger:logger});
+	}else{
+		// if provider with the given name exist, update the provider config;
+		if(config_string !== undefined){
+			let config_string = utils.str2Obj(config_string,",",":");
+			providers[name].RUNTIME_VARIABLES = new RUNTIMEVARIABLES(config_obj);
+			providers[name].provider.Type(config_obj.type).Path(config_obj.path+":"+config_obj.port);
+		}else{
+			providers[name].RUNTIME_VARIABLES =  new RUNTIMEVARIABLES();
+		}
+
+	}
+	//onsole.log(providers[name].helper);
+}
+
 
 
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{
 		logger.updatePath(testSuite.name);
-		RUNTIME_VARIABLES.reset();
-		VERIFY_VARIABLES.reset();
-		logger.log(RUNTIME_VARIABLES);
-		logger.log(VERIFY_VARIABLES);
 
+
+	/*{type:http,
+	path:127.0.0.1:8547,
+	account0:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,
+	account1:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,
+	password:password}*/	
+		if(testSuite.rust) createProviderFromConfig(providers, testSuite.rust, "rust");
+		if(testSuite.java) createProviderFromConfig(providers, testSuite.java, "java");
+		if(providers.list.length == 0) createProviderFromConfig(providers);
+		
 		testSuite.tests.forEach((testRow)=>{
 						
 			runMethod(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
 				logger.log(JSON.stringify(testRow));
-				testRow.params = formParam(testRow.params,testRow.method);
+				
 			
-				var helperfunc = testRow.helper? helper[testRow.helper]:(params,a,b,c,done)=>{ return new Promise((resolve)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});})};
+				var helpName = testRow.helper? testRow.helper:"default";
 				
-				var helperParams;
-				if(testRow.helper_params!=undefined){
-					helperParams = formParam(testRow.helper_params);
-				}else{
-					helperParams = null;
-				}
+				var helperArr = new Array(providers.list.length);
+				var oneRowArr = new Array(providers.list.length);
+
+				providers.list.forEach((oneProvider,index)=>{
+
+					providers[oneProvider].params = formParam(testRow.params,testRow.method,providers[oneProvider].RUNTIME_VARIABLES);
+					if(testRow.helper_params!=undefined){
+						providers[oneProvider].helperParams = formParam(testRow.helper_params,undefined,providers[oneProvider].RUNTIME_VARIABLES);
+					}else{
+						providers[oneProvider].helperParams = null;
+					}
+					
+					helperArr[index] = providers[oneProvider].helper[helpName](providers[oneProvider],testRow);
+				});
+				
+				//console.log(helperArr);
 								
-				var validPreFunc = (testRow.validateFunction && valFunc[testRow.validateFunction])? valFunc[testRow.validateFunction].pre: valFunc.default;
-				
-				var validPostFunc = (testRow.validateFunction && valFunc[testRow.validateFunction])? valFunc[testRow.validateFunction].post: valFunc.default;
 				
 				//helper function
-				helperfunc(helperParams,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)
+				//helperfunc(helperParams,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)
+				
+				Promise.all(helperArr)
 					//validation pre func
-					.then(validPreFunc,(e)=>{logger.log("after help:"+e)})
 
 					//test body and format validate
-					.then(runOneRow,(e)=>{throw e;})
+					.then((resps)=>{
+						//console.log(resps);
+						resps.forEach((resp,index)=>{
+							oneRowArr[index] = runOneRow(resp);
+						})
+						return Promise.all(oneRowArr);
+					},(e)=>{throw e;})
 
 					//validation post func
-					.then(validPostFunc,(e)=>{throw e})
+					.then((results)=>{
+						let err =resultComparision(results[0],results[1]);
 
-					.then(()=>{
-						if(testRow.helper !== undefined && testRow.helper == 'createPKAccount'){
-							VERIFY_VARIABLES.vals.fromAcc = RUNTIME_VARIABLES.account.addr;
+						if(err.length == 0)
+							done();
+						else{
+							let errmessage = err.join("\n");
+							throw new Error(errmessage);
 						}
-						done();
 					})
 					.catch((e)=>{
-						logger.log(e);
+						logger.error(e);
 						done(e);
 					});
 			
 
-			},40*1000);
+			});
 		});
 	
 	});
@@ -288,33 +331,35 @@ data.forEach((testSuite)=>{
 
 function runOneRow(obj){
 	var testRow = obj.testRow;
-	var done = obj.done;
+
 	var requestID = testRow.prefix+"-"+testRow.id;
 	var method = testRow.method;
-	var params = testRow.params;
+	var params = obj.provider.params;
+	var RUNTIME_VARIABLES = obj.provider.RUNTIME_VARIABLES;
+	var provider = obj.provider.provider;
 	
 	
 	var preprocess = ()=>{
 		
 		return new Promise((resolve)=>{
-			logger.log(RUNTIME_VARIABLES.account);
+			//logger.log(RUNTIME_VARIABLES.account);
 			if(method==='eth_sendRawTransaction' && RUNTIME_VARIABLES.account!==undefined){
-				utils.getRawTx(cur_provider,testRow.params[0],RUNTIME_VARIABLES.account).then( (txObj)=>{
+				utils.getRawTx(cur_provider,params[0],RUNTIME_VARIABLES.account).then( (txObj)=>{
 
 						RUNTIME_VARIABLES.rawTx = txObj.raw;
 						RUNTIME_VARIABLES.actualTx = txObj.readable;
-						VERIFY_VARIABLES.vals.toAcc = RUNTIME_VARIABLES.actualTx.to;
-						VERIFY_VARIABLES.vals.actualTx = RUNTIME_VARIABLES.actualTx;
+						//VERIFY_VARIABLES.vals.toAcc = RUNTIME_VARIABLES.actualTx.to;
+						//VERIFY_VARIABLES.vals.actualTx = RUNTIME_VARIABLES.actualTx;
 						console.log("\nvpreprocess\n");
 						console.log(RUNTIME_VARIABLES.rawTx);
-						testRow.params[0] = RUNTIME_VARIABLES.rawTx.rawTransaction;
+						params[0] = RUNTIME_VARIABLES.rawTx.rawTransaction;
 						resolve(requestID);
 					}
 				);
 
 			}else if(method==='eth_sendRawTransaction' && (params == undefined ||params.length== 0)){
-				testRow.params=[RUNTIME_VARIABLES.txRaw];
-				console.log(testRow.params)
+				params=[RUNTIME_VARIABLES.txRaw];
+				//console.log(params)
 				resolve(requestID);
 			}else{
 				resolve(requestID);
@@ -323,77 +368,63 @@ function runOneRow(obj){
 	}
 	
 	return new Promise((resolve,reject)=>{
-
+		console.log(JSON.stringify(RUNTIME_VARIABLES));
 		preprocess()
 			.then((requestID)=>{
-				return cur_provider.sendRequest(requestID,testRow.method,testRow.params);
+				return provider.sendRequest(requestID+obj.provider.RUNTIME_VARIABLES.port,testRow.method,params);
 			})
-			.then((resp)=>{
+			.then(async (resp)=>{
 
 				if(resp.result !==undefined){
 					obj.result = resp.result;
 					RUNTIME_VARIABLES.update(method,resp,params);
 				}
-
-				chai.expect(resp).contains({id:requestID,jsonrpc:cur_provider.rpc_version});
-				try{
-					switch(testRow.valid_method){
-						case "value":
-							chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));
-							break;
-						case "exactvalue":
-							chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,testRow.format_name));
-							break;
-						case "format":
-							switch(testRow.valid_type){
-								case "array":
-
-									resp.result.forEach((item)=>{
-										chai.expect(item).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
-									});
-									break;
-								case "object":
-									if(method=="eth_compileSolidity"){
-										let contractName = Object.keys(resp.result)[0];
-										chai.expect(resp.result[contractName]).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
-									}else{
-										chai.expect(resp.result).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
-									}
-									break;
-								case "value":
-									chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
-									if(testRow.arraySize){chai.expect(resp.result).to.have.lengthOf(parseInt(testRow.arraySize));}
-									if(testRow.arrayValue){
-										testRow.arrayValue.forEach((oneValue)=>{
-											if(/^_/.test(oneValue)){
-												oneValue =  RUNTIME_VARIABLES[oneValue.substr(1)];
-											}
-											chai.expect(resp.result).to.contains(oneValue);
-										});
-									}
-									break;
-								case "error":
-									chai.expect(resp.error).to.matchPattern(validFormat.OBJECT[testRow.format_name]);
-
-								default:
-
-							}
-							break;
-						default:
-							if(testRow.formate_name)
-							chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));;
-					}
-
-
-					resolve(obj);
-
-				}catch(e){
-					reject(e);
-				}
-		});
+				resolve(resp.result);
+		}).catch((err)=>{logger.log(err); reject()});
 	});
 }
 	
+
+
+function resultComparision(rust,java){
+	let errors = [];
+	try{
+		chai.expect(typeof rust).to.equal(typeof java);
+	}catch(err){
+		errors.push(err);
+		return errors;
+	}
+
+	if(typeof java == 'object'){
+		try{
+			if(Array.isArray(java)){
+				chai.expect(rust).to.have.lengthOf(java.length);
+				java.forEach((elem, index)=>{
+					errors = errors.concat(resultComparision(rust[index], elem));
+				})
+			}else if(java == null){
+				chai.expect(rust).to.be.null;
+			}else{
+				chai.expect(Object.keys(rust)).to.have.lengthOf.at.least(Object.keys(java).length);
+				Object.keys(java).forEach((key,index)=>{
+					chai.expect(rust).to.have.property(key);
+					errors = errors.concat(resultComparision(rust[key],java[key]));
+				})
+			}
+		}catch(err){
+			errors.push(err);
+		}
+	}
+	if(typeof java == 'string'){
+		try{
+			chai.expect(rust).to.have.lengthOf(java.length);
+		}catch(err){
+			errors.push(err);
+		}
+	}
+
+	return errors;
+}
 
 
 

@@ -26,7 +26,37 @@ class Provider{
 		}
 		this.rpc_version = "2.0";
 		this.path = PATHS[this.type];
+		this.self = this;
+
+		return this.self;
 	}
+
+	Path(newPath){
+			if(newPath==undefined) return this.path;
+		if(typeof newPath== 'string'){
+			this.path = newPath;
+		}
+		return this;
+	}
+
+	Type(newType){
+		if(newType ==undefined) return this.type;
+		if(newType == this.type) return this;
+		this.type = newType;
+		switch(this.type){
+			case 'ipc':
+				this.provider = require('./providers/ipc_provider');
+				break;
+			case 'websocket':
+				this.provider = require('./providers/socket_provider');
+				break;
+			default:
+				this.provider = require('./providers/http_provider');
+				
+		};
+		return this;
+	}
+
 	sendRequest(id,method,params,timeout){
 		return this.provider(this.path, id, method, params, this.rpc_version, this.logger,timeout);
 	}

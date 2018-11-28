@@ -26,13 +26,14 @@ contract Accounts {
         }
     }
 
-    function sendTransaction(uint8 amount){
+    function sendTransaction(uint8 amount) returns (address){
 
         address accountAddress = address(initialAddress);
         accountAddress.transfer(amount);
         initialAddress = initialAddress - 1;
         count = count + 1;
         Transfer(count, accountAddress);
+        return accountAddress;
     }
 
     function validateBalanceIter(uint128 iteration) constant returns (bool){

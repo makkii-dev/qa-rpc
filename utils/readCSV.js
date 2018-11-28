@@ -19,7 +19,12 @@ module.exports = (driver_path)=>{
 	
 	data.forEach((item)=>{
 		if(item.TestSet!==undefined){
-			reformData.push({name:item.TestSet,tests:[]});
+			let oneSet = {name:item.TestSet,tests:[]};
+			if(item.rust!==undefined)
+				oneSet.rust = item.rust;
+			if(item.java != undefined)
+				oneSet.java = item.java;
+			reformData.push(oneSet);
 		}else{
 			let ts_No = reformData.length-1;
 			reformData[ts_No].tests.push(item);

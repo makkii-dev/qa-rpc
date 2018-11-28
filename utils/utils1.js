@@ -186,7 +186,7 @@ function getEvent(funcABI){
 // assume params are primary element
 var getContractFuncData = (funcABI, params)=>{
 	//console.log(params);
-	console.log(funcABI);
+	//console.log(funcABI);
 	let funcStr = funcABI.name+"(";
 	funcABI.inputs.forEach((input)=>{
 		funcStr += input.type + ',';
@@ -198,6 +198,7 @@ var getContractFuncData = (funcABI, params)=>{
 	console.log(funcSign);
 	let check = funcSign;
 	let rest = '';
+	//console.log(params);
 	params.forEach((param,index)=>{
 		if(funcABI.inputs[index].type=='string'){
 			let offset = (funcABI.inputs[index].type,params.length -1-index) * 32 + rest.length;
@@ -236,6 +237,9 @@ var encoder = (type, param)=>{
 
 	//console.log(type+":"+(typeof param=='object')?JSON.stringify(param):param);
 	switch(type){
+		case "int8":
+		case "uint8":
+			return padZeros(arrayify(bigNumberify(param).toTwos(8).maskn(8)), 16).toString("hex");
 		case 'uint':
 		case "int":
 		case "uint128":

@@ -1,4 +1,4 @@
-                                                                                                                                                                                               |execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
+TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
 smoke test|||||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
 ||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
@@ -267,3 +267,5 @@ smoke getBlockByNumber|||||||||||||||
 ||smoke getBlockByNumber-earliest-false|Smoke-getBlock|||earliestx|eth_getBlockByNumber|earliest false|||||||
 ||smoke getBlockByNumber-latest-false|Smoke-getBlock|||latestx|eth_getBlockByNumber|latest true|||||||
 ||smoke getBlockByNumber-pending-false|Smoke-getBlock|||pendingx|eth_getBlockByNumber|pending false|||||||
+|||||||||||||||
+FT-TC7|||||||||||||||
