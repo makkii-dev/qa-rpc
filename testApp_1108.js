@@ -236,6 +236,16 @@ data.forEach((testSuite)=>{
 		logger.log(RUNTIME_VARIABLES);
 		logger.log(VERIFY_VARIABLES);
 
+		let startTime;
+		before(()=>{
+			startTime = Date.now();
+		})
+
+		after(()=>{
+			logger.log(`${this.fullTitle} took ${(Date.now()-startTime)/1000}`);
+		})
+
+
 		testSuite.tests.forEach((testRow)=>{
 						
 			runMethod(`${testRow.prefix}:${testRow.testDescription}`, (done)=>{
@@ -361,7 +371,8 @@ function runOneRow(obj){
 									}
 									break;
 								case "value":
-									chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
+									if(testRow.format_name)
+										chai.expect(resp.result).to.matchPattern(validFormat.SINGLE[testRow.format_name]);
 									if(testRow.arraySize){chai.expect(resp.result).to.have.lengthOf(parseInt(testRow.arraySize));}
 									if(testRow.arrayValue){
 										testRow.arrayValue.forEach((oneValue)=>{

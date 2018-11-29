@@ -132,6 +132,13 @@ Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY
 	});
 }
 
+Helper.prototype.getEvent=(options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
+	return new Promise((resolve)=>{
+		testRow.params[0].topics = ["0x"+utils.getEvent(RUNTIME_VARIABLES.contract.event[testRow.helper_params])];
+		console.log(testRow.params);
+		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+	})
+}
 
 
 module.exports=Helper;

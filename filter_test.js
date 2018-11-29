@@ -218,19 +218,19 @@ describe("Filter test scenarios",()=>{
 			//get current block number (bn1)
 			let resp = await cur_provider.sendRequest("FT-TC4-fromBlock","eth_blockNumber",[]);
 			fromBlock = resp.result;
-			toBlock = "0x"+(parseInt(fromBlock)+7).toString(16);
+			toBlock = "0x"+(parseInt(fromBlock)+5).toString(16);
 
-			filterID4_1 = (await cur_provider.sendRequest("FT-TC4-1-createFilter","eth_newFilter",[{fromBlock:"0x"+(parseInt(fromBlock)+3).toString(16),toBlock:"latest"}])).result;
+			filterID4_1 = (await cur_provider.sendRequest("FT-TC4-1-createFilter","eth_newFilter",[{fromBlock:"0x"+(parseInt(fromBlock)+5).toString(16),toBlock:"latest"}])).result;
 			filterID4_2 = (await cur_provider.sendRequest("FT-TC4-2-createFilter","eth_newFilter",[{fromBlock:fromBlock,toBlock:toBlock}])).result;
 			filterID4_3 = (await cur_provider.sendRequest("FT-TC4-3-createFilter","eth_newFilter",[{fromBlock:fromBlock,toBlock:"pending"}])).result;
 
-			//call methods to create (en1) events, all transactions mined before bn1+5 block being sealed
+			//call methods to create (en1) events, all transactions mined before bn1+4 block being sealed
 			await Promise.all([
 					cur_provider.sendRequest("FT-TC4-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
 					cur_provider.sendRequest("FT-TC4-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
 					
-					//wait after bn1+5 block being sealed
-					utils.waitBlockUntil([parseInt(fromBlock)+3,120],cur_provider)
+					//wait after bn1+2 block being sealed
+					utils.waitBlockUntil([parseInt(fromBlock)+2,120],cur_provider)
 				]);
 			await cur_provider.sendRequest("FT-TC4-meth3","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.decrementCounter,[]),gas:gasLimit.decrement}]);
 			resp = await Promise.all([
@@ -240,9 +240,11 @@ describe("Filter test scenarios",()=>{
 					utils.waitBlockUntil([toBlock,120],cur_provider)
 				]);
 			return resp.forEach((res,index)=>{
-				if(index < 3) {
+				if(index < 2) {
 					logger.log(res.id);
 					chai.expect(res.result).to.have.lengthOf(6);
+				}else if(index == 2){
+					chai.expect(res.result.transactions).to.have.lengthOf(1);
 				}
 			});
 		});
@@ -275,19 +277,22 @@ describe("Filter test scenarios",()=>{
 				logger.log("check result: "+index);
 				if(index == 2){
 					chai.expect(res.result).to.have.lengthOf(12);
-				}else
+				}else if(index == 0 || index == 1){
 					chai.expect(res.result).to.have.lengthOf(6);
+				}else{
+					chai.expect(res.result).to.have.lengthOf(0);
+				}
 
 			});
 		})
 		it("FT-TC4-3: invalid: fromBlock # > toBlock #",async()=>{
 			toBlock = (await cur_provider.sendRequest("FT-TC4-3-fromBlock","eth_blockNumber",[])).result;
-			fromBlock = "0x"+(parseInt(toBlock)+7).toString(16);
+			fromBlock = "0x"+(parseInt(toBlock)+3).toString(16);
 			await Promise.all([
 				cur_provider.sendRequest("FT-TC4-3-meth1","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
 				cur_provider.sendRequest("FT-TC4-3-meth2","eth_sendTransaction",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[]),gas:gasLimit.increment}]),
 				
-				//wait after bn1+5 block being sealed
+				//wait after bn1+3 block being sealed
 				utils.waitBlockUntil([fromBlock,120],cur_provider)
 			]);
 

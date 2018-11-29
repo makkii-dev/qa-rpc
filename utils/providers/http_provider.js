@@ -38,16 +38,18 @@ var http_provider = (endpoint, request_id, request_method, request_params,rpc_ve
 				"Content-Type":"application/json"
 			}
 		},(res)=>{
-			let resp = null;
+			let resp = "";
 			res.setEncoding('utf8')
 			res.on("data",(data)=>{
-				resp= data;
-				logger.log("[HTTP Response]");
-				logger.log(resp)
+				//onsole.log(data);
+				resp=resp + data;
+				
 				
 			});
 			res.on('end',()=>{
 				//console.log("closed connection"+ request_id);
+				logger.log("[HTTP Response]");
+				logger.log(resp);
 				resolve(JSON.parse(resp));
 			});
 		});

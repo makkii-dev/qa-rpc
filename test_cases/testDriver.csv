@@ -176,14 +176,14 @@ PairKey transactions|||||||||||||||
 |||||||||||||||
 |||||||||||||||
 |||||||||||||||
-Contract|x||||||||||||||
+Contract|||||||||||||||
 ||new filter maximum params|contract|||3|eth_newFilter|{topics:[0x66fa32225b641331dff20698cd66d310b3149e86d875926af7ea2f2a9079e80b],fromBlock:earliest}|format|value|HEX||||
-|x|Compile solidity contract|contract||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT||||
-|x|unlock account|contract|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN||||
-|x|deploy a contract|contract||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
-|x|get Transaction Receipt|contract|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
-|x|call contract|contract|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
-|x|get Transaction Receipt|contract|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
+||Compile solidity contract|contract||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT||||
+||unlock account|contract|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|format|value|BOOLEAN||||
+||deploy a contract|contract||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
+||get Transaction Receipt|contract|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
+||call contract|contract|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
+||get Transaction Receipt|contract|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
 ||call contract function locally|contract|f _contractAddress 5|prepareContractCall|46_value2|eth_call|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|exactvalue||0x00000000000000000000000000000005||||
 ||new pending transaction filter3 – check filter changes|contract|||40|eth_getFilterChanges||format|value|ARRAY||||
 ||new pending transaction filter4 – check filter logs|contract|||41|eth_getFilterLogs||format|value|ARRAY||||
@@ -268,4 +268,9 @@ smoke getBlockByNumber|||||||||||||||
 ||smoke getBlockByNumber-latest-false|Smoke-getBlock|||latestx|eth_getBlockByNumber|latest true|||||||
 ||smoke getBlockByNumber-pending-false|Smoke-getBlock|||pendingx|eth_getBlockByNumber|pending false|||||||
 |||||||||||||||
-FT-TC7|||||||||||||||
+|||||||||||||||
+AMO-TS4-1: unlock an locked account for a period of time twice|x||||||||||||||
+|x|unlock account for 10 sec|AMO-TS4-1|||1|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
+|x|unlock account again for 10 sec after 5 sec|AMO-TS4-1|5|delay|2|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
+|x|check account unlocked after 6 sec|AMO-TS4-1|6|delay|3|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||||
+|x|send a transaction to check if account unlocked|AMO-TS4-1|||4|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:10}|format|value|TRANSACTION_FORMAT||||

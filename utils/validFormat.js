@@ -166,6 +166,10 @@ const VALID_WORKTEMPLATE={
 }
 
 
+const VALID_LOGS={
+	
+}
+
 
 module.exports={
 	SINGLE:{
