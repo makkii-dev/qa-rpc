@@ -150,6 +150,9 @@ var RUNTIME_VARIABLES=(()=>{
 				self.txHash = resp.result.tx.hash;
 				self.txRaw = resp.result.tx.raw;
 				break;
+			case "personal_signTransaction":
+				self.txRaw = resp.result;
+				break;
 			case "pairKeyCreateAcc":
 				self.account = resp;
 				break;
@@ -235,14 +238,14 @@ data.forEach((testSuite)=>{
 		VERIFY_VARIABLES.reset();
 		logger.log(RUNTIME_VARIABLES);
 		logger.log(VERIFY_VARIABLES);
-
+		let testSuiteName = this.fullTitle;
 		let startTime;
 		before(()=>{
 			startTime = Date.now();
 		})
 
 		after(()=>{
-			logger.log(`${this.fullTitle} took ${(Date.now()-startTime)/1000}`);
+			logger.log(`${testSuiteName} took ${(Date.now()-startTime)/1000}`);
 		})
 
 
@@ -394,8 +397,6 @@ function runOneRow(obj){
 							if(testRow.formate_name)
 							chai.expect(resp).to.matchPattern(EXPECT_RESP(requestID,JSON.parse(testRow.format_name)));;
 					}
-
-
 					resolve(obj);
 
 				}catch(e){

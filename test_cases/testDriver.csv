@@ -1,5 +1,5 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-smoke test|||||||||||||||
+smoke test|x||||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
 ||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||||
@@ -55,9 +55,9 @@ smoke test|||||||||||||||
 ||get Transaction Receipt|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
 ||call contract|smoke|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
 ||return Promise.resolve();|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
-||subscribe newHeads|smoke||||eth_subscribe|newHeads|format|value|HEX||||
-||subscribe logs|smoke||||eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}|||||||
-||unsubscribe|smoke||||eth_unsubscribe||||||||
+|x|subscribe newHeads|smoke|||subscribe newHeads|eth_subscribe|newHeads|format|value|HEX||||
+|x|subscribe logs|smoke|||subscribe logs|eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}|||||||
+|x|unsubscribe|smoke|||unsubscribe|eth_unsubscribe||||||||
 ||get Logs from first block to current block|smoke||||eth_getLogs|{fromBlock:earliest,toBlock:latest}|||||||
 ||sign a message when account is unlocked|smoke||||eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da|||||||
 |||smoke||||eth_submitWork||||||||
@@ -269,8 +269,8 @@ smoke getBlockByNumber|||||||||||||||
 ||smoke getBlockByNumber-pending-false|Smoke-getBlock|||pendingx|eth_getBlockByNumber|pending false|||||||
 |||||||||||||||
 |||||||||||||||
-AMO-TS4-1: unlock an locked account for a period of time twice|x||||||||||||||
-|x|unlock account for 10 sec|AMO-TS4-1|||1|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
-|x|unlock account again for 10 sec after 5 sec|AMO-TS4-1|5|delay|2|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
-|x|check account unlocked after 6 sec|AMO-TS4-1|6|delay|3|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||||
-|x|send a transaction to check if account unlocked|AMO-TS4-1|||4|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:10}|format|value|TRANSACTION_FORMAT||||
+AMO-TS4-1: unlock an locked account for a period of time twice|||||||||||||||
+||unlock account for 10 sec|AMO-TS4-1|||1|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
+||unlock account again for 10 sec after 5 sec|AMO-TS4-1|5|delay|2|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
+||check account unlocked after 6 sec|AMO-TS4-1|6|delay|3|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||||
+||send a transaction to check if account unlocked|AMO-TS4-1|||4|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:10}|format|value|TRANSACTION_FORMAT||||

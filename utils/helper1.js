@@ -31,7 +31,6 @@ Helper.prototype.WaitNewBlock =  (options,a,b,c)=>{
 		timeout = options[0];
 		if(options.length >1)
 			newBlockNum = parseInt(options[1]);
-			
 	}	
 	//console.log("timeout:"+timeout);
 	//console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)

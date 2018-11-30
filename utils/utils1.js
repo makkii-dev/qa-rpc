@@ -145,6 +145,36 @@ async function getRawTx(provider,txObj,account){
 	return Promise.resolve(result);
 }
 
+async function getEncodeTx(provider,txObj){
+	let preEncodeSeq = [];
+	let expectSeq =['nonce','to','value','data','timestamp','gas','gasPrice','type'];
+	txObj.timestamp = txObj.timestamp || Date.now() * 1000;
+	txObj.nonce = txObj.nonce || (await getCurrentNonce(provider,txObj.from)).result;
+	txObj.gasPrice = txObj.gasPrice || (await getGasPrice(provider)).result;
+	console.log("gasPrice"+txObj.gasPrice);
+	//result.readable = txObj;
+	
+	if(!/^0x/.test(txObj.value)) txObj.value = '0x'+parseInt(txObj.value).toString(16);
+	if(!/^0x/.test(txObj.gasPrice)) txObj.gasPrice = '0x'+ parseInt(txObj.gasPrice).toString(16);
+	if(!/^0x/.test(txObj.gas)) txObj.gas = '0x'+parseInt(txObj.gas).toString(16);
+	
+	console.log(txObj);
+	
+	txObj.gasPrice = toAionLong(txObj.gasPrice);
+	txObj.gas = toAionLong(txObj.gas);
+	txObj.type = toAionLong(txObj.type || 1);
+	
+	console.log(txObj);
+	
+	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
+	
+	let rlpEncoded = rlp.encode(preEncodeSeq);
+	let hash = blake2b256(rlpEncoded);
+	return hash;
+}	
+
+
+
 var toAionLong = function (val) {
     var num;
     if (
@@ -411,7 +441,8 @@ var Utils={
 	parseContract:parseContract,
 	getTxReceipt:getTxReceipt,
 	waitBlockUntil:waitBlockUntil,
-	getEvent:getEvent
+	getEvent:getEvent,
+	getEncodeTx:getEncodeTx
 }
 
 module.exports = Utils;
