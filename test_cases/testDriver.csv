@@ -1,5 +1,5 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-smoke test|x||||||||||||||
+smoke test|||||||||||||||
 ||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT||||
 ||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT||||
 ||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT||||
@@ -55,9 +55,9 @@ smoke test|x||||||||||||||
 ||get Transaction Receipt|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
 ||call contract|smoke|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
 ||return Promise.resolve();|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
-|x|subscribe newHeads|smoke|||subscribe newHeads|eth_subscribe|newHeads|format|value|HEX||||
-|x|subscribe logs|smoke|||subscribe logs|eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}|||||||
-|x|unsubscribe|smoke|||unsubscribe|eth_unsubscribe||||||||
+||subscribe newHeads|smoke|||subscribe newHeads|eth_subscribe|newHeads|format|value|HEX||||
+||subscribe logs|smoke|||subscribe logs|eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}|||||||
+||unsubscribe|smoke|||unsubscribe|eth_unsubscribe||||||||
 ||get Logs from first block to current block|smoke||||eth_getLogs|{fromBlock:earliest,toBlock:latest}|||||||
 ||sign a message when account is unlocked|smoke||||eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da|||||||
 |||smoke||||eth_submitWork||||||||
@@ -274,3 +274,11 @@ AMO-TS4-1: unlock an locked account for a period of time twice|||||||||||||||
 ||unlock account again for 10 sec after 5 sec|AMO-TS4-1|5|delay|2|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true||||
 ||check account unlocked after 6 sec|AMO-TS4-1|6|delay|3|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true||||
 ||send a transaction to check if account unlocked|AMO-TS4-1|||4|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:10}|format|value|TRANSACTION_FORMAT||||
+|||||||||||||||
+|||||||||||||||
+Bug-invalid Energy causes nonce gap|x||||||||||||||
+||use personal send transaction send an invalid transaction|Bug-invalidErgNcGp|||1|personal_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x010} password|||||||
+||use personal send transaction send a valid transaction|Bug-invalidErgNcGp|||2|personal_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x6000} password|||||||
+|x|unlock sender’s account to send txs|Bug-invalidErgNcGp|||3-pre|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password 100|||||||
+|x|use eth_sendTransaction send an invalid transaction|Bug-invalidErgNcGp|||3|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x010}|||||||
+|x|use eth_sendTransaction send a valid transaction|Bug-invalidErgNcGp|||4|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x6000}|||||||

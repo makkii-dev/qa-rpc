@@ -16,5 +16,5 @@ input checking|x||||||||format|value|||||
 |x|eth_call|r_vs_j|incDecCounter|prepareContractCall|11|eth_call|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0,gas:1000000}|format|value|||||
 |x|eth_blockNumber|r_vs_j|||Pre-12|eth_blockNumber||format|value|||||
 |x|eth_getStorageAt|r_vs_j|||12|eth_getStorageAt|_contractAddress 0x0 latest|format|value|||||
-|x|eth_getBlockTransactionCountByNumber|r_vs_j|||13|eth_getBlockTransactionCountByNumber|_blockNumber|format|value|||||
+|x|eth_getBlockTransactionCountByNumber|r_vs_j|||13|eth_getBlockTransactionCountByNumber|_blockNumber false|format|value|||||
 |||||||||format|value|||||

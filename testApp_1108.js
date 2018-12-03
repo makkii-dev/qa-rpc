@@ -69,7 +69,7 @@ function formParam(str,currentMethod){
 		else if(/^{\S*}$/.test(param[i])) {
 			param[i] = utils.str2Obj(param[i],",",":",RUNTIME_VARIABLES);
 			
-			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction"){
+			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction"||currentMethod=="personal_sendTransaction"){
 				if(param[i].value) param[i].value = utils.dec2Hex(parseInt(param[i].value));
 				if(param[i].gas) param[i].gas = utils.dec2Hex(parseInt(param[i].gas));
 				if(param[i].gasPrice) param[i].gasPrice = utils.dec2Hex(parseInt(param[i].gasPrice));
