@@ -6,7 +6,7 @@ logger.FILE_LOG = true;
 
 var process = require('process');
 const fs = require('fs');
-//test arguements variables
+// test arguements variables
 var DRIVER_PATH = "./test_cases/testDriver.csv";
 var provider_type;
 
@@ -16,7 +16,7 @@ var readCSVDriver = require("./utils/readCSV");
 const Provider = require("./utils/provider");
 var utils = require("./utils/utils1");
 var Helper = require("./utils/helper");
-//var validationFunc= require('./utils/validateFunc');
+// var validationFunc= require('./utils/validateFunc');
 
 //validate tools
 var chai = require('chai');

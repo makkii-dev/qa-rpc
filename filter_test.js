@@ -28,7 +28,7 @@ var cur_provider = new Provider({type:provider_type,logger:logger});
 
 var deploy = async(sender,contract)=>{
 	let resp = await cur_provider.sendRequest("FT-TC3-deploy","eth_sendTransaction",[{from:sender,data:contract.code}]);
-	contract.address.push(await utils.getTxReceipt(resp.result,cur_provider,100));
+	contract.address.push((await utils.getTxReceipt(resp.result,cur_provider,100)).result.contractAddress);
 	return Promise.resolve();
 }
 

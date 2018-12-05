@@ -394,7 +394,7 @@ function getTxReceipt(txHash,provider,timeout){
 				if(res.result !==undefined && res.result != null){
 					clearInterval(loop);
 					console.log("[deploy contract address]\t"+res.result.contractAddress);
-					resolve(res.result.contractAddress);
+					resolve(res);
 				}
 				if(timeout == 0){
 					clearInterval(loop);

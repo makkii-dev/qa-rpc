@@ -32,7 +32,8 @@ class Provider{
 	}
 
 	Path(newPath){
-			if(newPath==undefined) return this.path;
+		if(newPath==undefined) return this.path;
+		
 		if(typeof newPath== 'string'){
 			this.path = newPath;
 		}

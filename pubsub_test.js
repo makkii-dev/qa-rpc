@@ -26,6 +26,8 @@ var sendRequest = (id,method,params)=>{
 }
 
 describe("pubsub",()=>{
+	let responses = {};
+
 	before(()=>{
 		if(provider_type == "websocket"){
 			path = path || providers_config["websocket"];
@@ -35,9 +37,22 @@ describe("pubsub",()=>{
 			connection = IPC.connect(path);
 		}
 
+		connection.on("data",(data)=>{
+			data = JSON.parse(data.toString('ascii'));
+			responses[data.id] = data.result;
+		});
 
+		connection.on("error",(e)=>{
+			console.log(e);
+			if(provider_type=="websocket"){
+				connection.termiate();
+			}else{
+				connection.close();
+			}
+			throw e;
+		});
+	});
 
-	})
-
+	
 
 })

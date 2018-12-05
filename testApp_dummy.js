@@ -70,7 +70,7 @@ function formParam(str,currentMethod){
 		else if(/^{\S*}$/.test(param[i])) {
 			param[i] = utils.str2Obj(param[i],",",":",RUNTIME_VARIABLES);
 			
-			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction" || currentMethod=="eth_estimateGasPrice"){
+			if(currentMethod == 'eth_sendTransaction'|| currentMethod=="eth_signTransaction" || currentMethod=="eth_estimateGas" || currentMethod == "eth_call"){
 				if(param[i].value) param[i].value = isString? parseInt(param[i].value).toString(10): parseInt(param[i].value);
 				if(param[i].gas) param[i].gas = isString? parseInt(param[i].gas).toString(10): parseInt(param[i].gas);
 				if(param[i].gasPrice) param[i].gasPrice =  isString? parseInt(param[i].gasPrice).toString(10): parseInt(param[i].gasPrice);

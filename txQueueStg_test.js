@@ -1,12 +1,13 @@
 "use strict"
 var logger = new (require("./utils/logger"))();
-logger.CONSOLE_LOG = true;
-logger.FILE_LOG = true;
+logger.CONSOLE_LOG = false;
+logger.FILE_LOG = false;
 const DEFAULT_GAS_PRICE = 10000000000;
 const Provider = require("./utils/provider");
 var utils = require("./utils/utils1");
 var Helper = require("./utils/helper1");
 logger.updatePath("transaction_test");
+var chai = require("chai");
 var provider_type;
 //load arguements from command line and create a provider
 for(let i = 0; i < process.argv.length; i++){
@@ -40,43 +41,44 @@ var txObj = (from, to , gasPrice, gasLimit)=>{
 		gas: utils.dec2Hex(gasLimit),
 		gasPrice: utils.dec2Hex(gasPrice)
 	}
-	console.log(res);
+	//console.log(res);
 	return res;
 }
 
 var orderNumber = (txRcp)=>{
+	//console.log(`blockNumber: ${txRcp.result.blockNumber} - ${txRcp.result.transactionIndex}`)
 	return parseInt(txRcp.result.blockNumber)*700+ parseInt(txRcp.result.transactionIndex);
 }
 
 describe("Transaction Queue Strategy Test",()=>{
 
-	it("TQS-TC01: gas_price strategy(default)",async(done)=>{
+	it("TQS-TC01: gas_price strategy(default)",(done)=>{
 		let accLen = accounts.length;
 		let txArr = new Array(accLen);
 
-		let unlockReqs = new Array(accLen);
+		let unlockReqs = new Array(accLen*2);
 
 		accounts.forEach((acc,index)=>{
-			unlockReqs[index] = cur_provider.sendRequest("TQS-TC01-unlock"+index, "personal_unlockAccount",[accounts[index].addr, accounts[index].password, null]);
-			//txArr[index] = cur_provider.sendRequest("TQS-TC01-tx"+index, "eth_sendTransaction",[txObj(index,(index+1)%accLen,DEFAULT_GAS_PRICE+1000*index,21000)]);
-		})
+			//unlockReqs[index] = cur_provider.sendRequest("TQS-TC01-unlock"+index, "personal_unlockAccount",[accounts[index].addr, accounts[index].password, null]);
+			txArr[index] = cur_provider.sendRequest("TQS-TC01-tx"+index, "personal_sendTransaction",[txObj(index,(index+1)%accLen,DEFAULT_GAS_PRICE+1000*index,21000+index*100),accounts[index].password]);
+		});
+		accounts.forEach((acc,index)=>{
+			//unlockReqs[index] = cur_provider.sendRequest("TQS-TC01-unlock"+index, "personal_unlockAccount",[accounts[index].addr, accounts[index].password, null]);
+			txArr[index+accLen] = cur_provider.sendRequest("TQS-TC01-tx"+index+accLen, "personal_sendTransaction",[txObj(index,(index+1)%accLen,DEFAULT_GAS_PRICE+1000*index,21000+index*100),accounts[index].password]);
+		});
 		//send txs
-		Promise.all([unlockReqs]).then(()=>{
-			accounts.forEach((acc,index)=>{
-				//unlockReqs[index] = cur_provider.sendRequest("TQS-TC01-unlock"+index, "personal_unlockAccount",[accounts[index].addr, accounts[index].password, null]);
-				txArr[index] = cur_provider.sendRequest("TQS-TC01-tx"+index, "eth_sendTransaction",[txObj(index,(index+1)%accLen,DEFAULT_GAS_PRICE+1000*index,21000)]);
-			})
-			return Promise.all(txArr);
-		}).then((resps)=>{
+		Promise.all(txArr).then((resps)=>{
 			let receiptArray = new Array(accLen);
 			resps.forEach((resp, index)=>{
 				receiptArray[index] = utils.getTxReceipt(resp.result,cur_provider,120);
 			})
 			return Promise.all(receiptArray);
-		}).then((resps)=>{
+		}).then(async (resps)=>{
 			let expectOrder=true;
-			for(let i = accLen-1;i>0; i --){
-				if(orderNumber(resps[i])> orderNumber(resps[i-1])){
+			console.log(accLen+" : "+orderNumber(resps[accLen]));
+			for(let i = accLen*2-1;i>accLen; i --){
+				console.log(i+" : "+orderNumber(resps[i]));
+				if(orderNumber(resps[i]) > orderNumber(resps[i-1])){
 					expectOrder = false;
 					break;
 				}
@@ -84,19 +86,23 @@ describe("Transaction Queue Strategy Test",()=>{
 			chai.expect(expectOrder).to.be.true;
 			done();
 		}).catch((e)=>{
+			//return Promise.reject(e);
 			done(e);
 		});
 	});
 
 
-	it("TQS-TC02: gas strategy(default)",async(done)=>{
+	it("TQS-TC02: gas strategy(default)",(done)=>{
 		let accLen = accounts.length;
-		let txArr = new Array(accLen);
+		let txArr = new Array(accLen*2);
 		accounts.forEach((acc,index)=>{
 			txArr[index] = cur_provider.sendRequest("TQS-TC02-tx"+index, "personal_sendTransaction",[txObj(index,(index+1)%accLen,DEFAULT_GAS_PRICE,21000+index*100),accounts[index].password]);
 		})
+		accounts.forEach((acc,index)=>{
+			txArr[accLen+index] = cur_provider.sendRequest("TQS-TC02-tx"+index, "personal_sendTransaction",[txObj(index,(index+1)%accLen,DEFAULT_GAS_PRICE,21000+index*100),accounts[index].password]);
+		})
 		//send txs
-		Promise.all(txObj).then((resps)=>{
+		Promise.all(txArr).then((resps)=>{
 			let receiptArray = new Array(accLen);
 			resps.forEach((resp, index)=>{
 				receiptArray[index] = utils.getTxReceipt(resp.result,cur_provider,120);
@@ -105,9 +111,11 @@ describe("Transaction Queue Strategy Test",()=>{
 		},(err)=>{
 			console.log(err);
 			done(err);
+			return;
 		}).then((resps)=>{
 			let expectOrder=true;
-			for(let i = accLen-1;i>0; i --){
+			console.log(accLen+" : "+orderNumber(resps[accLen]));
+			for(let i = accLen*2-1;i>accLen; i --){
 				if(orderNumber(resps[i])< orderNumber(resps[i-1])){
 					expectOrder = false;
 					break;
