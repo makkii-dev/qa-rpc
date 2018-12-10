@@ -55,8 +55,16 @@ var oneAct = async ()=>{
 	if(curBlock >= toBlock){
 		minerProc.kill();
 		clearInterval(loop);
+		
+		let blkPriceCnt = 0;
+		for(let blkNum = curBlock; blkNum>=0 && blkNum > blkNum-64; blkNum--){
+			let res = await rust_provider.sendRequest("check-blocktx-"+blkNum,"eth_getBlockTransactionCountByNumber",[blkNum]);
+			if(parseInt(res.result)>0) blkPriceCnt++;
+		}
+		console.log("[Total block price in 64 block windows] "+ blkPriceCnt);
 		console.log("[java]:"+parseInt((await java_provider.sendRequest("java_gasPrice","eth_gasPrice",[])).result));
 		console.log("[rust]:"+parseInt((await rust_provider.sendRequest("rust_gasPrice","eth_gasPrice",[])).result));
+
 	}
 }
 var loop = setInterval(oneAct,700);

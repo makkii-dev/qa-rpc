@@ -100,7 +100,12 @@ Helper.prototype.default = (param,a,b,c)=>{
 
 Helper.prototype.newContract = (params,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)=>{
 	return new Promise((resolve)=>{
-		testRow.params[0].data = RUNTIME_VARIABLES.contract.code;
+		if(params!==null){
+			testRow.params[0].data = RUNTIME_VARIABLES.contract[params[0]].code
+		}else{
+			testRow.params[0].data = RUNTIME_VARIABLES.contract[RUNTIME_VARIABLES.contract.names[0]].code;
+		}
+		
 		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 	})
 }
@@ -123,8 +128,14 @@ Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY
 
 		console.log(newOptions);
 		console.log(testRow);
-		testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
-		testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[newOptions[0]],newOptions.slice(1));
+		
+		if(/^prec_/.test(newOptions[0])){
+			testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.precompile[newOptions[0].substring(5)],newOptions.slice(1));
+			testRow.params[0].to = RUNTIME_VARIABLES.precompile[newOptions[0].substring(5)].addr;
+		}else{
+			testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[newOptions[0]],newOptions.slice(1));
+			testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
+		}
 		console.log(JSON.stringify(testRow.params));
 		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 	
@@ -138,6 +149,24 @@ Helper.prototype.getEvent=(options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=
 		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 	})
 }
+
+Helper.prototype.getSign = (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
+	return new Promise((resolve)=>{
+		let obj = Object.create(testRow.params[0]);
+		utils.getRawTx(this.provider,obj,RUNTIME_VARIABLES.accounts[testRow.params[0].from]).then((res)=>{
+			RUNTIME_VARIABLES.sign1 =RUNTIME_VARIABLES.accounts[testRow.params[0].from].signature.substring(2,66);
+			RUNTIME_VARIABLES.sign2 = RUNTIME_VARIABLES.accounts[testRow.params[0].from].signature.substring(66);
+			RUNTIME_VARIABLES.publicKey = RUNTIME_VARIABLES.accounts[testRow.params[0].from].publicKey;
+			resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+		})
+		//RUNTIME_VARIABLES.sign1 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(2,66);
+		//RUNTIME_VARIABLES.sign2 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(66);
+		
+		
+		
+	})
+}
+
 
 
 module.exports=Helper;

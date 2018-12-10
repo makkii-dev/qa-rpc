@@ -110,5 +110,27 @@ Validation.prototype.default = (obj)=>{
 		resolve(obj);
 	});
 };
+Validation.prototype.validateBlake2b = {};
+Validation.prototype.validateBlake2b.pre = async(obj)=>{
+	obj.VERIFY_VARIABLES.vals.callMethod = obj.testRow.method == "eth_call"? true: false; // "true" called locally; "false" call in another contract
+	console.log(obj.testRow.params[0].data.substring(10));
+	obj.VERIFY_VARIABLES.vals.expectOutput = require("../packages/aion-lib/src/index.js").crypto.blake2b256(Buffer.from(obj.testRow.params[0].data.substring(10)));  
+	return Promise.resolve(obj);
+}
+
+Validation.prototype.validateBlake2b.post = async(obj)=>{
+	try{
+		if(obj.VERIFY_VARIABLES.vals.callMethod){
+			console.log(obj.result +" expect to be "+ obj.VERIFY_VARIABLES.vals.expectOutput);
+			chai.expect(obj.result).to.equal(obj.VERIFY_VARIABLES.vals.expectOutput);
+		}else{
+			var receipt = await utils.getTxReceipt(obj.result,this.provider);
+			console.log(receipt);
+		}
+	}catch(e){
+		return Promise.reject(e);
+	}
+}
+
 
 module.exports = Validation;

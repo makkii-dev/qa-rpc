@@ -1,10 +1,14 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
 input checking|x||||||||format|value|||||
-|x|eth_getBalance|r_vs_j|||1|eth_getBalance|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 4|format|value|||||
+|x|eth_blockNumber|r_vs_j|||Pre-1|eth_blockNumber||format|value|||||
+|x|eth_getBalance|r_vs_j|||1|eth_getBalance|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 _blockNumber|format|value|||||
 |x|personal_unlockAccount|r_vs_j|||pre|personal_unlockAccount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 password 9999|format|value|||||
-|x|eth_getTransactionCount|r_vs_j|||2|eth_getTransactionCount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 1|format|value|||||
+|x|eth_getTransactionCount|r_vs_j|||2|eth_getTransactionCount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 _blockNumber|format|value|||||
 |x|eth_estimateGas|r_vs_j|||3|eth_estimateGas|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,to:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c61,gas:21000,gasPrice:10000000000,nonce:_nonce,value:1} 22|format|value|||||
-|x|eth_sendTransaction|r_vs_j|||4|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,to:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c61,gas:21000,gasPrice:10000000000,nonce:_nonce,value:1}|format|value|||||
+|x|eth_sendTransaction|r_vs_j|||4|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,to:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c61,gas:21000,gasPrice:10000000000,value:1}|format|value|||||
+|x|eth_getTransactionReceipt|r_vs_j|100 1|WaitNewBlock|4-Rec|eth_getTransactionReceipt||format|value|||||
+|x|eth_sendRawTransaction|r_vs_j|||4-compare|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,to:0xa01f440752714ed46c33503a4c731aa9e81861175934dd12d4888a8778857c61,gas:21000,gasPrice:10000000000,value:1}|format|value|||||
+|x|eth_getTransactionReceipt|r_vs_j|100 1|WaitNewBlock|4-compareRe|eth_getTransactionReceipt||format|value|||||
 |x|eth_getLogs|r_vs_j|||5|eth_getLogs|{fromBlock:1,toBlock:10,limit:5}|format|value|||||
 |x|eth_getLogs|r_vs_j|||5-1|eth_getLogs|{fromBlock:1,toBlock:latest,limit:5}|format|value|||||
 |x|eth_newFilter|r_vs_j|||6|eth_newFilter|{fromBlock:1,toBlock:latest,limit:5}|format|value|||||
@@ -20,4 +24,3 @@ input checking|x||||||||format|value|||||
 |x|eth_blockNumber|r_vs_j|||Pre-12|eth_blockNumber||format|value|||||
 |x|eth_getStorageAt|r_vs_j|||12|eth_getStorageAt|_contractAddress 0x0 latest|format|value|||||
 |x|eth_getBlockTransactionCountByNumber|r_vs_j|||13|eth_getBlockTransactionCountByNumber|_blockNumber|format|value|||||
-|||||||||format|value|||||

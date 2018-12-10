@@ -276,9 +276,29 @@ AMO-TS4-1: unlock an locked account for a period of time twice|||||||||||||||
 ||send a transaction to check if account unlocked|AMO-TS4-1|||4|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:10}|format|value|TRANSACTION_FORMAT||||
 |||||||||||||||
 |||||||||||||||
-Bug-invalid Energy causes nonce gap|x||||||||||||||
+Bug-invalid Energy causes nonce gap|||||||||||||||
 ||use personal send transaction send an invalid transaction|Bug-invalidErgNcGp|||1|personal_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x010} password|||||||
 ||use personal send transaction send a valid transaction|Bug-invalidErgNcGp|||2|personal_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x6000} password|||||||
-|x|unlock sender’s account to send txs|Bug-invalidErgNcGp|||3-pre|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password 100|||||||
-|x|use eth_sendTransaction send an invalid transaction|Bug-invalidErgNcGp|||3|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x010}|||||||
-|x|use eth_sendTransaction send a valid transaction|Bug-invalidErgNcGp|||4|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x6000}|||||||
+||unlock sender’s account to send txs|Bug-invalidErgNcGp|||3-pre|personal_unlockAccount|0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334 password 100|||||||
+||use eth_sendTransaction send an invalid transaction|Bug-invalidErgNcGp|||3|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x010}|||||||
+||use eth_sendTransaction send a valid transaction|Bug-invalidErgNcGp|||4|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100,gas:0x6000}|||||||
+|||||||||||||||
+|||||||||||||||
+test procomile functions|x||||||||||||||
+|x|unlock an account to deploy the contract|PPC-Test|||Pre-1|personal_unlockAccount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 password 100000|||||||
+||local call blake2b256|PPC-Test-local|prec_blake2b256 01920192|prepareContractCall|1|eth_call|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}||||||validateBlake2b|
+|x|send a transaction to check|PPC-Test-local|prec_transactionhash|prepareContractCall|2|eth_call|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|||||||
+|x|sign a message|PPC-Test-local||getSign|3-1|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,value:100,gas:0x6000}|||||||
+|x|local call ebverify|PPC-Test-local|prec_edverify _txHash _publicKey _sign1 _sign2|prepareContractCall|3|eth_call|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|||||||
+||local call blake2b256|PPC-Test|prec_blake2b256 alalalalalalala|prepareContractCall|1|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|||||||
+||local call transactionhash|PPC-Test|prec_transactionhash|prepareContractCall|2|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|||||||
+||local call ebverify|PPC-Test|prec_edverify 101010 098765432d10987654321d0987654321 a1234567890a12345678901234567890 b1234567890b12345678901234567890|prepareContractCall|3|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|||||||
+||compile test contract|PPC-Test-contract|||Pre-2|eth_compileSolidity|TestTxHash.sol|||||||
+|||||||||||||||
+||deploy the test contract|PPC-Test-contract|TestTxHash|newContract|1|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|||||||
+||get the contract address|PPC-Test-contract|120 1|WaitNewBlock|2|eth_getTransactionReceipt||||||||
+||call function blake2b256|PPC-Test-contract|test|prepareContractCall|3|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|||||||
+||get Transaction Receipt blake2b256|PPC-Test-contract|120 1|WaitNewBlock|4|eth_getTransactionReceipt||||||||
+||call function transactionhash|||||||||||||
+||call function ebveri|||||||||||||
+||get Logs|PPC-Test-contract|||x|eth_getLogs|{address:_contractAddress}|||||||

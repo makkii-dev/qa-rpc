@@ -63,6 +63,36 @@ function str2Obj(str,delimiter,separator, runtime_vars){
 		return obj;
 }
 
+
+function toUtf8Bytes(str) {
+    var result = [];
+    var offset = 0;
+    for (var i = 0; i < str.length; i++) {
+        var c = str.charCodeAt(i);
+        if (c < 128) {
+            result[offset++] = c;
+        } else if (c < 2048) {
+            result[offset++] = (c >> 6) | 192;
+            result[offset++] = (c & 63) | 128;
+        } else if (((c & 0xFC00) == 0xD800) && (i + 1) < str.length && ((str.charCodeAt(i + 1) & 0xFC00) == 0xDC00)) {
+            // Surrogate Pair
+            c = 0x10000 + ((c & 0x03FF) << 10) + (str.charCodeAt(++i) & 0x03FF);
+            result[offset++] = (c >> 18) | 240;
+            result[offset++] = ((c >> 12) & 63) | 128;
+            result[offset++] = ((c >> 6) & 63) | 128;
+            result[offset++] = (c & 63) | 128;
+        } else {
+            result[offset++] = (c >> 12) | 224;
+            result[offset++] = ((c >> 6) & 63) | 128;
+            result[offset++] = (c & 63) | 128;
+        }
+    }
+
+    return result;
+}
+
+
+
 function str2Arr(str,delimiter,runtime_vars){
 	console.log(str);
 	str = str.substring(1,str.length-1);
@@ -129,10 +159,16 @@ async function getRawTx(provider,txObj,account){
 	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
 	
 	let rlpEncoded = rlp.encode(preEncodeSeq);
+	console.log("[this is pre-blake2b] : "+ rlpEncoded);
 	let hash = blake2b256(rlpEncoded);
-	let signature = toBuffer(nacl.sign.detached(hash,account._privateKey));
+	console.log("[this is post-blake2b] : "+ hash);
+	let signature = toBuffer(nacl.sign.detached(hash,Array.isArray(account._privateKey)?account._privateKey:arrayify(account._privateKey)));
+	console.log("[this is signature] : "+ signature);
 	// ?need? verity nacl signature check aion_web3.web3-eth-accounts line 229 - 231
-	let aionPubSig = Buffer.concat([account.publicKey,signature],aionPubSigLen);
+	let aionPubSig = Buffer.concat([Array.isArray(account.publicKey)?account.publicKey:arrayify(account.publicKey),signature],aionPubSigLen);
+	console.log("[this is publicSign] : "+ aionPubSig);
+	account.signature = bufferToZeroXHex(signature);
+	account.aionPubSig = aionPubSig;
 	let rawTx = rlp.decode(rlpEncoded).concat(aionPubSig);
 	let rawTransaction = rlp.encode(rawTx);
 	
@@ -215,8 +251,8 @@ function getEvent(funcABI){
 
 // assume params are primary element
 var getContractFuncData = (funcABI, params)=>{
-	//console.log(params);
-	//console.log(funcABI);
+	console.log(params);
+	console.log(funcABI);
 	let funcStr = funcABI.name+"(";
 	funcABI.inputs.forEach((input)=>{
 		funcStr += input.type + ',';
@@ -285,6 +321,13 @@ var encoder = (type, param)=>{
 					Buffer.alloc(16 * Math.ceil(param.length/16) - param.length)
 				])
 			return resb.toString("hex");
+		case "bytes32":
+			// let res = Buffer.concat([
+			// 		toBuffer(toUtf8Bytes(param)),
+			// 		Buffer.alloc(16 * Math.ceil(param.length/16) - param.length)
+			// 	])
+			// return res.toString("hex");
+			return /^0x/.test(param)?param.substring(2):param;
 
 	}
 
