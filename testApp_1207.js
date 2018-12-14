@@ -134,7 +134,7 @@ var RUNTIME_VARIABLES=(()=>{
 		let _abis = require("./testContracts/precompile.json");
 		let _res = {};
 		_abis.forEach((abi,index)=>{
-			_res[abi.name] = abi;
+			_res[abi.name] = abi.addr;
 		})
 		return _res;
 	})();

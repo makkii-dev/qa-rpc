@@ -1,7 +1,7 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
 smoke test|x||||||||||||||
 ||get all the accounts in current kernel|smoke|||1|eth_accounts||format|array|ACCOUNT_FORMAT||||
-||get the highest block number|smoke|||2|eth_blockNumber||format|value|HEX||||
+||get the highest block number|smoke|||2|eth_blockNumber||format|value|INTEGER||||
 ||get the coin base|smoke|||4|eth_coinbase||format|value|ACCOUNT_FORMAT||||
 ||get the gas price|smoke|||7|eth_gasPrice||format|value|HEX||||
 ||get balance for the latest account|smoke|||8-latest|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|HEX||||
@@ -37,16 +37,11 @@ smoke test|x||||||||||||||
 ||sign a message|smoke|||41|personal_sign|0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|value|HEX||||
 ||sign a message with invalid password|smoke|||41-invalid-ps|personal_sign|0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong|format|valid_type|WRONG_PW_ERROR||||
 ||sign a message missing param|smoke|||41-miss-param|personal_sign|0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|format|error|PARAMS_FORMAT_ERROR||||
-||sign an invalid encoded message|smoke|||41-invalid-msg|personal_sign|0x12345 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|error|PARAMS_FORMAT_ERROR||||
+||sign an invalid encoded message|smoke|||41-invalid-msg|personal_sign|0x02345 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|format|error|PARAMS_FORMAT_ERROR||||
 ||sign a transaction|smoke|||42|personal_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password|format|value|HEX||||
 ||send the signed transaction to avoid nonce gap issue|smoke|||42-post|eth_sendRawTransaction|_txRaw|||||||
 ||Personal sign a transaction – invalid password|smoke|||40-invalid-ps|personal_sign|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} wrong|format|error|WRONG_PW_ERROR||||
 ||personal sign a transaction – missing params|smoke|||40-miss-param|personal_sign|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password|format|error|PARAMS_FORMAT_ERROR||||
-|||||||||||||||
-||unlock the sender’s account for one time use and send the a transaction|smoke|||43|personal_unlockAccount||||||||
-|||||||||||||||
-|||||||||||||||
-|||||||||||||||
 |||smoke|||44|net_listening||||||||
 |||smoke|||45|net_peerCount||||||||
 |||smoke|||46|net_version||||||||
@@ -81,3 +76,22 @@ smoke test|x||||||||||||||
 |||smoke|||32|eth_submitHashrate||||||||
 |||smoke|||33|eth_submitWork||||||||
 |||smoke|||35|eth_uninstallFilter||||||||
+||unlock the sender’s account for one time use and send the a transaction|smoke|||43|personal_unlockAccount||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+stratum smoke test|||||||||||||||
+||get blockTemplate with empty params|stratum-smoke|||1-empty|getblocktemplate||||||||
+||get blockTemplate with one params|stratum-smoke|||1-object|getblocktemplate|null|||||||
+||get blockTemplate with one params|stratum-smoke|||1-object|getblocktemplate|{capabilities:[],rules:[]}|||||||
+||get blockTemplate with one params|stratum-smoke|||1-object-simple|getblocktemplate|{}|||||||
+||getBlockHeader|stratum-smoke|||2|getHeaderByBlockNumber|_headerHeight|||||||
+||submitblock with 0x|stratum-smoke|'true’|data0xPrefix|3-prefix|submitblock|_headerNonce _solution _headerHash|||||||
+||submitblock without 0x|stratum-smoke|false|data0xPrefix||submitblock|_headerNonce _solution _headerHash|||||||

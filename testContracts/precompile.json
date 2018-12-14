@@ -1,0 +1,77 @@
+[
+  {
+  	"addr":"0x0000000000000000000000000000000000000000000000000000000000000010",
+    "anonymous": null,
+    "constant": false,
+    "inputs": [
+      {
+        "indexed": null,
+        "name": "verifyHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": null,
+        "name": "publicKey",
+        "type": "bytes32"
+      },
+      {
+        "indexed": null,
+        "name": "sig1",
+        "type": "bytes32"
+      },
+      {
+        "indexed": null,
+        "name": "sig2",
+        "type": "bytes32"
+      }
+    ],
+    "name": "edverify",
+    "outputs": [
+      {
+        "indexed": null,
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+  	"addr":"0x0000000000000000000000000000000000000000000000000000000000000012",
+    "anonymous": null,
+    "constant": false,
+    "inputs": [],
+    "name": "transactionhash",
+    "outputs": [
+      {
+        "indexed": null,
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+  	"addr":"0x0000000000000000000000000000000000000000000000000000000000000011",
+    "anonymous": null,
+    "constant": false,
+    "inputs": [
+      {
+        "indexed": null,
+        "name": "input",
+        "type": "bytes32"
+      }
+    ],
+    "name": "blake2b256",
+    "outputs": [
+      {
+        "indexed": null,
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  }
+]

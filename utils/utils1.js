@@ -139,7 +139,7 @@ async function getRawTx(provider,txObj,account){
 	let preEncodeSeq = [];
 	let expectSeq =['nonce','to','value','data','timestamp','gas','gasPrice','type'];
 	txObj.timestamp = txObj.timestamp || Date.now() * 1000;
-	txObj.nonce = txObj.nonce || (await getCurrentNonce(provider,account.addr)).result;
+	txObj.nonce = txObj.nonce || (await getCurrentNonce(provider, account.addr)).result;
 	txObj.gasPrice = txObj.gasPrice || (await getGasPrice(provider)).result;
 	console.log("gasPrice"+txObj.gasPrice);
 	result.readable = txObj;
@@ -253,6 +253,9 @@ function getEvent(funcABI){
 var getContractFuncData = (funcABI, params)=>{
 	console.log(params);
 	console.log(funcABI);
+	if(funcABI==null  || funcABI == undefined || funcABI == {}){
+		return "0x"+ params.join("");
+	}
 	let funcStr = funcABI.name+"(";
 	funcABI.inputs.forEach((input)=>{
 		funcStr += input.type + ',';

@@ -114,7 +114,7 @@ Validation.prototype.validateBlake2b = {};
 Validation.prototype.validateBlake2b.pre = async(obj)=>{
 	obj.VERIFY_VARIABLES.vals.callMethod = obj.testRow.method == "eth_call"? true: false; // "true" called locally; "false" call in another contract
 	console.log(obj.testRow.params[0].data.substring(10));
-	obj.VERIFY_VARIABLES.vals.expectOutput = require("../packages/aion-lib/src/index.js").crypto.blake2b256(Buffer.from(obj.testRow.params[0].data.substring(10)));  
+	obj.VERIFY_VARIABLES.vals.expectOutput = require("../packages/aion-lib/src/index.js").crypto.blake2b256(Buffer.from(obj.testRow.params[0].data.substring(2)));  
 	return Promise.resolve(obj);
 }
 

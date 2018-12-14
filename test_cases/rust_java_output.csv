@@ -3,8 +3,8 @@ output_check|x|{type:http,path:127.0.0.1,port:8549,account0:0xa00a2d0d10ce8a2ea4
 |x|||Check eth_blockNumber|r_vs_j_output|||1|eth_blockNumber|
 ||||Check getblocktemplate|r_vs_j_output|||2|getblocktemplate|
 ||||Check getCompilers|r_vs_j_output|||3|eth_getCompilers|
-|x|||Check eth_getBlockByNumber|r_vs_j_output|||4|eth_getBlockByNumber|2 true
-|x|||eth_getBlockByHash|r_vs_j_output|||5|eth_getBlockByHash|_blockHash true
+||||||||||
+||||||||||
 ||||Check net_peerCount|r_vs_j_output|||6|net_peerCount|
 ||||personal_unlockAccount|r_vs_j_output|||8-pre|personal_unlockAccount|_account0 _password 999
 ||||eth_compileSolidity|r_vs_j_output|||7|eth_compileSolidity|Counter.sol

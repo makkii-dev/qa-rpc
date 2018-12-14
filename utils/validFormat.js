@@ -9,6 +9,7 @@ var H160= /^0x[0-9a-f]{1,160}$/;
 var H256= /^0x[0-9a-f]{1,256}$/;
 var H64=/^0x[0-9a-f]{64}$/;
 var HEX=/^0x[0-9a-f]*$/;
+var JAVA_HEX = /^[0-9a-f]*$/
 var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2===0)}};
 
 
@@ -20,6 +21,7 @@ const public_key = H64;
 const NULL_N_HEX = ()=>{
 		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
 	}
+const NULL_N_INT = ()=>{return {test:(value)=>{return _.isNull(value) || _.isNumber(value);}}};
 
 const VALID_BLOCK_OBJECT={
 	difficulty:HEX,
@@ -27,10 +29,10 @@ const VALID_BLOCK_OBJECT={
 	gasLimit:HEX,
 	gasUsed:HEX,
 	hash:H160,
-	logsBloom:HEX,
+	logsBloom:JAVA_HEX,
 	miner:H160,
 	nonce:HEX,
-	number:HEX,
+	number:_.isNumber,
 	parentHash:H160,
 	receiptsRoot:H160,
 	size:HEX,
@@ -92,7 +94,7 @@ const TX_OBJECT= {
 
 const VALID_TX_RECEIPT = {
 	blockHash:NULL_N_HEX,
-	blockNumber:NULL_N_HEX,
+	blockNumber:NULL_N_INT,
 	contractAddress:NULL_N_HEX,
 	cumulativeGasUsed:HEX,
 	from:HEX,
@@ -179,11 +181,12 @@ module.exports={
 		H160:H160,
 		CONTRACT_VALUE_FORMAT:HEX,
 		BALANCE_FORMAT:utils.isBIGNUMBER,
-		BLOCK_NUMBER_FORMAT:HEX,
+		BLOCK_NUMBER_FORMAT:_.isNumber,
 		BOOLEAN:_.isBoolean,
 		ARRAY:_.isArray,
 		STRING:_.isString,
-		BINARY:BINARY
+		BINARY:BINARY,
+		INTEGER:_.isNumber
 	},
 	OBJECT:{
 		VALID_BLOCK_OBJECT:VALID_BLOCK_OBJECT,

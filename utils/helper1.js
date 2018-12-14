@@ -103,6 +103,8 @@ Helper.prototype.newContract = (params,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLE
 		if(params!==null){
 			testRow.params[0].data = RUNTIME_VARIABLES.contract[params[0]].code
 		}else{
+			console.log(testRow);
+
 			testRow.params[0].data = RUNTIME_VARIABLES.contract[RUNTIME_VARIABLES.contract.names[0]].code;
 		}
 		
@@ -130,9 +132,10 @@ Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY
 		console.log(testRow);
 		
 		if(/^prec_/.test(newOptions[0])){
-			testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.precompile[newOptions[0].substring(5)],newOptions.slice(1));
-			testRow.params[0].to = RUNTIME_VARIABLES.precompile[newOptions[0].substring(5)].addr;
+			testRow.params[0].data = utils.getContractFuncData(null,newOptions.slice(1));
+			testRow.params[0].to = RUNTIME_VARIABLES.precompile[newOptions[0].substring(5)];
 		}else{
+			console.log(RUNTIME_VARIABLES.contract.func);
 			testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[newOptions[0]],newOptions.slice(1));
 			testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
 		}
@@ -154,9 +157,10 @@ Helper.prototype.getSign = (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)
 	return new Promise((resolve)=>{
 		let obj = Object.create(testRow.params[0]);
 		utils.getRawTx(this.provider,obj,RUNTIME_VARIABLES.accounts[testRow.params[0].from]).then((res)=>{
+			RUNTIME_VARIABLES.hash = res.raw.messageHash.substring(2);
 			RUNTIME_VARIABLES.sign1 =RUNTIME_VARIABLES.accounts[testRow.params[0].from].signature.substring(2,66);
 			RUNTIME_VARIABLES.sign2 = RUNTIME_VARIABLES.accounts[testRow.params[0].from].signature.substring(66);
-			RUNTIME_VARIABLES.publicKey = RUNTIME_VARIABLES.accounts[testRow.params[0].from].publicKey;
+			RUNTIME_VARIABLES.publicKey = RUNTIME_VARIABLES.accounts[testRow.params[0].from].publicKey.substring(2);
 			resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 		})
 		//RUNTIME_VARIABLES.sign1 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(2,66);
@@ -167,6 +171,16 @@ Helper.prototype.getSign = (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)
 	})
 }
 
+Helper.prototype.data0xPrefix = async (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
+	for(let i = 0; i < testRow.params.length;i++){
+		if(options[0] && !/^0x/.test(testRow.params[i])){
+			testRow.params[i] = "0x" + testRow.params[i];
+		}else if(!options[0] && /^0x/.test(testRow.params[i])){
+			testRow.params[i] = testRow.params[i].substring(2);
+		}
+	}
+	return Promise.resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+}
 
 
 module.exports=Helper;
