@@ -163,7 +163,7 @@ async function getRawTx(provider,txObj,account){
 	let hash = blake2b256(rlpEncoded);
 	console.log("[this is post-blake2b] : "+ hash);
 	let signature = toBuffer(nacl.sign.detached(hash,Array.isArray(account._privateKey)?account._privateKey:arrayify(account._privateKey)));
-	console.log("[this is signature] : "+ signature);
+	console.log("[this is signature] : "+ bufferToZeroXHex(signature));
 	// ?need? verity nacl signature check aion_web3.web3-eth-accounts line 229 - 231
 	let aionPubSig = Buffer.concat([Array.isArray(account.publicKey)?account.publicKey:arrayify(account.publicKey),signature],aionPubSigLen);
 	console.log("[this is publicSign] : "+ aionPubSig);
@@ -175,7 +175,7 @@ async function getRawTx(provider,txObj,account){
 	result.raw = {
 		messageHash:bufferToZeroXHex(hash),
 		signature:bufferToZeroXHex(aionPubSig),
-		rawTransaction:bufferToZeroXHex(rawTransaction)
+		rawTransaction:bufferToZeroXHex(rawTransaction),
 	};
 	console.log("getRawTx:"+JSON.stringify(result));
 	return Promise.resolve(result);

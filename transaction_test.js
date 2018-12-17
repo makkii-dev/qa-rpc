@@ -13,7 +13,6 @@ logger.updatePath("transaction_test");
 var provider_type;
 //load arguements from command line and create a provider
 for(let i = 0; i < process.argv.length; i++){
-	if(provider_type && DRIVER_PATH) break;
 	if(process.argv[i]=='--type') {
 		provider_type= process.argv[++i];
 		continue;
@@ -46,15 +45,18 @@ describe("transactions",()=>{
 		var txs  = ress.filter((item)=>{
 			return typeof item.result == 'Object' || typeof item.result == "object";
 		});
-		
+		console.log(txs);
 		reqs = [];
 		txs.forEach((tx)=>{
-			reqs.push(cur_provider.sendRequest("TXTC03-1",'eth_sendRawTransaction',[tx.result.tx.raw]));
+			reqs.push(cur_provider.sendRequest("TXTC03-1",'eth_sendRawTransaction',[tx.result.raw]));
 		});
 		console.log(reqs);
-		console.log(txs);
+		
 		await Promise.all(reqs);
 		await utils.waitBlock([120,1],cur_provider);
+		txs.sort((a,b)=>{
+			return a.result.tx.nonce - b.result.tx.nonce;
+		})
 		return txs.forEach((tx)=>{
 				logger.log(tx.result.tx.nonce +" -- "+ nonce)
 				chai.expect(parseInt(tx.result.tx.nonce)).to.equal(nonce++);

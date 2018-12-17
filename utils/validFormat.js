@@ -13,6 +13,7 @@ var JAVA_HEX = /^[0-9a-f]*$/
 var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2===0)}};
 
 
+
 const code_format = /^0x[0-9a-f]+$/;
 const transaction_format = /^0x[0-9a-f]{64}$/;
 const blockHash_format = H160;
@@ -53,7 +54,7 @@ const VALID_SYNCING_INFO = {
 
 const VALID_TRANSACTION_RECEIPT = {
 	    blockHash: NULL_N_HEX,
-        blockNumber: NULL_N_HEX,
+        blockNumber: NULL_N_INT,
         contractAddress: NULL_N_HEX,
         cumulativeGasUsed: HEX,
         from: account_format,
@@ -72,7 +73,7 @@ const VALID_TRANSACTION_RECEIPT = {
 
 const TX_OBJECT= {
 	blockHash:NULL_N_HEX,
-	blockNumber:NULL_N_HEX,
+	blockNumber:NULL_N_INT,
 	chainId:NULL_N_HEX,
 	condition:_.isNull,
 	creates:NULL_N_HEX,
@@ -246,7 +247,19 @@ module.exports={
 		NONCE_CONFLICT_ERROR:{
 			code:-32010,
 			message:/Transaction gas price is too low. There is another transaction with same nonce in the queue/
-		}
+		},
+		INVALID_GAS_PRICE:{ 
+			code: -32010,
+  			message:/Transaction gas price is either too low or too high/
+  		},
+  		INVALID_GAS:{
+  			code:-32010,
+  			message:/Invalid transaction energy/
+  		},
+  		INVALID_CREATION_GAS:{
+  			code:-32010,
+  			message:/Invalid contract create energy/
+  		}
 	}
 	
 };
