@@ -56,7 +56,7 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	
 	self.logger.log("new from balance: "+newFromBal.toString(16));
 	self.logger.log("new to balance: "+newToBal.toString(16));
-	self.logger.log(obj.VERIFY_VARIABLES.vals);
+	self.logger.log(JSON.stringify(obj.VERIFY_VARIABLES.vals));
 	
 	console.log(obj.VERIFY_VARIABLES.defaultGasPrice);
 	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? new BN(obj.testRow.params[0].gasPrice.substring(2),16):new BN(obj.VERIFY_VARIABLES.defaultGasPrice.substr(2),16));
@@ -90,7 +90,7 @@ Validation.prototype.validateMining ={};
 
 Validation.prototype.validateMining.pre = async (obj)=>{
 	obj.VERIFY_VARIABLES.vals.beforeBal = new BN((await utils.getBalance(this.provider, obj.RUNTIME_VARIABLES.coinbase)).result.substring(2),16);
-	await this.helper.WaitNewBlock([120]);
+	await this.helper.WaitNewBlock([120, 1]);
 	return Promise.resolve(obj);
 
 }

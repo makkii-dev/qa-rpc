@@ -1,21 +1,21 @@
-TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-TestSet|x|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-|x|estimate gas for a transaction with only {from,to,value}|smoke|||22|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:0x03,value:0x09,data:0x2345} pending|format|value|HEX||||
-|x|unlock account_for transactions|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|value||true||||
-|x|send transaction with default gas limit & gas price {from, to, value=1 }|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
-|x|send transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:1,value:1}|format|value|TRANSACTION_FORMAT||||
-|x|new pending transaction filter|smoke|||39|eth_newPendingTransactionFilter||format|value|HEX||||
-|x|new pending transaction filter1 â€“ send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
-|x|new pending transaction filter2 â€“ send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT||||
-|x|new pending transaction filter3 â€“ check filter changes|smoke|||40|eth_getFilterChanges||format|value|ARRAY||||
-|x|new pending transaction filter4 â€“ check filter logs|smoke|||41|eth_getFilterLogs||format|value|ARRAY||||
-|x|new pending transaction filter5 â€“ uninstall filter|smoke|||42|eth_uninstallFilter||value||true||||
-|x|get block template|smoke|||34|getblocktemplate||format|object|VALID_WORKTEMPLATE||||
-|x|new block filter(wait a while to get validate new block)|smoke|||38|eth_newBlockFilter||format|value|HEX||||
-|x|new block filter1 â€“ check filter changes|smoke|100|WaitNewBlock|40|eth_getFilterChanges||format|value|ARRAY||||
-|x|new block filter2 â€“ check filter logs|smoke|||41|eth_getFilterLogs||format|value|ARRAY||||
-|x|new block filter3 â€“ uninstall filter|smoke|||42|eth_uninstallFilter||value||true||||
-|x|Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol|format|object|COMPILE_RESUILT||||
-|x|deploy a contract|smoke||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
-|x|get Transaction Receipt|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT||||
-|x|call contract|smoke|f _contractAddress 1|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT||||
+TestSet,execute,testDescription,prefix,helper_params,helper,id,method,params,valid_method,valid_type,format_name,arraySize,arrayValue,validateFunction,x
+TestSet,x,testDescription,prefix,helper_params,helper,id,method,params,valid_method,valid_type,format_name,arraySize,arrayValue,validateFunction,x
+,x,"estimate gas for a transaction with only {from,to,value}",smoke,,,22,eth_estimateGas,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:0x03,value:0x09,data:0x2345} pending",format,value,HEX,,,,
+,x,unlock account_for transactions,smoke,,,3,personal_unlockAccount,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0,value,,true,,,,
+,x,"send transaction with default gas limit & gas price {from, to, value=1 }",smoke,,,46,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}",format,value,TRANSACTION_FORMAT,,,,
+,x,"send transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=1}",smoke,,,46,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:1,value:1}",format,value,TRANSACTION_FORMAT,,,,
+,x,new pending transaction filter,smoke,,,39,eth_newPendingTransactionFilter,,format,value,HEX,,,,
+,x,new pending transaction filter1 – send request,smoke,,,46_default,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}",format,value,TRANSACTION_FORMAT,,,,
+,x,new pending transaction filter2 – send request,smoke,,,46_default,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}",format,value,TRANSACTION_FORMAT,,,,
+,x,new pending transaction filter3 – check filter changes,smoke,,,40,eth_getFilterChanges,,format,value,ARRAY,,,,
+,x,new pending transaction filter4 – check filter logs,smoke,,,41,eth_getFilterLogs,,format,value,ARRAY,,,,
+,x,new pending transaction filter5 – uninstall filter,smoke,,,42,eth_uninstallFilter,,value,,true,,,,
+,x,get block template,smoke,,,34,getblocktemplate,,format,object,VALID_WORKTEMPLATE,,,,
+,x,new block filter(wait a while to get validate new block),smoke,,,38,eth_newBlockFilter,,format,value,HEX,,,,
+,x,new block filter1 – check filter changes,smoke,100,WaitNewBlock,40,eth_getFilterChanges,,format,value,ARRAY,,,,
+,x,new block filter2 – check filter logs,smoke,,,41,eth_getFilterLogs,,format,value,ARRAY,,,,
+,x,new block filter3 – uninstall filter,smoke,,,42,eth_uninstallFilter,,value,,true,,,,
+,x,Compile solidity contract,smoke,,,,eth_compileSolidity,recursive.sol,format,object,COMPILE_RESUILT,,,,
+,x,deploy a contract,smoke,,newContract,46_value2,eth_sendTransaction,{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c},format,value,TRANSACTION_FORMAT,,,,
+,x,get Transaction Receipt,smoke,100 1,WaitNewBlock,26,eth_getTransactionReceipt,,format,object,VALID_TX_RECEIPT,,,,
+,x,call contract,smoke,f _contractAddress 1,prepareContractCall,46_value2,eth_sendTransaction,{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c},format,value,TRANSACTION_FORMAT,,,,

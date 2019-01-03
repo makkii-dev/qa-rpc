@@ -34,7 +34,7 @@ module.exports = ()=>{
 			
 			//case "eth_getBlockTransactionCountByNumber":
 				this.blockHash = resp.result.hash;
-				this.blockNumber = resp.result.number|| resp.reslt.height;
+				this.blockNumber = resp.result.number|| resp.result.height;
 				break;
 
 			case "eth_sendRawTransaction":
@@ -115,7 +115,7 @@ module.exports = ()=>{
 		return this;
 	}
 	this.reset = ()=>{
-		self = Object.create(self);
+		self = Object.create(this);
 	}
 	this.storeVariables = (instructions,resp)=>{
 		if(!instructions) return self;
@@ -158,6 +158,16 @@ module.exports = ()=>{
 			let vals = pair.split("=>");
 			this[vals[1]] = this[vals[0]];
 		})
+		return this;
 	}
-	return self;
+	this.preStoreVariables = (instruction)=>{
+		if(!instruction) return this;
+		let pairs = instruction.split(',');
+		pairs.forEach((pair, index)=>{
+			let vals = pair.split("=");
+			this[vals[0]] =vals[1];
+		})
+		return this;
+	}
+	return this;
 };

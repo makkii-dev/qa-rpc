@@ -1,13 +1,13 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
 check tx test|x||||||||||||||
-|x|get Transaction Receipt|txreceipt|||decimals|eth_getTransactionByHash|0xc864a79b09530629344466ad2c8ac4f97b69c5f3acfde86ad722fb50df3b8803|||||||
-||get Transaction Receipt|txreceipt|||allowance|eth_getTransactionReceipt|0x2986b37d072bafd587c61de4218abbe7a231dc16a5fb8357e353d77bea987cfe|||||||
-||get Transaction Receipt|txreceipt|||transfer|eth_getTransactionReceipt|0x6f1199565d53d49bb7edef3ee3b0b64736438075f3f49484fd192196561c10c4|||||||
-||get Transaction Receipt|txreceipt|||symbol|eth_getTransactionReceipt|0xb6dca8a0cbf33aa86313bd66dd169be1c5cf477e11765eef3d0830e80922761f|||||||
-||get Transaction Receipt|txreceipt|||symbol|eth_getTransactionReceipt|0x67f706455600ba38aade49f860139d607bdd244937a7bc44f451fac13bab62d0|||||||
-||get Transaction Receipt|txreceipt|||name|eth_getTransactionReceipt|0x6e017e8918b430027e78157dde25db25f99a0774cf8231252ffb22a1aa0253ac|||||||
-||get Transaction Receipt|txreceipt|||approve|eth_getTransactionReceipt|0x9c02b93573ed6a25dbce45208449bb032eace1d71a3415799e95d25f2d376a7c|||||||
-||get Transaction Receipt|txreceipt|||balanceOf|eth_getTransactionReceipt|0x6e1cafa7d25bbdc06737e094ddb14f5ef7ed01efe9cff4185d05158b814dcb03|||||||
+|x|get Transaction Receipt|txhash||||eth_getTransactionByHash|0x075eba000fb0250286983a07ff2f7876c620c2bb18ed9602cbf26e83a02caaa3|||||||
+|x|get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x075eba000fb0250286983a07ff2f7876c620c2bb18ed9602cbf26e83a02caaa3|||||||
+||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x6f1199565d53d49bb7edef3ee3b0b64736438075f3f49484fd192196561c10c4|||||||
+||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0xb6dca8a0cbf33aa86313bd66dd169be1c5cf477e11765eef3d0830e80922761f|||||||
+||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x67f706455600ba38aade49f860139d607bdd244937a7bc44f451fac13bab62d0|||||||
+||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x6e017e8918b430027e78157dde25db25f99a0774cf8231252ffb22a1aa0253ac|||||||
+||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x9c02b93573ed6a25dbce45208449bb032eace1d71a3415799e95d25f2d376a7c|||||||
+||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x6e1cafa7d25bbdc06737e094ddb14f5ef7ed01efe9cff4185d05158b814dcb03|||||||
 ||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x73f4c51bc01e368229d42a6101c4b961bbe7ba6f1d824938b69ca3e3a05912b7|||||||
 ||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0xe509bd2402f428d884caba83842aaece7b31c04240f18c518489b1566b0cb5c9|||||||
 ||get Transaction Receipt|txreceipt||||eth_getTransactionReceipt|0x91c965eab28f006d2c0dd488080999e45c55649e2bbfc0753daf06a3204daa2b|||||||

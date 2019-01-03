@@ -1,47 +1,194 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name
 rk-55|x||||||||||
-|x|Compile solidity contract|rk-55|1|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|2|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|3|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|4|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|5|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|6|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|7|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|8|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|9|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|10|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|11|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|12|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|13|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|14|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|15|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|16|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|17|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|18|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|19|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|20|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|21|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|22|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|23|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|24|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|25|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|26|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|27|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|28|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|29|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|30|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|31|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|32|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|33|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|34|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|35|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|36|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|37|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|38|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|39|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|40|||eth_compileSolidity|Token.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|41|||eth_compileSolidity|Token_2.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|42|||eth_compileSolidity|Counter.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|43|||eth_compileSolidity|personnel.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|44|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
-|x|Compile solidity contract|rk-55|45|||eth_compileSolidity|Accounts.sol||object|COMPILE_RESUILT
+||Compile solidity contract 1|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 2|rk-55|1|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 3|rk-55|2|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 4|rk-55|3|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 5|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 6|rk-55|4|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 7|rk-55|5|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 8|rk-55|6|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 9|rk-55|7|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 10|rk-55|8|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 11|rk-55|9|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 12|rk-55|10|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 13|rk-55|11|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 14|rk-55|12|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 15|rk-55|13|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 16|rk-55|14|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 17|rk-55|15|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 18|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 19|rk-55|16|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 20|rk-55|17|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 21|rk-55|18|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 22|rk-55|19|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 23|rk-55|20|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 24|rk-55|21|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 25|rk-55|22|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 26|rk-55|23|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 27|rk-55|24|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 28|rk-55|25|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 29|rk-55|26|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 30|rk-55|27|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 31|rk-55|28|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 32|rk-55|29|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 33|rk-55|30|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 34|rk-55|31|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 35|rk-55|32|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 36|rk-55|33|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 37|rk-55|34|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 38|rk-55|35|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 39|rk-55|36|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 40|rk-55|37|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 41|rk-55|38|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 42|rk-55|39|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 43|rk-55|40|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 44|rk-55|41|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 45|rk-55|42|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 46|rk-55|43|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 47|rk-55|44|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 48|rk-55|45|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 49|rk-55|46|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 50|rk-55|47|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 51|rk-55|48|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 52|rk-55|49|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 53|rk-55|50|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 54|rk-55|51|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 55|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 56|rk-55|46|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 57|rk-55|47|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 58|rk-55|48|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 59|rk-55|49|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 60|rk-55|50|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 61|rk-55|51|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 62|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 63|rk-55|51|||eth_compileSolidity|DAO.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 64|rk-55|52|||eth_compileSolidity|cryptoketties.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 65|rk-55|51|||eth_compileSolidity|cryptoketties.sol|format|object|COMPILE_RESUILT
+|x|Compile solidity contract 66|rk-55|52|||eth_compileSolidity|DAO.sol|format|object|COMPILE_RESUILT
+|||||||||||
+||Compile solidity contract 1|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 2|rk-55|1|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 3|rk-55|2|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 4|rk-55|3|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 5|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 6|rk-55|4|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 7|rk-55|5|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 8|rk-55|6|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 9|rk-55|7|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 10|rk-55|8|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 11|rk-55|9|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 12|rk-55|10|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 13|rk-55|11|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 14|rk-55|12|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 15|rk-55|13|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 16|rk-55|14|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 17|rk-55|15|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 18|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 19|rk-55|16|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 20|rk-55|17|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 21|rk-55|18|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 22|rk-55|19|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 23|rk-55|20|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 24|rk-55|21|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 25|rk-55|22|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 26|rk-55|23|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 27|rk-55|24|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 28|rk-55|25|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 29|rk-55|26|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 30|rk-55|27|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 31|rk-55|28|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 32|rk-55|29|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 33|rk-55|30|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 34|rk-55|31|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 35|rk-55|32|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 36|rk-55|33|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 37|rk-55|34|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 38|rk-55|35|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 39|rk-55|36|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 40|rk-55|37|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 41|rk-55|38|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 42|rk-55|39|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 43|rk-55|40|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 44|rk-55|41|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 45|rk-55|42|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 46|rk-55|43|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 47|rk-55|44|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 48|rk-55|45|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 49|rk-55|46|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 50|rk-55|47|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 51|rk-55|48|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 52|rk-55|49|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 53|rk-55|50|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 54|rk-55|51|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 55|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 56|rk-55|46|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 57|rk-55|47|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 58|rk-55|48|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 59|rk-55|49|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 60|rk-55|50|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 61|rk-55|51|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 62|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+|||||||||||
+||Compile solidity contract 1|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 2|rk-55|1|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 3|rk-55|2|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 4|rk-55|3|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 5|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 6|rk-55|4|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 7|rk-55|5|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 8|rk-55|6|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 9|rk-55|7|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 10|rk-55|8|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 11|rk-55|9|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 12|rk-55|10|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 13|rk-55|11|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 14|rk-55|12|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 15|rk-55|13|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 16|rk-55|14|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 17|rk-55|15|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 18|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 19|rk-55|16|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 20|rk-55|17|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 21|rk-55|18|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 22|rk-55|19|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 23|rk-55|20|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 24|rk-55|21|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 25|rk-55|22|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 26|rk-55|23|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 27|rk-55|24|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 28|rk-55|25|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 29|rk-55|26|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 30|rk-55|27|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 31|rk-55|28|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 32|rk-55|29|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 33|rk-55|30|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 34|rk-55|31|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 35|rk-55|32|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 36|rk-55|33|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 37|rk-55|34|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 38|rk-55|35|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 39|rk-55|36|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 40|rk-55|37|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 41|rk-55|38|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 42|rk-55|39|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 43|rk-55|40|||eth_compileSolidity|Token.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 44|rk-55|41|||eth_compileSolidity|Token_2.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 45|rk-55|42|||eth_compileSolidity|Counter.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 46|rk-55|43|||eth_compileSolidity|personnel.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 47|rk-55|44|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 48|rk-55|45|||eth_compileSolidity|Accounts.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 49|rk-55|46|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 50|rk-55|47|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 51|rk-55|48|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 52|rk-55|49|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 53|rk-55|50|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 54|rk-55|51|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 55|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 56|rk-55|46|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 57|rk-55|47|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 58|rk-55|48|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 59|rk-55|49|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 60|rk-55|50|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 61|rk-55|51|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT
+||Compile solidity contract 62|rk-55|52|||eth_compileSolidity|wallet.sol|format|object|COMPILE_RESUILT

@@ -34,10 +34,10 @@ var resp = {result:"something"};
 async function main(){
 	let nonce = parseInt((await cur_provider.sendRequest("getNonce","eth_getTransactionCount",[ACC])).result);
 	console.log(nonce);
-	resp = await cur_provider.sendRequest("unlockedAccount","personal_unlockAccount",[ACC,password,100000]);
+	resp = await cur_provider.sendRequest("unlockedAccount","personal_unlockAccount",[ACC,password,200000]);
 	let index = 0;
 	while(resp.result){
-		resp = await cur_provider.sendRequest(index++,"eth_sendTransaction",[{from:ACC, to:receiver, value:"0x1", nonce:utils.dec2Hex(nonce++)}]);
+		resp = await cur_provider.sendRequest(index++,"eth_sendTransaction",[{from:ACC, to:receiver, value:"0x1", nonce:utils.dec2Hex(nonce++),gasPrice:12000000000}]);
 	}
 
 	console.log(nonce);

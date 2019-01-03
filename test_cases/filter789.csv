@@ -1,41 +1,41 @@
 TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x
-FT-TC7: filter expiration|||||||||||||||
-||create a log filter|FT-TC7|||1|eth_newFilter|{toBlock:latest}|format|value|BLOCK_NUMBER_FORMAT||||
-||record a fromBlock number for later use|FT-TC7|||Pre-con0|eth_blockNumber||||||||
-||unlock account|FT-TC7|||Pre-con1|personal_unlockAccount|0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0 password 100|value||true||||
-||deploy a contract for create logs – compile a contract|FT-TC7|||Pre-con2|eth_compileSolidity|Counter.sol|||||||
-||deploy a contract for create logs – deploy a contract|FT-TC7||newContract|Pre-con3|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
-||deploy a contract for create logs – get contract address|FT-TC7|120 1|WaitNewBlock|Pre-con4|eth_getTransactionReceipt|_txHash|||||||
-||send tx to create logs – 1 |FT-TC7|incrementCounter|prepareContractCall|2-1|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
-||send tx to create logs – 2 |FT-TC7|incrementCounter|prepareContractCall|2-2|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
-||call eth_getFilterChanges after 5min|FT-TC7|300|delay|3|eth_getFilterChanges||format|value||0|||
-||call eth_getFilterLogs|FT-TC7|||4|eth_getFilterLogs||format|value||0|||
-||use getLogs to confirm that the logs are created|FT-TC7|||5|eth_getLogs|{fromBlock:_blockNumber,toBlock:latest,address:_contractAddress}|format|value||4|||
+FT-TC7: filter expiration|x||||||||||||||
+|x|create a log filter|FT-TC7|||1|eth_newFilter|{toBlock:latest}|format|value|HEX||||
+|x|record a fromBlock number for later use|FT-TC7|||Pre-con0|eth_blockNumber||||||||
+|x|unlock account|FT-TC7|||Pre-con1|personal_unlockAccount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 password 100|value||true||||
+|x|deploy a contract for create logs – compile a contract|FT-TC7|||Pre-con2|eth_compileSolidity|Counter.sol|||||||
+|x|deploy a contract for create logs – deploy a contract|FT-TC7||newContract|Pre-con3|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
+|x|deploy a contract for create logs – get contract address|FT-TC7|120 1|WaitNewBlock|Pre-con4|eth_getTransactionReceipt|_txHash|||||||
+|x|send tx to create logs – 1 |FT-TC7|incrementCounter|prepareContractCall|2-1|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
+|x|send tx to create logs – 2 |FT-TC7|incrementCounter|prepareContractCall|2-2|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
+|x|call eth_getFilterChanges after 5min|FT-TC7|310|delay|3|eth_getFilterChanges||format|value||0|||
+|x|call eth_getFilterLogs|FT-TC7|||4|eth_getFilterLogs||format|value||0|||
+|x|use getLogs to confirm that the logs are created|FT-TC7|||5|eth_getLogs|{fromBlock:_blockNumber,toBlock:latest,address:_contractAddress}|format|value||4|||
 |||||||||||||||
-FT-TC7: filter expiration – blockFilter|||||||||||||||
+FT-TC7: filter expiration – blockFilter|x||||||||||||||
 |||||||||||||||
-||create a block filter|FT-TC7-block|||1|eth_newBlockFilter||||||||
-||call eth_getFilterChanges after 5min|FT-TC7-block|310|delay|2|eth_getFilterChanges||format|value||0|||
+|x|create a block filter|FT-TC7-block|||1|eth_newBlockFilter||||||||
+|x|call eth_getFilterChanges after 5min|FT-TC7-block|310|delay|2|eth_getFilterChanges||format|value||0|||
 |||||||||||||||
-FT-TC7:pending transaction filters|||||||||||||||
-||create a pending transaction filter|FT-TC7-tx|||1|eth_newPendingTransactionFilter||||||||
-||unlock account for sending tx after 5 mins|FT-TC7-tx|300|delay|2|personal_unlockAccount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 password 100|||||||
-||send tx|FT-TC7-tx|||3|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,value:1000000}|||||||
-||send tx|FT-TC7-tx|||4|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,value:1000000}|||||||
-||check this filter|FT-TC7-tx|||5|eth_getFilterChanges||||||||
+FT-TC7:pending transaction filters|x||||||||||||||
+|x|create a pending transaction filter|FT-TC7-tx|||1|eth_newPendingTransactionFilter||||||||
+|x|unlock account for sending tx after 5 mins|FT-TC7-tx|310|delay|2|personal_unlockAccount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 password 100|||||||
+|x|send tx|FT-TC7-tx|||3|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,value:1000000}|||||||
+|x|send tx|FT-TC7-tx|||4|eth_sendTransaction|{to:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,value:1000000}|||||||
+|x|check this filter|FT-TC7-tx|||5|eth_getFilterChanges||||||||
 |||||||||||||||
 FT-TC7-1: filter expiration -pulled(logs)|||||||||||||||
 ||record a fromBlock number for later use|FT-TC7-1-log|||Pre-con0|eth_blockNumber||||||||
-||create a log filter|FT-TC7-1-log|||1|eth_newFilter|{toBlock:latest,fromBlock:_blockNumber}|format|value|BLOCK_NUMBER_FORMAT||||
-||unlock account|FT-TC7-1-log|||Pre-con1|personal_unlockAccount|0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0 password 600|value||true||||
+||create a log filter|FT-TC7-1-log|||1|eth_newFilter|{toBlock:latest,fromBlock:_blockNumber}|format|value|HEX||||
+||unlock account|FT-TC7-1-log|||Pre-con1|personal_unlockAccount|0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 password 600|value||true||||
 ||deploy a contract for create logs – compile a contract|FT-TC7-1-log|||Pre-con2|eth_compileSolidity|Counter.sol|||||||
-||deploy a contract for create logs – deploy a contract|FT-TC7-1-log||newContract|Pre-con3|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
-||deploy a contract for create logs – get contract address|FT-TC7-1-log|120 1|WaitNewBlock|Pre-con4|eth_getTransactionReceipt|_txHash|||||||
-||send tx to create logs – 1 |FT-TC7-1-log|incrementCounter|prepareContractCall|2-1|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
-||send tx to create logs – 2 |FT-TC7-1-log|incrementCounter|prepareContractCall|2-2|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
+||deploy a contract for create logs – deploy a contract|FT-TC7-1-log||newContract|Pre-con3|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
+||deploy a contract for create logs – get contract address|FT-TC7-1-log|120 1|WaitNewBlock|Pre-con4|eth_getTransactionReceipt|AssertionError: '0x1' didn't match target 'function isNumber(value) {...}'|||||||
+||send tx to create logs – 1 |FT-TC7-1-log|incrementCounter|prepareContractCall|2-1|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
+||send tx to create logs – 2 |FT-TC7-1-log|incrementCounter|prepareContractCall|2-2|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
 ||call eth_getFilterChanges after 4min|FT-TC7-1-log|240|delay|3|eth_getFilterChanges||format|value||4|||
-||send tx to create logs – 1 |FT-TC7-1-log|incrementCounter|prepareContractCall|4-1|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
-||send tx to create logs – 2 |FT-TC7-1-log|incrementCounter|prepareContractCall|4-2|eth_sendTransaction|{from:0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0}|format|value|TRANSACTION_FORMAT||||
+||send tx to create logs – 1 |FT-TC7-1-log|incrementCounter|prepareContractCall|4-1|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
+||send tx to create logs – 2 |FT-TC7-1-log|incrementCounter|prepareContractCall|4-2|eth_sendTransaction|{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}|format|value|TRANSACTION_FORMAT||||
 ||call eth_getFilterChanges after 2 min|FT-TC7-1-log|61|delay|5|eth_getFilterChanges||format|value||4|||
 ||check this testset logs|FT-TC7-1-log|||Post-1|eth_getLogs|{fromBlock:_blockNumber,address:_contractAddress}|format|valid_type||8|||
 FT-TC7-1: filter expiration -pulled(logs)|||||||||||||||
@@ -89,3 +89,13 @@ FT-TC9-1: filter with limits (log filter)|||||||||||||||
 ||pull filterChanges|FT-TC9-1|30 1|WaitNewBlock|3|eth_getFilterChanges||format|value||5|||
 ||check this testset logs|FT-TC9-1|Evt|getEvent|4|eth_getLogs|{fromBlock:_blockNumber,toBlock:latest,address:_contractAddress,limit:7}|format|value||7|||
 ||uninstall|FT-TC9-1|||x|eth_uninstallFilter||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+|||||||||||||||
+||||||||AssertionError: '0x1' didn't match target 'function isNumber(value) {...}'|||||||

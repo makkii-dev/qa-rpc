@@ -2,7 +2,7 @@ var chaiMatchPattern = require('chai-match-pattern');
 var chai= require("chai");
 chai.use(chaiMatchPattern);
 var _ = chaiMatchPattern.getLodashModule();
-var utils = require("./utils");
+var utils = require("./utils1");
 
 
 var H160= /^0x[0-9a-f]{1,160}$/;
@@ -30,7 +30,7 @@ const VALID_BLOCK_OBJECT={
 	gasLimit:HEX,
 	gasUsed:HEX,
 	hash:H160,
-	logsBloom:JAVA_HEX,
+	logsBloom:HEX,
 	miner:H160,
 	nonce:HEX,
 	number:_.isNumber,
@@ -61,36 +61,15 @@ const VALID_TRANSACTION_RECEIPT = {
         to: account_format,
         gasUsed: HEX,
         logs: _.isArray,
-        logsBloom: HEX,
-        root: HEX,
+        logsBloom: JAVA_HEX,
         /*Quantity - ‘0x0’ indicates transaction failure , ‘0x1’ indicates transaction success. Set for blocks mined after Byzantium hard fork EIP609, null before.*/
         status:HEX,
         transactionHash: transaction_format,
-        transactionIndex: HEX
-}
+        transactionIndex: HEX,
+        cumulativeNrgUsed: HEX,
+        nrgPrice:HEX,
+        nrgUsed:HEX
 
-
-
-const TX_OBJECT= {
-	blockHash:NULL_N_HEX,
-	blockNumber:NULL_N_INT,
-	chainId:NULL_N_HEX,
-	condition:_.isNull,
-	creates:NULL_N_HEX,
-	from:account_format,
-	gas:HEX,
-	gasPrice:HEX,
-	hash:transaction_format,
-	input:BINARY,
-	nonce:HEX,
-	publicKey:public_key,
-	raw:HEX,
-	sig:BINARY,
-	standardV:HEX,
-	timestamp:utils.isValidTimeStamp,
-	to:account_format,
-	transactionIndex:NULL_N_HEX,
-	value:HEX
 }
 
 const VALID_TX_RECEIPT = {
@@ -103,14 +82,42 @@ const VALID_TX_RECEIPT = {
 	gasPrice:HEX,
 	gasUsed:HEX,
 	logs:_.isArray,
-	logsBloom:HEX,
-	output:/^0x[0-9]*/,
-	root:HEX,
+	logsBloom:JAVA_HEX,
+	//output:/^0x[0-9]*/,
+	root:JAVA_HEX,
 	to:NULL_N_HEX,
 	transactionHash:HEX,
 	transactionIndex:HEX,
-	status:HEX
+	status:HEX,
+	cumulativeNrgUsed:HEX,
+	nrgPrice:HEX,
+	nrgUsed:HEX
 }
+
+const TX_OBJECT= {
+	blockHash:NULL_N_HEX,
+	blockNumber:NULL_N_INT,
+	chainId:NULL_N_HEX,
+	contractAddress:NULL_N_HEX,
+	from:account_format,
+	gas:_.isNumber,
+	gasPrice:HEX,
+	hash:transaction_format,
+	input:BINARY,
+	nonce:_.isNumber,
+	//publicKey:public_key,
+	//raw:HEX,
+	//sig:BINARY,
+	//standardV:HEX,
+	timestamp:_.isNumber,
+	to:account_format,
+	transactionIndex:NULL_N_HEX,
+	value:HEX,
+	nrg:_.isNumber,
+	nrgPrice:HEX
+}
+
+
 
 const VALID_SIGN_TRANSACTION = {
 	raw: HEX,
@@ -187,7 +194,8 @@ module.exports={
 		ARRAY:_.isArray,
 		STRING:_.isString,
 		BINARY:BINARY,
-		INTEGER:_.isNumber
+		INTEGER:_.isNumber,
+		NULL:_.isNull
 	},
 	OBJECT:{
 		VALID_BLOCK_OBJECT:VALID_BLOCK_OBJECT,
@@ -254,11 +262,11 @@ module.exports={
   		},
   		INVALID_GAS:{
   			code:-32010,
-  			message:/Invalid transaction energy/
+  			message:/Invalid transaction gas/
   		},
   		INVALID_CREATION_GAS:{
   			code:-32010,
-  			message:/Invalid contract create energy/
+  			message:/Invalid contract creation gas/
   		}
 	}
 	

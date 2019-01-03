@@ -176,6 +176,7 @@ data.forEach((testSuite)=>{
 				logger.title(title);
 				logger.info(JSON.stringify(testRow));
 				logger.info(JSON.stringify(this));
+				RUNTIME_VARIABLES.preStoreVariables(testRow.preStoreVariables);
 				testRow.params = formParam(testRow.params,testRow.method);
 			
 				var helperfunc = testRow.helper? helper[testRow.helper]:(params,a,b,c,done)=>{ return new Promise((resolve)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});})};

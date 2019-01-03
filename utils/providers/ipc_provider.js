@@ -18,8 +18,8 @@ module.exports = (path,request_id,request_method,request_params,rpc_version,logg
 			if(!connection.writable) connection.connect({path:path});
 			connection.write(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
 			connection.on('data',(data)=>{
-				logger.log("[IPC Response Buffer]:");
-				logger.log(data);
+				//logger.log("[IPC Response Buffer]:");
+				//logger.log(data);
 				data = data.toString('ascii');
 				logger.log("[IPC Response]:");
 				logger.log(data);

@@ -7,11 +7,7 @@ module.exports = (path,request_id,request_method,request_params,rpc_version,logg
 	return new Promise((resolve,reject)=>{
 		var ws = new websocket(path);
 
-		ws.on("open",()=>{
-			logger.log("[WEBSOCKET request]:");
-			logger.log(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
-			ws.send(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
-		});
+
 
 		ws.on("message",(data)=>{
 			logger.log("[WEBSOCKET response]:");
@@ -24,6 +20,11 @@ module.exports = (path,request_id,request_method,request_params,rpc_version,logg
 			logger.log(e);
 			reject(ERROR(e));
 			ws.terminate();
+		});
+		ws.on("open",()=>{
+			logger.log("[WEBSOCKET request]:");
+			logger.log(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
+			ws.send(JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version)));
 		});
 
 	});

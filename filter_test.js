@@ -207,9 +207,9 @@ describe("Filter test scenarios",()=>{
 			if(contract.address.length ==0) await deploy(senderAcc,contract);
 			if(Object.keys(gasLimit)!=3){
 				let resps = await Promise.all([
-					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC3-meth1","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
-					cur_provider.sendRequest("FT-TC6-meth3","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
+					cur_provider.sendRequest("FT-TC4-meth1gas","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC4-meth2gas","eth_estimateGas",[{from:senderAcc,to:contract.address[1],data:utils.getContractFuncData(contract.func.decrementCounter,[])}]),
+					cur_provider.sendRequest("FT-TC4-meth3gas","eth_estimateGas",[{from:senderAcc,to:contract.address[0],data:utils.getContractFuncData(contract.func.incDecCounter,[])}])
 					]);
 				gasLimit.increment = resps[0].result;
 				gasLimit.decrement = resps[1].result;
@@ -220,8 +220,11 @@ describe("Filter test scenarios",()=>{
 			fromBlock = resp.result;
 			toBlock = "0x"+(parseInt(fromBlock)+5).toString(16);
 
-			filterID4_1 = (await cur_provider.sendRequest("FT-TC4-1-createFilter","eth_newFilter",[{fromBlock:"0x"+(parseInt(fromBlock)+5).toString(16),toBlock:"latest"}])).result;
+			//create a filter from future blocks
+			filterID4_1 = (await cur_provider.sendRequest("FT-TC4-1-createFilter","eth_newFilter",[{fromBlock:toBlock,toBlock:"latest"}])).result;
+			// create a filter from current to a future blocks
 			filterID4_2 = (await cur_provider.sendRequest("FT-TC4-2-createFilter","eth_newFilter",[{fromBlock:fromBlock,toBlock:toBlock}])).result;
+			// create a filter from current to a future blocks
 			filterID4_3 = (await cur_provider.sendRequest("FT-TC4-3-createFilter","eth_newFilter",[{fromBlock:fromBlock,toBlock:"pending"}])).result;
 
 			//call methods to create (en1) events, all transactions mined before bn1+4 block being sealed
@@ -242,9 +245,9 @@ describe("Filter test scenarios",()=>{
 			return resp.forEach((res,index)=>{
 				if(index < 2) {
 					logger.log(res.id);
-					chai.expect(res.result).to.have.lengthOf(6);
+					chai.expect(res.result).to.have.lengthOf(4); 
 				}else if(index == 2){
-					chai.expect(res.result.transactions).to.have.lengthOf(1);
+					chai.expect(res.result.transactions).to.have.lengthOf(0);//pending block won't have any logs.
 				}
 			});
 		});
@@ -274,13 +277,16 @@ describe("Filter test scenarios",()=>{
 					cur_provider.sendRequest("FT-TC4-2-getFilterLogs","eth_getFilterLogs",[filterID4_2])
 				])
 			return resp.forEach((res,index)=>{
-				logger.log("check result: "+index);
+				logger.log("check result: "+res.id);
 				if(index == 2){
+					logger.log("total logs: "+res.result.length);
 					chai.expect(res.result).to.have.lengthOf(12);
 				}else if(index == 0 || index == 1){
+					logger.log("fromBlock number from future when the filter created"+res.result.length);
 					chai.expect(res.result).to.have.lengthOf(6);
 				}else{
-					chai.expect(res.result).to.have.lengthOf(0);
+					logger.log("toBlock number in future when the filter created"+res.result.length);
+					chai.expect(res.result).to.have.lengthOf(6);
 				}
 
 			});
@@ -379,15 +385,15 @@ describe("Filter test scenarios",()=>{
 					utils.waitBlock([120,2],cur_provider)
 				]);
 			resp = await Promise.all([
-					cur_provider.sendRequest("FT-TC3-getFilterChanges-inc","eth_getFilterChanges",[increaseFilter]), //0
-					cur_provider.sendRequest("FT-TC3-getFilterLogs-inc","eth_getFilterLogs",[increaseFilter]),
-					cur_provider.sendRequest("FT-TC3-getFilterChanges-dec","eth_getFilterChanges",[decreaseFilter]), //2
-					cur_provider.sendRequest("FT-TC3-getFilterLogs-dec","eth_getFilterLogs",[decreaseFilter]),
-					cur_provider.sendRequest("FT-TC3-getFilterChanges-combine","eth_getFilterChanges",[combineFilter]), //4
-					cur_provider.sendRequest("FT-TC3-getFilterLogs-combine","eth_getFilterLogs",[combineFilter]),
-					cur_provider.sendRequest("FT-TC3-getFilterLogs-count","eth_getFilterLogs",[countFilter]), //6
-					cur_provider.sendRequest("FT-TC3-getFilterChanges-count","eth_getFilterChanges",[countFilter]),
-					cur_provider.sendRequest("FT-TC3-getlogs","eth_getLogs",[{fromBlock:fromBlock}]), //8
+					cur_provider.sendRequest("FT-TC5-getFilterChanges-inc","eth_getFilterChanges",[increaseFilter]), //0
+					cur_provider.sendRequest("FT-TC5-getFilterLogs-inc","eth_getFilterLogs",[increaseFilter]),
+					cur_provider.sendRequest("FT-TC5-getFilterChanges-dec","eth_getFilterChanges",[decreaseFilter]), //2
+					cur_provider.sendRequest("FT-TC5-getFilterLogs-dec","eth_getFilterLogs",[decreaseFilter]),
+					cur_provider.sendRequest("FT-TC5-getFilterChanges-combine","eth_getFilterChanges",[combineFilter]), //4
+					cur_provider.sendRequest("FT-TC5-getFilterLogs-combine","eth_getFilterLogs",[combineFilter]),
+					cur_provider.sendRequest("FT-TC5-getFilterLogs-count","eth_getFilterLogs",[countFilter]), //6
+					cur_provider.sendRequest("FT-TC5-getFilterChanges-count","eth_getFilterChanges",[countFilter]),
+					cur_provider.sendRequest("FT-TC5-getlogs","eth_getLogs",[{fromBlock:fromBlock}]), //8
 					
 				])
 			return resp.forEach((res,index)=>{

@@ -182,5 +182,13 @@ Helper.prototype.data0xPrefix = async (options,RUNTIME_VARIABLES,testRow, VERIFY
 	return Promise.resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 }
 
+Helper.prototype.inc = async (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
+	options.forEach((item,index)=>{
+		let pair = item.split(',');
+		RUNTIME_VARIABLES[pair[0]] = RUNTIME_VARIABLES[pair[0]] + parseInt(pair[1]);
+	})
+	return Promise.resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+}
+
 
 module.exports=Helper;

@@ -229,7 +229,7 @@ function createProviderFromConfig(providers,config_string,name){
 
 
 		}else{
-			providers[name].RUNTIME_VARIABLES = new RUNTIMEVARIABLES();
+			providers[name].RUNTIME_VARIABLES = new RUNTIMEVARIABLES({});
 			providers[name].provider = new Provider({type:provider_type,logger:logger});
 		}
 		providers[name].helper = new Helper({provider:providers[name].provider,logger:logger});
@@ -259,6 +259,8 @@ data.forEach((testSuite)=>{
 	account0:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,
 	account1:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,
 	password:password}*/	
+		console.log(testSuite);
+		
 		if(testSuite.rust) createProviderFromConfig(providers, testSuite.rust, "rust");
 		if(testSuite.java) createProviderFromConfig(providers, testSuite.java, "java");
 		if(providers.list.length == 0) createProviderFromConfig(providers);
@@ -306,7 +308,17 @@ data.forEach((testSuite)=>{
 
 					//validation post func
 					.then((results)=>{
+
 						let err =resultComparision(results[0],results[1]);
+						if(testRow.restrict){
+							try{
+								chai.expect(results[0]).to.equal(results[1]);
+							}catch(error){
+								err.push(JSON.stringify(results[0]));
+								err.push(JSON.stringify(results[1]));
+								err.push(error);
+							}
+						}
 
 						if(err.length == 0)
 							done();
@@ -391,6 +403,8 @@ function resultComparision(rust,java){
 	try{
 		chai.expect(typeof rust).to.equal(typeof java);
 	}catch(err){
+		errors.push(JSON.stringify(rust));
+		errors.push(JSON.stringify(java));
 		errors.push(err);
 		return errors;
 	}
@@ -412,6 +426,8 @@ function resultComparision(rust,java){
 				})
 			}
 		}catch(err){
+			errors.push(JSON.stringify(rust));
+			errors.push(JSON.stringify(java));
 			errors.push(err);
 		}
 	}
@@ -419,6 +435,8 @@ function resultComparision(rust,java){
 		try{
 			chai.expect(rust).to.have.lengthOf(java.length);
 		}catch(err){
+			errors.push(rust);
+			errors.push(java);
 			errors.push(err);
 		}
 	}

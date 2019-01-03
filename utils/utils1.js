@@ -388,12 +388,13 @@ var waitBlock = (options,provider)=>{
 
 function waitBlockUntil(option,provider){
 	var timeout = 1200, lastBlock = 0;
-	var curBlock;
+	var curBlock
 	if(Array.isArray(option) && option.length > 0){
 		lastBlock = option[0]|| lastBlock;
 		timeout = option[1] || timeout;
 	}
 	if(typeof timeout != "number") timeout = parseInt(timeout);
+	if(typeof lastBlock == "string" && !isNaN(parseInt(lastBlock))) lastBlock= parseInt(lastBlock);
 	return 	new Promise((resolve,reject)=>{
 			var checkblock = ()=>{
 				provider.sendRequest("checkBlock","eth_blockNumber",[]).then((resp)=>{
