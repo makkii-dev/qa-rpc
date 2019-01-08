@@ -13,7 +13,7 @@ var DRIVER_PATH = "./test_cases/testDriver.csv";
 var provider_type;
 
 // internal dependencies
-const validFormat= require("./libs/utils/validFormat");
+const validFormat= require("./libs/utils/validFormat1");
 var readCSVDriver = require("./libs/utils/readCSV1");
 const Provider = require("./libs/utils/provider");
 var utils = require("./libs/utils/utils1");
@@ -94,12 +94,11 @@ var Step_Action = function(rows,resolves){
 	for(let i = 0; i < levels.length; i++){
 		aFunction = aFunction[levels[i]];
 		if(i==0 && levels[i]=='requestMethod'){
-
 			stepAction.requestMethod.registerMethod(levels[i+1],currentRow.id);
 		}
 	}
 
-	var params = formParam(currentRow.params,currentRow.method);
+	currentRow.params = formParam(currentRow.params,currentRow.method);
 	if(rows.usePreparedData){
 		Object.entries(RUNTIME_VARIABLES.nextTxObj).forEach((pair,index)=>{
 			currentRow.params[0][pair[0]] = pair[1];
@@ -107,7 +106,7 @@ var Step_Action = function(rows,resolves){
 		delete RUNTIME_VARIABLES.nextTxObj;
 	}
 
-	return aFunction(params,RUNTIME_VARIABLES,resolves).then((result)=>{
+	return aFunction(currentRow,RUNTIME_VARIABLES,resolves).then((result)=>{
 		logger.info(currentRow.testDescription);
 		if(rows.length > 0){
 			return Step_Action(rows,result);
@@ -120,7 +119,6 @@ var data = readCSVDriver(DRIVER_PATH);
 
 //verify driver file
 logger.log("Find "+data.length+" testcases:");
-
 
 //runtime variables:
 

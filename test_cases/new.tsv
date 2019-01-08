@@ -1,7 +1,7 @@
 TestSet	execute	testDescription	id	usePreparedData	method	params	runtimeVal	storeVariables	preStoreVariables
 smoke	x								
 	x	get all the accounts in current kernel	Smoke-1		requestMethod.eth_accounts	[]			
-	x	validate response	smoke-1-vali						
+	x	validate response	smoke-1-vali		validFormat	[matches,ARRAY]			
 smoke	x								
 	x	get the highest block number	2		requestMethod.eth_blockNumber	[]			
 smoke	x								
