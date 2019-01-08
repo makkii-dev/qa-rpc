@@ -3,7 +3,7 @@ const HTTP_PROVIDER = require("http");
 function requestBody(id,method,params,rpc_version){
 	return {id:id,method:method,params:params,jsonrpc:rpc_version};
 }
-var http_provider = (endpoint, request_id, request_method, request_params,rpc_version,logger)=>{
+var http_provider = (endpoint, request_id, request_method, request_params,rpc_version,logger,log_visible)=>{
 	logger.log(endpoint);
 	return new Promise((resolve, reject)=>{
 	
@@ -48,20 +48,21 @@ var http_provider = (endpoint, request_id, request_method, request_params,rpc_ve
 			});
 			res.on('end',()=>{
 				//console.log("closed connection"+ request_id);
-				logger.log("[HTTP Response]");
-				logger.log(resp);
+				logger.log("[HTTP Response]",log_visible);
+				logger.log(resp, );
 				resolve(JSON.parse(resp));
 			});
 		});
 
 		req.on("error",(e)=>{
-			logger.log("[HTTP ERROR]");
-			logger.log(e);
+			logger.error("[HTTP ERROR]");
+			logger.error(e);
 			reject(e);
 		})
+
 		let payload = JSON.stringify(requestBody(request_id,request_method,request_params,rpc_version));
-		logger.log("[HTTP Request]");
-		logger.log(payload);
+		logger.log("[HTTP Request]",log_visible);
+		logger.log(payload,log_visible);
 		req.write(payload);
 		req.end();
 

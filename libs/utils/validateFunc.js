@@ -59,7 +59,7 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	self.logger.log(JSON.stringify(obj.VERIFY_VARIABLES.vals));
 	
 	console.log(obj.VERIFY_VARIABLES.defaultGasPrice);
-	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? new BN(obj.testRow.params[0].gasPrice.substring(2),16):new BN(obj.VERIFY_VARIABLES.defaultGasPrice.substr(2),16));
+	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? (typeof obj.testRow.params[0].gasPrice == 'number'? new BN(obj.testRow.params[0].gasPrice): new BN(obj.testRow.params[0].gasPrice.substring(2),16)):new BN(obj.VERIFY_VARIABLES.defaultGasPrice.substr(2),16));
 
 	let gas = new BN(21000);
 	self.logger.log(gas.toString(10));

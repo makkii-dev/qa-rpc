@@ -1,0 +1,29 @@
+TestSet	execute	testDescription	id	usePreparedData	method	params	runtimeVal	storeVariables	preStoreVariables
+smoke	x								
+	x	get all the accounts in current kernel	Smoke-1		requestMethod.eth_accounts	[]			
+	x	validate response	smoke-1-vali						
+smoke	x								
+	x	get the highest block number	2		requestMethod.eth_blockNumber	[]			
+smoke	x								
+	x	get the coin base	4		requestMethod.eth_coinbase	[]			
+smoke	x								
+	x	get the gas price	7		requestMethod.eth_gasPrice	[]			
+smoke	x								
+	x	get balance for the latest account	8-latest		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,latest]			
+	x	get balance for the earliest account	8-earliest		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,earliest]			
+	x	get balance for the pending account	8-pending		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,pending]			
+	x	get balance for the number account	8-number		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,0x1]			
+	x	get block by number - latest	10-latest		requestMethod.eth_getBlockByNumber	[latest,false]			
+	x	get block by number - earliest	10-earliest		requestMethod.eth_getBlockByNumber	[earliest,false]		result.hash=>blockHash	
+	x	get block by number- pending	10-pending		requestMethod.eth_getBlockByNumber	[pending,true]			
+	x	get block by number – number	10-number		requestMethod.eth_getBlockByNumber	[0x1,true]			
+	x	get block by hash	9		requestMethod.eth_getBlockByHash	[_blockHash,true]			
+	x	get block tx counts by number -latest	12-latest		requestMethod.eth_getBlockTransactionCountByNumber	[latest]			
+	x	get block tx counts by number -earliest	12-earliest		requestMethod.eth_getBlockTransactionCountByNumber	[earliest]			
+	x	get block tx counts by number -pending	12-pending		requestMethod.eth_getBlockTransactionCountByNumber	[pending]			
+	x	get block tx counts by number -0x1	12-number		requestMethod.eth_getBlockTransactionCountByNumber	[0x1]			
+	x	get block tx counts by hash	11		requestMethod.eth_getBlockTransactionCountByHash	[_blockHash]			
+	x	get support compiler names	14		requestMethod.eth_getCompilers	[]			
+	x	get miner hashrate	22		requestMethod.eth_hashrate	[]			
+	x	check if current client is mining	23		requestMethod.eth_mining	[]			
+	x	get Protocol version	27		requestMethod.eth_protocolVersion	[]			

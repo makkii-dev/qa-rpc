@@ -11,7 +11,7 @@ var nacl = aionLib.crypto.nacl;
 var aionPubSigLen = aionLib.accounts.aionPubSigLen;
 var removeLeadingZeroX = aionLib.formats.removeLeadingZeroX;
 var BN = require('bn.js');
-var BigNumber = require("bignumber.js");
+// var BigNumber = require("bignumber.js");
 
 var paramTypeBytes = new RegExp(/^bytes([0-9]*)$/);
 var paramTypeNumber = new RegExp(/^[0-9]*$/);
@@ -251,8 +251,7 @@ function getEvent(funcABI){
 
 // assume params are primary element
 var getContractFuncData = (funcABI, params)=>{
-	console.log(params);
-	console.log(funcABI);
+
 	if(funcABI==null  || funcABI == undefined || funcABI == {}){
 		return "0x"+ params.join("");
 	}
@@ -262,9 +261,8 @@ var getContractFuncData = (funcABI, params)=>{
 	});
 	funcStr = funcStr.replace(/,$/,')');
 	if(!/\)$/.test(funcStr)) funcStr= funcStr+")";
-	console.log(funcStr)
+
 	let funcSign = keccak256(funcStr).substring(0,8);
-	console.log(funcSign);
 	let check = funcSign;
 	let rest = '';
 	//console.log(params);
@@ -436,7 +434,6 @@ function getTxReceipt(txHash,provider,timeout){
 		timeout = timeout || 60;//(sec)
 		var loop =  setInterval(async()=>{
 				let res  = await provider.sendRequest("check receipt", "eth_getTransactionReceipt",[txHash]);
-				console.log(res);
 				timeout--;
 				if(res.result !==undefined && res.result != null){
 					clearInterval(loop);
@@ -470,9 +467,9 @@ var Utils={
 	},
 	//
 	str2Obj:str2Obj,
-	getBigNumber:(number)=>{return new BigNumber(number);},
+	getBigNumber:(number)=>{return new BN(number);},
 	isBIGNUMBER:()=>{
-		return {test:(value)=>{return BigNumber.isBigNumber(value);}};
+		return {test:(value)=>{return BN.isBN(value);}};
 	},
 	isValidTimeStamp:()=>{
 		return {test:(ts)=>{

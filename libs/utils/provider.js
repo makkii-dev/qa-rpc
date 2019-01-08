@@ -58,8 +58,8 @@ class Provider{
 		return this;
 	}
 
-	sendRequest(id,method,params,timeout){
-		return this.provider(this.path, id, method, params, this.rpc_version, this.logger,timeout);
+	sendRequest(id,method,params,log_visible){
+		return this.provider(this.path, id, method, params, this.rpc_version, this.logger, log_visible);
 	}
 }
 

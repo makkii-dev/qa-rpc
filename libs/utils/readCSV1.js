@@ -1,9 +1,9 @@
 var fs = require('fs');
 var csvParse = require('csv-parse/lib/sync');
 
-module.exports = (driver_path)=>{
+var readCSV = (driver_path)=>{
 	var testdriver = fs.readFileSync(driver_path);
-	var data = csvParse(testdriver,{columns:true/*,auto_parse:true*/,skip_lines_with_empty_values:true,delimiter:"|"});
+	var data = csvParse(testdriver,{columns:true/*,auto_parse:true*/,skip_lines_with_empty_values:true,delimiter:"\t"});
 	var reformData = [];
 	data = data.filter((row,index,arr)=>{
 		return row.execute!='';
@@ -27,9 +27,14 @@ module.exports = (driver_path)=>{
 			reformData.push(oneSet);
 		}else{
 			let ts_No = reformData.length-1;
+			console.log(ts_No);
 			reformData[ts_No].tests.push(item);
 		}
 	});
 
 	return reformData;
 }
+
+
+
+module.exports = readCSV;

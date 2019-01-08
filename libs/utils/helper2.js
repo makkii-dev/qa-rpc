@@ -12,14 +12,12 @@ var Helper = function(options){
 }
 
 Helper.prototype._init = (provider,logger)=>{
-	console.log("logger ?");
-	console.log(logger);
 	this.logger = logger||console;
 	this.provider = provider;
 }
 
 Helper.prototype.WaitNewBlock =  (options,a,b,c)=>{
-	var oldBlockNo,newBlockNo;
+	var oldBlockNo, newBlockNo;
 	//console.log(this);
 	var provider = this.provider;
 	var _id = b!==undefined? "helper"+b.id:"helper";
@@ -38,19 +36,16 @@ Helper.prototype.WaitNewBlock =  (options,a,b,c)=>{
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
 
-		provider.sendRequest(_id,"eth_blockNumber",[]).then((resp)=>{
+		provider.sendRequest(_id,"eth_blockNumber",[],false).then((resp)=>{
 			oldBlockNo = resp.result
-			//console.log(resp);
 		}).then(()=>{
-			console.log("-----------"+oldBlockNo);
-			
 			
 			var checkblock = ()=>{
-				provider.sendRequest(_id,"eth_blockNumber",[]).then((resp)=>{
+				provider.sendRequest(_id,"eth_blockNumber",[],false).then((resp)=>{
 					newBlockNo= resp.result;
-					console.log("-----------"+oldBlockNo+" "+newBlockNo);
+					this.logger.log("-----------"+oldBlockNo+" "+newBlockNo);
 					if(parseInt(newBlockNo) > parseInt(oldBlockNo)+ newBlockNum){
-						console.log("-----reached------"+oldBlockNo+" "+newBlockNo);
+						this.logger.log("-----reached------"+oldBlockNo+" "+newBlockNo);
 						clearInterval(checkloop);
 						resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});
 					}
@@ -73,22 +68,22 @@ Helper.prototype.delay= (timeout,a,b,c)=>{
 	if(Array.isArray(timeout)) timeout = timeout[0];
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
-		console.log(`wait for : ${timeout} seconds`);
+		this.logger.log(`wait for : ${timeout} seconds`);
 		setTimeout(()=>{
-			console.log("\nin delay");
+			this.logger.log("\nin delay");
 			resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});
 		},parseInt(timeout)*1000);
 	})
 }
 
 Helper.prototype.createPKAccount = (option,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES)=>{
-	console.log(option);
+	this.logger.info(option);
 	if(Array.isArray(option)) option = option[0];
 	return new Promise((resolve)=>{
 		let account = aionAccount.createKeyPair(option);
 		account.addr = aionAccount.createA0Address(account.publicKey);
 		RUNTIME_VARIABLES.update("pairKeyCreateAcc", account);
-		console.log(JSON.stringify(RUNTIME_VARIABLES));
+		this.logger.info(JSON.stringify(RUNTIME_VARIABLES));
 		testRow.params[0].to = testRow.params[0].to||account.addr;
 		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 	});
@@ -117,19 +112,17 @@ Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY
 
 	return new Promise((resolve)=>{
 		let newOptions = options.map((value)=>{
-//			if(!isNaN(value) && !/^0x/.test(value)){
-//				return parseInt(value);
-//			}
+
 			if(typeof value === 'string' && /^_/.test(value) && RUNTIME_VARIABLES[value.substring(1)]!==undefined){
 				console.log("replace with new value");
 				value =  RUNTIME_VARIABLES[value.substring(1)];
 			}
-			console.log(value);
+			this.logger.log(value);
 			return value;
 		})
 
-		console.log(newOptions);
-		console.log(testRow);
+		//console.log(newOptions);
+		//console.log(testRow);
 		
 		if(/^prec_/.test(newOptions[0])){
 			testRow.params[0].data = utils.getContractFuncData(null,newOptions.slice(1));
@@ -139,7 +132,7 @@ Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY
 			testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[newOptions[0]],newOptions.slice(1));
 			testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
 		}
-		console.log(JSON.stringify(testRow.params));
+		this.logger.log(JSON.stringify(testRow.params));
 		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 	
 	});
@@ -147,8 +140,8 @@ Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY
 
 Helper.prototype.getEvent=(options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
 	return new Promise((resolve)=>{
-		testRow.params[0].topics = ["0x"+utils.getEvent(RUNTIME_VARIABLES.contract.event[testRow.helper_params])];
-		console.log(testRow.params);
+		testRow.params[0].topics = ["0x"+utils.getEvent(RUNTIME_VARIABLES.contract.event[testRow.helper_params[0]])];
+		this.logger.log(testRow.params);
 		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 	})
 }

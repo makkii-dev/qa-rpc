@@ -1,4 +1,5 @@
-module.exports = ()=>{
+module.exports = (logger)=>{
+	this.logger = logger
 	var self = this;
 	self.name = "RUNTIME_VARIABLES";
 	self.accounts = {
@@ -6,18 +7,17 @@ module.exports = ()=>{
 			_privateKey:"0x23c6a047cc6b88c8e7b023ade132304797ac86675db50673afae7130e2476aaf54c0b58818d59cdf27f7aa7b2ae61e62fac7c3c4fadd3fc737dcf256314992f0",
 			publicKey: "0x54c0b58818d59cdf27f7aa7b2ae61e62fac7c3c4fadd3fc737dcf256314992f0",
 			addr:      "0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137",
-
 		}
 	}
 	this.precompile = (()=>{
-		let _abis = require("../testContracts/precompile.json");
+		let _abis = require("../../testContracts/precompile.json");
 		let _res = {};
 		_abis.forEach((abi,index)=>{
 			_res[abi.name] = abi.addr;
 		})
 		return _res;
 	})();
-
+	this.emptyString="";
 	this.update=(method,resp,req)=>{
 		
 		switch(method){
