@@ -79,7 +79,7 @@ var cur_provider = new Provider({type:provider_type,logger:logger});
 let newlogfilename = (DRIVER_PATH.match(/\w+\.\w+/))[0]
 logger.updateName(newlogfilename.substring(0,newlogfilename.length-4));
 
-global.stepAction = {
+var stepAction = {
 	requestMethod: new RequestMethod(cur_provider),
 	helper: new Helper({provider:cur_provider,logger:logger}),
 	validationFunction: validationFunc,
@@ -90,6 +90,9 @@ var Step_Action = function(rows,resolves){
 	let currentRow = rows.shift();
 	var levels  = currentRow.method.split(".");
 	var aFunction = stepAction;
+
+	logger.log(JSON.stringify(rows));
+	logger.log(JSON.stringify(resolves));
 
 	for(let i = 0; i < levels.length; i++){
 		aFunction = aFunction[levels[i]];
@@ -105,9 +108,9 @@ var Step_Action = function(rows,resolves){
 		});
 		delete RUNTIME_VARIABLES.nextTxObj;
 	}
-
+	logger.info(currentRow.testDescription);
 	return aFunction(currentRow,RUNTIME_VARIABLES,resolves).then((result)=>{
-		logger.info(currentRow.testDescription);
+		
 		if(rows.length > 0){
 			return Step_Action(rows,result);
 		}
@@ -153,13 +156,12 @@ var EXPECT_RESP= (req_id, expect_result)=>{
 
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{
-		
-		RUNTIME_VARIABLES.reset();
+		if(!testSuite.usePreparedData)
+			RUNTIME_VARIABLES.reset();
 		VERIFY_VARIABLES.reset();
 		
 		let startTime;
 		before(()=>{
-	
 			startTime = Date.now();
 		})
 
@@ -168,12 +170,15 @@ data.forEach((testSuite)=>{
 		})
 
 		it(testSuite.name,(done)=>{
+
+			logger.title(testSuite.name);
 			let testcases = testSuite.tests;
 			 
 			Step_Action(testcases).then((res)=>{
-				logger.log(res);
+	
 				done();
 			}).catch((err)=>{
+				logger.error(err);
 				done(err);
 			});
 			

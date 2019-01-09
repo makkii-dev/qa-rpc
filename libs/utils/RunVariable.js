@@ -119,6 +119,7 @@ module.exports = (logger)=>{
 	}
 	this.storeVariables = (instructions,resp)=>{
 		if(!instructions) return self;
+
 		console.log(instructions);
 		let instrs = instructions.split(",");
 		instrs.forEach((instr, index)=>{
@@ -132,7 +133,7 @@ module.exports = (logger)=>{
 				console.log(name);
 				if(sourceValue[name]) sourceValue = sourceValue[name];
 				else {
-					logger.error("fail to find field in response : "+ vals[0]);
+					self.logger.error("fail to find field in response : "+ vals[0]);
 					break;
 				}
 			}

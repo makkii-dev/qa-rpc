@@ -194,7 +194,7 @@ var formates ={
 		ARRAY:_.isArray,
 		STRING:_.isString,
 		BINARY:BINARY,
-		INTEGER:_.isNumber,
+		NUMBER:_.isNumber,
 		NULL:_.isNull,
 
 		VALID_BLOCK_OBJECT:VALID_BLOCK_OBJECT,
@@ -272,19 +272,23 @@ var formates ={
 };
 
 
-module.exports = function(params, resolution){
+module.exports = function(rows, rt, resolution){
+	let params = rows.params;
+	console.log(params);
+	console.log("validateFormate: ",resolution.result,resolution.error)
 	switch(params[0]){
+
 		case 'error':
 			expect(resolution.error).to.matchPattern(formates[params[1]]);
 			break;
 		case 'contains':
-			expect(resolution.result).to.have.members(params[1]);
+			expect(resolution.result).to.have.members([params[1]]);
 			break;
-		case 'exact':
+		case 'equal':
 			expect(resolution.result).to.equal(params[1]);
 			break;
 		case "length":
-			expect(resolution/result).to.have.lengthOf(params[1]);
+			expect(resolution.result).to.have.lengthOf(params[1]);
 			break;
 		default:
 			expect(resolution.result).to.matchPattern(formates[params[1]]);

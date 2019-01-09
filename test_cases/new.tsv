@@ -1,29 +1,120 @@
-TestSet	execute	testDescription	id	usePreparedData	method	params	runtimeVal	storeVariables	preStoreVariables
-smoke	x								
-	x	get all the accounts in current kernel	Smoke-1		requestMethod.eth_accounts	[]			
-	x	validate response	smoke-1-vali		validFormat	[matches,ARRAY]			
-smoke	x								
-	x	get the highest block number	2		requestMethod.eth_blockNumber	[]			
-smoke	x								
-	x	get the coin base	4		requestMethod.eth_coinbase	[]			
-smoke	x								
-	x	get the gas price	7		requestMethod.eth_gasPrice	[]			
-smoke	x								
-	x	get balance for the latest account	8-latest		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,latest]			
-	x	get balance for the earliest account	8-earliest		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,earliest]			
-	x	get balance for the pending account	8-pending		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,pending]			
-	x	get balance for the number account	8-number		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,0x1]			
-	x	get block by number - latest	10-latest		requestMethod.eth_getBlockByNumber	[latest,false]			
-	x	get block by number - earliest	10-earliest		requestMethod.eth_getBlockByNumber	[earliest,false]		result.hash=>blockHash	
-	x	get block by number- pending	10-pending		requestMethod.eth_getBlockByNumber	[pending,true]			
-	x	get block by number – number	10-number		requestMethod.eth_getBlockByNumber	[0x1,true]			
-	x	get block by hash	9		requestMethod.eth_getBlockByHash	[_blockHash,true]			
-	x	get block tx counts by number -latest	12-latest		requestMethod.eth_getBlockTransactionCountByNumber	[latest]			
-	x	get block tx counts by number -earliest	12-earliest		requestMethod.eth_getBlockTransactionCountByNumber	[earliest]			
-	x	get block tx counts by number -pending	12-pending		requestMethod.eth_getBlockTransactionCountByNumber	[pending]			
-	x	get block tx counts by number -0x1	12-number		requestMethod.eth_getBlockTransactionCountByNumber	[0x1]			
-	x	get block tx counts by hash	11		requestMethod.eth_getBlockTransactionCountByHash	[_blockHash]			
-	x	get support compiler names	14		requestMethod.eth_getCompilers	[]			
-	x	get miner hashrate	22		requestMethod.eth_hashrate	[]			
-	x	check if current client is mining	23		requestMethod.eth_mining	[]			
-	x	get Protocol version	27		requestMethod.eth_protocolVersion	[]			
+TestSet	execute	testDescription	id	usePreparedData	method	params	runtimeVal	storeVariables	preStoreVariables			
+smoke eth_accounts												
+		get all the accounts in current kernel	Smoke-1		requestMethod.eth_accounts	[]						
+		validate response	smoke-1-vali		validFormat	[matches,ARRAY]						
+												
+smoke eth_blockNumber												
+		get the highest block number	Smoke-2		requestMethod.eth_blockNumber	[]						
+		validate response	Smoke-2-vali		validFormat	[matches,NUMBER]						
+												
+Smoke eth_coinbase												
+		get the coin base	Smoke-4		requestMethod.eth_coinbase	[]						
+		validate response	Smoke-4-vali		validFormat	[matches,ACCOUNT_FORMAT]						
+												
+smoke eth_gasPrice												
+		get the gas price	Smoke-7		requestMethod.eth_gasPrice	[]						
+		validate response	Smoke-7-vali		validFormat	[matches,HEX]						
+												
+Smoke eth_getBalance												
+		get balance for the latest block	Smoke-8-latest		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,latest]						
+		validate response latest block	Smoke-8-latest-vali		validFormat	[matches,HEX]						
+		get balance for the earliest block	Smoke-8-earliest		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,earliest]						
+		validate response eariltest block	Smoke-8-earliest-vali		validFormat	[matches,HEX]						
+		get balance for the pending block	Smoke-8-pending		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,pending]						
+		validate response pending block	Smoke-8-pending-vali		validFormat	[matches,HEX]						
+		get balance for the number block	Smoke-8-number		requestMethod.eth_getBalance	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,0x0]						
+		validate response the number block	Smoke-8-number-vali		validFormat	[matches,HEX]						
+												
+Smoke eth_getBlockByNumber and eth_getBlockByHash												
+		get block by number - latest	Smoke-10-latest		requestMethod.eth_getBlockByNumber	[latest,false]						
+		validate response latest block	Smoke-10-latest-vali		validFormat	[matches,VALID_BLOCK_OBJECT]						
+		get block by number - earliest	Smoke-10-earliest		requestMethod.eth_getBlockByNumber	[earliest,false]		result.hash=>blockHash				
+		validate response eariltest block	Smoke-10-earliest-vali		validFormat	[matches,VALID_BLOCK_OBJECT]						
+		get block by number- pending	Smoke-10-pending		requestMethod.eth_getBlockByNumber	[pending,true]						
+		validate response eariltest block	Smoke-10-pending-vali		validFormat	[matches,VALID_BLOCK_OBJECT]						
+		get block by number – number-0x0	Smoke-10-number-0x0		requestMethod.eth_getBlockByNumber	[0x0,true]						
+		validate response 0x0 block	Smoke-10-number-vali-0x0		validFormat	[matches,VALID_BLOCK_OBJECT]						
+		get block by number – number-0	Smoke-10-number-0		requestMethod.eth_getBlockByNumber	[0,true]						
+		validate response 0 block	Smoke-10-number-vali-0		validFormat	[matches,VALID_BLOCK_OBJECT]						
+		get block by number – miss params	Smoke-10-miss-param		requestMethod.eth_getBlockByNumber	[0]						
+		validate response eariltest block	Smoke-10-missing-param		validFormat	[error,PARAMS_FORMAT_ERROR]						
+		get block by hash	Smoke-9		requestMethod.eth_getBlockByHash	[_blockHash,true]						
+		validate response eariltest block	Smoke-9-vali		validFormat	[matches,VALID_BLOCK_OBJECT]						
+		get block by hash miss param	Smoke-9-miss-param		requestMethod.eth_getBlockByHash	[true]						
+		validate response eariltest block	Smoke-9-miss-param-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
+												
+smoke eth_getBlockTransactionCountByNumber & Hash				x								
+		get block tx counts by number -latest	Smoke-12-latest		requestMethod.eth_getBlockTransactionCountByNumber	[latest]						
+		validate response latest block	Smoke-12-latest-vali		validFormat	[matches,HEX]						
+		get block tx counts by number -earliest	Smoke-12-earliest		requestMethod.eth_getBlockTransactionCountByNumber	[earliest]						
+		validate response earliest block	Smoke-12-earliest-vali		validFormat	[matches,HEX]						
+		get block tx counts by number -pending	Smoke-12-pending		requestMethod.eth_getBlockTransactionCountByNumber	[pending]						
+		validate response pending block	Smoke-12-pending-vali		validFormat	[matches,HEX]						
+		get block tx counts by number -0x0	Smoke-12-number-0x0		requestMethod.eth_getBlockTransactionCountByNumber	[0x0]						
+		validate response 0x0 block	Smoke-12-number-vali-0x0		validFormat	[matches,HEX]						
+		get block tx counts by number -0	Smoke-12-number-0		requestMethod.eth_getBlockTransactionCountByNumber	[0]						
+		validate response 0 block	Smoke-12-number-0-vali		validFormat	[matches,HEX]						
+		get block tx counts by number – miss params	Smoke-12-miss-params		requestMethod.eth_getBlockTransactionCountByNumber	[]						
+		validate response missing params	Smoke-12-miss-params-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
+		get block tx counts by hash	Smoke-11		requestMethod.eth_getBlockTransactionCountByHash	[_blockHash]						
+		validate response by hash	Smoke-11-vali		validFormat	[matches,HEX]						
+		get block tx counts by hash – miss param	Smoke-11-miss-param		requestMethod.eth_getBlockTransactionCountByHash	[]						
+		validate response by hash missing params	Smoke-11-miss-param-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
+												
+Smoke eth_getCompilers												
+		get support compiler names	Smoke-14		requestMethod.eth_getCompilers	[]						
+		validate response	Smoke-14-vali		validFormat	[contains,solidity]						
+												
+Smoke eth_hashrate												
+		get miner hashrate	Smoke-22		requestMethod.eth_hashrate	[]						
+		validate response	Smoke-22-vali		validFormat	[matches,STRING]						
+												
+Smoke eth_mining												
+		check if current client is mining	Smoke-23		requestMethod.eth_mining	[]						
+		validate response	Smoke-23-vali		validFormat	[matches,BOOLEAN]						
+												
+Smoke eth_protocolVersion												
+		get Protocol version	Smoke-27		requestMethod.eth_protocolVersion	[]						
+		validate response	Smoke-27-vali		validFormat	[matches,STRING]						
+												
+smoke eth_syncing	x											
+	x	check if the current client is syncing	Smoke-34		requestMethod.eth_syncing	[]			STRING			
+	x	validate response	smoke-34-vali		validFormat	[matches,BOOLEAN]						
+												
+smoke personal_isAccountUnlocked	x											
+	x	check if the account is unlocked	Smoke-36		requestMethod.personal_isAccountUnlocked	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c]			false			
+	x	validate response	Smoke-36-vali		validFormat	[matches,BOOLEAN]						
+	x	personal_isAccountUnlocked -missing account	Smoke-36-miss-account		requestMethod.personal_isAccountUnlocked	[]						
+	x	validate response	smoke-36-miss-account-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
+												
+smoke personal_lockAccount	x											
+	x	lock an account with valid passwrod	Smoke-38-valid-ps		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,password]			false			
+	x	validate response	Smoke-38-valid-ps-vali		validFormat	[equal,true]						
+	x	lock an account with invalid password	Smoke-38-invalid-ps		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,wrong]			WRONG_PW_ERROR			
+	x	validate response	Smoke-38-invalid-ps-vali		validFormat	[equal,false]						
+	x	lock an account missing one params	Smoke-38-miss-param		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c]			PARAMS_FORMAT_ERROR			
+	x	validate response	Smoke-38-miss-param-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
+	x	lock an account with account not in system	Smoke-38-invalid-acc		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2d,password]						
+	x	validate response	Smoke-38-invalid-acc-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
+												
+smoke eth_newAccount												
+		create a new Account without password	39-no-ps		requestMethod.personal_newAccount				PARAMS_FORMAT_ERROR			
+		create a new Account with password	39		requestMethod.personal_newAccount	password			ACCOUNT_FORMAT			
+												
+												
+		unlock the sender’s account for one time use and send the a transaction	40		requestMethod.personal_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password			TRANSACTION_FORMAT			balanceValidate
+		Personal send a transaction – invalid password	40-invalid-ps		requestMethod.personal_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} wrong			WRONG_PW_ERROR			
+		personal send a transaction – missing params	40-miss-param		requestMethod.personal_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password			PARAMS_FORMAT_ERROR			
+		sign a message	41		prequestMethod.ersonal_sign	0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password			HEX			
+		sign a message with invalid password	41-invalid-ps		requestMethod.personal_sign	0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong			WRONG_PW_ERROR			
+		sign a message missing param	41-miss-param		requestMethod.personal_sign	0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c			PARAMS_FORMAT_ERROR			
+		sign an invalid encoded message	41-invalid-msg		requestMethod.personal_sign	0x02345 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password			PARAMS_FORMAT_ERROR			
+		sign a transaction	42		requestMethod.personal_signTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password			HEX			
+		send the signed transaction to avoid nonce gap issue	42-post		requestMethod.eth_sendRawTransaction	_txRaw						
+		Personal sign a transaction – invalid password	40-invalid-ps		requestMethod.personal_sign	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} wrong			WRONG_PW_ERROR			
+		personal sign a transaction – missing params	40-miss-param		requestMethod.personal_sign	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password			PARAMS_FORMAT_ERROR			
+		check if net is listening to its peers	44		requestMethod.net_listening							
+		check the number of peers	45		requestMethod.net_peerCount							
+		check net version	46		requestMethod.net_version							
+		check rpc version	47		requestMethod.rpc_version							
+		check web client version	49		requestMethod.web_clientVersion							

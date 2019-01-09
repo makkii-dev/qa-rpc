@@ -27,7 +27,7 @@
 
 
 function parseJSONishString(str, rt_vars){
-	console.log(rt_vars);
+	//console.log(rt_vars);
 	if(str.charAt(0) == "["){
 		return _parseJsonIshArr(str,1,str.length,rt_vars).res;
 	}else if(str.charAt(0)=='{'){
@@ -132,7 +132,7 @@ function _parseValue(input,rt_vars){
 		if(rt_vars==undefined) {
 			console.log("no runtimevariables");
 		}else
-		return rt_vars[input.substring(1)];
+			return rt_vars[input.substring(1)];
 	}else if(isNaN(input) && (input.toLowerCase()=='true' || input.toLowerCase()=='false')){
 		return input.toLowerCase()=='true';
 	}else if(input.toLowerCase() == "null"){
