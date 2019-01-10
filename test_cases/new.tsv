@@ -78,34 +78,55 @@ Smoke eth_protocolVersion
 		validate response	Smoke-27-vali		validFormat	[matches,STRING]						
 												
 smoke eth_syncing	x											
-	x	check if the current client is syncing	Smoke-34		requestMethod.eth_syncing	[]			STRING			
+	x	check if the current client is syncing	Smoke-34		requestMethod.eth_syncing	[]						
 	x	validate response	smoke-34-vali		validFormat	[matches,BOOLEAN]						
 												
 smoke personal_isAccountUnlocked	x											
-	x	check if the account is unlocked	Smoke-36		requestMethod.personal_isAccountUnlocked	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c]			false			
+	x	check if the account is unlocked	Smoke-36		requestMethod.personal_isAccountUnlocked	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c]						
 	x	validate response	Smoke-36-vali		validFormat	[matches,BOOLEAN]						
 	x	personal_isAccountUnlocked -missing account	Smoke-36-miss-account		requestMethod.personal_isAccountUnlocked	[]						
 	x	validate response	smoke-36-miss-account-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
 												
-smoke personal_lockAccount	x											
-	x	lock an account with valid passwrod	Smoke-38-valid-ps		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,password]			false			
-	x	validate response	Smoke-38-valid-ps-vali		validFormat	[equal,true]						
-	x	lock an account with invalid password	Smoke-38-invalid-ps		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,wrong]			WRONG_PW_ERROR			
-	x	validate response	Smoke-38-invalid-ps-vali		validFormat	[equal,false]						
-	x	lock an account missing one params	Smoke-38-miss-param		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c]			PARAMS_FORMAT_ERROR			
+smoke personal_lockAccount and UnlockAccount	x											
+	x	Pre-step: Rpc request to check if the account is locked	Smoke-36		requestMethod.personal_isAccountUnlocked	[_testAcc]			testAcc=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c			
+	x	Pre-step: validate response to make sure the account is locked	Smoke-36-vali		validFormat	[equal,false]						
+	x	Rpc request to unlock account with valid password	Smoke-43-correct		requestMethod.personal_unlockAccount	[_testAcc,password,25]						
+	x	validate response of unlocking account with vaild password	Smoke-43-correct-vali		validFormat	[equal,true]						
+	x	Rpc request to check if the test account is unlocked	Smoke-36		requestMethod.personal_isAccountUnlocked	[_testAcc]						
+	x	validate response to make sure the account is unlocked	Smoke-36-vali		validFormat	[equal,true]						
+	x	lock an account with valid passwrod	Smoke-38-valid-ps		requestMethod.personal_lockAccount	[_testAcc,password]						
+	x	validate response for lock personal Account successfully	Smoke-38-valid-ps-vali		validFormat	[equal,true]						
+												
+	x	Rpc request to unlock account with valid password	Smoke-43-correct		requestMethod.personal_unlockAccount	[_testAcc,password,25]						
+	x	Pre-step: Rpc request to check if the account is unlocked	Smoke-36		requestMethod.personal_isAccountUnlocked	[_testAcc]						
+	x	Pre-step: validate response to make sure the account is unlocked	Smoke-36-vali		validFormat	[equal,true]						
+	x	lock an account with invalid password	Smoke-38-invalid-ps		requestMethod.personal_lockAccount	[_testAcc,wrong]						
+	x	validate response	Smoke-38-invalid-ps-vali		validFormat	[error,WRONG_PW_ERROR]						
+	x	lock an account missing one params	Smoke-38-miss-param		requestMethod.personal_lockAccount	[_testAcc]						
 	x	validate response	Smoke-38-miss-param-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
 	x	lock an account with account not in system	Smoke-38-invalid-acc		requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2d,password]						
-	x	validate response	Smoke-38-invalid-acc-vali		validFormat	[error,PARAMS_FORMAT_ERROR]						
+	x	validate response	Smoke-38-invalid-acc-vali		validFormat	[error,INVALID_ACC_ERROR]						
+	x	Rpc request to check if the account is locked	Smoke-36		requestMethod.personal_isAccountUnlocked	[_testAcc]						
+	x	validate response to make sure the account is locked	Smoke-36-vali		validFormat	[equal,true]						
+	x	wait for 25 second	Smoke-help		helper.delay	[25]						
+	x	Rpc request to check if the account is locked	Smoke-36		requestMethod.personal_isAccountUnlocked	[_testAcc]						
+	x	validate response to make sure the account is locked	Smoke-36-vali		validFormat	[equal,false]						
+	x	unlock account with wrong password	Smoke-43-wrong		requestMethod.personal_unlockAccount	[_testAcc,wrong,100]						
+	x	validate response for unlock account with wrong password	Smoke-43-wrong-vali		validFormat	[equal,false]						
+	x	unlock invalid account with password	Smoke-43-wrong-acc		requestMethod.personal_unlockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2d,wrong,100]						
+	x	validate response for unlock invalid account	Smoke-43-wrong-acc-vali		validFormat	[equal,false]						
 												
 smoke eth_newAccount												
-		create a new Account without password	39-no-ps		requestMethod.personal_newAccount				PARAMS_FORMAT_ERROR			
-		create a new Account with password	39		requestMethod.personal_newAccount	password			ACCOUNT_FORMAT			
 												
+		create a new Account without password	39-no-ps		requestMethod.personal_newAccount	[]			PARAMS_FORMAT_ERROR			
+		validate response new account without password				[error,PARAMS_FORMAT_ERROR]						
+		create a new Account with password	39		requestMethod.personal_newAccount	[password]			ACCOUNT_FORMAT			
+		validate response new account without password										
 												
 		unlock the sender’s account for one time use and send the a transaction	40		requestMethod.personal_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password			TRANSACTION_FORMAT			balanceValidate
 		Personal send a transaction – invalid password	40-invalid-ps		requestMethod.personal_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} wrong			WRONG_PW_ERROR			
 		personal send a transaction – missing params	40-miss-param		requestMethod.personal_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:100} password			PARAMS_FORMAT_ERROR			
-		sign a message	41		prequestMethod.ersonal_sign	0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password			HEX			
+		sign a message	41		prequestMethod.personal_sign	0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password			HEX			
 		sign a message with invalid password	41-invalid-ps		requestMethod.personal_sign	0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong			WRONG_PW_ERROR			
 		sign a message missing param	41-miss-param		requestMethod.personal_sign	0x123456 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c			PARAMS_FORMAT_ERROR			
 		sign an invalid encoded message	41-invalid-msg		requestMethod.personal_sign	0x02345 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password			PARAMS_FORMAT_ERROR			

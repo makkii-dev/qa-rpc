@@ -236,7 +236,7 @@ var formates ={
 		},
 		INVALID_ACC_ERROR:{
 			code: -32023,
-		  	message: 'Unable to unlock the account.',
+		  	message: /Unable to \w*lock the account/,
 		  	data: 'InvalidAccount'
 		},
 		INVALID_METHOD:{

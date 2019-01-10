@@ -16,19 +16,19 @@ Helper.prototype._init = (provider,logger)=>{
 	this.provider = provider;
 }
 
-Helper.prototype.WaitNewBlock =  (options,rt_var)=>{
+Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 	var oldBlockNo, newBlockNo;
 	//console.log(this);
 	var provider = this.provider;
-	var _id = b!==undefined? "helper"+b.id:"helper";
+	var _id = "helper"+testRow.id;
 	let newBlockNum=0;
 	
 	let timeout = 100;
 	
-	if(options !=null){
-		timeout = options[0];
-		if(options.length >1)
-			newBlockNum = parseInt(options[1]);
+	if(testRow.params !=undefined){
+		timeout = testRow.params[0];
+		if(testRow.params.length >1)
+			newBlockNum = parseInt(testRow.params[1]);
 	}	
 	//console.log("timeout:"+timeout);
 	//console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
@@ -64,8 +64,10 @@ Helper.prototype.WaitNewBlock =  (options,rt_var)=>{
 }
 
 
-Helper.prototype.delay= (options,rt_var)=>{
-	if(Array.isArray(timeout)) timeout = options[0];
+Helper.prototype.delay= (testRow,rt_var)=>{
+	this.logger.log(testRow.params);
+	
+	var timeout = testRow.params[0];
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
 		this.logger.log(`wait for : ${timeout} seconds`);
@@ -76,15 +78,15 @@ Helper.prototype.delay= (options,rt_var)=>{
 	})
 }
 
-Helper.prototype.createPKAccount = (options,rt_var)=>{
-	this.logger.info(options);
-	if(Array.isArray(options)) options = options[0];
+Helper.prototype.createPKAccount = (testRow,rt_var)=>{
+	this.logger.info(testRow.params);
 	return new Promise(()=>{
-		let account = aionAccount.createKeyPair(options);
+		let account = aionAccount.createKeyPair(testRow.params);
 		account.addr = aionAccount.createA0Address(account.publicKey);
 		rt_var.update("pairKeyCreateAcc", account);
 		this.logger.info(JSON.stringify(rt_var));
-		testRow.params[0].to = testRow.params[0].to||account.addr;
+		// if(!rt_var.nextTxObj) rt_var.nextTxObj = {};
+		// rt_var.nextTxObj.to = r.params[0].to||account.addr;
 		resolve();
 	});
 }
@@ -93,60 +95,71 @@ Helper.prototype.createPKAccount = (options,rt_var)=>{
 	return new Promise((resolve)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});});
 }*/
 
-Helper.prototype.newContract = (params,rt_var)=>{
+Helper.prototype.newContract = (testRow,rt_var)=>{
 	return new Promise((resolve)=>{
 		if(rt_var.nextTxObj==undefined) 
 			rt_var.nextTxObj = {};
 		if(params!==null){
-			rt_var.nextTxObj.data = rt_var.contract[params[0]].code
+			rt_var.nextTxObj.data = rt_var.contract[testRow.params].code
 		}else{
 			rt_var.nextTxObj.data = rt_var.contract[rt_var.contract.names[0]].code;
 		}
 		
-		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+		resolve();
 	})
 }
 
-Helper.prototype.prepareContractCall = (options,RUNTIME_VARIABLES,testRow,VERIFY_VARIABLES) =>{
+Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 	
 
 	return new Promise((resolve)=>{
-		let newOptions = options.map((value)=>{
+		// let newOptions = testRow.params.map((value)=>{
 
-			if(typeof value === 'string' && /^_/.test(value) && RUNTIME_VARIABLES[value.substring(1)]!==undefined){
-				console.log("replace with new value");
-				value =  RUNTIME_VARIABLES[value.substring(1)];
-			}
-			this.logger.log(value);
-			return value;
-		})
-
+		// 	if(typeof value === 'string' && /^_/.test(value) && RUNTIME_VARIABLES[value.substring(1)]!==undefined){
+		// 		console.log("replace with new value");
+		// 		value =  rt_var[value.substring(1)];
+		// 	}
+		// 	this.logger.log(value);
+		// 	return value;
+		// })
+		let newOptions = testRow.params;
+		if(rt_var.nextTxObj==undefined) 
+			rt_var.nextTxObj = {};
 		//console.log(newOptions);
 		//console.log(testRow);
 		
+		/*
+			check whether the function is calling a pre-compiled contract which starting with "prec_"
+			or a user defined contract function
+		*/
+
 		if(/^prec_/.test(newOptions[0])){
-			testRow.params[0].data = utils.getContractFuncData(null,newOptions.slice(1));
-			testRow.params[0].to = RUNTIME_VARIABLES.precompile[newOptions[0].substring(5)];
+			rt_var.nextTxObj.data = utils.getContractFuncData(null,newOptions.slice(1));
+			rt_var.nextTxObj.to = rt_var.precompile[newOptions[0].substring(5)];
 		}else{
-			console.log(RUNTIME_VARIABLES.contract.func);
-			testRow.params[0].data = utils.getContractFuncData(RUNTIME_VARIABLES.contract.func[newOptions[0]],newOptions.slice(1));
-			testRow.params[0].to = RUNTIME_VARIABLES.contractAddress;
+			console.log(rt_var.contract.func);
+			rt_var.nextTxObj.data = utils.getContractFuncData(rt_var.contract.func[newOptions[0]],newOptions.slice(1));
+			rt_var.nextTxObj.to = rt_var.contractAddress;
 		}
 		this.logger.log(JSON.stringify(testRow.params));
-		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+		resolve();
 	
 	});
 }
 
-Helper.prototype.getEvent=(options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
+Helper.prototype.getEvent=(testRow,rt_var)=>{
 	return new Promise((resolve)=>{
-		testRow.params[0].topics = ["0x"+utils.getEvent(RUNTIME_VARIABLES.contract.event[testRow.helper_params[0]])];
-		this.logger.log(testRow.params);
-		resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+		if(rt_var.nextTxObj==undefined) 
+			rt_var.nextTxObj = {};
+		rt_var.nextTxObj.topics = ["0x"+utils.getEvent(rt_var.contract.event[testRow.params])];
+		this.logger.log(rt_var.nextTxObj);
+		resolve();
 	})
 }
 
-Helper.prototype.getSign = (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
+
+/// TO BE REVIEWED
+Helper.prototype.getSign = (testRow,rt_var)=>{
 	return new Promise((resolve)=>{
 		let obj = Object.create(testRow.params[0]);
 		utils.getRawTx(this.provider,obj,RUNTIME_VARIABLES.accounts[testRow.params[0].from]).then((res)=>{
@@ -164,6 +177,9 @@ Helper.prototype.getSign = (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)
 	})
 }
 
+
+
+/// TO BE REVIEWED
 Helper.prototype.data0xPrefix = async (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
 	for(let i = 0; i < testRow.params.length;i++){
 		if(options[0] && !/^0x/.test(testRow.params[i])){
@@ -175,6 +191,9 @@ Helper.prototype.data0xPrefix = async (options,RUNTIME_VARIABLES,testRow, VERIFY
 	return Promise.resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
 }
 
+
+
+/// TO BE REVIEWED
 Helper.prototype.inc = async (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
 	options.forEach((item,index)=>{
 		let pair = item.split(',');

@@ -18,7 +18,7 @@ var readCSVDriver = require("./libs/utils/readCSV1");
 const Provider = require("./libs/utils/provider");
 var utils = require("./libs/utils/utils1");
 
-var Helper = require("./libs/utils/helper2");
+var Helper = require("./libs/utils/helper3");
 var validationFunc= require('./libs/utils/validateFunc1');
 var RUNTIME_VARIABLES = require("./libs/utils/RunVariable.js")(logger);
 
@@ -93,6 +93,9 @@ var Step_Action = function(rows,resolves){
 
 	logger.log(JSON.stringify(rows));
 	logger.log(JSON.stringify(resolves));
+	if(currentRow.preStoreVariables){
+		RUNTIME_VARIABLES.preStoreVariables(currentRow.preStoreVariables);
+	}
 
 	for(let i = 0; i < levels.length; i++){
 		aFunction = aFunction[levels[i]];
@@ -108,7 +111,7 @@ var Step_Action = function(rows,resolves){
 		});
 		delete RUNTIME_VARIABLES.nextTxObj;
 	}
-	logger.info(currentRow.testDescription);
+	logger.testStep(currentRow.testDescription);
 	return aFunction(currentRow,RUNTIME_VARIABLES,resolves).then((result)=>{
 		
 		if(rows.length > 0){
@@ -173,7 +176,7 @@ data.forEach((testSuite)=>{
 
 			logger.title(testSuite.name);
 			let testcases = testSuite.tests;
-			 
+			
 			Step_Action(testcases).then((res)=>{
 	
 				done();

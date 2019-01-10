@@ -54,6 +54,7 @@ module.exports = (logger)=>{
 				break;
 			case "pairKeyCreateAcc":
 				this.account = resp;
+				this.newCreateAccount = resp.addr;
 				break;
 			case "eth_compileSolidity":
 				this.contract = {};
@@ -160,8 +161,7 @@ module.exports = (logger)=>{
 			this[vals[1]] = this[vals[0]];
 		})
 		return this;
-	}
-	this.preStoreVariables = (instruction)=>{
+		this.preStoreVariables = (instruction)=>{
 		if(!instruction) return this;
 		let pairs = instruction.split(',');
 		pairs.forEach((pair, index)=>{
