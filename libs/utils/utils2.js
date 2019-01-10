@@ -122,7 +122,7 @@ function getCurrentNonce(provider, accAddr){
 	return provider.sendRequest("utils-getValidNonceValue", "eth_getTransactionCount",[accAddr]);
 }
 function getGasPrice(provider){
-	return provider.sendRequest("utils-getGasPrice","eth_gasPrice",[]);
+	return provider.sendRequest("utils-getGasPrice","eth_gasPrice",[],false).then((resp)=>{return Promise.resolve(resp.result);});
 }
 
 function getBalance(provider,accAddr){
@@ -433,7 +433,7 @@ function getTxReceipt(txHash,provider,timeout){
 	return new Promise((resolve,reject)=>{
 		timeout = timeout || 60;//(sec)
 		var loop =  setInterval(async()=>{
-				let res  = await provider.sendRequest("check receipt", "eth_getTransactionReceipt",[txHash]);
+				let res  = await provider.sendRequest("check receipt", "eth_getTransactionReceipt",[txHash],false);
 				timeout--;
 				if(res.result !==undefined && res.result != null){
 					clearInterval(loop);

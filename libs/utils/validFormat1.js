@@ -183,7 +183,7 @@ const VALID_LOGS={
 
 var formates ={
 
-		TRANSACTION_FORMAT:transaction_format,
+		TRANSACTION_HASH:transaction_format,
 		ACCOUNT_FORMAT:account_format,
 		HEX:HEX,
 		H160:H160,
@@ -266,7 +266,12 @@ var formates ={
   		INVALID_CREATION_GAS:{
   			code:-32010,
   			message:/Invalid contract creation gas/
-  		}
+  		},
+  		PERSONAL_INVALID_PASSWORD:`{
+  			code: -32021,
+  			data: /InvalidPassword/
+  			...
+  		}`
 	
 	
 };
@@ -282,7 +287,7 @@ module.exports = function(rows, rt, resolution){
 			expect(resolution.error).to.matchPattern(formates[params[1]]);
 			break;
 		case 'contains':
-			expect(resolution.result).to.have.members([params[1]]);
+			expect(resolution.result).to.include(params[1]);
 			break;
 		case 'equal':
 			expect(resolution.result).to.equal(params[1]);

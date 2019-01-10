@@ -17,7 +17,9 @@ module.exports = (logger)=>{
 		})
 		return _res;
 	})();
+
 	this.emptyString="";
+
 	this.update=(method,resp,req)=>{
 		
 		switch(method){
@@ -44,13 +46,15 @@ module.exports = (logger)=>{
 					this.contract.hash = resp.result;
 				}
 				break;
+			//case "personal_signTransaction"
 			case "eth_signTransaction":
 				console.log(resp.result.tx);
 				this.txHash = resp.result.tx.hash;
 				this.txRaw = resp.result.tx.raw;
 				break;
 			case "personal_signTransaction":
-				this.txRaw = resp.result;
+				this.txRaw = resp.result.raw;
+				this.tx = resp.result.tx;
 				break;
 			case "pairKeyCreateAcc":
 				this.account = resp;
@@ -114,10 +118,10 @@ module.exports = (logger)=>{
 
 		}
 		return this;
-	}
+	};
 	this.reset = ()=>{
 		self = Object.create(this);
-	}
+	};
 	this.storeVariables = (instructions,resp)=>{
 		if(!instructions) return self;
 
@@ -135,7 +139,7 @@ module.exports = (logger)=>{
 				if(sourceValue[name]) sourceValue = sourceValue[name];
 				else {
 					self.logger.error("fail to find field in response : "+ vals[0]);
-					break;
+					throw new Error("fail to store variables : "+ instructions + JSON.stringify(resp));
 				}
 			}
 
@@ -152,7 +156,7 @@ module.exports = (logger)=>{
 
 		});
 
-	}
+	};
 	this.reassign = (instruction)=>{
 		if(!instruction) return this;
 		let pairs = instruction.split(',');
@@ -161,14 +165,18 @@ module.exports = (logger)=>{
 			this[vals[1]] = this[vals[0]];
 		})
 		return this;
-		this.preStoreVariables = (instruction)=>{
+		
+	}
+
+	this.preStoreVariables = (instruction)=>{
 		if(!instruction) return this;
 		let pairs = instruction.split(',');
 		pairs.forEach((pair, index)=>{
 			let vals = pair.split("=");
 			this[vals[0]] =vals[1];
-		})
+		});
 		return this;
 	}
+
 	return this;
 };

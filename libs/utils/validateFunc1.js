@@ -1,6 +1,6 @@
-var utils = require("./utils1");
+var utils = require("./utils2");
 var chai = require('chai');
-var Helper = require('./helper2');
+var Helper = require('./helper3');
 var BN = require('bn.js');
 
 
@@ -24,67 +24,72 @@ Validation.prototype.putProvider=(provider,logger)=>{
 
 //{RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c,done:done}//
 Validation.prototype.balanceValidate={};
-Validation.prototype.balanceValidate.pre = async (obj)=>{
+Validation.prototype.balanceValidate.pre = async (testRow, rt_var)=>{
 
-	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc||obj.VERIFY_VARIABLES.account.addr;
-	let toAcc = obj.testRow.params[0].to || obj.VERIFY_VARIABLES.vals.toAcc;
-
-	
-	obj.VERIFY_VARIABLES.vals.fromBal = new BN((await utils.getBalance(this.provider, fromAcc)).result.substring(2),16);
-	obj.VERIFY_VARIABLES.vals.toBal = new BN(toAcc===null||toAcc ===undefined ? "0x" : (await utils.getBalance(this.provider, toAcc)).result.substring(2),16);
-	
-	let changeValue = obj.testRow.params[0].value;
-	obj.VERIFY_VARIABLES.vals.changeValue = (/^0x/.test(changeValue))? new BN(changeValue.substring(2),16): new BN( changeValue,10);
-
-	if(obj.testRow.method === "eth_sendTransaction"){
-		obj.VERIFY_VARIABLES.vals.gasPirce = obj.testRow.params[0].gasPrice || obj.VERIFY_VARIABLES.defaultGasPrice;
-		obj.VERIFY_VARIABLES.vals.gasPirce = parseInt(obj.VERIFY_VARIABLES.vals.gasPirce);
+	rt_var._balanceVariables = {};
+	if(testRow.params){
+		rt_var._balanceVariables.fromAcc = testRow.params.from;
+		rt_var._balanceVariables.toAcc = testRow.params.to;
+		rt_var.nextTxObj = testRow.params;
+	}else if(rt_var.tx){
+		rt_var._balanceVariables.fromAcc = rt_var.tx.from;
+		rt_var._balanceVariables.toAcc = rt_var.tx.to;
 	}
-	return Promise.resolve(obj);
+
+	
+	rt_var._balanceVariables.fromBal = new BN((await utils.getBalance(this.provider, rt_var._balanceVariables.fromAcc)).result.substring(2),16);
+	rt_var._balanceVariables.toBal = new BN((await utils.getBalance(this.provider, rt_var._balanceVariables.toAcc)).result.substring(2),16);
+	
+	let changeValue = testRow.params.value;
+	rt_var._balanceVariables.changeValue = (/^0x/.test(changeValue))? new BN(changeValue.substring(2),16): new BN( changeValue,10);
+
+	//if(obj.testRow.method === "eth_sendTransaction"){
+	rt_var._balanceVariables.gasPrice = testRow.params.gasPrice || await utils.getGasPrice(this.provider);
+	rt_var._balanceVariables.gasPrice = /^0x/.test(rt_var._balanceVariables.gasPrice)? new BN(rt_var._balanceVariables.gasPrice.substring(2),16): new BN(rt_var._balanceVariables.gasPrice,10);
+	//}
+	return Promise.resolve();
 }
 
-Validation.prototype.balanceValidate.post = async (obj)=>{
+
+
+Validation.prototype.balanceValidate.post = async (testRow, rt_var, resolution)=>{
 	let self = this;
-	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc||obj.VERIFY_VARIABLES.account.addr;
-	let toAcc = obj.testRow.params[0].to || obj.VERIFY_VARIABLES.vals.toAcc;
-	
-	await self.helper.WaitNewBlock([120,1]);
+	/* check if rpc request give a transactioin hash; if not return error, no validation is needed*/
+	if(!resolution.result) {
+		throw new Error("Transaction Failed");
+	}
+	/* wait until the transation being mined */
+	await utils.getTxReceipt(resolution.result,self.provider,120);
 	//await self.helper.delay([10]);
 	
-	let newFromBal = new BN((await utils.getBalance(self.provider, fromAcc)).result.substring(2),16);
-	let newToBal = new BN((await utils.getBalance(self.provider, toAcc)).result.substring(2),16);
-	
-	self.logger.log("new from balance: "+newFromBal.toString(16));
-	self.logger.log("new to balance: "+newToBal.toString(16));
-	self.logger.log(JSON.stringify(obj.VERIFY_VARIABLES.vals));
-	
-	console.log(obj.VERIFY_VARIABLES.defaultGasPrice);
-	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? (typeof obj.testRow.params[0].gasPrice == 'number'? new BN(obj.testRow.params[0].gasPrice): new BN(obj.testRow.params[0].gasPrice.substring(2),16)):new BN(obj.VERIFY_VARIABLES.defaultGasPrice.substr(2),16));
+	let newFromBal = new BN((await utils.getBalance(self.provider, rt_var._balanceVariables.fromAcc)).result.substring(2),16);
+	let newToBal = new BN((await utils.getBalance(self.provider, rt_var._balanceVariables.toAcc)).result.substring(2),16);
+
+	self.logger.log(rt_var._balanceVariables);
 
 	let gas = new BN(21000);
-	self.logger.log(gas.toString(10));
-	self.logger.log(gasPrice.toString(10));
+	self.logger.log("[gas]: "+gas.toString(10));
+	self.logger.log("[gasPrice]: "+rt_var._balanceVariables.gasPrice.toString(10));
 	//self.logger.log(obj.VERIFY_VARIABLES.vals.actualTx);
 	//self.logger.log(obj.testRow.params[0].gasPrice);
 	
-	let fromChanges = obj.VERIFY_VARIABLES.vals.changeValue.add(gas.mul(gasPrice));
+	let fromChanges = rt_var._balanceVariables.changeValue.add(gas.mul(rt_var._balanceVariables.gasPrice));
 	
-	let checkFrom = obj.VERIFY_VARIABLES.vals.fromBal.isub(fromChanges);
-	let checkTo   = obj.VERIFY_VARIABLES.vals.toBal.iadd(obj.VERIFY_VARIABLES.vals.changeValue);
+	let expectedFrom = rt_var._balanceVariables.fromBal.sub(fromChanges);
+	let expectedTo   = rt_var._balanceVariables.toBal.add(rt_var._balanceVariables.changeValue);
 
-	self.logger.log(checkFrom.toString(16));
-	self.logger.log(checkTo.toString(16));
-	self.logger.log(gas.mul(gasPrice).toString(10))
-	
-	self.logger.info(newFromBal.toString(10));
-	self.logger.info(checkFrom.toString(10));
+
+	self.logger.info("[fromAcc Balance before tx]\t"+rt_var._balanceVariables.fromBal.toString(10));
+	self.logger.info("[fromAcc Balance after tx]\t"+newFromBal.toString(10));
+	self.logger.info("[expected new fromAcc Balance]\t"+expectedFrom.toString(10));
 
 	try{
-		chai.expect(newFromBal.eq(checkFrom)).to.be.true;
-		chai.expect(newToBal.eq(checkTo)).to.be.true;
-		obj.VERIFY_VARIABLES.reset();
+		chai.expect(newFromBal.eq(expectedFrom)).to.be.true;
+		chai.expect(newToBal.eq(expectedTo)).to.be.true;
+		delete rt_var._balanceVariables;
 		return Promise.resolve();
 	}catch(e){
+		delete rt_var._balanceVariables;
 		return Promise.reject(e);
 	}
 }
@@ -106,13 +111,8 @@ Validation.prototype.validateMining.post = async (obj)=>{
 	}
 }
 
-Validation.prototype.default = (obj)=>{
-//	console.log("\n\n\n------\n\n"+JSON.stringify(obj));
-	return new Promise((resolve, reject)=>{
-//		console.log("\n\n\n\n\n"+JSON.stringify(obj));
-		resolve(obj);
-	});
-};
+
+
 Validation.prototype.validateBlake2b = {};
 Validation.prototype.validateBlake2b.pre = async(obj)=>{
 	obj.VERIFY_VARIABLES.vals.callMethod = obj.testRow.method == "eth_call"? true: false; // "true" called locally; "false" call in another contract
