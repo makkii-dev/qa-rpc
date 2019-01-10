@@ -20,8 +20,8 @@ class Logger{
 		this.logFullPath=this._dir+"/"+testfile+ts.toISOString()+".txt"
 	}
 	log(msg, visible){
-		if((visible !==undefined && !visible) || this.FILE_LOG)fs.appendFileSync(this.logFullPath,msg+"\n");
-		if((visible !==undefined && !visible) || this.CONSOLE_LOG)console.log("\x1b[37m%s\x1b[0m",msg);
+		if((visible ==undefined || visible) && this.FILE_LOG)fs.appendFileSync(this.logFullPath,msg+"\n");
+		if((visible ==undefined || visible) && this.CONSOLE_LOG)console.log("\x1b[37m%s\x1b[0m",msg);
 	}
 	error(msg){
 		if(this.FILE_LOG)fs.appendFileSync(this.logFullPath," !! [ERROR]----------------------------------------------------------\n"+this.step+msg+"\n");
@@ -33,8 +33,8 @@ class Logger{
 		this.step = '';
 	}
 	info(msg,visible){
-		if((visible !==undefined && !visible) ||this.FILE_LOG)fs.appendFileSync(this.logFullPath,"[info]\t:\t"+msg+"\n");
-		if((visible !==undefined && !visible) || this.CONSOLE_LOG)console.log("\x1b[96m%s\x1b[0m",msg+"\n");
+		if((visible ==undefined || visible) && this.FILE_LOG)fs.appendFileSync(this.logFullPath,"[info]\t:\t"+msg+"\n");
+		if((visible ==undefined || visible) && this.CONSOLE_LOG)console.log("\x1b[96m%s\x1b[0m",msg+"\n");
 	}
 	testStep(stepDesc){
 		this.step =this.step+ stepDesc +"\n";

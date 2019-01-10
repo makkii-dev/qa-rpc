@@ -433,7 +433,7 @@ function getTxReceipt(txHash,provider,timeout){
 	return new Promise((resolve,reject)=>{
 		timeout = timeout || 60;//(sec)
 		var loop =  setInterval(async()=>{
-				let res  = await provider.sendRequest("check receipt", "eth_getTransactionReceipt",[txHash],false);
+				let res  = await provider.sendRequest("check receipt", "eth_getTransactionReceipt",[txHash],true);
 				timeout--;
 				if(res.result !==undefined && res.result != null){
 					clearInterval(loop);

@@ -31,11 +31,11 @@ Validation.prototype.balanceValidate.pre = async (testRow, rt_var)=>{
 		rt_var._balanceVariables.fromAcc = testRow.params.from;
 		rt_var._balanceVariables.toAcc = testRow.params.to;
 		rt_var.nextTxObj = testRow.params;
-	}else if(rt_var.tx){
+	}/*else if(rt_var.tx){
 		rt_var._balanceVariables.fromAcc = rt_var.tx.from;
 		rt_var._balanceVariables.toAcc = rt_var.tx.to;
 	}
-
+*/
 	
 	rt_var._balanceVariables.fromBal = new BN((await utils.getBalance(this.provider, rt_var._balanceVariables.fromAcc)).result.substring(2),16);
 	rt_var._balanceVariables.toBal = new BN((await utils.getBalance(this.provider, rt_var._balanceVariables.toAcc)).result.substring(2),16);
@@ -59,7 +59,7 @@ Validation.prototype.balanceValidate.post = async (testRow, rt_var, resolution)=
 		throw new Error("Transaction Failed");
 	}
 	/* wait until the transation being mined */
-	await utils.getTxReceipt(resolution.result,self.provider,120);
+	await utils.getTxReceipt(rt_var.txHash,self.provider,120);
 	//await self.helper.delay([10]);
 	
 	let newFromBal = new BN((await utils.getBalance(self.provider, rt_var._balanceVariables.fromAcc)).result.substring(2),16);

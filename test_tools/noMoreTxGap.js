@@ -1,12 +1,12 @@
 "use strict"
-var logger = new (require("./utils/logger"))();
+var logger = new (require("../libs/utils/logger"))();
 logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 const DEFAULT_GAS_PRICE = 10000000000;
-const Provider = require("./utils/provider");
-var utils = require("./utils/utils1");
-var Helper = require("./utils/helper1");
-logger.updatePath("transaction_test");
+const Provider = require("../libs/utils/provider");
+var utils = require("../libs/utils/utils1");
+var Helper = require("../libs/utils/helper1");
+logger.updateName("transaction_test");
 var provider_type;
 
 var ACC ;
@@ -37,7 +37,7 @@ async function main(){
 	resp = await cur_provider.sendRequest("unlockedAccount","personal_unlockAccount",[ACC,password,200000]);
 	let index = 0;
 	while(resp.result){
-		resp = await cur_provider.sendRequest(index++,"eth_sendTransaction",[{from:ACC, to:receiver, value:"0x1", nonce:utils.dec2Hex(nonce++),gasPrice:12000000000}]);
+		resp = await cur_provider.sendRequest(index++,"eth_sendTransaction",[{from:ACC, to:receiver, value:"0x1", nonce:utils.dec2Hex(nonce++),gasPrice:10000000000}]);
 	}
 
 	console.log(nonce);
