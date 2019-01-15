@@ -3,10 +3,10 @@ pragma solidity ^0.4.0;
 contract Recursive {
     
     event Evt(uint n);
-    
+    uint128 called = 0;
     function f(address a, uint n) returns (uint) {
         Evt(n);
-        
+        called += 1;
         Recursive r = Recursive(a);
         
         if (n <= 1) {

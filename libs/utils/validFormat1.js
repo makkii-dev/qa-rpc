@@ -206,13 +206,13 @@ var formates ={
 		COMPILE_RESUILT:COMPILE_RESUILT,
 		VALID_TX_RECEIPT:VALID_TX_RECEIPT,
 		RPC_MODULES:{
-			eth:_.isString,
-			net:_.isString,
-			personal:_.isString,
-			pubsub:_.isString,
-			rpc:_.isString,
-			stratum:_.isString,
-			web3:_.isString
+			eth:'1.0',
+			net:'1.0',
+			personal:'1.0',
+			//pubsub:'1.0',
+			rpc:'1.0',
+			stratum:'1.0',
+			web3:'1.0'
 		},
 		LOCKED_ERROR:{
 			code:-32020,
@@ -277,8 +277,8 @@ var formates ={
 };
 
 
-module.exports = function(rows, rt, resolution){
-	let params = rows.params;
+module.exports = function(row, rt, resolution){
+	let params = row.params;
 	console.log(params);
 	console.log("validateFormate: ",resolution.result,resolution.error)
 	switch(params[0]){
@@ -289,15 +289,27 @@ module.exports = function(rows, rt, resolution){
 		case 'contains':
 			expect(resolution.result).to.include(params[1]);
 			break;
+		case 'deployedCode':
+			resolution.result = resolution.result.substring(2);
+			params[1] = params[1].substring(94);
+			console.log(resolution.result.length + "\t"+params[1].length)
 		case 'equal':
+			console.log("\n\n\n\n");
 			expect(resolution.result).to.equal(params[1]);
 			break;
 		case "length":
 			expect(resolution.result).to.have.lengthOf(params[1]);
 			break;
+		case "contract":
+			Object.values(resolution.result).forEach((value,index)=>{
+				expect(value).to.matchPattern(formates.COMPILE_RESUILT);
+			})
+			break;
 		default:
 			expect(resolution.result).to.matchPattern(formates[params[1]]);
 
 	}
+
+	rt.reassign(row.runtimeVal).storeVariables(row.storeVariables,resolution);
 	return Promise.resolve(resolution);
 }

@@ -45,7 +45,7 @@ function formParam(str,currentMethod){
 	//logger.log("RUNTIME_VARIABLES: "+ JSON.stringify(RUNTIME_VARIABLES)+"\n-----------------------------");
 	if(str===undefined) return [];
 	
-	if(currentMethod == 'eth_compileSolidity'){
+	if(currentMethod == 'requestMethod.eth_compileSolidity'){
 		let contract = fs.readFileSync(__dirname + '/testContracts/'+str, {
     		encoding: 'utf8'
 		});
@@ -107,7 +107,7 @@ var Step_Action = function(rows,resolves){
 	if(currentRow.usePreparedData){
 		logger.log(JSON.stringify(RUNTIME_VARIABLES.nextTxObj));
 		Object.entries(RUNTIME_VARIABLES.nextTxObj).forEach((pair,index)=>{
-			if(currentRow.params &&Object.isArray(currentRow.params))
+			if(currentRow.params && Array.isArray(currentRow.params))
 				currentRow.params[0][pair[0]] = pair[1];
 			
 		});

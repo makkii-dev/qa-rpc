@@ -367,7 +367,7 @@ var waitBlock = (options,provider)=>{
 					newBlockNo= resp.result;
 					console.log("-----------"+oldBlockNo+" "+newBlockNo);
 					if(parseInt(newBlockNo) > parseInt(oldBlockNo)+ newBlockNum){
-						console.log("-----reached------"+oldBlockNo+" "+newBlockNo);
+						console.log("-------reached------"+oldBlockNo+" "+newBlockNo);
 						clearInterval(checkloop);
 						resolve();
 					}

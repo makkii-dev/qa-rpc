@@ -65,11 +65,11 @@ Validation.prototype.balanceValidate.post = async (testRow, rt_var, resolution)=
 	let newFromBal = new BN((await utils.getBalance(self.provider, rt_var._balanceVariables.fromAcc)).result.substring(2),16);
 	let newToBal = new BN((await utils.getBalance(self.provider, rt_var._balanceVariables.toAcc)).result.substring(2),16);
 
-	self.logger.log(rt_var._balanceVariables);
+	//self.logger.log(rt_var._balanceVariables);
 
 	let gas = new BN(21000);
-	self.logger.log("[gas]: "+gas.toString(10));
-	self.logger.log("[gasPrice]: "+rt_var._balanceVariables.gasPrice.toString(10));
+	// self.logger.log("[gas]: "+gas.toString(10));
+	// self.logger.log("[gasPrice]: "+rt_var._balanceVariables.gasPrice.toString(10));
 	//self.logger.log(obj.VERIFY_VARIABLES.vals.actualTx);
 	//self.logger.log(obj.testRow.params[0].gasPrice);
 	
@@ -82,14 +82,18 @@ Validation.prototype.balanceValidate.post = async (testRow, rt_var, resolution)=
 	self.logger.info("[fromAcc Balance before tx]\t"+rt_var._balanceVariables.fromBal.toString(10));
 	self.logger.info("[fromAcc Balance after tx]\t"+newFromBal.toString(10));
 	self.logger.info("[expected new fromAcc Balance]\t"+expectedFrom.toString(10));
+	self.logger.info("[toAcc Balance before tx]\t"+rt_var._balanceVariables.toBal.toString(10));
+	self.logger.info("[toAcc Balance after tx]\t"+newToBal.toString(10));
+	self.logger.info("[expected new toAcc Balance]\t"+expectedTo.toString(10));
 
 	try{
 		chai.expect(newFromBal.eq(expectedFrom)).to.be.true;
 		chai.expect(newToBal.eq(expectedTo)).to.be.true;
 		delete rt_var._balanceVariables;
-		return Promise.resolve();
+		return Promise.resolve(resolution);
 	}catch(e){
 		delete rt_var._balanceVariables;
+		self.logger.warning("Check if fromAcc or toAcc is a miner account.")
 		return Promise.reject(e);
 	}
 }

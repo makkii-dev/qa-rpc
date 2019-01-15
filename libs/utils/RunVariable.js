@@ -65,8 +65,6 @@ module.exports = (logger)=>{
 				this.contract.func = {};
 				this.contract.event = {};
 
-				//let contractname = Object.keys(resp.result)[0];
-				//console.log(contractname);
 				this.contract.names = Object.keys(resp.result);
 				Object.keys(resp.result).forEach((contract,index)=>{
 					console.log(contract);
@@ -81,7 +79,7 @@ module.exports = (logger)=>{
 						}
 					})
 				});
-				
+				this.logger.warning("lslslsls")
 				break;
 			case "eth_getTransactionReceipt":
 				if(resp.result !=null && resp.result.contractAddress !==undefined && resp.result.contractAddress !==null)
@@ -106,11 +104,11 @@ module.exports = (logger)=>{
 
 
 			///stratum rpc variables:
-			case "getblocktemplate":
+			case "requestMethod.getblocktemplate":
 				this.headerHash = resp.result.headerHash;
 				this.headerHeight = resp.result.height-1;
 				break;
-			case "getHeaderByBlockNumber":
+			case "requestMethod.etHeaderByBlockNumber":
 				this.headerNonce = resp.result.nonce;
 				this.solution = resp.result.solution;
 				this.headerHash = resp.result.headerHash;
@@ -176,6 +174,14 @@ module.exports = (logger)=>{
 			this[vals[0]] =vals[1];
 		});
 		return this;
+	}
+	this.get = (str)=>{
+		let hierarchy = str.split(".");
+		let ptr = this;
+		for(let i = 0; i < hierarchy.length; i++){
+			ptr = ptr[hierarchy[i]];
+		} 
+		return ptr;
 	}
 
 	return this;

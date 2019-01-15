@@ -132,7 +132,7 @@ function _parseValue(input,rt_vars){
 		if(rt_vars==undefined) {
 			console.log("no runtimevariables");
 		}else
-			return rt_vars[input.substring(1)];
+			return rt_vars.get(input.substring(1));
 	}else if(isNaN(input) && (input.toLowerCase()=='true' || input.toLowerCase()=='false')){
 		return input.toLowerCase()=='true';
 	}else if(input.toLowerCase() == "null"){

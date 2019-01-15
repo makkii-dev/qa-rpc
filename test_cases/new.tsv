@@ -122,6 +122,8 @@ smoke eth_newAccount
 			validate response new account without password	Smoke-39-vali	validFormat	[matches,ACCOUNT_FORMAT]			
 			check if new account created in the system	Smoke-39-vali-list	requestMethod.eth_accounts	[]			
 			validate response of checking if new account created in the system	Smoke-39-vali-list-vali	validFormat	[contains,_newAccount]			
+			check if new account listed in the system using personal_listAccounts	Smoke-37	requestMethod.personal_listAccounts	[]			
+			validate response of checking if new account listed in the system using personal_listAccounts	Smoke-37-vali	validFormat	[contains,_newAccount]			
 									
 smoke personal_sendTransaction									
 			Pre-validation: restore the balance of the accounts before operation	Smoke-40-pre-vali	validationFunction.balanceValidate.pre	{from:_acc1,to:_acc2,value:123123123123}			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
@@ -136,7 +138,7 @@ smoke personal_sendTransaction
 			post-validation: compare the balance of the accounts after the operation	Ssmoke-40-custom-gasPrice-post-vali	validationFunction.balanceValidate.post				
 									
 smoke personal_sign									
-			sign a message	Smoke-41	requestMethod.personal_sign	[0x123456,_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+			sign a message	Smoke-41	requestMethod.personal_sign	[0x123456,_acc1,password]		result=>signedMsg	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
 			validate response for sign a message	Smoke-41-vali	validFormat	[matches,BINARY]			
 			sign a message with invalid password	Smoke-41-invalid-ps	requestMethod.personal_sign	[0x123456,_acc1,wrong]			
 			validate response for sign a message with invalid password	Smoke-41-invalid-ps-vali	validFormat	[error,PERSONAL_INVALID_PASSWORD]			
@@ -144,36 +146,67 @@ smoke personal_sign
 			validate response for sign a message	Smoke-41-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
 			sign an invalid encoded message	Smoke-41-invalid-msg	requestMethod.personal_sign	[0x02345,_acc1,password]			
 			validate response for sign a message	Smoke-41-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
-smoke eth_sign	x	x							
-	x		Pre-step: Rpc request to unlock account to sign	smoke-30-pre	requestMethod.personal_unlockAccount	[_acc1,password,60]			acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
-	x		sign a message	Smoke-30	requestMethod.personal_sign	[0x123456,_acc1]			
-	x		validate response for sign a message	Smoke-30-vali	validFormat	[matches,BINARY]			
-	x		sign a message with invalid password	Smoke-30-locked-account	requestMethod.personal_sign	[0x123456,_acc2]			
-	x		validate response for sign a message with invalid password	Smoke-30-locked-account-vali	validFormat	[error,]			
-	x		sign a message missing param	Smoke-30-miss-param	requestMethod.personal_sign	[0x123456,_acc1]			
-	x		validate response for sign a message	Smoke-30-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
-	x		sign an invalid encoded message	Smoke-30-invalid-msg	requestMethod.personal_sign	[0x02345,_acc1,password]			
-	x		validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+smoke eth_sign required smoke personal_sign		x							
+			Pre-step: Rpc request to unlock account to sign	smoke-30-pre	requestMethod.personal_unlockAccount	[_acc1,password,60]			acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+			sign a message	Smoke-30	requestMethod.eth_sign	[_acc1,0x123456]			
+			validate response for sign a message	Smoke-30-vali	validFormat	[matches,BINARY]			
+			validate response for sign a message-value	Smoke-30-vali-2	validFormat	[equal,_signedMsg]			
+			sign a message with invalid password	Smoke-30-locked-account	requestMethod.eth_sign	[_acc2,0x123456]			
+			validate response for sign a message with invalid password	Smoke-30-locked-account-vali	validFormat	[error,LOCKED_ERROR]			
+			sign a message missing param	Smoke-30-miss-param	requestMethod.eth_sign	[_acc1]			
+			validate response for sign a message	Smoke-30-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+			sign an invalid encoded message	Smoke-30-invalid-msg	requestMethod.eth_sign	[_acc1,0x12345]			
+			validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
 									
-smoke personal_signTransaction, eth_signTransaction and eth_sendRawTransaction	x								
-	x		sign a transaction	Smoke-42	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>txRaw,result.tx.hash=>computeTxHash,result.tx=>tx	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
-	x		validate response-personal_signTx	Smoke-42-vali	validFormat	[matches,VALID_SIGN_TRANSACTION]			
-	x		Pre-validation: restore the balance of the accounts before operation	Smoke-42-28-pre	validationFunction.balanceValidate.pre	_tx			
-	x		send the signed transaction to avoid nonce gap issue	Smoke-28-frompsigntx	requestMethod.eth_sendRawTransaction	[_txRaw]		result=>txHash	
-	x		validate response or eth_sendRawTransaction	Smoke-28-frompsigntx-vali	validFormat	[equal,_computeTxHash]			
-	x		get Tx Object	smoke-19-p-raw	requestMethod.eth_getTransactionByHash	[_txHash]			
-	x		validate response	smoke-19-p-raw-vali	validFormat	[matches,VALID_TX]			
-	x		post-validation: compare the balance of the accounts after the operation	Smoke-42-28-post	validationFunction.balanceValidate.post				
-smoke personal_signTransaction invalid	x	x							
-	x		Personal sign a transaction – invalid password	Smoke-40-invalid-ps	requestMethod.personal_sign	[{from:_acc1,to:acc2,value:100},wrong]			
-	x		validate response	Smoke-40-invalid-ps-vali	validFormat	[error,PERSONAL_INVALID_PASSWORD]			
-	x		personal sign a transaction – missing params	Smoke-40-miss-param	requestMethod.personal_sign	[{from:acc1,to:acc2,value:100}]			
-	x		validate response	Smoke-40-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+smoke personal_signTransaction, eth_signTransaction and eth_sendRawTransaction									
+			sign a transaction	Smoke-42	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>txRaw,result.tx.hash=>computeTxHash,result.tx=>tx	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+			validate response-personal_signTx	Smoke-42-vali	validFormat	[matches,VALID_SIGN_TRANSACTION]			
+			Pre-validation: restore the balance of the accounts before operation	Smoke-42-28-pre	validationFunction.balanceValidate.pre	_tx			
+			send the signed transaction to avoid nonce gap issue	Smoke-28-frompsigntx	requestMethod.eth_sendRawTransaction	[_txRaw]		result=>txHash	
+			validate response or eth_sendRawTransaction	Smoke-28-frompsigntx-vali	validFormat	[equal,_computeTxHash]			
+			get Tx Object	smoke-19-p-raw	requestMethod.eth_getTransactionByHash	[_txHash]			
+			validate response	smoke-19-p-raw-vali	validFormat	[matches,VALID_TX]			
+			post-validation: compare the balance of the accounts after the operation	Smoke-42-28-post	validationFunction.balanceValidate.post				
+smoke personal_signTransaction invalid		x							
+			Personal sign a transaction – invalid password	Smoke-40-invalid-ps	requestMethod.personal_sign	[0x123456,_acc1,wrong]			
+			validate response	Smoke-40-invalid-ps-vali	validFormat	[error,PERSONAL_INVALID_PASSWORD]			
+			personal sign a transaction – missing params	Smoke-40-miss-param	requestMethod.personal_sign	[{from:acc1,to:acc2,value:100}]			
+			validate response	Smoke-40-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
 									
+smoke net module_solo node									
+			check if net is listening to its peers	Smoke-44-solo	requestMethod.net_listening	[]			
+			validate response for net_listening	Smoke-44-solo-vali	validFormat	[equal,true]			
+			check the number of peers	Smoke-45-solo	requestMethod.net_peerCount	[]			
+			validate response for net_peerCount	Smoke-45-solo-vali	validFormat	[equal,0]			
+			check net version	Smoke-46	requestMethod.net_version	[]			
+			validate response for net_version	Smoke-46-vali	validFormat	[match,STRING]			
 									
+smoke other module									
+			check available rpc modules	Smoke-47	requestMethod.rpc_modules	[]			
+			validate response for rpc_modules	Smoke-47-vali	validFormat	[match,RPC_MODULES]			
+			check web client version	Smoke-49	requestMethod.web3_clientVersion	[]			
+			validate response for web3_clientVersion	Smoke-49-vali	validFormat	[equal,Aion(R)/v/x86_64-linux-gnu/rustc-1.28.0]			
 									
-			check if net is listening to its peers	44	requestMethod.net_listening				
-			check the number of peers	45	requestMethod.net_peerCount				
-			check net version	46	requestMethod.net_version				
-			check rpc version	47	requestMethod.rpc_version				
-			check web client version	49	requestMethod.web_clientVersion				
+smoke contract related methods	x								
+	x		compile contract	Smoke-5	requestMethod.eth_compileSolidity	recursive.sol			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		validate response for compile contract	Smoke-5-vali	validFormat	[contract]			
+	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
+	x	x	estimate contract deployment	Smoke-6	requestMethod.eth_estimateGas	[{from:_acc1}]			
+	x		validate response of contract deployment estimation	Smoke-6-vali	validFormat	[match,HEX]			
+	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
+	x		unlock account to send contract	Pre-0	requestMethod.personal_unlockAccount	[_acc1,password,100]			
+	x		validate the account is unlocked	Pre-0-vali	validFormat	[equal,true]			
+	x	x	deploy the contract	Smoke-40-deploy	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		get contract receipt and restore the startBlockNumber	Smoke-40-21	requestMethod.eth_getTransactionReceipt	[_txHash]		result.blockNumber=>startBlockNumber	
+	x		Validate contract receipt and restore the startBlockNumber	Smoke-40-21-vali	validFormat	[match,VALID_TX_RECEIPT]			
+	x		get code on deployed address	Smoke-13	requestMethod.eth_getCode	[_contractAddress]			
+	x		validate getCode result equal to the deployment code	Smoke-13-vali	validFormat	[deployedCode,_contract.Recursive.code]			
+			helper prepare contract function calls	helper	helper.prepareContractCall	[getCall]			
+		x	eth_call methods	Smoke-3	requestMethod.eth_call	[{to:_contractAddress}]			
+			validate response for eth_call	Smoke-30-vali	validFormat	[equal,0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]			
+	x		helper prepare contract function calls	helper	helper.prepareContractCall	[f,3]			
+	x	x	send a method of a contract	smoke-40-fun-call	requestMethod.eth_sendTransaction	[{from:_account,to:_contractAddress}]			
+			get contract function call’s receipt	Smoke-40-21-func-call					
+			validate log events	Smoke-40-21-func-call-vali					
+			get logs						
+			validate log events						

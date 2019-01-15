@@ -99,12 +99,14 @@ Helper.prototype.newContract = (testRow,rt_var)=>{
 	return new Promise((resolve)=>{
 		if(rt_var.nextTxObj==undefined) 
 			rt_var.nextTxObj = {};
-		if(params!==null){
-			rt_var.nextTxObj.data = rt_var.contract[testRow.params].code
+		if(testRow.params!==undefined){
+
+			rt_var.nextTxObj.data = rt_var.contract[testRow.params[0]].code
 		}else{
 			rt_var.nextTxObj.data = rt_var.contract[rt_var.contract.names[0]].code;
 		}
 		
+
 		resolve();
 	})
 }
@@ -113,21 +115,11 @@ Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 	
 
 	return new Promise((resolve)=>{
-		// let newOptions = testRow.params.map((value)=>{
 
-		// 	if(typeof value === 'string' && /^_/.test(value) && RUNTIME_VARIABLES[value.substring(1)]!==undefined){
-		// 		console.log("replace with new value");
-		// 		value =  rt_var[value.substring(1)];
-		// 	}
-		// 	this.logger.log(value);
-		// 	return value;
-		// })
 		let newOptions = testRow.params;
 		if(rt_var.nextTxObj==undefined) 
 			rt_var.nextTxObj = {};
-		//console.log(newOptions);
-		//console.log(testRow);
-		
+
 		/*
 			check whether the function is calling a pre-compiled contract which starting with "prec_"
 			or a user defined contract function
@@ -137,7 +129,8 @@ Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 			rt_var.nextTxObj.data = utils.getContractFuncData(null,newOptions.slice(1));
 			rt_var.nextTxObj.to = rt_var.precompile[newOptions[0].substring(5)];
 		}else{
-			console.log(rt_var.contract.func);
+			console.log(rt_var.contract);
+
 			rt_var.nextTxObj.data = utils.getContractFuncData(rt_var.contract.func[newOptions[0]],newOptions.slice(1));
 			rt_var.nextTxObj.to = rt_var.contractAddress;
 		}
