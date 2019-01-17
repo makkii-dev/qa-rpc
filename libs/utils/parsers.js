@@ -1,31 +1,3 @@
-// const assert=  require('chai').assert;
-
-// const testcases = [
-// 	["{a:1}",{a:1}],
-// 	["{a:[{b:1},[1,3,4,f]]}",{a:[{b:1},[1,3,4,'f']]}],
-// 	["[a,s,d,1,0x0,{b:slslsl}]",['a','s','d',1,'0x0',{b:'slslsl'}]],
-// 	["string",'string'],
-// 	["{d:{c:{b:a},dc:1}}",{d:{c:{b:'a'},dc:1}}],
-// 	["{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:1,value:1,data:0x2345,nonce:0x20,condition:{block:0x100}}",{from:'0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c',to:'0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334',gas:1000000,gasPrice:1,value:1,data:'0x2345',nonce:'0x20',condition:{block:'0x100'}}],
-// 	["{fromBlock:earliest,toBlock:latest,topics:[0x66fa32225b641331dff20698cd66d310b3149e86d875926af7ea2f2a9079e80b]}",{topics:["0x66fa32225b641331dff20698cd66d310b3149e86d875926af7ea2f2a9079e80b"]}]
-// ]
-
-
-// _test();
-
-// function _test(){
-
-// 	testcases.forEach((onecase)=>{
-		
-// 		console.log("\nresult:"+ JSON.stringify(parseJSONishString(onecase[0])));
-// 		console.log(JSON.stringify(onecase[1])+"\n");
-// 	});
-// }
-
-
-
-
-
 function parseJSONishString(str, rt_vars){
 	//console.log(rt_vars);
 	if(str.charAt(0) == "["){

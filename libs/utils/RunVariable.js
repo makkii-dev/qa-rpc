@@ -41,6 +41,7 @@ module.exports = (logger)=>{
 
 			case "eth_sendRawTransaction":
 			case "eth_sendTransaction":
+			case "personal_sendTransaction":
 				this.txHash = resp.result;
 				if(/contract/.test(resp.id)){
 					this.contract.hash = resp.result;
@@ -104,11 +105,11 @@ module.exports = (logger)=>{
 
 
 			///stratum rpc variables:
-			case "requestMethod.getblocktemplate":
+			case "getblocktemplate":
 				this.headerHash = resp.result.headerHash;
 				this.headerHeight = resp.result.height-1;
 				break;
-			case "requestMethod.etHeaderByBlockNumber":
+			case "getHeaderByBlockNumber":
 				this.headerNonce = resp.result.nonce;
 				this.solution = resp.result.solution;
 				this.headerHash = resp.result.headerHash;

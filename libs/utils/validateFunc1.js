@@ -143,6 +143,28 @@ Validation.prototype.rptLogs = async (testRow, rt_var, resolution)=>{
 	}
 }
 
+Validation.prototype.minerStats = async (testRow,rt_var,resolution)=>{
+	//{"minerHashrate":"1.5455","minerHashrateShare":"1.0000","networkHashrate":"1.5455"}
+	if(resolution.error) return Promise.reject("Request failed: " + JSON.stringify(resolution.error));
+	if(!rt_var.coinbase){
+		this.logger.warning("no coinbase defined in runtime variables; unable to verify the result");
+		return Promise.resolve(resolution);
+	}else{
+		try{
+			if(rt_var.coinbase === testRow.params){
+				chai.expect(parseInt(resolution.result.minerHashrate)).to.be.above(0);
+				chai.expect(parseInt(resolution.result.minerHashrateShare)).to.be.above(0);
+			}else{
+				chai.expect(parseInt(resolution.result.minerHashrate)).to.equal(0);
+				chai.expect(parseInt(resolution.result.minerHashrateShare)).to.equal(0);
+			}
+			chai.expect(parseInt(resolution.result.networkHashrate)).to.be.above(0);
+			return Promise.resolve(resolution);
+		}catch(e){
+			return Promise.reject(e);
+		}
+	}
+}
 
 Validation.prototype.validateBlake2b = {};
 Validation.prototype.validateBlake2b.pre = async(obj)=>{

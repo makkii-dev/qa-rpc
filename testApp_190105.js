@@ -126,15 +126,6 @@ var Step_Action = function(rows,resolves){
 var data = readCSVDriver(DRIVER_PATH);
 
 
-// var EXPECT_RESP= (req_id, expect_result)=>{
-// 	return {
-// 		id: req_id,
-// 		jsonrpc:cur_provider.rpc_version,
-// 		result: expect_result
-// 	}
-// }
-
-
 
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{

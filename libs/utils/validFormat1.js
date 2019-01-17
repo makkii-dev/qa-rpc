@@ -300,7 +300,11 @@ module.exports = function(row, rt, resolution){
 			expect(resolution.result).to.equal(params[1]);
 			break;
 		case "length":
-			expect(resolution.result).to.have.lengthOf(params[1]);
+			if(params[2]){
+				expect(resolution.result).to.have.lengthOf(parseInt(params[2])-parseInt(params[1]));
+			}else{
+				expect(resolution.result).to.have.lengthOf(params[1]);
+			}
 			break;
 		case "contract":
 			Object.values(resolution.result).forEach((value,index)=>{

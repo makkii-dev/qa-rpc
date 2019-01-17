@@ -11,8 +11,10 @@ class RequestMethod{
 
 				this.provider.sendRequest(currentRow.id,method,currentRow.params).then((resp)=>{
 					if(method != "eth_getTransactionReceipt" || resp.result != null || resp.error ){
-						rt_val.update(method,resp,currentRow.params);
-						rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
+						if(resp.result){
+							rt_val.update(method,resp,currentRow.params);
+							rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
+						}
 						resolve(resp);
 					}
 					else

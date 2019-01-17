@@ -29,7 +29,8 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 		timeout = testRow.params[0];
 		if(testRow.params.length >1)
 			newBlockNum = parseInt(testRow.params[1]);
-	}	
+	}
+
 	//console.log("timeout:"+timeout);
 	//console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
 
@@ -56,10 +57,7 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 			
 			setTimeout(()=>{clearInterval(checkloop);resolve(resolves)},parseInt(timeout)*1000);
 		
-		
 		});
-		
-
 	});
 }
 
@@ -173,15 +171,16 @@ Helper.prototype.getSign = (testRow,rt_var)=>{
 
 
 /// TO BE REVIEWED
-Helper.prototype.data0xPrefix = async (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
+Helper.prototype.data0xPrefix = async (testRow,rt_var,resolution)=>{
+	let options = testRow.params.slice(1);
 	for(let i = 0; i < testRow.params.length;i++){
-		if(options[0] && !/^0x/.test(testRow.params[i])){
-			testRow.params[i] = "0x" + testRow.params[i];
-		}else if(!options[0] && /^0x/.test(testRow.params[i])){
-			testRow.params[i] = testRow.params[i].substring(2);
+		if(options[0] && !/^0x/.test(rt_var[testRow.params[i]])){
+			rt_var[testRow.params[i]] = "0x" + rt_var[testRow.params[i]];
+		}else if(!options[0] && /^0x/.test(testRow.params[i]) ){
+			rt_var[testRow.params[i]] = rt_var[testRow.params[i]].substring(2);
 		}
 	}
-	return Promise.resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+	return Promise.resolve(resolution);
 }
 
 
