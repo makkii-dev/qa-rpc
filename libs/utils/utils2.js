@@ -265,7 +265,7 @@ var getContractFuncData = (funcABI, params)=>{
 	let funcSign = keccak256(funcStr).substring(0,8);
 	let check = funcSign;
 	let rest = '';
-	//console.log(params);
+	console.log(params);
 	params.forEach((param,index)=>{
 		if(funcABI.inputs[index].type=='string'){
 			let offset = (funcABI.inputs[index].type,params.length -1-index) * 32 + rest.length;
@@ -300,9 +300,25 @@ var getContractConstrData = (funcABI, params)=>{
 }
 
 
+var getEvtData = (funcABI, params)=>{
+	let data = '0x';
+	let rest = '';
+	params.forEach((param,index)=>{
+		if(funcABI.inputs[index].type=='string'){
+			let offset = (funcABI.inputs[index].type,params.length -1-index) * 32 + rest.length;
+			data += encoder("int",offset);
+			rest += encoder(funcABI.inputs[index].type,param)
+		}else{
+			data += encoder(funcABI.inputs[index].type,param);
+		}
+	});
+	return data+rest;	
+}
+
+
 var encoder = (type, param)=>{
 
-	//console.log(type+":"+(typeof param=='object')?JSON.stringify(param):param);
+	console.log(type+":"+(typeof param=='object')?JSON.stringify(param):param);
 	switch(type){
 		case "int8":
 		case "uint8":
@@ -486,7 +502,8 @@ var Utils={
 	getTxReceipt:getTxReceipt,
 	waitBlockUntil:waitBlockUntil,
 	getEvent:getEvent,
-	getEncodeTx:getEncodeTx
+	getEncodeTx:getEncodeTx,
+	getEvtData:getEvtData
 }
 
 module.exports = Utils;

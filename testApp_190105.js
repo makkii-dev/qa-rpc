@@ -53,7 +53,7 @@ function formParam(str,currentMethod){
 	}
 
 	var result = paramsParser(str,RUNTIME_VARIABLES);
-	
+	console.log(JSON.stringify(result));
 	return result;
 }
 

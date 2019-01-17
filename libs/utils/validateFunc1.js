@@ -117,6 +117,33 @@ Validation.prototype.validateMining.post = async (obj)=>{
 
 
 
+Validation.prototype.rptLogs = async (testRow, rt_var, resolution)=>{
+	if(resolution.error) return Promise.reject("Request failed: " + JSON.stringify(resolution.error));
+	if(resolution.result.status == "0x0") return Promise.reject("tx revert:" + JSON.stringify(resolution.result));
+
+	let params = testRow.params;
+	let logs = resolution.result.logs;
+	try{
+		chai.expect(logs).to.have.lengthOf(params[0]);
+		this.logger.info(JSON.stringify(rt_var.contract.event));
+		if(params[1]){
+			logs.forEach((log,index)=>{
+				if(params[1][index].topics)
+					chai.expect(log.topics[0]).to.have.string(utils.getEvent(rt_var.contract.event[params[1][index].topics]));
+				if(params[1][index].data)
+					chai.expect(log.data).to.equal(utils.getEvtData(rt_var.contract.event[params[1][index].topics],params[1][index].data));
+				if(params[1][index].logIndex)
+					chai.expect(parseInt(log.logIndex)).to.equal(params[1][index].logIndex);
+			});
+		}
+		rt_var.reassign(testRow.runtimeVal).storeVariables(testRow.storeVariables,resolution);
+		return Promise.resolve(resolution);
+	}catch(e){
+		return Promise.reject(e);
+	}
+}
+
+
 Validation.prototype.validateBlake2b = {};
 Validation.prototype.validateBlake2b.pre = async(obj)=>{
 	obj.VERIFY_VARIABLES.vals.callMethod = obj.testRow.method == "eth_call"? true: false; // "true" called locally; "false" call in another contract

@@ -27,7 +27,6 @@ var readCSV = (driver_path)=>{
 			reformData.push(oneSet);
 		}else{
 			let ts_No = reformData.length-1;
-			console.log(ts_No);
 			reformData[ts_No].tests.push(item);
 		}
 	});

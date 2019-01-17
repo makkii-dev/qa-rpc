@@ -35,21 +35,19 @@ var http_provider = (endpoint, request_id, request_method, request_params,rpc_ve
 			port: endpoint_vals[1],
 			method: "POST",
 			headers:{
-				"Content-Type":"application/json"
+				"Content-Type":"application/json; charset=UTF-8"
 			}
 		},(res)=>{
 			let resp = "";
 			res.setEncoding('utf8')
 			res.on("data",(data)=>{
-				//onsole.log(data);
 				resp=resp + data;
-				
-				
+
 			});
 			res.on('end',()=>{
 				//console.log("closed connection"+ request_id);
 				logger.log("[HTTP Response]",log_visible);
-				logger.log(resp, );
+				logger.log(resp);
 				resolve(JSON.parse(resp));
 			});
 		});
@@ -65,7 +63,6 @@ var http_provider = (endpoint, request_id, request_method, request_params,rpc_ve
 		logger.log(payload,log_visible);
 		req.write(payload);
 		req.end();
-
 
 	});
 };

@@ -49,15 +49,18 @@ function _parseJsonIshObj(str,start,end,rt_vars){
 			propertyName = str.substring(start,i);
 			i++;
 			start = i;
-		}else if(ichar == ","){			
-			value = _parseValue(str.substring(start,i),rt_vars);
-			partialResult[propertyName] = value;
-			i++;
-			start = i;
+		}else if(ichar == ","){
+			if(start < i){			
+				value = _parseValue(str.substring(start,i),rt_vars);
+				partialResult[propertyName] = value;
+			}
+			start = ++i;
 		}else if(ichar == '['){
+			console.log(i,ichar);
 			let res = _parseJsonIshArr(str, i+1,end,rt_vars);
 			value = res.res;
 			i = res.index;
+			//console.log(i,str.charAt(i));
 			partialResult[propertyName] = value;
 			start = i;
 		}else if(ichar == '}'){
@@ -105,11 +108,11 @@ function _parseJsonIshArr(str,start,end,rt_vars){
 		}else if(ichar == ']'){
 			if(start < i ){
 				value = _parseValue(str.substring(start,i),rt_vars);
+				//console.log("in array",value)
 				partialResult.push(value);
 			}
 			newEnd = i+1;
 			break;
-			
 		}else if(ichar == '{'){
 			let res = _parseJsonIshObj(str, i+1,end,rt_vars);
 			value = res.res;
@@ -126,6 +129,7 @@ function _parseJsonIshArr(str,start,end,rt_vars){
 }
 
 function _parseValue(input,rt_vars){
+	//console.log(input);
 	if(!isNaN(input) && typeof input ==='string' && !/^0x/.test(input)){
 		input = parseInt(input);
 	}else if(/^_/.test(input)){
@@ -136,6 +140,7 @@ function _parseValue(input,rt_vars){
 	}else if(isNaN(input) && (input.toLowerCase()=='true' || input.toLowerCase()=='false')){
 		return input.toLowerCase()=='true';
 	}else if(input.toLowerCase() == "null"){
+
 		return null;
 	}
 	return input;

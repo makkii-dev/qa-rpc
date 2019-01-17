@@ -64,9 +64,9 @@ Smoke eth_getCompilers
 			get support compiler names	Smoke-14	requestMethod.eth_getCompilers	[]			
 			validate response	Smoke-14-vali	validFormat	[contains,solidity]			
 									
-Smoke eth_hashrate									
-			get miner hashrate	Smoke-22	requestMethod.eth_hashrate	[]			
-			validate response	Smoke-22-vali	validFormat	[matches,STRING]			
+Smoke eth_hashrate	x								
+	x		get miner hashrate	Smoke-22	requestMethod.eth_hashrate	[]			
+	x		validate response	Smoke-22-vali	validFormat	[matches,STRING]			
 									
 Smoke eth_mining									
 			check if current client is mining	Smoke-23	requestMethod.eth_mining	[]			
@@ -187,26 +187,36 @@ smoke other module
 			check web client version	Smoke-49	requestMethod.web3_clientVersion	[]			
 			validate response for web3_clientVersion	Smoke-49-vali	validFormat	[equal,Aion(R)/v/x86_64-linux-gnu/rustc-1.28.0]			
 									
-smoke contract related methods	x								
-	x		compile contract	Smoke-5	requestMethod.eth_compileSolidity	recursive.sol			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
-	x		validate response for compile contract	Smoke-5-vali	validFormat	[contract]			
-	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
-	x	x	estimate contract deployment	Smoke-6	requestMethod.eth_estimateGas	[{from:_acc1}]			
-	x		validate response of contract deployment estimation	Smoke-6-vali	validFormat	[match,HEX]			
-	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
-	x		unlock account to send contract	Pre-0	requestMethod.personal_unlockAccount	[_acc1,password,100]			
-	x		validate the account is unlocked	Pre-0-vali	validFormat	[equal,true]			
-	x	x	deploy the contract	Smoke-40-deploy	requestMethod.eth_sendTransaction	[{from:_acc1}]			
-	x		get contract receipt and restore the startBlockNumber	Smoke-40-21	requestMethod.eth_getTransactionReceipt	[_txHash]		result.blockNumber=>startBlockNumber	
-	x		Validate contract receipt and restore the startBlockNumber	Smoke-40-21-vali	validFormat	[match,VALID_TX_RECEIPT]			
-	x		get code on deployed address	Smoke-13	requestMethod.eth_getCode	[_contractAddress]			
-	x		validate getCode result equal to the deployment code	Smoke-13-vali	validFormat	[deployedCode,_contract.Recursive.code]			
-			helper prepare contract function calls	helper	helper.prepareContractCall	[getCall]			
+smoke contract related methods									
+			compile contract	Smoke-5	requestMethod.eth_compileSolidity	recursive.sol			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+			validate response for compile contract	Smoke-5-vali	validFormat	[contract]			
+			helper function to compose the contract	helper	helper.newContract	[Recursive]			
+		x	estimate contract deployment	Smoke-6	requestMethod.eth_estimateGas	[{from:_acc1}]			
+			validate response of contract deployment estimation	Smoke-6-vali	validFormat	[match,HEX]			
+			helper function to compose the contract	helper	helper.newContract	[Recursive]			
+			unlock account to send contract	Pre-0	requestMethod.personal_unlockAccount	[_acc1,password,240]			
+			validate the account is unlocked	Pre-0-vali	validFormat	[equal,true]			
+		x	deploy the contract	Smoke-40-deploy	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+			get contract receipt and restore the startBlockNumber	Smoke-40-21	requestMethod.eth_getTransactionReceipt	[_txHash]		result.blockNumber=>startBlockNumber	
+			Validate contract receipt and restore the startBlockNumber	Smoke-40-21-vali	validFormat	[match,VALID_TX_RECEIPT]			
+			get code on deployed address	Smoke-13	requestMethod.eth_getCode	[_contractAddress]			
+			validate getCode result equal to the deployment code	Smoke-13-vali	validFormat	[deployedCode,_contract.Recursive.code]			
+			helper prepare contract function calls	helper	helper.prepareContractCall	[f,_contractAddress,3]			
+		x	send a method of a contract	smoke-40-fun-call	requestMethod.eth_sendTransaction	[{from:_acc1,to:_contractAddress}]			
+			get contract function call method receipt	Smoke-40-21-func-call	requestMethod.eth_getTransactionReceipt	[_txHash]			
+			validate log events	Smoke-40-21-func-call-vali	validationFunction.rptLogs	[3,[{data:[3],topics:Evt,logIndex:0},{data:[2],topics:Evt,logIndex:1},{data:[1],topics:Evt,logIndex:2}]]			
+			get logs	Smoke-17	requestMethod.eth_getLogs	[{fromBlock:_startBlockNumber}]			
+			validate log events	Smoke-17-vali	validFormat	[length,3]			
+			helper prepare contract function calls	helper	helper.prepareContractCall	[addr]			
 		x	eth_call methods	Smoke-3	requestMethod.eth_call	[{to:_contractAddress}]			
-			validate response for eth_call	Smoke-30-vali	validFormat	[equal,0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]			
-	x		helper prepare contract function calls	helper	helper.prepareContractCall	[f,3]			
-	x	x	send a method of a contract	smoke-40-fun-call	requestMethod.eth_sendTransaction	[{from:_account,to:_contractAddress}]			
-			get contract function call’s receipt	Smoke-40-21-func-call					
-			validate log events	Smoke-40-21-func-call-vali					
-			get logs						
-			validate log events						
+			validate response for eth_call	Smoke-30-vali	validFormat	[equal,_contractAddress]			
+			get Storage At	Smoke-18	requestMethod.eth_getStorageAt	[_contractAddress,0,latest]			
+			validate response for eth_getStorageAt	Smoke-18-vali	validFormat	[equal,0x0000000000000000000000000000000c]			
+									
+									
+									
+									
+									
+									
+	x			xx	requestMethod.getMinerStats	[0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334]			
+	x			cxcvxzvcd	requestMethod.submit_hashrate	[]			

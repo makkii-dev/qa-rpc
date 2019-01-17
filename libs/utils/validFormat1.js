@@ -291,10 +291,12 @@ module.exports = function(row, rt, resolution){
 			break;
 		case 'deployedCode':
 			resolution.result = resolution.result.substring(2);
-			params[1] = params[1].substring(94);
-			console.log(resolution.result.length + "\t"+params[1].length)
+			params[1] = params[1].substring(params[1].length-resolution.result.length);
+			//console.log(resolution.result.length + "\t"+params[1].length);
+			expect(resolution.result).to.equal(params[1]);
+			break;
 		case 'equal':
-			console.log("\n\n\n\n");
+			//console.log("\n\n\n\n");
 			expect(resolution.result).to.equal(params[1]);
 			break;
 		case "length":

@@ -1,118 +1,118 @@
-TestSet,execute,testDescription,prefix,helper_params,helper,id,method,params,valid_method,valid_type,format_name,arraySize,arrayValue,validateFunction,x,runtimeVal,storeVariables,preStoreVariables
-smoke test,,,,,,,,,,,,,,,,,,
-,,get highest block number,smoke,,,8,eth_blockNumber,,format,value,INTEGER,,,,,,,
-,,create account,smoke,,,2,personal_newAccount,password,format,value,ACCOUNT_FORMAT,,,,,,,
-,,get account list,smoke,,,1,personal_listAccounts,,format,array,ACCOUNT_FORMAT,,,,,,,
-,,unlock account,smoke,,,3,personal_unlockAccount,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10,value,,true,,,,,,,
-,,check account unlocked,smoke,,,5,personal_isAccountUnlocked,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value,,true,,,,,,,
-,,lock account,smoke,,,4,personal_lockAccount,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password,value,value,true,,,,,,,
-,,check account locked,smoke,,,5,personal_isAccountUnlocked,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,value,,false,,,,,,,
-,,"estimate gas for a transaction with only {from,to,value}",smoke,,,22,eth_estimateGas,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:10000000000,value:0x09,data:0x2345} pending",format,value,HEX,,,,,,,
-,,unlock account_for transactions,smoke,,,3,personal_unlockAccount,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0,value,,true,,,,,,,
-,,"send transaction with default gas limit & gas price {from, to, value=1 }",smoke,,,46,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}",format,value,TRANSACTION_FORMAT,,,,,,,
-,,get Transaction Receipt,smoke,120 1,WaitNewBlock,26,eth_getTransactionReceipt,,format,object,VALID_TX_RECEIPT,,,,,,,
-,,"send transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=10000000000}",smoke,,,46,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:10000000000,value:1}",format,value,TRANSACTION_FORMAT,,,,,,,
-,,send signed transaction,smoke,,,,eth_sendRawTransaction,,format,value,,,,,,,,
-,,"sign transaction with specified gas limit & gas price {from,to,value,gas=1000000,gasPrice=10000000000}",smoke,,,47,eth_signTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1,gas:1000000,gasPrice:10000000000}",format,object,VALID_SIGN_TRANSACTION,,,,,,result.raw=>txRaw,
-,,send signed transaction,smoke,,,,eth_sendRawTransaction,,,,,,,,,,,
-,,new pending transaction filter,smoke,,,39,eth_newPendingTransactionFilter,,format,value,HEX,,,,,,,
-,,new pending transaction filter1 – send request,smoke,,,46_default,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}",format,value,TRANSACTION_FORMAT,,,,,,,
-,,new pending transaction filter2 – send request,smoke,,,46_default,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}",format,value,TRANSACTION_FORMAT,,,,,,,
-,,new pending transaction filter3 – check filter changes,smoke,,,40,eth_getFilterChanges,,format,value,ARRAY,,,,,,,
-,,new pending transaction filter4 – check filter logs,smoke,,,41,eth_getFilterLogs,,format,value,ARRAY,,,,,,,
-,,new pending transaction filter5 – uninstall filter,smoke,,,42,eth_uninstallFilter,,value,,true,,,,,,,
-,,get block template,smoke,,,34,getblocktemplate,,format,object,VALID_WORKTEMPLATE,,,,,,,
-,,new block filter(wait a while to get validate new block),smoke,,,38,eth_newBlockFilter,,format,value,HEX,,,,,,,
-,,new block filter1 – check filter changes,smoke,100,WaitNewBlock,40,eth_getFilterChanges,,format,value,ARRAY,1,,,,,,
-,,new block filter2 – check filter logs,smoke,,,41,eth_getFilterLogs,,format,value,ARRAY,,,,,,,
-,,new block filter3 – uninstall filter,smoke,,,42,eth_uninstallFilter,,value,,true,,,,,,,
-,,get coinbase,smoke,,,4,eth_coinbase,,format,value,ACCOUNT_FORMAT,,,,,,,
-,,check if mining,smoke,,,5,eth_mining,,format,value,BOOLEAN,,,,,,,
-,,get hashrate,smoke,,,3,eth_hashrate,,format,value,STRING,,,,,,,
-,,submit hashrate,smoke,,,36,eth_submitHashrate,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0000000000000000000000000000000000000000000000000000000000000001,format,value,BOOLEAN,,,,,,,
-,,get syncing object,smoke,,,2,eth_syncing,,value,,false,,,,,,,
-,,get gas prices,smoke,,,6,eth_gasPrice,,format,value,HEX,,,,,,,
-,,get eth account list,smoke,,,7,eth_accounts,,format,array,ACCOUNT_FORMAT,,,,,,,
-,,get protocol version,smoke,,,1,eth_protocolVersion,,exactvalue,,0,,,,,,,
-,,get balance block (latest),smoke,,,9_latest,eth_getBalance,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest,format,value,BALANCE_FORMAT,,,,,,,
-,,get balance block (earliest),smoke,,,9_earliest,eth_getBalance,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest,format,value,BALANCE_FORMAT,,,,,,,
-,,get balance block (pending),smoke,,,9_pending,eth_getBalance,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c pending,format,value,BALANCE_FORMAT,,,,,,,
-,,get balance block (number)(hex),smoke,,,9_number,eth_getBalance,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0,format,value,BALANCE_FORMAT,,,,,,,
-,,get code at address,smoke,,,18,eth_getCode,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest,format,value,BINARY,,,,,,,
-,,get compilers,smoke,,,0,eth_getCompilers,,format,value,ARRAY,,solidity,,,,,
-,,get block by number include Tx object,smoke,,,12,eth_getBlockByNumber,latest true,format,object,VALID_BLOCK_OBJECT,,,,,,,
-,,get block by hash include Tx object,smoke,,,11,eth_getBlockByHash, true,format,object,VALID_BLOCK_OBJECT,,,,,,,
-,,get transaction count by address and by block number,smoke,,,13,eth_getTransactionCount,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,format,value,HEX,,,,,,,
-,,get block Tx count by number(0x0),smoke,,,15,eth_getBlockTransactionCountByNumber,0x0000000000000000000000000000000000000000000000000000000000000000,format,value,HEX,,,,,,,
-,,get block Tx count by hash,smoke,,,16,eth_getBlockTransactionCountByHash,,format,value,HEX,,,,,,,
-,,get Tx by hash,smoke,,,23,eth_getTransactionByHash,,format,object,VALID_TX,,,,,,,
-,,get net version,smoke,,,1,net_version,,format,value,STRING,,,,,,,
-,,check if listening,smoke,,,3,net_listening,,format,value,BOOLEAN,,,,,,,
-,,get peer count,smoke,,,2,net_peerCount,,format,value,INTEGER,,,,,,,
-,,Compile solidity contract,smoke,,,,eth_compileSolidity,recursive.sol,,object,COMPILE_RESUILT,,,,,,,
-,,unlock account,smoke,,,3,personal_unlockAccount,0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0 password 0,format,value,BOOLEAN,,,,,,,
-,,deploy a contract,smoke,,newContract,46_value2,eth_sendTransaction,"{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,gas:300000}",format,value,TRANSACTION_FORMAT,,,,,,,
-,,get Transaction Receipt,smoke,100 1,WaitNewBlock,26,eth_getTransactionReceipt,,format,object,VALID_TX_RECEIPT,,,,,,,
-,,call contract,smoke,f _contractAddress 3,prepareContractCall,46_value2,eth_sendTransaction,{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c},format,value,TRANSACTION_FORMAT,,,,,,,
-,,get Transaction receipt,smoke,100 1,WaitNewBlock,26,eth_getTransactionReceipt,,format,object,VALID_TX_RECEIPT,,,,,,,
-,,subscribe newHeads,smoke,,,subscribe newHeads,eth_subscribe,newHeads,format,value,HEX,,,,,,,
-,,subscribe logs,smoke,,,subscribe logs,eth_subscribe,"logs {fromBlock:0x2,toBlock:0xff}",,,,,,,,,,
-,,unsubscribe,smoke,,,unsubscribe,eth_unsubscribe,,,,,,,,,,,
-,,get Logs from first block to current block,smoke,,,,eth_getLogs,"{fromBlock:earliest,toBlock:latest}",,,,,,,,,,
-,,sign a message when account is unlocked,smoke,,,,eth_sign,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da,,,,,,,,,,
-,,,smoke,,,,eth_submitWork,,,,,,,,,,,
-,,getStorageAt,smoke,,,,eth_getStorageAt,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0 latest,,,,,,,,,,
-,,sign a message using a personal,smoke,,,,personal_signAndSendTransaction,,,,,,,,,,,
-,,,smoke,,,,submitblock,,,,,,,,,,,
-,,get all available RPC modules and its version,smoke,,,,rpc_modules,,format,object,RPC_MODULES,,,,,,,
-,,get Kernel version,smoke,,,,web3_clientVersion,,exactvalue,,Aion(R)/v/x86_64-linux-gnu/rustc-1.28.0,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-pending test,x,,contract,,,,,,,,,,,,,,,
-,x,,,,,,,,,,,,,,,,,
-,x,get logs,xxxx,,,,eth_getLogs,"{address:0xa057daf64deaa5eb4a26261b53388f24f4eba636daff1eb740597eafd09c567c,fromBlock:earliest}",,,,,,,,,,
-,,,,,,,eth_getLogs,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-syncing,,,,,,,,,,,,,,,,,,
-,,get highest block number,smoke,,,8,eth_blockNumber,,format,value,BLOCK_NUMBER_FORMAT,,,,,,,
-,,get syncing object ,smoke,,,2,eth_syncing,,,,false,,,,,,,
-,,create a new block filter,smoke,,,,eth_newBlockFilter,,,,,,,,,,,
-,,get syncing object (end of syncing false),smoke,5,delay,2,eth_syncing,,,,false,,,,,,,
-,,get highest block number,smoke,,,8,eth_blockNumber,,format,value,BLOCK_NUMBER_FORMAT,,,,,,,
-,,get filter changes of block filter,,,,,eth_getFilterChanges,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-Call & estimate gas,x,,,,,,,,,,,,,,,,,
-,x,Compile solidity contract,call_est,,,Pre-1,eth_compileSolidity,recursive.sol,,,,,,,,,,
-,x,unlock account,call_est,,,Pre-2,personal_unlockAccount,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 1000,,,,,,,,,,
-,x,deploy a contract,call_est,,newContract,Pre-3,eth_sendTransaction,{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c},,,,,,,,,,
-,x,get contract address,call_est,120 1,WaitNewBlock,Pre-3-1,eth_getTransactionReceipt,,,,,,,,,,,
-,x,estimate gas for a method,call_est,f _contractAddress 3,prepareContractCall,1,eth_estimateGas,{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c},,,,,,,,,,
-,x,check the balance before the operation,call_est,,,Pre-4,eth_getBalance,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,,,,,,,,,,
-,x,call the method,call_est,f _contractAddress 3,prepareContractCall,2,eth_sendTransaction,{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c},,,,,,,,,,
-,x,get receipt,call_est,120 1,WaitNewBlock,2-post,eth_getTransactionReceipt,,,,,,,,,,,
-,x,check the balance before the operation eth_call,call_est,,,Pre-5,eth_getBalance,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,,,,,,,,,,
-,x,call the method local (eth_local),call_est,f _contractAddress 3,prepareContractCall,3,eth_call,{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c},,,,,,,,,,
-,x,check the balance after the operation,call_est,,,3-post,eth_getBalance,0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-AMO-TS02: use account mine aion coins,x,,,,,,,,,,,,,,,,,
-,x,get coinbase,AMO-TS02,,,1,eth_coinbase,,,,,,,,,,,
-,x,validate mining – config author,AMO-TS02,,,3,eth_getBalance,_coinbase,,,,,,validateMining,,,,
-,x,validate mining – user miner 1,AMO-TS02,,,4-0,eth_getBalance,_coinbase,,,,,,validateMining,,,,coinbase=0x0000000000000000000000000000000000000000000000000000000000000000
-,x,validate mining – user miner 2,AMO-TS02,,,4-1,eth_getBalance,_coinbase,,,,,,validateMining,,,,coinbase=0x
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-missed,x,,missed,,,,,,,,,,,,,,,
-,x,,missed,,,,eth_getTransactionByBlockNumberAndIndex,latest 0x1,,,,,,,,,result.blockNumber=>blockNumber,
-,x,,missed,,,,eth_getTransactionByBlockNumberAndIndex,_blockNumber 0x1,,,,,,,,,result.blockHash=>blockHash,
-,,,,,,,,,,,,,,,,,,
-,x,,missed,,,,eth_getTransactionByBlockHashAndIndex,_blockHash 0x1,,,,,,,,,,
-,x,,missed,,,,eth_getTransactionByBlockNumberAndIndex,_blockNumber 1,,,,,,,,,result.blockHash=>blockHash,
-,x,,missed,,,,eth_getTransactionByBlockNumberAndIndex,latest 1,,,,,,,,,,
-,x,,missed,,,,eth_getTransactionByBlockHashAndIndex,_blockHash 1,,,,,,,,,,
+TestSet|execute|testDescription|prefix|helper_params|helper|id|method|params|valid_method|valid_type|format_name|arraySize|arrayValue|validateFunction|x|runtimeVal|storeVariables|preStoreVariables
+smoke test||||||||||||||||||
+||get highest block number|smoke|||8|eth_blockNumber||format|value|INTEGER|||||||
+||create account|smoke|||2|personal_newAccount|password|format|value|ACCOUNT_FORMAT|||||||
+||get account list|smoke|||1|personal_listAccounts||format|array|ACCOUNT_FORMAT|||||||
+||unlock account|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 10|value||true|||||||
+||check account unlocked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||true|||||||
+||lock account|smoke|||4|personal_lockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password|value|value|true|||||||
+||check account locked|smoke|||5|personal_isAccountUnlocked|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|value||false|||||||
+||"estimate gas for a transaction with only {from|to|value}"|smoke|||22|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:0x03,gasPrice:10000000000,value:0x09,data:0x2345} pending|format|value|HEX|||||||
+||unlock account_for transactions|smoke|||3|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0|value||true|||||||
+||send transaction with default gas limit & gas price {from to value=1 }|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT|||||||
+||get Transaction Receipt|smoke|120 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT|||||||
+||"send transaction with specified gas limit & gas price {from|to|value|gas=1000000|gasPrice=10000000000}"|smoke|||46|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,gas:1000000,gasPrice:10000000000,value:1}|format|value|TRANSACTION_FORMAT|||||||
+||send signed transaction|smoke||||eth_sendRawTransaction||format|value||||||||
+||"sign transaction with specified gas limit & gas price {from|to|value|gas=1000000|gasPrice=10000000000}"|smoke|||47|eth_signTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1,gas:1000000,gasPrice:10000000000}|format|object|VALID_SIGN_TRANSACTION||||||result.raw=>txRaw|
+||send signed transaction|smoke||||eth_sendRawTransaction|||||||||||
+||new pending transaction filter|smoke|||39|eth_newPendingTransactionFilter||format|value|HEX|||||||
+||new pending transaction filter1 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT|||||||
+||new pending transaction filter2 – send request|smoke|||46_default|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:1}|format|value|TRANSACTION_FORMAT|||||||
+||new pending transaction filter3 – check filter changes|smoke|||40|eth_getFilterChanges||format|value|ARRAY|||||||
+||new pending transaction filter4 – check filter logs|smoke|||41|eth_getFilterLogs||format|value|ARRAY|||||||
+||new pending transaction filter5 – uninstall filter|smoke|||42|eth_uninstallFilter||value||true|||||||
+||get block template|smoke|||34|getblocktemplate||format|object|VALID_WORKTEMPLATE|||||||
+||new block filter(wait a while to get validate new block)|smoke|||38|eth_newBlockFilter||format|value|HEX|||||||
+||new block filter1 – check filter changes|smoke|100|WaitNewBlock|40|eth_getFilterChanges||format|value|ARRAY|1||||||
+||new block filter2 – check filter logs|smoke|||41|eth_getFilterLogs||format|value|ARRAY|||||||
+||new block filter3 – uninstall filter|smoke|||42|eth_uninstallFilter||value||true|||||||
+||get coinbase|smoke|||4|eth_coinbase||format|value|ACCOUNT_FORMAT|||||||
+||check if mining|smoke|||5|eth_mining||format|value|BOOLEAN|||||||
+||get hashrate|smoke|||3|eth_hashrate||format|value|STRING|||||||
+||submit hashrate|smoke|||36|eth_submitHashrate|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0000000000000000000000000000000000000000000000000000000000000001|format|value|BOOLEAN|||||||
+||get syncing object|smoke|||2|eth_syncing||value||false|||||||
+||get gas prices|smoke|||6|eth_gasPrice||format|value|HEX|||||||
+||get eth account list|smoke|||7|eth_accounts||format|array|ACCOUNT_FORMAT|||||||
+||get protocol version|smoke|||1|eth_protocolVersion||exactvalue||0|||||||
+||get balance block (latest)|smoke|||9_latest|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|BALANCE_FORMAT|||||||
+||get balance block (earliest)|smoke|||9_earliest|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c earliest|format|value|BALANCE_FORMAT|||||||
+||get balance block (pending)|smoke|||9_pending|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c pending|format|value|BALANCE_FORMAT|||||||
+||get balance block (number)(hex)|smoke|||9_number|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0|format|value|BALANCE_FORMAT|||||||
+||get code at address|smoke|||18|eth_getCode|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c latest|format|value|BINARY|||||||
+||get compilers|smoke|||0|eth_getCompilers||format|value|ARRAY||solidity|||||
+||get block by number include Tx object|smoke|||12|eth_getBlockByNumber|latest true|format|object|VALID_BLOCK_OBJECT|||||||
+||get block by hash include Tx object|smoke|||11|eth_getBlockByHash| true|format|object|VALID_BLOCK_OBJECT|||||||
+||get transaction count by address and by block number|smoke|||13|eth_getTransactionCount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c|format|value|HEX|||||||
+||get block Tx count by number(0x0)|smoke|||15|eth_getBlockTransactionCountByNumber|0x0000000000000000000000000000000000000000000000000000000000000000|format|value|HEX|||||||
+||get block Tx count by hash|smoke|||16|eth_getBlockTransactionCountByHash||format|value|HEX|||||||
+||get Tx by hash|smoke|||23|eth_getTransactionByHash||format|object|VALID_TX|||||||
+||get net version|smoke|||1|net_version||format|value|STRING|||||||
+||check if listening|smoke|||3|net_listening||format|value|BOOLEAN|||||||
+||get peer count|smoke|||2|net_peerCount||format|value|INTEGER|||||||
+||Compile solidity contract|smoke||||eth_compileSolidity|recursive.sol||object|COMPILE_RESUILT|||||||
+||unlock account|smoke|||3|personal_unlockAccount|0xa07b6d05bb3eec960d5d9d514fc5c1b7afb5dfd976300f5a7992c311d5a69db0 password 0|format|value|BOOLEAN|||||||
+||deploy a contract|smoke||newContract|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,gas:300000}|format|value|TRANSACTION_FORMAT|||||||
+||get Transaction Receipt|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT|||||||
+||call contract|smoke|f _contractAddress 3|prepareContractCall|46_value2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}|format|value|TRANSACTION_FORMAT|||||||
+||get Transaction receipt|smoke|100 1|WaitNewBlock|26|eth_getTransactionReceipt||format|object|VALID_TX_RECEIPT|||||||
+||subscribe newHeads|smoke|||subscribe newHeads|eth_subscribe|newHeads|format|value|HEX|||||||
+||subscribe logs|smoke|||subscribe logs|eth_subscribe|logs {fromBlock:0x2,toBlock:0xff}||||||||||
+||unsubscribe|smoke|||unsubscribe|eth_unsubscribe|||||||||||
+||get Logs from first block to current block|smoke||||eth_getLogs|{fromBlock:earliest,toBlock:latest}||||||||||
+||sign a message when account is unlocked|smoke||||eth_sign|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da||||||||||
+|||smoke||||eth_submitWork|||||||||||
+||getStorageAt|smoke||||eth_getStorageAt|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c 0x0 latest||||||||||
+||sign a message using a personal|smoke||||personal_signAndSendTransaction|||||||||||
+|||smoke||||submitblock|||||||||||
+||get all available RPC modules and its version|smoke||||rpc_modules||format|object|RPC_MODULES|||||||
+||get Kernel version|smoke||||web3_clientVersion||exactvalue||Aion(R)/v/x86_64-linux-gnu/rustc-1.28.0|||||||
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
+pending test|||contract|||||||||||||||
+||||||||||||||||||
+||get logs|xxxx||||eth_getLogs|{address:0xa057daf64deaa5eb4a26261b53388f24f4eba636daff1eb740597eafd09c567c,fromBlock:earliest}||||||||||
+|||||||eth_getLogs|||||||||||
+||||||||||||||||||
+syncing||||||||||||||||||
+||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT|||||||
+||get syncing object |smoke|||2|eth_syncing||||false|||||||
+||create a new block filter|smoke||||eth_newBlockFilter|||||||||||
+||get syncing object (end of syncing false)|smoke|5|delay|2|eth_syncing||||false|||||||
+||get highest block number|smoke|||8|eth_blockNumber||format|value|BLOCK_NUMBER_FORMAT|||||||
+||get filter changes of block filter|||||eth_getFilterChanges|||||||||||
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
+Call & estimate gas||||||||||||||||||
+||Compile solidity contract|call_est|||Pre-1|eth_compileSolidity|recursive.sol||||||||||
+||unlock account|call_est|||Pre-2|personal_unlockAccount|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 1000||||||||||
+||deploy a contract|call_est||newContract|Pre-3|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||||||
+||get contract address|call_est|120 1|WaitNewBlock|Pre-3-1|eth_getTransactionReceipt|||||||||||
+||estimate gas for a method|call_est|f _contractAddress 3|prepareContractCall|1|eth_estimateGas|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||||||
+||check the balance before the operation|call_est|||Pre-4|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c||||||||||
+||call the method|call_est|f _contractAddress 3|prepareContractCall|2|eth_sendTransaction|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||||||
+||get receipt|call_est|120 1|WaitNewBlock|2-post|eth_getTransactionReceipt|||||||||||
+||check the balance before the operation eth_call|call_est|||Pre-5|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c||||||||||
+||call the method local (eth_local)|call_est|f _contractAddress 3|prepareContractCall|3|eth_call|{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c}||||||||||
+||check the balance after the operation|call_est|||3-post|eth_getBalance|0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c||||||||||
+||||||||||||||||||
+AMO-TS02: use account mine aion coins|x|||||||||||||||||
+|x|get coinbase|AMO-TS02|||1|eth_coinbase|||||||||||
+|x|validate mining – config author|AMO-TS02|||3|eth_getBalance|_coinbase||||||validateMining||||
+|x|validate mining – user miner 1|AMO-TS02|||4-0|eth_getBalance|_coinbase||||||validateMining||||coinbase=0x0000000000000000000000000000000000000000000000000000000000000000
+|x|validate mining – user miner 2|AMO-TS02|||4-1|eth_getBalance|_coinbase||||||validateMining||||coinbase=0x
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
+missed|||missed|||||||||||||||
+|||missed||||eth_getTransactionByBlockNumberAndIndex|latest 0x1|||||||||result.blockNumber=>blockNumber|
+|||missed||||eth_getTransactionByBlockNumberAndIndex|_blockNumber 0x1|||||||||result.blockHash=>blockHash|
+||||||||||||||||||
+|||missed||||eth_getTransactionByBlockHashAndIndex|_blockHash 0x1||||||||||
+|||missed||||eth_getTransactionByBlockNumberAndIndex|_blockNumber 1|||||||||result.blockHash=>blockHash|
+|||missed||||eth_getTransactionByBlockNumberAndIndex|latest 1||||||||||
+|||missed||||eth_getTransactionByBlockHashAndIndex|_blockHash 1||||||||||

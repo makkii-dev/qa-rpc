@@ -91,6 +91,6 @@ stratum smoke test|x|||||||||||||||||
 |x|get blockTemplate with one params|stratum-smoke|||50-object|getblocktemplate|{capabilities:[],rules:[]}||||||||||
 |x|get blockTemplate with one params|stratum-smoke|||50-object-simple|getblocktemplate|{}||||||||||
 |x|getBlockHeader|stratum-smoke|||getHeaderByBlockNumber|getHeaderByBlockNumber|_headerHeight||||||||||
-|x|submitblock with 0x|stratum-smoke|'true’|data0xPrefix|48-prefix|submitblock|_headerNonce _solution _headerHash||||||||||
+|x|submitblock with 0x|stratum-smoke|TRUE|data0xPrefix|48-prefix|submitblock|_headerNonce _solution _headerHash||||||||||
 |x|submitblock without 0x|stratum-smoke|false|data0xPrefix|48-prefix|submitblock|_headerNonce _solution _headerHash||||||||||
 |x|submitblock with empty array|stratum-smoke|||48-prefix|submitblock|||||||||||
