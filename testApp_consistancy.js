@@ -1,21 +1,21 @@
 //test settings
 "use strict"
-var logger = new (require("./utils/logger"))();
+var logger = new (require("./libs/utils/logger"))();
 logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 
 var process = require('process');
 const fs = require('fs');
 // test arguements variables
-var DRIVER_PATH = "./test_cases/testDriver.csv";
+var DRIVER_PATH = "./test_cases/rust_java_output.csv";
 var provider_type;
 
 // internal dependencies
-const validFormat= require("./utils/validFormat");
-var readCSVDriver = require("./utils/readCSV");
-const Provider = require("./utils/provider");
-var utils = require("./utils/utils1");
-var Helper = require("./utils/helper");
+const validFormat= require("./libs/utils/validFormat");
+var readCSVDriver = require("./libs/utils/readCSV");
+const Provider = require("./libs/utils/provider");
+var utils = require("./libs/utils/utils1");
+var Helper = require("./libs/utils/helper");
 // var validationFunc= require('./utils/validateFunc');
 
 //validate tools

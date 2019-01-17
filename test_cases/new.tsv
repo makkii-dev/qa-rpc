@@ -309,19 +309,37 @@ Smoke filter:eth_newFilter
 			uninstall the filter	Smoke-35	requestMethod.eth_uninstallFilter	[_filterID2]			
 			validate response – eth_uninstallFiler	Smoke-35-vali	validFormat	[equal,true]			
 									
-Smoke other: getMinerStats	x								
-	x		get coinbase	Smoke-other-1	requestMethod.eth_coinbase	[]		result=>coinbase	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
-	x		get MinerStats with non-coinbase	Smoke-other-getMinerStats-nonCoinBase	requestMethod.getMinerStats	[_acc1]			
-	x		validate response for miner Stats	Smoke-other-getMinerStats-nonCoinBase-vali	validationFunction.minerStats	_acc1			
-	x		get MinerStats with coinbase	Smoke-other-getMinerStats-coinbase	requestMethod.getMinerStats	[_coinbase]			
-	x		validate response for miner Stats	Smoke-other-getMinerStats-coinbase-vali	validationFunction.minerStats	_coinbase			
-	x		Smoke-other-4	Smoke-other-4	requestMethod.eth_submitHashrate	[0x0101010101010101010101010101010101010101010101010101010101010101,0x0101010101010101010101010101010101010101010101010101010101010101]			
-	x		Smoke-other-5	Smoke-other-5	requestMethod.getblocktemplate	[]			
-	x		Smoke-other-6	Smoke-other-6	requestMethod.getblocktemplate	null			
-	x		Smoke-other-7	Smoke-other-7	requestMethod.getblocktemplate	[{capabilities:[],rules:[]}]			
-	x		Smoke-other-8	Smoke-other-8	requestMethod.getblocktemplate	[{}]			
-	x		Smoke-other-9	Smoke-other-9	requestMethod.getHeaderByBlockNumber	[_headerHeight]			
-	x		Helper – remove 0x prefix	helper	helper.data0xPrefix	[false,headerNonce,solution,headerHash]			
-	x		Smoke-other-10	Smoke-other-10	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
-	x		Helper – add 0x prefix	helper	helper.data0xPrefix	[true,headerNonce,solution,headerHash]			
-	x		Smoke-other-11	Smoke-other-11	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
+Smoke eth_getTransactionByBlockNumber/HashAndIndex									
+			Pre-step:Personal send a transaction	Pre-0	requestMethod.personal_sendTransaction	[{from:_acc1,to:acc2,value:123},password]		result=>txHash	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+			Pre-step:wait for tx mined	Pre-1	requestMethod.eth_getTransactionReceipt	{_txHash]		result.blockNumber=>blockNumber,result.blockHash=>blockHash	
+			get the tx in the latest block index=0x1	smoke-blocknNumberIndex-latest-0x1	requestMethod.eth_getTransactionByBlockNumberAndIndex	[latest,0x1]			
+			validate response	smoke-blocknNumberIndex					
+			get the tx in the latest block index=1	smoke-blocknNumberIndex	requestMethod.eth_getTransactionByBlockNumberAndIndex	[latest,1]			
+			validate response						
+			get the tx in the given # block index=0x1	smoke-blocknNumberIndex	requestMethod.eth_getTransactionByBlockNumberAndIndex	[_blockNumber,0x1]			
+			validate response						
+			get the tx in the given hash block index=0x1	Smoke-blocknHashIndex	requestMethod.eth_getTransactionByBlockHashAndIndex	[_blockHash,0x1]			
+			validate response						
+			get the tx in the given # block index=1	smoke-blocknNumberIndex	requestMethod.eth_getTransactionByBlockNumberAndIndex	[_blockNumber,1]			
+			validate response						
+			get the tx in the given hash block index=1	Smoke-blocknHashIndex	requestMethod.eth_getTransactionByBlockHashAndIndex	[_blockHash 1]			
+			validate response						
+									
+									
+									
+Smoke other: getMinerStats									
+			get coinbase	Smoke-other-1	requestMethod.eth_coinbase	[]		result=>coinbase	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+			get MinerStats with non-coinbase	Smoke-other-getMinerStats-nonCoinBase	requestMethod.getMinerStats	[_acc1]			
+			validate response for miner Stats	Smoke-other-getMinerStats-nonCoinBase-vali	validationFunction.minerStats	_acc1			
+			get MinerStats with coinbase	Smoke-other-getMinerStats-coinbase	requestMethod.getMinerStats	[_coinbase]			
+			validate response for miner Stats	Smoke-other-getMinerStats-coinbase-vali	validationFunction.minerStats	_coinbase			
+			Smoke-other-4	Smoke-other-4	requestMethod.eth_submitHashrate	[0x0101010101010101010101010101010101010101010101010101010101010101,0x0101010101010101010101010101010101010101010101010101010101010101]			
+			Smoke-other-5	Smoke-other-5	requestMethod.getblocktemplate	[]			
+			Smoke-other-6	Smoke-other-6	requestMethod.getblocktemplate	null			
+			Smoke-other-7	Smoke-other-7	requestMethod.getblocktemplate	[{capabilities:[],rules:[]}]			
+			Smoke-other-8	Smoke-other-8	requestMethod.getblocktemplate	[{}]			
+			Smoke-other-9	Smoke-other-9	requestMethod.getHeaderByBlockNumber	[_headerHeight]			
+			Helper – remove 0x prefix	helper	helper.data0xPrefix	[false,headerNonce,solution,headerHash]			
+			Smoke-other-10	Smoke-other-10	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
+			Helper – add 0x prefix	helper	helper.data0xPrefix	[true,headerNonce,solution,headerHash]			
+			Smoke-other-11	Smoke-other-11	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			

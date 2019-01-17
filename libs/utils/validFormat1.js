@@ -106,10 +106,7 @@ const TX_OBJECT= {
 	hash:transaction_format,
 	input:BINARY,
 	nonce:_.isNumber,
-	//publicKey:public_key,
-	//raw:HEX,
-	//sig:BINARY,
-	//standardV:HEX,
+
 	timestamp:_.isNumber,
 	to:account_format,
 	transactionIndex:NULL_N_HEX,
@@ -124,33 +121,6 @@ const VALID_SIGN_TRANSACTION = {
 	raw: HEX,
 	tx:TX_OBJECT
 }
-
-/*
-const expectblk_tx = {
-	difficulty:expect.any(BigNumber),
-	extraData:expect.anything(),
-	gasLimit:expect.anything(),
-	gasUsed:expect.anything(),
-	hash:expect.anything(),
-	logsBloom:expect.anything(),
-	miner:expect.anything(),
-	nonce:expect.anything(),
-	number:expect.any(Number),
-	parentHash:expect.anything(),
-	receiptsRoot:expect.anything(),
-	size:expect.any(Number),
-	solution:expect.anything(),
-	stateRoot:expect.anything(),
-	timestamp:expect.any(Number),
-	totalDifficulty:expect.any(BigNumber),
-	transactions:expect.arrayContaining([expect.objectContaining(expect_tx)]),
-	transactionsRoot:expect.anything(),
-	nrgLimit:expect.anything(),
-	nrgUsed:expect.anything(),
-}
-
-*/
-
 
 
 
