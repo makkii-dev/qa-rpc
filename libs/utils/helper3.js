@@ -48,7 +48,7 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 					if(parseInt(newBlockNo) > parseInt(oldBlockNo)+ newBlockNum){
 						this.logger.log("-----reached------"+oldBlockNo+" "+newBlockNo);
 						clearInterval(checkloop);
-						resolve(resolves);
+						resolve(resp);
 					}
 				});
 

@@ -10,7 +10,6 @@ var Validation = function(provider,logger){
 	this.provider;
 	this.helper;
 	this.putProvider(provider,logger);
-
 	return self;
 }
 
@@ -98,19 +97,35 @@ Validation.prototype.balanceValidate.post = async (testRow, rt_var, resolution)=
 	}
 }
 
-Validation.prototype.validateMining ={};
+// Validation.prototype.validateMining ={};
 
-Validation.prototype.validateMining.pre = async (obj)=>{
-	obj.VERIFY_VARIABLES.vals.beforeBal = new BN((await utils.getBalance(this.provider, obj.RUNTIME_VARIABLES.coinbase)).result.substring(2),16);
+// Validation.prototype.validateMining.pre = async (obj)=>{
+// 	obj.VERIFY_VARIABLES.vals.beforeBal = new BN((await utils.getBalance(this.provider, obj.RUNTIME_VARIABLES.coinbase)).result.substring(2),16);
+// 	await this.helper.WaitNewBlock([120, 1]);
+// 	return Promise.resolve(obj);
+
+// }
+Validation.prototype.validateMining = async (testRow, rt_var, resolution)=>{
+	let resp_t0 = await utils.getBalance(this.provider, testRow.params[0]);
+	if(resp_t0.error){
+		if(testRow.params[1]) 
+			return Promise.reject(resp_t0.error);
+		return Promise.resolve(resolution);
+	}
+
+	let balance_t0 = new BN(resp_t0.result.substring(2),16);
+	// wait for two blocks mined
 	await this.helper.WaitNewBlock([120, 1]);
-	return Promise.resolve(obj);
-
-}
-Validation.prototype.validateMining.post = async (obj)=>{
+	let balance_t1 = new BN((await utils.getBalance(this.provider, testRow.params[0])).result.substring(2),16);
 	try{
-		chai.expect((new BN(obj.result.substr(2),16)).gt(obj.VERIFY_VARIABLES.vals.beforeBal)).to.be.true;
-		return Promise.resolve();
+		if(testRow.params[1]) 
+			chai.expect(balance_t1.gt(balance_t0)).to.be.true;
+		else 
+			chai.expect(balance_t1.gt(balance_t0)).to.be.false;
+		return Promise.resolve(resolution);
 	}catch(e){
+		this.logger.info(testRow.params+"balance before 2 blocks: "+ balance_t0.toString(10));
+		this.logger.info(testRow.params+"balance before 2 blocks: "+ balance_t1.toString(10));
 		return Promise.reject(e);
 	}
 }
@@ -136,7 +151,7 @@ Validation.prototype.rptLogs = async (testRow, rt_var, resolution)=>{
 					chai.expect(parseInt(log.logIndex)).to.equal(params[1][index].logIndex);
 			});
 		}
-		rt_var.reassign(testRow.runtimeVal).storeVariables(testRow.storeVariables,resolution);
+		//rt_var.reassign(testRow.runtimeVal).storeVariables(testRow.storeVariables,resolution);
 		return Promise.resolve(resolution);
 	}catch(e){
 		return Promise.reject(e);

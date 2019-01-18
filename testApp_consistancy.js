@@ -107,7 +107,7 @@ provider_type=provider_type||'default';
 //var valFunc = new validationFunc(cur_provider,logger);
 
 let newlogfilename = (DRIVER_PATH.match(/\w+\.csv/))[0]
-logger.updatePath(newlogfilename.substring(0,newlogfilename.length-4));
+logger.updateName(newlogfilename.substring(0,newlogfilename.length-4));
 
 
 
@@ -251,7 +251,7 @@ function createProviderFromConfig(providers,config_string,name){
 
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{
-		logger.updatePath(testSuite.name);
+		logger.updateName(testSuite.name);
 
 
 	/*{type:http,

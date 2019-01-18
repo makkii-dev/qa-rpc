@@ -115,7 +115,7 @@ var Step_Action = function(rows,resolves){
 	}
 	logger.testStep(currentRow.testDescription);
 	return aFunction(currentRow,RUNTIME_VARIABLES,resolves).then((result)=>{
-		
+		RUNTIME_VARIABLES.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,result);
 		if(rows.length > 0){
 			return Step_Action(rows,result);
 		}
