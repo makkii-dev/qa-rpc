@@ -1,160 +1,73 @@
-TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables		
-AMO -TS1: create accounts											
-			list account	AMO-TS1-step1	requestMethod.personal_listAccounts	[]		result.length=>accLength			
-			(negative)create account w/out password	AMO-TS1-step2	requestMethod.personal_newAccount	[]					
-			validate response	AMO-TS1-step2-vali	validFormat	[error,PARAMS_FORMAT_ERROR]					
-			create account with password	AMO-TS1-step3	requestMethod.personal_newAccount	[password]		result=>newAccount			
-			list account(size + 1)	AMO-TS1-step4	requestMethod.personal_listAccounts	[]					
-			validate response	AMO-TS1-step4-vali	validFormat	[length,-1,_accLength]					
-											
-AMO-TS02: use account mine aion coins											
-			get coinbase	AMO-TS02-1	requestMethod.eth_coinbase	[]		result=>coinbase	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c		
-			traggle the miner	AMO-TS02-0	requestMethod.personal_sendTransaction	[{from:_coinbase,to:_acc1,value:10},password]					
-			validate mining config author	AMO-TS02-2	validationFunction.validateMining	[_coinbase,true]					
-			validate mining user miner 1	AMO-TS02-3	validationFunction.validateMining	[_testAcc,false]			testAcc=0x0000000000000000000000000000000000000000000000000000000000000000		
-			validate mining user miner 2	AMO-TS02-4	validationFunction.validateMining	[_testAcc,false]			testAcc=0x		
-											
-AMO-TS3: unlock an locked account for one time use											
-			locked the account before test cases	AMO-TS3-0	requestMethod.personal_lockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c		
-			validate lock action	AMO-TS3-0-vali	validFormat	[equal,true]					
-			unlock a test account for one time use	AMO-TS3-1	requestMethod.personal_unlockAccount	[_acc1,password,null]					
-			check account status	AMO-TS3-2	requestMethod.personal_isAccountUnlocked	[_acc1]					
-			validate unlocked status	AMO-TS3-2-vali	validFormat	[equal,true]					
-			send a transaction from this account	AMO-TS3-3	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:100}]					
-			check account status	AMO-TS3-4	requestMethod.personal_isAccountUnlocked	[_acc1]					
-			validate account is locked again	AMO-TS3-4-vali	validFormat	[equal,false]					
-			send another transaction from this account(failed)	AMO-TS3-5	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:100}]					
-			validate send tx response	AMO-TS3-5-vali	validFormat	[error,LOCKED_ERROR]					
-											
-AMO-TS4: unlock an locked account for a period of time											
-			locked the account before test cases	AMO-TS4-0	requestMethod.personal_lockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c		
-			validate lock action	AMO-TS4-0-vali	validFormat	[equal,true]					
-			unlock account for 10 sec	AMO-TS4-unlock-10-sec	requestMethod.personal_unlockAccount	[_acc1,password,10]					
-			check account unlocked	AMO-TS4-isUnlock-1	requestMethod.personal_isAccountUnlocked	[_acc1]					
-			validate response	AMO-TS4-isUnlock-1-vali	validFormat	[equal,true]					
-			wait for 10 sec	AMO-TS4-delay	helper.delay	[10]					
-			check account locked	AMO-TS4-isLocked	requestMethod.personal_isAccountUnlocked	[_acc1]					
-			validate response	AMO-TS4-isLocked-vali	validFormat	[equal,false]					
-			send transaction(failed; account is locked)	AMO-TS4-tx-isLocked	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]					
-			validate response	AMO-TS4-tx-isLocked-vali	validFormat	[error,LOCKED_ERROR]					
-											
-AMO-TS4-1: unlock an locked account for a period of time twice											
-			locked the account before test cases	AMO-TS4-1-0	requestMethod.personal_lockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c		
-			validate lock action	AMO-TS4-1-0-vali	validFormat	[equal,true]					
-			unlock account for 10 sec	AMO-TS4-1-1	requestMethod.personal_unlockAccount	[_acc1,password,10]					
-			validate response	AMO-TS4-1-1-vali	validFormat	[equal,true]					
-			wait for 5 sec	AMO-TS4-1-2	helper.delay	[5]					
-			unlock account again for 10 sec	AMO-TS4-1-3	requestMethod.personal_unlockAccount	[_acc1,password,10]					
-			validate response	AMO-TS4-1-3-vali	validFormat	[equal,true]					
-			wait for 6 sec	AMO-TS4-1-4	helper.delay	[6]					
-			check account unlocked 	AMO-TS4-1-5	requestMethod.personal_isAccountUnlocked	[_acc1]					
-			validate response	AMO-TS4-1-5-vali	validFormat	[equal,true]					
-			send a transaction to check if account unlocked	AMO-TS4-1-6	requestMethod.personal_unlockAccount	[{from:_acc1,to:_acc2,value:0x1}]					
-			validate response	AMO-TS4-1-6-vali	validFormat	[matches,HEX]					
-											
-											
-											
-AMO-TS5: unlock an unlocked account with wrong password											
-			(pre)unlock account	AMO-TS5	personal_unlockAccount			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0	value		true
-			(negative)unlock account w/ wrong password	AMO-TS5	personal_unlockAccount			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong null	format	error	WRONG_PW_ERROR
-			check account unlocked	AMO-TS5	personal_isAccountUnlocked			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	value		false
-			(pos)lock account	AMO-TS5	personal_lockAccount			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password	value		true
-AMO-TS6:lock a locked account with wrong password											
-			(pre)lock account	AMO-TS6	personal_lockAccount			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password	value		true
-			(negative)lock account w/ wrong password	AMO-TS6	personal_lockAccount			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong	format	error	WRONG_PW_ERROR
-			check account unlocked	AMO-TS6	personal_isAccountUnlocked			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	value		false
-			(pos)lock account	AMO-TS6	personal_lockAccount			0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password	value		true
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-			(pre)lock account	personal_account	requestMethod.personal_lockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password			value		true
-			(negative)unlock account w/ wrong password	personal_account	requestMethod.personal_unlockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong null			format	error	WRONG_PW_ERROR
-			check account unlocked	personal_account	requestMethod.personal_isAccountUnlocked	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c			value		false
-			(pre)unlock account	personal_account	requestMethod.personal_unlockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password 0			value		true
-			(negative)lock account w/ wrong password	personal_account	requestMethod.personal_lockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c wrong			format	error	WRONG_PW_ERROR
-			check account locked	personal_account	requestMethod.personal_isAccountUnlocked	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c			value		true
-			(pos)lock account	personal_account	requestMethod.personal_lockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password			value		true
-											
-											
-											
-											
-			(negative)unlock account w/out password	personal_account		3-nopass	personal_unlockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	format	error	PARAMS_FORMAT_ERROR
-			(negative)unlock invalid account	personal_account		3-invalidacc	personal_unlockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2d password 0	format	error	INVALID_ACC_ERROR
-			(negative)unlock account w/out params	personal_account		3-noparams	personal_unlockAccount		format	error	PARAMS_FORMAT_ERROR
-			unlock account w/out timeout (currently is invalid)	personal_account		3-wropass	personal_unlockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password	format	error	PARAMS_FORMAT_ERROR
-			unlock account w/ timeout==null; unlock account for only once	personal_account		3-wropass	personal_unlockAccount	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c password null	value		true
-			check account unlocked	personal_account		5-unlock	personal_isAccountUnlocked	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	value		true
-			send transaction 	personal_account		46	eth_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:0x1}	format	value	TRANSACTION_FORMAT
-			check account locked	personal_account		5-lock	personal_isAccountUnlocked	0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c	value		false
-			send transaction(failed; account is locked)	personal_account		46	eth_sendTransaction	{from:0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,to:0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,value:0x1}	format	error	LOCKED_ERROR
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+AMO -TS1: create accounts	x								
+	x		list account	AMO-TS1-step1	requestMethod.personal_listAccounts	[]		result.length=>accLength	
+	x		(negative)create account w/out password	AMO-TS1-step2	requestMethod.personal_newAccount	[]			
+	x		validate response	AMO-TS1-step2-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+	x		create account with password	AMO-TS1-step3	requestMethod.personal_newAccount	[password]		result=>newAccount	
+	x		list account(size + 1)	AMO-TS1-step4	requestMethod.personal_listAccounts	[]			
+	x		validate response	AMO-TS1-step4-vali	validFormat	[length,-1,_accLength]			
+									
+AMO-TS02: use account mine aion coins	x								
+	x		get coinbase	AMO-TS02-1	requestMethod.eth_coinbase	[]		result=>coinbase	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		traggle the miner	AMO-TS02-0	requestMethod.personal_sendTransaction	[{from:_coinbase,to:_acc1,value:10},password]			
+	x		validate mining config author	AMO-TS02-2	validationFunction.validateMining	[_coinbase,true]			
+	x		validate mining user miner 1	AMO-TS02-3	validationFunction.validateMining	[_testAcc,false]			testAcc=0x0000000000000000000000000000000000000000000000000000000000000000
+	x		validate mining user miner 2	AMO-TS02-4	validationFunction.validateMining	[_testAcc,false]			testAcc=0x
+									
+AMO-TS3: unlock an locked account for one time use	x								
+	x		locked the account before test cases	AMO-TS3-0	requestMethod.personal_lockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate lock action	AMO-TS3-0-vali	validFormat	[equal,true]			
+	x		unlock a test account for one time use	AMO-TS3-1	requestMethod.personal_unlockAccount	[_acc1,password,null]			
+	x		check account status	AMO-TS3-2	requestMethod.personal_isAccountUnlocked	[_acc1]			
+	x		validate unlocked status	AMO-TS3-2-vali	validFormat	[equal,true]			
+	x		send a transaction from this account	AMO-TS3-3	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:100}]			
+	x		check account status	AMO-TS3-4	requestMethod.personal_isAccountUnlocked	[_acc1]			
+	x		validate account is locked again	AMO-TS3-4-vali	validFormat	[equal,false]			
+	x		send another transaction from this account(failed)	AMO-TS3-5	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:100}]			
+	x		validate send tx response	AMO-TS3-5-vali	validFormat	[error,LOCKED_ERROR]			
+									
+AMO-TS4: unlock an locked account for a period of time	x								
+	x		locked the account before test cases	AMO-TS4-0	requestMethod.personal_lockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate lock action	AMO-TS4-0-vali	validFormat	[equal,true]			
+	x		unlock account for 10 sec	AMO-TS4-unlock-10-sec	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+	x		check account unlocked	AMO-TS4-isUnlock-1	requestMethod.personal_isAccountUnlocked	[_acc1]			
+	x		validate response	AMO-TS4-isUnlock-1-vali	validFormat	[equal,true]			
+	x		wait for 10 sec	AMO-TS4-delay	helper.delay	[10]			
+	x		check account locked	AMO-TS4-isLocked	requestMethod.personal_isAccountUnlocked	[_acc1]			
+	x		validate response	AMO-TS4-isLocked-vali	validFormat	[equal,false]			
+	x		send transaction(failed; account is locked)	AMO-TS4-tx-isLocked	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]			
+	x		validate response	AMO-TS4-tx-isLocked-vali	validFormat	[error,LOCKED_ERROR]			
+									
+AMO-TS4-1: unlock an locked account for a period of time twice	x								
+	x		locked the account before test cases	AMO-TS4-1-0	requestMethod.personal_lockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate lock action	AMO-TS4-1-0-vali	validFormat	[equal,true]			
+	x		unlock account for 10 sec	AMO-TS4-1-1	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+	x		validate response	AMO-TS4-1-1-vali	validFormat	[equal,true]			
+	x		wait for 5 sec	AMO-TS4-1-2	helper.delay	[5]			
+	x		unlock account again for 10 sec	AMO-TS4-1-3	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+	x		validate response	AMO-TS4-1-3-vali	validFormat	[equal,true]			
+	x		wait for 6 sec	AMO-TS4-1-4	helper.delay	[6]			
+	x		check account unlocked 	AMO-TS4-1-5	requestMethod.personal_isAccountUnlocked	[_acc1]			
+	x		validate response	AMO-TS4-1-5-vali	validFormat	[equal,true]			
+	x		send a transaction to check if account unlocked	AMO-TS4-1-6	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]			
+	x		validate response	AMO-TS4-1-6-vali	validFormat	[matches,HEX]			
+									
+AMO-TS5: unlock an unlocked account with wrong password	x								
+	x		(pre)unlock account	AMO-TS5-pre	requestMethod.personal_unlockAccount	[_acc1,password,1000]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate response	AMO-TS5-pre-vali	validFormat	[equal,true]			
+	x		(negative)unlock account w/ wrong password	AMO-TS5-1	requestMethod.personal_unlockAccount	[_acc1,wrong,null]			
+	x		validate response	AMO-TS5-1-vali	validFormat	[equal,false]			
+	x		check account unlocked	AMO-TS5-2	requestMethod.personal_isAccountUnlocked	[_acc1]			
+	x		validate response	AMO-TS5-2-vali	validFormat	[equal,true]			
+	x		(pos)lock account	AMO-TS5-3	requestMethod.personal_lockAccount	[_acc1,password]			
+	x		validate response	AMO-TS5-3-vali	validFormat	[equal,true]			
+									
+AMO-TS6:lock a locked account with wrong password	x								
+	x		(pre)lock account	AMO-TS6-pre	requestMethod.personal_unlockAccount	[_acc1,password,1000]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate response	AMO-TS6-pre-vali	validFormat	[equal,true]			
+	x		(negative)lock account w/ wrong password	AMO-TS6-1	requestMethod.personal_lockAccount	[_acc1,wrong]			
+	x		validate response	AMO-TS6-1-vali	validFormat	[error,WRONG_PW_ERROR]			
+	x		check account unlocked	AMO-TS6-2	requestMethod.personal_isAccountUnlocked	[_acc1]			
+	x		validate response	AMO-TS6-2-vali	validFormat	[equal,true]			
+	x		(pos)lock account	AMO-TS6-3	requestMethod.personal_lockAccount	[_acc1,password]			
+	x		validate response	AMO-TS6-3-vali	validFormat	[equal,true]			

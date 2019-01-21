@@ -1,16 +1,16 @@
 "use strict"
-var logger = new (require("./utils/logger"))();
+var logger = new (require("../libs/utils/logger"))();
 logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
-const Provider = require("./utils/provider");
-var utils = require("./utils/utils1");
+const Provider = require("../libs/utils/provider");
+var utils = require("../libs/utils/utils1");
 
 var chai = require('chai');
 var chaiMatchPattern = require('chai-match-pattern');
 var fs = require("fs");
 chai.use(chaiMatchPattern);
 var _ = chaiMatchPattern.getLodashModule();
-logger.updatePath("filter_test");
+logger.updateName("filter_test");
 var provider_type;
 for(let i = 0; i < process.argv.length; i++){
 	if(process.argv[i]=='--type') {

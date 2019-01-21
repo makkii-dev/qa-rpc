@@ -44,7 +44,7 @@ function formParam(str,currentMethod){
 	logger.log("currentMethod:"+currentMethod);
 	//logger.log("RUNTIME_VARIABLES: "+ JSON.stringify(RUNTIME_VARIABLES)+"\n-----------------------------");
 	if(str===undefined) return [];
-	
+
 	if(currentMethod == 'requestMethod.eth_compileSolidity'){
 		let contract = fs.readFileSync(__dirname + '/testContracts/'+str, {
     		encoding: 'utf8'
@@ -89,8 +89,8 @@ var Step_Action = function(rows,resolves){
 	var levels  = currentRow.method.split(".");
 	var aFunction = stepAction;
 
-	logger.log(JSON.stringify(rows));
-	logger.log(JSON.stringify(resolves));
+//	logger.log(JSON.stringify(rows));
+//	logger.log(JSON.stringify(resolves));
 	if(currentRow.preStoreVariables){
 		RUNTIME_VARIABLES.preStoreVariables(currentRow.preStoreVariables);
 	}
@@ -103,13 +103,16 @@ var Step_Action = function(rows,resolves){
 	}
 
 	currentRow.params = formParam(currentRow.params,currentRow.method);
-	
+
 	if(currentRow.usePreparedData){
-		logger.log(JSON.stringify(RUNTIME_VARIABLES.nextTxObj));
+	//	logger.log(JSON.stringify(RUNTIME_VARIABLES.nextTxObj));
 		Object.entries(RUNTIME_VARIABLES.nextTxObj).forEach((pair,index)=>{
-			if(currentRow.params && Array.isArray(currentRow.params))
+			if(currentRow.params && Array.isArray(currentRow.params)){
 				currentRow.params[0][pair[0]] = pair[1];
-			
+			}else if(typeof currentRow.params=== 'Object' || typeof currentRow.params==='object'){
+				currentRow.params[pair[0]] = pair[1];
+			}
+
 		});
 		delete RUNTIME_VARIABLES.nextTxObj;
 	}
@@ -132,7 +135,7 @@ data.forEach((testSuite)=>{
 		if(!testSuite.usePreparedData)
 			RUNTIME_VARIABLES.reset();
 		//VERIFY_VARIABLES.reset();
-		
+
 		let startTime;
 		before(()=>{
 			startTime = Date.now();
@@ -152,5 +155,3 @@ data.forEach((testSuite)=>{
 		});
 	});
 });
-
-

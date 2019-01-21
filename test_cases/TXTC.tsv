@@ -1,0 +1,119 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables					
+TXTC01-0-1: with gasPrice no gas	x													
+	x		unlock account w/ timeout==null; unlock account for only once	TXTC01-pre	requestMethod.personal_unlockAccount	[_acc1,password,null]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		save the balance of two accounts and sending value(1e18) and given gasPrice(2e10)	TXTC01-vali-pre	validationFunction.balanceValidate.pre	{from:_acc1,to:_acc2,value:1000000000000000000,gasPrice:20000000000}								
+	x	x	send some value(1e18) 	TXTC01	requestMethod.eth_sendTransaction	[{}]								
+	x		validate the transaction result	TXTC01-vali-post	validationFunction.balanceValidate.post									
+TXTC01-2: no gasPrice and no gas	x													
+	x		unlock account w/ timeout==null; unlock account for only once	TXTC01-pre	requestMethod.personal_unlockAccount	[_acc1,password,null]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		save the balance of two accounts and sending value(1e18) without gasPrice	TXTC01-vali-pre	validationFunction.balanceValidate.pre	{from:_acc1,to:_acc2,value:1000000000000000000}								
+	x	x	send some value(1e18) 	TXTC01	requestMethod.eth_sendTransaction	[{}]								
+	x		validate the transaction result	TXTC01-vali-post	validationFunction.balanceValidate.post									balanceValidate
+TXTC01-2: with gasPrice and gas	x													
+	x		unlock account w/ timeout==null; unlock account for only once	TXTC01-pre	requestMethod.personal_unlockAccount	[_acc1,password,null]								
+	x		save the balance of two accounts and sending value(1e18) with gasPrice(2e10) and gas(22000)	TXTC01-vali-pre	validationFunction.balanceValidate.pre	{from:_acc1,to:_acc2,value:1000000000000000000,gas:22000,gasPrice:20000000000}								
+	x	x	send some value(1e18) 	TXTC01	requestMethod.eth_sendTransaction	[{}]								
+	x		validate the transaction result	TXTC01-vali-post	validationFunction.balanceValidate.post									
+TXTC01-2: with gas less than required	x													
+	x		unlock account w/ timeout==null; unlock account for only once	TXTC01-pre	requestMethod.personal_unlockAccount	[_acc1,password,null]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334					
+	x		send some value(1e18) with gas = 20999	TXTC01	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1000000000000000000,gas:20999,gasPrice:20000000000}]								
+	x		validate the transaction result	TXTC01-vali	validFormat	[errorCode,-32010]								
+														
+TXTC01-1: make transaction between pk account and keystore account	x													
+	x		create a pair key account	TXTC01-1-0	helper.createPKAccount	{}			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334					
+	x		unlock account w/ timeout==null; unlock account for only once	TXTC01-1-1	requestMethod.personal_unlockAccount	[_acc1,password,null]								
+	x		save the balance of two accounts and sending value(1e18) without gasPrice	TXTC01-1-2	validationFunction.balanceValidate.pre	{from:_acc1,to:_newCreateAccount,value:1000000000000000000}								
+	x	x	send some value(1000) to pairkey account 	TXTC01-1-3	requestMethod.eth_sendTransaction	[{}]								
+	x		validate the transaction result	TXTC01-1-3-vali-post	validationFunction.balanceValidate.post									
+	x		save the balance of two accounts and sending value(1e18) without gasPrice	TXTC01-1-2	validationFunction.balanceValidate.pre	{to:_acc1,from:_newCreateAccount,value:10,gasPrice:10000000000,gas:21000}								
+	x	x	prepare the raw tx	TXTC01-1-4	helper.prepareRawTx	{}								
+	x		send some value(1000) from pairKey account	TXTC01-1-5	requestMethod.eth_sendRawTransaction	[_rawTx.rawTransaction]								
+	x		validate the transaction result	TXTC01-1-3-vali-post	validationFunction.balanceValidate.post									
+														
+TXTC03: signing tx with nonce , kernel will given the transacton a nonce in sequence	x													
+	x		get transaction counts	TXTC03-0-1	requestMethod.eth_getTransactionCount	[_acc1,latest]		result=>nonce1	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		unlock account for test 	TXTC03-0-2	requestMethod.personal_unlockAccount	[_acc1,password,1000]								
+	x		sign transaction with default gas limit & gas price {from, to, value=1 }	TXTC03-0-3	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:1}]		result.raw=>txRaw,result.tx=>signedTx						
+	x		send a transaction without nonce	TXTC03-0-4	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1}]		result=>txhash1						
+	x		send a transaction without nonce	TXTC03-0-5	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1}]		result=>txhash2						
+	x		wait for new block	TXTC03-0-6-pre	helper.WaitNewBlock	[120,0]								
+	x		get tx count	TXTC03-0-nonce	requestMethod.eth_getTransactionCount	[_acc1,latest]								
+	x		validate tx count – no tx has been mined	TXTC03-0-validate-nonce	validFormat	[equal,_nonce]								
+	x		send the signed transaction	TXTC03-0-6	requestMethod.eth_sendRawTransaction	[_txRaw]	nonce1=>preNonce	result=>txhash0						
+	x		get tx count in pending block	TXTC03-0-7	requestMethod.eth_getTransactionCount	[_acc1,pending]								
+	x		helper increase nonce by 3	TXTC03-0-8	helper.inc	{nonce1:3}								
+	x		validate nonce in pending	TXTC03-0-9	validFormat	[equal,_nonce]								
+	x		wait for new block	TXTC03-0-10-pre	helper.WaitNewBlock	[120,1]								
+	x		eth_getTransactionReceipt	TXTC03-0-10	requestMethod.eth_getTransactionByHash	[_txhash0]								
+	x		validate nonce in pending	TXTC03-0-10-vali	validFormat	[equal,_preNonce,nonce]								
+	x		helper increase prenonce by 1	TXTC03-0-11-pre	helper.inc	{preNonce:1}								
+	x		eth_getTransactionReceipt	TXTC03-0-11	requestMethod.eth_getTransactionByHash	[_txhash1]								
+	x		validate nonce in pending	TXTC03-0-11-vali	validFormat	[equal,_preNonce,nonce]								
+	x		helper increase prenonce by 1	TXTC03-0-12-pre	helper.inc	{preNonce:1}								
+	x		eth_getTransactionReceipt	TXTC03-0-12	requestMethod.eth_getTransactionByHash	[_txhash2]								
+	x		validate nonce in pending	TXTC03-0-13-vali	validFormat	[equal,_preNonce,nonce]								
+														
+TXTC03 -1:nonce -kernel sign multiple transactions	x													
+	x		get transaction counts	TXTC03-1-1	requestMethod.eth_getTransactionCount	[_acc1,latest]		result=>nonce1	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		unlock account for test 	TXTC03-1-2	requestMethod.personal_unlockAccount	[_acc1,password,1000]								
+	x		sign transaction with default gas limit & gas price {from, to, value=1 }	TXTC03-1-3	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:1}]		result.raw=>txRaw1,result.tx=>signedTx1						
+	x		send a transaction without nonce	TXTC03-1-4	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:1}]		result.raw=>txRaw2,result.tx=>signedTx2						
+	x		send a transaction without nonce	TXTC03-1-5	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:1}]		result.raw=>txRaw3,result.tx=>signedTx3						
+	x		send the signed transaction	TXTC03-1-6	requestMethod.eth_sendRawTransaction	[_txRaw1]		result=>txhash1						
+	x		send the signed transaction	TXTC03-1-7	requestMethod.eth_sendRawTransaction	[_txRaw2]		result=>txhash2						
+	x		send the signed transaction	TXTC03-1-8	requestMethod.eth_sendRawTransaction	[_txRaw3]		result=>txhash3						
+	x		eth_getTransactionReceipt	TXTC03-1-9	requestMethod.eth_getTransactionByHash	[_txhash1]								
+	x		validate nonce in pending	TXTC03-1-10	validFormat	[equal,_nonce,nonce]								
+	x		helper increase prenonce by 1	TXTC03-1-11	helper.inc	{nonce:1}								
+	x		eth_getTransactionReceipt	TXTC03-1-12	requestMethod.eth_getTransactionByHash	[_txhash2]								
+	x		validate nonce in pending	TXTC03-1-13	validFormat	[equal,_nonce,nonce]								
+	x		helper increase prenonce by 1	TXTC03-1-14	helper.inc	{nonce:1}								
+	x		eth_getTransactionReceipt	TXTC03-1-15	requestMethod.eth_getTransactionByHash	[_txhash3]								
+	x		validate nonce in pending	TXTC03-1-16	validFormat	[equal,_nonce,nonce]								
+														
+TXTC04:nonce - send a transaction with the nonce bigger than this account's transaction counts	x													
+	x		get transaction counts	TXTC04-1	requestMethod.eth_getTransactionCount	[_acc1,latest]		result=>nonce	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		unlock account for test 	TXTC04-2	requestMethod.personal_unlockAccount	[_acc1,password,1000]								
+	x		helper increase prenonce by 2	TXTC04-3	helper.inc	{nonce:1}								
+	x		sign transaction with a nonce = currentTxCount +2	TXTC04-4	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:1,nonce:_nonce}]		result.raw=>txRaw,result.tx=>signedTx						
+	x		send the signed transaction	TXTC04-5	requestMethod.eth_sendRawTransaction	[_txRaw]								
+	x		wait for new block	TXTC04-6	helper.WaitNewBlock	[120,1]								
+	x		get Transaction By Hash	TXTC04-7	requestMethod.eth_getTransactionByHash	[_signedTx.hash]								
+	x		validate transaction object: the tx has not been mined	TXTC04-8	validFormat	[equal,null,blockNumber]								
+	x		send a transaction without nonce	TXTC04-9	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1}]								
+	x		send a transaction without nonce	TXTC04-10	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1}]								
+	x		get transaction Receipt for signed tx	TXTC04-11	requestMethod.eth_getTransactionReceipt	[_signedTx.hash]								
+	x		validate response: the signed tx has been signed	TXTC04-12	validFormat	[matches,VALID_TX_RECEIPT]								
+														
+														
+TXTC05: nonce - two transactions with same nonce in future	x													
+	x		get transaction count	TXTC05-0-0	requestMethod.eth_getTransactionCount									
+	x		increase the nonce to create a future nonce	TXTC05-0+1	helper.inc	{nonce:1}								
+	x		unlock account for test 	TXTC05-0+2	requestMethod.personal_unlockAccount	[_acc2,password,100]								
+	x		send a transaction with nonce = 400 && gasPrice = 100000000000	TXTC05-0+3	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000000}]								
+	x		validate tx response -success	TXTC05-0+3-vali	validFormat	[matches,TRANSACTION_HASH]								
+	x		send a transaction with nonce = 400 && gasPrice = 100000000000	TXTC05-0+4	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000000}]								
+	x		validate tx response -failed	TXTC05-0+4-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
+	x		send a transaction with nonce = 400 && gasPrice = 90000000000	TXTC05-0+5	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:90000000000}]								
+	x		validate tx response -failed	TXTC05-0+5-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
+	x		send a transaction with nonce = 400 && gasPrice = 100000000010	TXTC05-0+6	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000010}]								
+	x		validate tx response -failed	TXTC05-0+6-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
+	x		send a transaction with nonce = 400 && gasPrice = 112500000000	TXTC05-0+7	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:112500000000}]								
+	x		validate tx response -success	TXTC05-0+7-vali	validFormat	[matches,TRANSACTION_HASH]								
+	x		send a tx to cover the nonce gap	TXTC05-0+post	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100}]								
+	x		lock account	TXTC05-0+post	requestMethod.personal_lockAccount	[_acc2,password]								
+														
+TXTC05-1: nonce - two transactions with same nonce in pending	x													
+	x		get transaction count = nextnonce	TXTC05-pending	requestMethod.eth_getTransactionCount	[_acc2,latest]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		unlock account for test 	TXTC05-pending	requestMethod.personal_unlockAccount	[_acc2,password,100]								
+	x		send a transaction with nonce = nextnonce && gasPrice = 100000000000	TXTC05-pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000000}]								
+	x		validate tx response -success	TXTC05-pending-vali	validFormat	[matches,TRANSACTION_HASH]								
+	x		send a transaction with nonce = nextnonce && gasPrice = 100000000000	TXTC05-1pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000000}]								
+	x		validate tx response -failed	TXTC05-1pending-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
+	x		send a transaction with nonce = nextnonce && gasPrice = 90000000000	TXTC05-2pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:90000000000}]								
+	x		validate tx response -failed	TXTC05-2pending-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
+	x		send a transaction with nonce = nextnonce && gasPrice = 100000000010	TXTC05-3pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000010}]								
+	x		validate tx response -failed	TXTC05-3pending-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
+	x		send a transaction with nonce = nextnonce && gasPrice = 112500000000	TXTC05-4pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:112500000000}]								
+	x		validate tx response -success	TXTC05-4pending-vali	validFormat	[matches,TRANSACTION_HASH]								
+	x		lock account	TXTC05-pending	requestMethod.personal_lockAccount	[_acc2,password]								
