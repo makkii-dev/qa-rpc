@@ -16,7 +16,7 @@ Helper.prototype._init = (provider,logger)=>{
 	this.provider = provider;
 }
 
-Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
+Helper.prototype.WaitNewBlock =  (testRow,rt_var,resolution)=>{
 	var oldBlockNo, newBlockNo;
 	//console.log(this);
 	var provider = this.provider;
@@ -55,7 +55,7 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 			}
 			var checkloop = setInterval(checkblock,5000);
 
-			setTimeout(()=>{clearInterval(checkloop);resolve(resolves)},parseInt(timeout)*1000);
+			setTimeout(()=>{clearInterval(checkloop);resolve(resolution)},parseInt(timeout)*1000);
 
 		});
 	});

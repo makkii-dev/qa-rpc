@@ -1,1 +1,53 @@
-TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables			
+FT-TC2-1: pending tx filter changes	x											
+	x		unlock account for transactions	FT-TC2-1-1	requestMethod.personal_unlockAccount	[_acc1,password,99999]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c			
+	x		new pending transaction filter	FT-TC2-1-2	requestMethod.eth_newPendingTransactionFilter	[]		result=>filterID				
+	x		send transaction 	FT-TC2-1-sendtx-1	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]						
+	x		send transaction 	FT-TC2-1-sendtx-2	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]						
+	x		check filter changes	FT-TC2-1-5	requestMethod.eth_getFilterChanges	[_filterID]						
+	x		validate response	FT-TC2-1-6	validFormat	[length,2]						
+	x		send transaction 	FT-TC2-1-sendtx-3	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]						
+	x		send transaction 	FT-TC2-1-sendtx-4	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]						
+	x		send transaction 	FT-TC2-1-sendtx-5	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:0x1}]						
+	x		check filter changes	FT-TC2-1-10	requestMethod.eth_getFilterChanges	[_filterID]						
+	x		validate response	FT-TC2-1-10-vali	validFormat	[length,3]						
+	x		check filter changes	FT-TC2-1-11	requestMethod.eth_getFilterChanges	[_filterID]						
+	x		validate response	FT-TC2-1-11-vali	validFormat	[length,0]						
+												
+FT-TC00-logFilter procondition preparision	x											
+	x		compiler contract	FT-TC00-1	requestMethod.eth_compileSolidity	Counter.sol			acc1=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c			
+	x		unlock account 1 to deploy contract	FT-TC00-2	requestMethod.personal_unlockAccount	[_acc1,password,99999]						
+	x		prepare contract deployment	FT-TC00-3	helper.newContract	[Counter]						
+	x	s	deploy a contract at one address	FT-TC00-4	requestMethod.eth_sendTransaction	[{from:_acc1}]		result=>txHash1				
+	x		prepare contract deployment	FT-TC00-5	helper.newContract	[Counter]						
+	x	s	deploy a contract at one address	FT-TC00-6	requestMethod.eth_sendTransaction	[{from:_acc1}]		result=>txHash2				
+	x		get contractAddress for first contract	FT-TC00-7	requestMethod.eth_getTransactionReceipt							
+	x		get contractAddress for sec contract	FT-TC00-8	requestMethod.eth_getTransactionReceipt							
+FT-TC3: log filter catch the log for a certain contract addr - requested FT-TC00		x										
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+FT-TC7: filter expiration												
+			get fromBlock #	FT-TC7-0	requestMethod.eth_blockNumber	[]		result=>fromBlock				
+			create a log filter	FT-TC7-1	eth_newFilter	[{toBlock:latest,fromBlock:_fromBlock}]						
+			unlock account	FT-TC7-Pre-con1	personal_unlockAccount	[_acc1,password,100]						
+			deploy a contract for create logs – compile a contract	FT-TC7-Pre-con2	eth_compileSolidity			Counter.sol				
+					newContract							
+			deploy a contract for create logs – deploy a contract	FT-TC7-Pre-con3	eth_sendTransaction			{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}	format	value	TRANSACTION_FORMAT	
+					WaitNewBlock	120 1						
+			deploy a contract for create logs – get contract address	FT-TC7-Pre-con4	eth_getTransactionReceipt			_txHash				
+					prepareContractCall	incrementCounter						
+			send tx to create logs – 1 	FT-TC7-2-1	eth_sendTransaction			{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}	format	value	TRANSACTION_FORMAT	
+					prepareContractCall	incrementCounter						
+			send tx to create logs – 2 	FT-TC7-2-2	eth_sendTransaction			{from:0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137}	format	value	TRANSACTION_FORMAT	
+					delay	310						
+			call eth_getFilterChanges after 5min	FT-TC-3	eth_getFilterChanges				format	value		0
+			call eth_getFilterLogs	FT-TC-4	eth_getFilterLogs				format	value		0
+			use getLogs to confirm that the logs are created	FT-TC-5	eth_getLogs			{fromBlock:_blockNumber,toBlock:latest,address:_contractAddress}	format	value		4

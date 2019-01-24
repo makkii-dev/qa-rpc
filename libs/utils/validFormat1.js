@@ -47,10 +47,11 @@ const VALID_BLOCK_OBJECT={
 }
 
 const VALID_SYNCING_INFO = {
-       StartingBlock: H160,
+       startingBlock: H160,
        currentBlock:H160,
-       highestBlock:H160,
-       blockGap: _.isArray
+       highestBlock:H160
+			 // ,
+       // blockGap: _.isArray
 };
 
 const VALID_TRANSACTION_RECEIPT = {
@@ -206,7 +207,8 @@ var formates ={
 			//pubsub:'1.0',
 			rpc:'1.0',
 			stratum:'1.0',
-			web3:'1.0'
+			web3:'1.0',
+			ping:'1.0'
 		},
 
 		VALID_BLOCK_HEADER:VALID_BLOCK_HEADER,
@@ -315,13 +317,20 @@ module.exports = function(row, rt, resolution){
 			if(params[2]){
 				expect(resolution.result).to.have.lengthOf(parseInt(params[2])-parseInt(params[1]));
 			}else{
-				expect(resolution.result).to.have.lengthOf(params[1]);
+				expect(resolution.result).to.have.lengthOf(parseInt(params[1]));
 			}
 			break;
 		case "contract":
 			Object.values(resolution.result).forEach((value,index)=>{
 				expect(value).to.matchPattern(formates.COMPILE_RESUILT);
-			})
+			});
+			break;
+		case "atLeast":
+			if(params[2]){
+				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[2])-parseInt(params[1]));
+			}else{
+				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[1]));
+			}
 			break;
 		default:
 			expect(resolution.result).to.matchPattern(formates[params[1]]);

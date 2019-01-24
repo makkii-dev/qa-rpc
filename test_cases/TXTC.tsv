@@ -72,7 +72,8 @@ TXTC03 -1:nonce -kernel sign multiple transactions	x
 	x		validate nonce in pending	TXTC03-1-16	validFormat	[equal,_nonce,nonce]								
 														
 TXTC04:nonce - send a transaction with the nonce bigger than this account's transaction counts	x													
-	x		get transaction counts	TXTC04-1	requestMethod.eth_getTransactionCount	[_acc1,latest]		result=>nonce	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		wait for new block to avoid any pending transaction for this account	Pre-step	helper.WaitNewBlock	[120,1]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		get transaction counts	TXTC04-1	requestMethod.eth_getTransactionCount	[_acc1,latest]		result=>nonce						
 	x		unlock account for test 	TXTC04-2	requestMethod.personal_unlockAccount	[_acc1,password,1000]								
 	x		helper increase prenonce by 2	TXTC04-3	helper.inc	{nonce:1}								
 	x		sign transaction with a nonce = currentTxCount +2	TXTC04-4	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:1,nonce:_nonce}]		result.raw=>txRaw,result.tx=>signedTx						
@@ -87,7 +88,8 @@ TXTC04:nonce - send a transaction with the nonce bigger than this account's tran
 														
 														
 TXTC05: nonce - two transactions with same nonce in future	x													
-	x		get transaction count	TXTC05-0-0	requestMethod.eth_getTransactionCount									
+	x		wait for new block to avoid any pending transaction for this account	Pre-step	helper.WaitNewBlock	[120,1]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c					
+	x		get transaction count	TXTC05-0-0	requestMethod.eth_getTransactionCount	[_acc2,latest]								
 	x		increase the nonce to create a future nonce	TXTC05-0+1	helper.inc	{nonce:1}								
 	x		unlock account for test 	TXTC05-0+2	requestMethod.personal_unlockAccount	[_acc2,password,100]								
 	x		send a transaction with nonce = 400 && gasPrice = 100000000000	TXTC05-0+3	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000000}]								

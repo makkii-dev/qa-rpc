@@ -1,24 +1,10 @@
 pipeline {
     agent any
-    environment { 
-        JAVA_ARGS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
-        JENKINS_JAVA_OPTIONS='-Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai'
-
-        // aion_rust project configures
-        TARGET_NAME="aion_rust"
-        AION_RUST_DIR="${WORKSPACE}/../${TARGET_NAME}"
-        TESTNET_CONFIG="${AION_RUST_DIR}/aion/cli/config_testnet.toml"
-        TESTNET_JSON="${AION_RUST_DIR}/ethcore/res/aion/testnet.json"
-        FS_VM_DIR="${AION_RUST_DIR}/vms/fastvm/native/rust_evm_intf/dist"
-        LD_LIBRARY_PATH="${env.FS_VM_DIR}:${env.LD_LIBRARY_PATH}"
-        LIBRARY_PATH="${env.FS_VM_DIR}"
-        
-    }
-
+  
     triggers {
         cron('H H H H H')
         pollSCM('H H H H H')
-        upstream(upstreamProjects:"aion_rust", threshold: hudson.model.Result.SUCCESS) 
+        upstream(upstreamProjects:"aion_rust", threshold: hudson.model.Result.SUCCESS)
     }
 
     stages {
@@ -28,7 +14,7 @@ pipeline {
                 sh 'npm install -f'
             }
         }
-      
+
         stage('Test') {
             steps {
                 echo "clean db"
@@ -41,10 +27,10 @@ pipeline {
                 sh 'sleep 15'
                 echo 'Testing..'
                 sh 'npm test --detectOpenHandles'
-                
+
             }
         }
-       
+
     }
      post{
 
@@ -56,7 +42,7 @@ pipeline {
             failure {
                 //cleanWs()
                 slackSend channel: '@Miao',
-                color: 'danger', 
+                color: 'danger',
                 message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}.\nCommit: ${GIT_COMMIT}"
             }
         }

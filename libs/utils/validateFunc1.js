@@ -175,6 +175,16 @@ Validation.prototype.minerStats = async (testRow,rt_var,resolution)=>{
 		}
 	}
 }
+
+Validation.prototype.checkRunTimeVarExist = async (testRow,rt_var,resolution)=>{
+	let params = testRow.params;
+	// params.forEach((key,index)=>{
+	// 	if(typeof key !== "string") 
+	// })
+
+}
+
+
 //
 // Validation.prototype.validateBlake2b = {};
 // Validation.prototype.validateBlake2b.pre = async(obj)=>{
