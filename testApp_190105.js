@@ -75,7 +75,7 @@ provider_type=provider_type||'default';
 var cur_provider = new Provider({type:provider_type,logger:logger});
 
 let newlogfilename = (DRIVER_PATH.match(/\w+\.\w+/))[0]
-logger.updateName(newlogfilename.substring(0,newlogfilename.length-4));
+logger.updateName(newlogfilename.substring(0,newlogfilename.length-4)+"-Aion(JAVA)");
 
 var stepAction = {
 	requestMethod: new RequestMethod(cur_provider),

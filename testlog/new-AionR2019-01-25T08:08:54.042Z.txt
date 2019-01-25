@@ -1,0 +1,16 @@
+
+------------------ [Title] 		 smoke eth_accounts-------------------------
+
+----parse params-----------------------
+params:[]
+currentMethod:requestMethod.eth_accounts
+[Test Step]	:	get all the accounts in current kernel
+127.0.0.1:8545
+[HTTP Request]
+{"id":"Smoke-1","method":"eth_accounts","params":[],"jsonrpc":"2.0"}
+ !! [ERROR]----------------------------------------------------------
+get all the accounts in current kernel
+[HTTP ERROR]
+ !! [ERROR]----------------------------------------------------------
+get all the accounts in current kernel
+Error: connect ECONNREFUSED 127.0.0.1:8545

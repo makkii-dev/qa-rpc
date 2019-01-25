@@ -119,7 +119,7 @@ function getTimeStampHex(){
 }
 
 function getCurrentNonce(provider, accAddr){
-	return provider.sendRequest("utils-getValidNonceValue", "eth_getTransactionCount",[accAddr]);
+	return provider.sendRequest("utils-getValidNonceValue", "eth_getTransactionCount",[accAddr],false);
 }
 function getGasPrice(provider){
 	return provider.sendRequest("utils-getGasPrice","eth_gasPrice",[],false).then((resp)=>{return Promise.resolve(resp.result);});
@@ -413,7 +413,7 @@ function waitBlockUntil(option,provider){
 	if(typeof lastBlock == "string" && !isNaN(parseInt(lastBlock))) lastBlock= parseInt(lastBlock);
 	return 	new Promise((resolve,reject)=>{
 			var checkblock = ()=>{
-				provider.sendRequest("checkBlock","eth_blockNumber",[]).then((resp)=>{
+				provider.sendRequest("checkBlock","eth_blockNumber",[],false).then((resp)=>{
 					curBlock= resp.result;
 					console.log("-----------"+curBlock+" "+lastBlock);
 					if(parseInt(curBlock) >= parseInt(lastBlock)){
@@ -462,7 +462,7 @@ function getTxReceipt(txHash,provider,timeout){
 					clearInterval(loop);
 					reject(new Error("[get tx receipt] TIMEOUT"));
 				}
-			},1000);
+			},1300);
 	});
 }
 
