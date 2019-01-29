@@ -9,7 +9,7 @@ var process = require('process');
 const fs = require('fs');
 
 //test arguements variables
-var DRIVER_PATH = "./test_cases/testDriver.csv";
+var DRIVER_PATH = "./test_cases/new.tsv";
 var provider_type;
 
 // internal dependencies
@@ -44,7 +44,7 @@ function formParam(str,currentMethod){
 	logger.log("currentMethod:"+currentMethod);
 	//logger.log("RUNTIME_VARIABLES: "+ JSON.stringify(RUNTIME_VARIABLES)+"\n-----------------------------");
 	if(str===undefined) return [];
-
+	if(str=="null") return null;
 	if(currentMethod == 'requestMethod.eth_compileSolidity'){
 		let contract = fs.readFileSync(__dirname + '/testContracts/'+str, {
     		encoding: 'utf8'
@@ -75,7 +75,7 @@ provider_type=provider_type||'default';
 var cur_provider = new Provider({type:provider_type,logger:logger});
 
 let newlogfilename = (DRIVER_PATH.match(/\w+\.\w+/))[0]
-logger.updateName(newlogfilename.substring(0,newlogfilename.length-4)+"-Aion(JAVA)");
+logger.updateName(newlogfilename.substring(0,newlogfilename.length-4)+"-AionJAVA");
 
 var stepAction = {
 	requestMethod: new RequestMethod(cur_provider),
@@ -132,6 +132,10 @@ var data = readCSVDriver(DRIVER_PATH);
 
 data.forEach((testSuite)=>{
 	describe(testSuite.name,()=>{
+		if(testSuite.execute == undefined){
+			xit("testSuite.name");
+			return;
+		}
 		if(!testSuite.usePreparedData)
 			RUNTIME_VARIABLES.reset();
 		//VERIFY_VARIABLES.reset();

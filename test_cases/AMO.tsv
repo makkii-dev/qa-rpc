@@ -14,7 +14,7 @@ AMO-TS02: use account mine aion coins	x
 	x		validate mining user miner 1	AMO-TS02-3	validationFunction.validateMining	[_testAcc,false]			testAcc=0x0000000000000000000000000000000000000000000000000000000000000000
 	x		validate mining user miner 2	AMO-TS02-4	validationFunction.validateMining	[_testAcc,false]			testAcc=0x
 									
-AMO-TS3: unlock an locked account for one time use	x								
+AMO-TS3: unlock an locked account for one time use (Deprecated)									
 	x		locked the account before test cases	AMO-TS3-0	requestMethod.personal_lockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate lock action	AMO-TS3-0-vali	validFormat	[equal,true]			
 	x		unlock a test account for one time use	AMO-TS3-1	requestMethod.personal_unlockAccount	[_acc1,password,null]			
