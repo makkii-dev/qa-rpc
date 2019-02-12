@@ -47,10 +47,11 @@ const VALID_BLOCK_OBJECT={
 }
 
 const VALID_SYNCING_INFO = {
-       StartingBlock: H160,
+       startingBlock: H160,
        currentBlock:H160,
-       highestBlock:H160,
-       blockGap: _.isArray
+       highestBlock:H160
+			 // ,
+       // blockGap: _.isArray
 };
 
 const VALID_TRANSACTION_RECEIPT = {
@@ -106,10 +107,7 @@ const TX_OBJECT= {
 	hash:transaction_format,
 	input:BINARY,
 	nonce:_.isNumber,
-	//publicKey:public_key,
-	//raw:HEX,
-	//sig:BINARY,
-	//standardV:HEX,
+
 	timestamp:_.isNumber,
 	to:account_format,
 	transactionIndex:NULL_N_HEX,
@@ -125,37 +123,10 @@ const VALID_SIGN_TRANSACTION = {
 	tx:TX_OBJECT
 }
 
-/*
-const expectblk_tx = {
-	difficulty:expect.any(BigNumber),
-	extraData:expect.anything(),
-	gasLimit:expect.anything(),
-	gasUsed:expect.anything(),
-	hash:expect.anything(),
-	logsBloom:expect.anything(),
-	miner:expect.anything(),
-	nonce:expect.anything(),
-	number:expect.any(Number),
-	parentHash:expect.anything(),
-	receiptsRoot:expect.anything(),
-	size:expect.any(Number),
-	solution:expect.anything(),
-	stateRoot:expect.anything(),
-	timestamp:expect.any(Number),
-	totalDifficulty:expect.any(BigNumber),
-	transactions:expect.arrayContaining([expect.objectContaining(expect_tx)]),
-	transactionsRoot:expect.anything(),
-	nrgLimit:expect.anything(),
-	nrgUsed:expect.anything(),
-}
-
-*/
-
-
 
 
 const COMPILE_RESUILT={
-	
+
 		code:code_format,
 		info:{
 			abiDefinition:_.isArray,
@@ -164,22 +135,46 @@ const COMPILE_RESUILT={
 			languageVersion:_.isString,
 			source:_.isString
 		}
-	
+
 }
 
 const VALID_WORKTEMPLATE={
-	blockBaseReward:HEX,
- 	blockTxFee:HEX,
- 	headerHash:HEX,
+	blockBaseReward:JAVA_HEX,
+ 	blockTxFee:JAVA_HEX,
+ 	headerHash:JAVA_HEX,
 	height:_.isNumber,
-	previousblockhash:HEX,
-	target:HEX
+	previousblockhash:JAVA_HEX,
+	target:JAVA_HEX
 }
 
 
 const VALID_LOGS={
-	
+
 }
+
+var VALID_BLOCK_HEADER = {
+	blockHeader:{
+		coinBase:JAVA_HEX,
+		difficulty:JAVA_HEX,
+		energyConsumed:JAVA_HEX,
+		energyLimit:JAVA_HEX,
+		extraData:JAVA_HEX,
+		logsBloom:JAVA_HEX,
+		number:JAVA_HEX,
+		parentHash:JAVA_HEX,
+		receiptTrieRoot:JAVA_HEX,
+		stateRoot:JAVA_HEX,
+		timestamp:JAVA_HEX,
+		txTrieRoot:JAVA_HEX,
+		version:_.isString
+	},
+	code:_.isNumber,
+	headerHash:JAVA_HEX,
+	message:_.isNull,
+	nonce:JAVA_HEX,
+	solution:JAVA_HEX
+}
+
 
 var formates ={
 
@@ -212,8 +207,12 @@ var formates ={
 			//pubsub:'1.0',
 			rpc:'1.0',
 			stratum:'1.0',
-			web3:'1.0'
+			web3:'1.0',
+			ping:'1.0'
 		},
+
+		VALID_BLOCK_HEADER:VALID_BLOCK_HEADER,
+
 		LOCKED_ERROR:{
 			code:-32020,
 			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
@@ -255,7 +254,7 @@ var formates ={
 			code:-32010,
 			message:/Transaction gas price is too low. There is another transaction with same nonce in the queue/
 		},
-		INVALID_GAS_PRICE:{ 
+		INVALID_GAS_PRICE:{
 			code: -32010,
   			message:/Transaction gas price is either too low or too high/
   		},
@@ -272,8 +271,8 @@ var formates ={
   			data: /InvalidPassword/
   			...
   		}`
-	
-	
+
+
 };
 
 
@@ -286,6 +285,9 @@ module.exports = function(row, rt, resolution){
 		case 'error':
 			expect(resolution.error).to.matchPattern(formates[params[1]]);
 			break;
+		case "errorCode":
+			expect(resolution.error.code).to.equal(params[1]);
+			break;
 		case 'contains':
 			expect(resolution.result).to.include(params[1]);
 			break;
@@ -296,26 +298,45 @@ module.exports = function(row, rt, resolution){
 			expect(resolution.result).to.equal(params[1]);
 			break;
 		case 'equal':
-			//console.log("\n\n\n\n");
-			expect(resolution.result).to.equal(params[1]);
+			if(params[2]){
+				let chain = params[2].split('.');
+				let actualValue = resolution.result;
+				chain.forEach((value,index)=>{
+					actualValue = actualValue[value];
+				});
+				if((typeof params[1] != typeof actualValue) && (typeof params[1] =='number' || typeof actualValue == 'number')){
+					params[1]=parseInt(params[1]);
+					actualValue = parseInt(actualValue);
+				}
+				expect(actualValue).to.equal(params[1]);
+			}else{
+				expect(resolution.result).to.equal(params[1]);
+			}
 			break;
 		case "length":
 			if(params[2]){
 				expect(resolution.result).to.have.lengthOf(parseInt(params[2])-parseInt(params[1]));
 			}else{
-				expect(resolution.result).to.have.lengthOf(params[1]);
+				expect(resolution.result).to.have.lengthOf(parseInt(params[1]));
 			}
 			break;
 		case "contract":
 			Object.values(resolution.result).forEach((value,index)=>{
 				expect(value).to.matchPattern(formates.COMPILE_RESUILT);
-			})
+			});
+			break;
+		case "atLeast":
+			if(params[2]){
+				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[2])-parseInt(params[1]));
+			}else{
+				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[1]));
+			}
 			break;
 		default:
 			expect(resolution.result).to.matchPattern(formates[params[1]]);
 
 	}
 
-	rt.reassign(row.runtimeVal).storeVariables(row.storeVariables,resolution);
+	//rt.reassign(row.runtimeVal).storeVariables(row.storeVariables,resolution);
 	return Promise.resolve(resolution);
 }

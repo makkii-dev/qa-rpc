@@ -1,4 +1,4 @@
-var logger = new (require("./utils/logger"))();
+var logger = new (require("../libs/utils/logger"))();
 logger.CONSOLE_LOG = true;
 logger.FILE_LOG = true;
 
@@ -7,7 +7,7 @@ var connection;
 var IPC = require("net");
 var WS = require("ws");
 var path = null;
-var providers_config = require("./utils/providers/providers_config.json");
+var providers_config = require("../libs/utils/providers/providers_config.json");
 var eventType, opt
 
 for(let i = 0; i < process.argv.length; i++){

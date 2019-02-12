@@ -21,7 +21,7 @@ module.exports = (logger)=>{
 	this.emptyString="";
 
 	this.update=(method,resp,req)=>{
-		
+
 		switch(method){
 			case "eth_newPendingTransactionFilter":
 			case "eth_newBlockFilter":
@@ -33,7 +33,7 @@ module.exports = (logger)=>{
 				this.newPassword = req[0];
 				break;
 			case "eth_getBlockByNumber":
-			
+
 			//case "eth_getBlockTransactionCountByNumber":
 				this.blockHash = resp.result.hash;
 				this.blockNumber = resp.result.number|| resp.result.height;
@@ -71,7 +71,7 @@ module.exports = (logger)=>{
 					console.log(contract);
 					this.contract[contract] = {}
 					this.contract[contract].code = resp.result[contract].code
-					
+
 					resp.result[contract].info.abiDefinition.forEach((item)=>{
 						if(item.type == "function"){
 							this.contract.func[item.name] = item;
@@ -80,7 +80,6 @@ module.exports = (logger)=>{
 						}
 					})
 				});
-				this.logger.warning("lslslsls")
 				break;
 			case "eth_getTransactionReceipt":
 				if(resp.result !=null && resp.result.contractAddress !==undefined && resp.result.contractAddress !==null)
@@ -149,7 +148,7 @@ module.exports = (logger)=>{
 					target[name] = sourceValue;
 				}else{
 					if(!target[name]) target[name] = {};
-					target = target[name]; 
+					target = target[name];
 				}
 			}
 
@@ -164,7 +163,7 @@ module.exports = (logger)=>{
 			this[vals[1]] = this[vals[0]];
 		})
 		return this;
-		
+
 	}
 
 	this.preStoreVariables = (instruction)=>{
@@ -181,7 +180,7 @@ module.exports = (logger)=>{
 		let ptr = this;
 		for(let i = 0; i < hierarchy.length; i++){
 			ptr = ptr[hierarchy[i]];
-		} 
+		}
 		return ptr;
 	}
 

@@ -18,16 +18,8 @@ testApp_dummy.js: for test rust input
 
 ```
 
-
-
-
-** Error format **
-See all of validation format in utils/validFormat.js
-
-LOCKED_ERROR
-PARAMS_FORMAT_ERROR
-WRONG_PW_ERROR
-INVALID_ACC_ERROR
-INVALID_METHOD
-
-
+# View Test Report:
+```bash
+./node_modules/junit-viewer/bin/junit-viewer --results=testResultReports/ --port=3003
+```
+Then open browser and navigate to localhost:3003

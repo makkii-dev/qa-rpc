@@ -36,7 +36,7 @@ function arrayify(value) {
 
 
 function str2Obj(str,delimiter,separator, runtime_vars){
-		
+
 		str = str.substring(1,str.length-1);
 		console.log(str);
 		var obj = {};
@@ -119,7 +119,7 @@ function getTimeStampHex(){
 }
 
 function getCurrentNonce(provider, accAddr){
-	return provider.sendRequest("utils-getValidNonceValue", "eth_getTransactionCount",[accAddr]);
+	return provider.sendRequest("utils-getValidNonceValue", "eth_getTransactionCount",[accAddr],false);
 }
 function getGasPrice(provider){
 	return provider.sendRequest("utils-getGasPrice","eth_gasPrice",[],false).then((resp)=>{return Promise.resolve(resp.result);});
@@ -131,10 +131,11 @@ function getBalance(provider,accAddr){
 
 /*
 	Use account private key to encode transaction object to HEX
-	@param txObj(Object):{to: accAddr, value: number, data: number, gas: number, gasPrice:account, nonce:hex,type:?, timestamp:Date.now()*1000} 
+	@param txObj(Object):{to: accAddr, value: number, data: number, gas: number, gasPrice:account, nonce:hex,type:?, timestamp:Date.now()*1000}
 	@param account(Object){_privateKey: number, privateKey:hex, publicKey:buffer?, addr:accountAddress}
 */
 async function getRawTx(provider,txObj,account){
+  console.log(txObj);
 	let result = {};
 	let preEncodeSeq = [];
 	let expectSeq =['nonce','to','value','data','timestamp','gas','gasPrice','type'];
@@ -143,21 +144,22 @@ async function getRawTx(provider,txObj,account){
 	txObj.gasPrice = txObj.gasPrice || (await getGasPrice(provider)).result;
 	console.log("gasPrice"+txObj.gasPrice);
 	result.readable = txObj;
-	
-	if(!/^0x/.test(txObj.value)) txObj.value = '0x'+parseInt(txObj.value).toString(16);
+
+  if(typeof txObj.value === "number" || typeof txObj.value === 'Number') txObj.value = '0x'+ txObj.value.toString(16);
+	else if(!/^0x/.test(txObj.value)) txObj.value = '0x'+parseInt(txObj.value).toString(16);
 	if(!/^0x/.test(txObj.gasPrice)) txObj.gasPrice = '0x'+ parseInt(txObj.gasPrice).toString(16);
 	if(!/^0x/.test(txObj.gas)) txObj.gas = '0x'+parseInt(txObj.gas).toString(16);
-	
+
 	console.log(txObj);
-	
+
 	txObj.gasPrice = toAionLong(txObj.gasPrice);
 	txObj.gas = toAionLong(txObj.gas);
 	txObj.type = toAionLong(txObj.type || 1);
-	
+
 	console.log(txObj);
-	
+
 	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
-	
+
 	let rlpEncoded = rlp.encode(preEncodeSeq);
 	console.log("[this is pre-blake2b] : "+ rlpEncoded);
 	let hash = blake2b256(rlpEncoded);
@@ -171,7 +173,7 @@ async function getRawTx(provider,txObj,account){
 	account.aionPubSig = aionPubSig;
 	let rawTx = rlp.decode(rlpEncoded).concat(aionPubSig);
 	let rawTransaction = rlp.encode(rawTx);
-	
+
 	result.raw = {
 		messageHash:bufferToZeroXHex(hash),
 		signature:bufferToZeroXHex(aionPubSig),
@@ -189,25 +191,25 @@ async function getEncodeTx(provider,txObj){
 	txObj.gasPrice = txObj.gasPrice || (await getGasPrice(provider)).result;
 	console.log("gasPrice"+txObj.gasPrice);
 	//result.readable = txObj;
-	
+
 	if(!/^0x/.test(txObj.value)) txObj.value = '0x'+parseInt(txObj.value).toString(16);
 	if(!/^0x/.test(txObj.gasPrice)) txObj.gasPrice = '0x'+ parseInt(txObj.gasPrice).toString(16);
 	if(!/^0x/.test(txObj.gas)) txObj.gas = '0x'+parseInt(txObj.gas).toString(16);
-	
+
 	console.log(txObj);
-	
+
 	txObj.gasPrice = toAionLong(txObj.gasPrice);
 	txObj.gas = toAionLong(txObj.gas);
 	txObj.type = toAionLong(txObj.type || 1);
-	
+
 	console.log(txObj);
-	
+
 	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
-	
+
 	let rlpEncoded = rlp.encode(preEncodeSeq);
 	let hash = blake2b256(rlpEncoded);
 	return hash;
-}	
+}
 
 
 
@@ -274,7 +276,7 @@ var getContractFuncData = (funcABI, params)=>{
 		}else{
 			funcSign += encoder(funcABI.inputs[index].type,param);
 		}
-		
+
 	});
 	return "0x"+funcSign+rest;
 }
@@ -294,7 +296,7 @@ var getContractConstrData = (funcABI, params)=>{
 		}else{
 			funcSign += encoder(funcABI.inputs[index].type,param);
 		}
-		
+
 	});
 	return funcSign+rest;
 }
@@ -312,7 +314,7 @@ var getEvtData = (funcABI, params)=>{
 			data += encoder(funcABI.inputs[index].type,param);
 		}
 	});
-	return data+rest;	
+	return data+rest;
 }
 
 
@@ -356,15 +358,15 @@ var waitBlock = (options,provider)=>{
 
 	var _id="checkBlock";
 	let newBlockNum=0;
-	
+
 	let timeout = 100;
-	
+
 	if(options !=null){
 		timeout = options[0];
 		if(options.length >1)
 			newBlockNum = parseInt(options[1]);
-			
-	}	
+
+	}
 	//console.log("timeout:"+timeout);
 	//console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
 
@@ -376,8 +378,8 @@ var waitBlock = (options,provider)=>{
 			//console.log(resp);
 		}).then(()=>{
 			console.log("-----------"+oldBlockNo);
-			
-			
+
+
 			var checkblock = ()=>{
 				provider.sendRequest(_id,"eth_blockNumber",[]).then((resp)=>{
 					newBlockNo= resp.result;
@@ -391,11 +393,11 @@ var waitBlock = (options,provider)=>{
 
 			}
 			var checkloop = setInterval(checkblock,5000);
-			
+
 			setTimeout(()=>{clearInterval(checkloop);resolve()},parseInt(timeout)*1000);
-		
+
 		});
-		
+
 
 	});
 }
@@ -411,7 +413,7 @@ function waitBlockUntil(option,provider){
 	if(typeof lastBlock == "string" && !isNaN(parseInt(lastBlock))) lastBlock= parseInt(lastBlock);
 	return 	new Promise((resolve,reject)=>{
 			var checkblock = ()=>{
-				provider.sendRequest("checkBlock","eth_blockNumber",[]).then((resp)=>{
+				provider.sendRequest("checkBlock","eth_blockNumber",[],false).then((resp)=>{
 					curBlock= resp.result;
 					console.log("-----------"+curBlock+" "+lastBlock);
 					if(parseInt(curBlock) >= parseInt(lastBlock)){
@@ -460,7 +462,7 @@ function getTxReceipt(txHash,provider,timeout){
 					clearInterval(loop);
 					reject(new Error("[get tx receipt] TIMEOUT"));
 				}
-			},1000);
+			},1300);
 	});
 }
 

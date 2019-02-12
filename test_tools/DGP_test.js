@@ -30,12 +30,12 @@ if(!(toBlock || newBlockNum)){
 	console.log("Either --newBlockNum or --toBlock is required");
 	return;
 }
-minerListen = minerListen || "127.0.0.1:8007";
+minerListen = minerListen || "127.0.0.1:8008";
 minerAcc = minerAcc || "0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137";
 javaHTTP = javaHTTP || "127.0.0.1:8545";
 rustHTTP = rustHTTP || "127.0.0.1:8549";
 
-var Provider = require("./utils/provider.js");
+var Provider = require("../libs/utils/provider.js");
 var java_provider = new Provider({type:"http"}).Path(javaHTTP);
 var rust_provider = new Provider({type:"http"}).Path(rustHTTP);
 
@@ -55,7 +55,7 @@ var oneAct = async ()=>{
 	if(curBlock >= toBlock){
 		minerProc.kill();
 		clearInterval(loop);
-		
+
 		let blkPriceCnt = 0;
 		for(let blkNum = curBlock; blkNum>=0 && blkNum > blkNum-64; blkNum--){
 			let res = await rust_provider.sendRequest("check-blocktx-"+blkNum,"eth_getBlockTransactionCountByNumber",[blkNum]);

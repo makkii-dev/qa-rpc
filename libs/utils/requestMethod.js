@@ -13,7 +13,7 @@ class RequestMethod{
 					if(method != "eth_getTransactionReceipt" || resp.result != null || resp.error ){
 						if(resp.result){
 							rt_val.update(method,resp,currentRow.params);
-							rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
+							//rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
 						}
 						resolve(resp);
 					}
@@ -24,7 +24,7 @@ class RequestMethod{
 							if(resp.result != null || Date.now() > (startTime + 240 * 1000)){
 								clearInterval(receiptLoop);
 								rt_val.update(method,resp,currentRow.params);
-								rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
+								//rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
 								resolve(resp);
 							}
 						});

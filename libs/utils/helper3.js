@@ -16,15 +16,15 @@ Helper.prototype._init = (provider,logger)=>{
 	this.provider = provider;
 }
 
-Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
+Helper.prototype.WaitNewBlock =  (testRow,rt_var,resolution)=>{
 	var oldBlockNo, newBlockNo;
 	//console.log(this);
 	var provider = this.provider;
 	var _id = "helper"+testRow.id;
 	let newBlockNum=0;
-	
+
 	let timeout = 100;
-	
+
 	if(testRow.params !=undefined){
 		timeout = testRow.params[0];
 		if(testRow.params.length >1)
@@ -40,7 +40,7 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 		provider.sendRequest(_id,"eth_blockNumber",[],false).then((resp)=>{
 			oldBlockNo = resp.result
 		}).then(()=>{
-			
+
 			var checkblock = ()=>{
 				provider.sendRequest(_id,"eth_blockNumber",[],false).then((resp)=>{
 					newBlockNo= resp.result;
@@ -48,15 +48,15 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 					if(parseInt(newBlockNo) > parseInt(oldBlockNo)+ newBlockNum){
 						this.logger.log("-----reached------"+oldBlockNo+" "+newBlockNo);
 						clearInterval(checkloop);
-						resolve(resolves);
+						resolve(resp);
 					}
 				});
 
 			}
 			var checkloop = setInterval(checkblock,5000);
-			
-			setTimeout(()=>{clearInterval(checkloop);resolve(resolves)},parseInt(timeout)*1000);
-		
+
+			setTimeout(()=>{clearInterval(checkloop);resolve(resolution)},parseInt(timeout)*1000);
+
 		});
 	});
 }
@@ -64,7 +64,7 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var)=>{
 
 Helper.prototype.delay= (testRow,rt_var)=>{
 	this.logger.log(testRow.params);
-	
+
 	var timeout = testRow.params[0];
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
@@ -78,24 +78,42 @@ Helper.prototype.delay= (testRow,rt_var)=>{
 
 Helper.prototype.createPKAccount = (testRow,rt_var)=>{
 	this.logger.info(testRow.params);
-	return new Promise(()=>{
+	return new Promise((resolve,reject)=>{
 		let account = aionAccount.createKeyPair(testRow.params);
 		account.addr = aionAccount.createA0Address(account.publicKey);
 		rt_var.update("pairKeyCreateAcc", account);
-		this.logger.info(JSON.stringify(rt_var));
+		//this.logger.info(JSON.stringify(rt_var));
 		// if(!rt_var.nextTxObj) rt_var.nextTxObj = {};
 		// rt_var.nextTxObj.to = r.params[0].to||account.addr;
 		resolve();
 	});
 }
 
+Helper.prototype.prepareRawTx = (testRow,rt_var,resolution)=>{
+	return new Promise((resolve,reject)=>{
+		this.logger.info(JSON.stringify(testRow.params));
+		utils.getRawTx(this.provider,testRow.params,rt_var.account).then( (txObj)=>{
+
+				rt_var.rawTx = txObj.raw;
+				rt_var.actualTx = txObj.readable;
+				//VERIFY_VARIABLES.vals.toAcc = rt_var.actualTx.to;
+				//VERIFY_VARIABLES.vals.actualTx = rt_var.actualTx;
+				console.log("\nvpreprocess\n");
+				console.log(rt_var.rawTx);
+				testRow.params[0] = rt_var.rawTx.rawTransaction;
+				resolve();
+			}
+		);
+
+	});
+}
 /*Helper.prototype.default = (param,a,b,c)=>{
 	return new Promise((resolve)=>{resolve({RUNTIME_VARIABLES:a,testRow:b,VERIFY_VARIABLES:c});});
 }*/
 
 Helper.prototype.newContract = (testRow,rt_var)=>{
 	return new Promise((resolve)=>{
-		if(rt_var.nextTxObj==undefined) 
+		if(rt_var.nextTxObj==undefined)
 			rt_var.nextTxObj = {};
 		if(testRow.params!==undefined){
 
@@ -103,19 +121,19 @@ Helper.prototype.newContract = (testRow,rt_var)=>{
 		}else{
 			rt_var.nextTxObj.data = rt_var.contract[rt_var.contract.names[0]].code;
 		}
-		
+
 
 		resolve();
 	})
 }
 
 Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
-	
+
 
 	return new Promise((resolve)=>{
 
 		let newOptions = testRow.params;
-		if(rt_var.nextTxObj==undefined) 
+		if(rt_var.nextTxObj==undefined)
 			rt_var.nextTxObj = {};
 
 		/*
@@ -134,13 +152,13 @@ Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 		}
 		this.logger.log(JSON.stringify(testRow.params));
 		resolve();
-	
+
 	});
 }
 
 Helper.prototype.getEvent=(testRow,rt_var)=>{
 	return new Promise((resolve)=>{
-		if(rt_var.nextTxObj==undefined) 
+		if(rt_var.nextTxObj==undefined)
 			rt_var.nextTxObj = {};
 		rt_var.nextTxObj.topics = ["0x"+utils.getEvent(rt_var.contract.event[testRow.params])];
 		this.logger.log(rt_var.nextTxObj);
@@ -162,15 +180,13 @@ Helper.prototype.getSign = (testRow,rt_var)=>{
 		})
 		//RUNTIME_VARIABLES.sign1 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(2,66);
 		//RUNTIME_VARIABLES.sign2 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(66);
-		
-		
-		
+
+
+
 	})
 }
 
 
-
-/// TO BE REVIEWED
 Helper.prototype.data0xPrefix = async (testRow,rt_var,resolution)=>{
 	let options = testRow.params.slice(1);
 	for(let i = 0; i < testRow.params.length;i++){
@@ -185,13 +201,15 @@ Helper.prototype.data0xPrefix = async (testRow,rt_var,resolution)=>{
 
 
 
-/// TO BE REVIEWED
-Helper.prototype.inc = async (options,RUNTIME_VARIABLES,testRow, VERIFY_VARIABLES)=>{
-	options.forEach((item,index)=>{
-		let pair = item.split(',');
-		RUNTIME_VARIABLES[pair[0]] = RUNTIME_VARIABLES[pair[0]] + parseInt(pair[1]);
+Helper.prototype.inc = async (testRow,rt_var,resolution)=>{
+	Object.entries(testRow.params).forEach((pair,index)=>{
+		let isString = (typeof rt_var[pair[0]] =='String'|| typeof rt_var[pair[0]] =='string')
+		let isHEX = isString && /^0x/.test(rt_var[pair[0]]);
+		rt_var[pair[0]] = parseInt(rt_var[pair[0]]) + pair[1];
+		if(isHEX) rt_var[pair[0]] = "0x"+rt_var[pair[0]].toString(16);
+		else if(isString) rt_var[pair[0]] = rt_var[pair[0]].toString();
 	})
-	return Promise.resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+	return Promise.resolve(resolution);
 }
 
 

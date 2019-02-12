@@ -1,11 +1,11 @@
 "use strict"
-var logger = new (require("./utils/logger"))();
+var logger = new (require("../libs/utils/logger"))();
 logger.CONSOLE_LOG = false;
 logger.FILE_LOG = false;
 const DEFAULT_GAS_PRICE = 10000000000;
-const Provider = require("./utils/provider");
-var utils = require("./utils/utils1");
-var Helper = require("./utils/helper1");
+const Provider = require("../libs/utils/provider");
+var utils = require("../libs/utils/utils1");
+var Helper = require("../libs/utils/helper1");
 logger.updatePath("transaction_test");
 var chai = require("chai");
 var provider_type;
