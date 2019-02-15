@@ -6,7 +6,7 @@ function requestBody(id,method,params,rpc_version){
 var http_provider = (endpoint, request_id, request_method, request_params,rpc_version,logger,log_visible)=>{
 	logger.log(endpoint);
 	return new Promise((resolve, reject)=>{
-	
+
 		// var provider = new HTTP_PROVIDER();
 		// provider.open("POST",endpoint);
 		// provider.setRequestHeader("Content-Type", "application/json");
@@ -30,6 +30,8 @@ var http_provider = (endpoint, request_id, request_method, request_params,rpc_ve
 		// }
 
 		let endpoint_vals = endpoint.split(":");
+		// console.log(endpoint_vals[0]);
+		// console.log(endpoint_vals[1]);
 		let req = HTTP_PROVIDER.request({
 			host: endpoint_vals[0],
 			port: endpoint_vals[1],

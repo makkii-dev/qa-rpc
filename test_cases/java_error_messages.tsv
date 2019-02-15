@@ -1,0 +1,10 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+transaction objects	x								
+	x		unlock the account for testing	Pre-step:unlockacc	requestMethod.personal_unlockAccount	[_acc1,password,13]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		sendTx w/out gas	TxObj-sendtx	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1}]			
+	x		signTx w/out gas	TxObj-signtx	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:1},_acc1]			
+	x		compile contract	compile contract	requestMethod.eth_compileSolidity	Token.sol			
+	x		prepare data for tx	constract deploy	helper.newContract	[MyToken]			
+	x	x	sendTx w/out gas	TxObj-sendtx	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		prepare data for tx	constract deploy	helper.newContract	[MyToken]			
+	x	x	signTx w/out gas	TxObj-signtx	requestMethod.eth_signTransaction	[{from:_acc1},_acc1]			
