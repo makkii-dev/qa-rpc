@@ -302,6 +302,9 @@ module.exports = function(row, rt, resolution){
 				let chain = params[2].split('.');
 				let actualValue = resolution.result;
 				chain.forEach((value,index)=>{
+					if(!isNaN(value)){
+						value = parseInt(value);
+					}
 					actualValue = actualValue[value];
 				});
 				if((typeof params[1] != typeof actualValue) && (typeof params[1] =='number' || typeof actualValue == 'number')){

@@ -149,6 +149,7 @@ Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 
 			rt_var.nextTxObj.data = utils.getContractFuncData(rt_var.contract.func[newOptions[0]],newOptions.slice(1));
 			rt_var.nextTxObj.to = rt_var.contractAddress;
+			console.log(rt_var.nextTxObj);
 		}
 		this.logger.log(JSON.stringify(testRow.params));
 		resolve();
@@ -168,15 +169,21 @@ Helper.prototype.getEvent=(testRow,rt_var)=>{
 
 
 /// TO BE REVIEWED
+/*
+* creates signedtx hash, signatures and publicKey, and stores them in RUNTIME_VARIABLES
+*	@param {Object} testRow The object parsed from data file
+* @param {Object} rt_var The RUNTIME_VARIABLES object
+*/
+
 Helper.prototype.getSign = (testRow,rt_var)=>{
 	return new Promise((resolve)=>{
 		let obj = Object.create(testRow.params[0]);
-		utils.getRawTx(this.provider,obj,RUNTIME_VARIABLES.accounts[testRow.params[0].from]).then((res)=>{
-			RUNTIME_VARIABLES.hash = res.raw.messageHash.substring(2);
-			RUNTIME_VARIABLES.sign1 =RUNTIME_VARIABLES.accounts[testRow.params[0].from].signature.substring(2,66);
-			RUNTIME_VARIABLES.sign2 = RUNTIME_VARIABLES.accounts[testRow.params[0].from].signature.substring(66);
-			RUNTIME_VARIABLES.publicKey = RUNTIME_VARIABLES.accounts[testRow.params[0].from].publicKey.substring(2);
-			resolve({RUNTIME_VARIABLES:RUNTIME_VARIABLES,testRow:testRow,VERIFY_VARIABLES:VERIFY_VARIABLES});
+		utils.getRawTx(this.provider,obj,rt_var.accounts[testRow.params[0].from]).then((res)=>{
+			rt_var.hash = res.raw.messageHash.substring(2);
+			rt_var.sign1 =rt_var.accounts[testRow.params[0].from].signature.substring(2,66);
+			rt_var.sign2 = rt_var.accounts[testRow.params[0].from].signature.substring(66);
+			rt_var.publicKey = rt_var.accounts[testRow.params[0].from].publicKey.substring(2);
+			resolve();
 		})
 		//RUNTIME_VARIABLES.sign1 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(2,66);
 		//RUNTIME_VARIABLES.sign2 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(66);

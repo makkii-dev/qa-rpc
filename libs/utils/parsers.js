@@ -10,19 +10,19 @@ function parseJSONishString(str, rt_vars){
 }
 
 function _parseJsonIshObj(str,start,end,rt_vars){
-	
+
 	let partialResult = {};
 	let propertyName,value;
 	let newEnd;
 	for(let i = start; i < end;){
-		
+
 		let ichar = str.charAt(i);
 		if(ichar == ":"){
 			propertyName = str.substring(start,i);
 			i++;
 			start = i;
 		}else if(ichar == ","){
-			if(start < i){			
+			if(start < i){
 				value = _parseValue(str.substring(start,i),rt_vars);
 				partialResult[propertyName] = value;
 			}
@@ -46,7 +46,7 @@ function _parseJsonIshObj(str,start,end,rt_vars){
 			let res = _parseJsonIshObj(str, i+1,end,rt_vars);
 			value = res.res;
 			i = res.index;
-			
+
 			if(str.charAt(i)===',') i++;
 			partialResult[propertyName] = value;
 			start = i;
@@ -54,8 +54,8 @@ function _parseJsonIshObj(str,start,end,rt_vars){
 		 i++;
 		}
 	}
-	
-	
+
+
 	return {res: partialResult, index: newEnd};
 }
 function _parseJsonIshArr(str,start,end,rt_vars){
@@ -65,7 +65,7 @@ function _parseJsonIshArr(str,start,end,rt_vars){
 	for(let i = start; i < end;){
 
 		let ichar = str.charAt(i);
-		
+
 		if(ichar == ","){
 			value = _parseValue(str.substring(start,i),rt_vars);
 			partialResult.push(value);
@@ -96,13 +96,13 @@ function _parseJsonIshArr(str,start,end,rt_vars){
 			i++;
 		}
 	}
-	
+
 	return {res: partialResult, index: newEnd};
 }
 
 function _parseValue(input,rt_vars){
 	//console.log(input);
-	if(!isNaN(input) && typeof input ==='string' && !/^0x/.test(input)){
+	if(!isNaN(input) && typeof input ==='string' && !/^0/.test(input) ){
 		input = parseInt(input);
 	}else if(/^_/.test(input)){
 		if(rt_vars==undefined) {

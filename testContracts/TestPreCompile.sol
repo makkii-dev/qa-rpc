@@ -11,21 +11,22 @@ contract ContractDepth2 {
 }
 
 contract TestPrecompile {
-    
-    event Blake(bytes32, bytes32);
+
+    event Blake(bytes32,bytes32);
     event TxHash(bytes32);
     event VerifyInfo(bytes32,address);
-    
+
     //  function blake2b256(...) public returns (bytes32);
-    
+
     function testBlake2b256(bytes32 _input){
-         Blake(_input,blake2b256(_input)); 
+         Blake(_input,blake2b256(_input));
     }
-    
+
     // function transactionhash() public returns (bytes32);
 
     function testTransactionhash(){
-        TxHash(transactionhash());
+        bytes32 a = transactionhash();
+        TxHash(a);
     }
 
 

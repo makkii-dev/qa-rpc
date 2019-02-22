@@ -321,6 +321,7 @@ var getEvtData = (funcABI, params)=>{
 var encoder = (type, param)=>{
 
 	console.log(type+":"+(typeof param=='object')?JSON.stringify(param):param);
+
 	switch(type){
 		case "int8":
 		case "uint8":
@@ -341,12 +342,15 @@ var encoder = (type, param)=>{
 				])
 			return resb.toString("hex");
 		case "bytes32":
-			// let res = Buffer.concat([
-			// 		toBuffer(toUtf8Bytes(param)),
-			// 		Buffer.alloc(16 * Math.ceil(param.length/16) - param.length)
-			// 	])
-			// return res.toString("hex");
-			return /^0x/.test(param)?param.substring(2):param;
+			let res = Buffer.concat([
+
+
+          toBuffer(toUtf8Bytes(param)),
+          Buffer.alloc(32 * Math.ceil(param.length/32) - param.length)
+				])
+			return res.toString("hex");
+
+			 //return /^0x/.test(param)?param.substring(2):param;
 
 	}
 
@@ -505,7 +509,8 @@ var Utils={
 	waitBlockUntil:waitBlockUntil,
 	getEvent:getEvent,
 	getEncodeTx:getEncodeTx,
-	getEvtData:getEvtData
+	getEvtData:getEvtData,
+  encoder:encoder
 }
 
 module.exports = Utils;

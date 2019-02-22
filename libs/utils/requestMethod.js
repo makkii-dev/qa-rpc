@@ -8,7 +8,7 @@ class RequestMethod{
 			var self = this;
 
 			return new Promise((resolve)=>{
-
+				delete rt_val.isCall;
 				this.provider.sendRequest(currentRow.id,method,currentRow.params).then((resp)=>{
 					if(method != "eth_getTransactionReceipt" || resp.result != null || resp.error ){
 						if(resp.result){
@@ -19,7 +19,7 @@ class RequestMethod{
 					}
 					else
 					var receiptLoop = setInterval(()=>{
-						
+
 						this.provider.sendRequest(currentRow.id,method,currentRow.params).then((resp)=>{
 							if(resp.result != null || Date.now() > (startTime + 240 * 1000)){
 								clearInterval(receiptLoop);
@@ -28,7 +28,7 @@ class RequestMethod{
 								resolve(resp);
 							}
 						});
-						
+
 					},1200);
 
 				});
