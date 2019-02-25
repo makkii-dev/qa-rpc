@@ -102,7 +102,7 @@ function _parseJsonIshArr(str,start,end,rt_vars){
 
 function _parseValue(input,rt_vars){
 	//console.log(input);
-	if(!isNaN(input) && typeof input ==='string' && !/^0/.test(input) ){
+	if(!isNaN(input) && typeof input ==='string' && !/^0[0-9a-fA-Fx]+$/.test(input) ){
 		input = parseInt(input);
 	}else if(/^_/.test(input)){
 		if(rt_vars==undefined) {

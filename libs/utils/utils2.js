@@ -252,8 +252,8 @@ function getEvent(funcABI){
 }
 
 // assume params are primary element
-var getContractFuncData = (funcABI, params)=>{
-
+var getContractFuncData = (funcABI, params,isConvert)=>{
+  isConvert = isConvert==undefined?true:isConvert;
 	if(funcABI==null  || funcABI == undefined || funcABI == {}){
 		return "0x"+ params.join("");
 	}
@@ -269,12 +269,12 @@ var getContractFuncData = (funcABI, params)=>{
 	let rest = '';
 	console.log(params);
 	params.forEach((param,index)=>{
-		if(funcABI.inputs[index].type=='string'){
+		if(funcABI.inputs[index].type=='string' && isConvert){
 			let offset = (funcABI.inputs[index].type,params.length -1-index) * 32 + rest.length;
 			funcSign += encoder("int",offset);
 			rest += encoder(funcABI.inputs[index].type,param)
 		}else{
-			funcSign += encoder(funcABI.inputs[index].type,param);
+			funcSign += encoder(funcABI.inputs[index].type,param,isConvert);
 		}
 
 	});
@@ -318,9 +318,14 @@ var getEvtData = (funcABI, params)=>{
 }
 
 
-var encoder = (type, param)=>{
+var encoder = (type, param,isConvert)=>{
 
 	console.log(type+":"+(typeof param=='object')?JSON.stringify(param):param);
+  isConvert = isConvert==undefined?true:isConvert;
+
+  if(!isConvert){
+    return /^0x/.test(param)?param.substring(2):param;
+  }
 
 	switch(type){
 		case "int8":
@@ -350,7 +355,7 @@ var encoder = (type, param)=>{
 				])
 			return res.toString("hex");
 
-			 //return /^0x/.test(param)?param.substring(2):param;
+			 //
 
 	}
 

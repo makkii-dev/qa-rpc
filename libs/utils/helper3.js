@@ -146,8 +146,12 @@ Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 			rt_var.nextTxObj.to = rt_var.precompile[newOptions[0].substring(5)];
 		}else{
 			console.log(rt_var.contract);
+			let offset = newOptions.length - rt_var.contract.func[newOptions[0]].inputs.length;
+			console.log("offset:\t"+offset);
 
-			rt_var.nextTxObj.data = utils.getContractFuncData(rt_var.contract.func[newOptions[0]],newOptions.slice(1));
+			let isConvert = offset==1 || newOptions[1];
+			console.log("isConvert:\t"+isConvert);
+			rt_var.nextTxObj.data = utils.getContractFuncData(rt_var.contract.func[newOptions[0]],newOptions.slice(offset),isConvert);
 			rt_var.nextTxObj.to = rt_var.contractAddress;
 			console.log(rt_var.nextTxObj);
 		}

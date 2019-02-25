@@ -332,7 +332,7 @@ module.exports = function(row, rt, resolution){
 			if(params[2]){
 				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[2])-parseInt(params[1]));
 			}else{
-				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[1]));
+				expect(parseFloat(resolution.result)).to.be.at.least(parseFloat(params[1]));
 			}
 			break;
 		default:

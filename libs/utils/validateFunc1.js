@@ -250,7 +250,9 @@ Validation.prototype.validateSignature.post = async(testRow,rt_var,resolution)=>
 			var receipt = await utils.getTxReceipt(resolution.result,this.provider);
 			console.log(receipt);
 			let index = testRow.params[0]||0;
-			chai.expect(receipt.result.logs[index].data).to.equal(rt_var.publicKey);
+			let isValid = testRow.params[1]||true;
+			rt_var.publicKey = isValid? rt_var.publicKey:"0000000000000000000000000000000000000000000000000000000000000000";
+			chai.expect(receipt.result.logs[index].data.substring(2)).to.equal(rt_var.publicKey);
 		}
 		return Promise.resolve(resolution);
 	}catch(e){
