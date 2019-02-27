@@ -61,3 +61,4 @@ test txhash in depth=2	x	x
 	x		validate transaction hash	ttttttttttttttttttt	validFormat	[equal,_txHash,logs.1.data]			
 	x		get Logs	PPC-Test-logs	requestMethod.eth_getLogs	[{address:_contractAddress,fromBlock:_blockNumber,toBlock:latest}]			
 	x		validate log number	PPC-Test-logs	validFormat	[length,5]			
+	x		post action lock account	PPC-Test-POST	requestMethod.personal_lockAccount	[_acc1,password]			
