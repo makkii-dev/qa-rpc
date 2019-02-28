@@ -1,6 +1,6 @@
 TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
 PairKey transactions RK-29-0	x								
-	x		Pre-steps	PairKey-raw|TXTC01-1-00	helper.waitNewBlock	[120]			
+	x		Pre-steps	PairKey-raw|TXTC01-1-00	helper.WaitNewBlock	[120]			
 	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-1-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate the unlock account	PairKey-raw|TXTC01-1-1	validFormat	[equal,true]			
 	x		create a pairkey account	PairKey-raw|TXTC01-1-2	helper.createPKAccount	{}			
