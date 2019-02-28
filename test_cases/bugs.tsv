@@ -1,5 +1,5 @@
 TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
-PairKey transactions RK-29	x								
+PairKey transactions RK-29-0	x								
 	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-1-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate the unlock account	PairKey-raw|TXTC01-1-1	validFormat	[equal,true]			
 	x		create a pairkey account	PairKey-raw|TXTC01-1-2	helper.createPKAccount	{}			
@@ -10,7 +10,7 @@ PairKey transactions RK-29	x
 	x	x	prepare the raw tx	PairKey-raw|TXTC01-1-7	helper.prepareRawTx	{}			
 	x		send some value(1000) from pairKey account	PairKey-raw|TXTC01-1-8	requestMethod.eth_sendRawTransaction	[_rawTx.rawTransaction]			
 	x		validate the transaction result	PairKey-raw|TXTC01-1-9	validationFunction.balanceValidate.post				
-									
+PairKey transactions RK-29-1	x								
 	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-2-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			
 	x		validate the unlock account	PairKey-raw|TXTC01-2-1	validFormat	[equal,true]			
 	x		create a pairkey account	PairKey-raw|TXTC01-2-2	helper.createPKAccount	{}			
@@ -21,7 +21,7 @@ PairKey transactions RK-29	x
 	x	x	prepare the raw tx	PairKey-raw|TXTC01-2-7	helper.prepareRawTx	{}			
 	x		send some value(1000) from pairKey account	PairKey-raw|TXTC01-2-8	requestMethod.eth_sendRawTransaction	[_rawTx.rawTransaction]			
 	x		validate the transaction result	PairKey-raw|TXTC01-2-9	validationFunction.balanceValidate.post				
-									
+PairKey transactions RK-29-2	x								
 	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-3-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate the unlock account	PairKey-raw|TXTC01-3-1	validFormat	[equal,true]			
 	x		create a pairkey account	PairKey-raw|TXTC01-3-2	helper.createPKAccount	{}			
@@ -166,7 +166,7 @@ Bug-invalid Energy causes nonce gap	x
 	x		use personal send transaction send a valid transaction	Bug-invalidErgNcGp-3	requestMethod.personal_sendTransaction	[{to:_acc1,from:_acc2,value:100,gas:0x6000},password]		result=>txHash	
 	x		cheked if the tx is mined	Bug-invalidErgNcGp-4	requestMethod.eth_getTransactionReceipt	[_txHash]			
 	x		validate response	Bug-invalidErgNcGp-5	validFormat	[matches,VALID_TX_RECEIPT]			
-	x		unlock sender�s account to send txs	Bug-invalidErgNcGp-6	requestMethod.personal_unlockAccount	[_acc2,password,100]			
+	x		unlock sender’s account to send txs	Bug-invalidErgNcGp-6	requestMethod.personal_unlockAccount	[_acc2,password,100]			
 	x		use eth_sendTransaction send an invalid transaction	Bug-invalidErgNcGp-7	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,gas:0x010}]			
 	x		validate response	Bug-invalidErgNcGp-8	validFormat	[errorCode,-32010]			
 	x		use eth_sendTransaction send a valid transaction	Bug-invalidErgNcGp-9	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,gas:0x6000}]		result=>txHash	

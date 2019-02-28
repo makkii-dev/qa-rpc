@@ -8,7 +8,7 @@ if [ "$1" == "-h" ] ; then
 
 else 
 	if [ "$3" == true ] ; then
-		nohup /run/aionminer -l 127.0.0.1:8008 -t 1 &
+		nohup /run/aionminer -l 127.0.0.1:8008 -t 2 &
 	fi
 
 	for f in "$1"; do
