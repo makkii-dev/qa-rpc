@@ -12,9 +12,10 @@ else
 	fi
 
 	echo "$1"
-#	files=(${1//,/})
+	
 	IFS=',' read -r -a files <<< "$1"
 	IFS=',' read -r -a types <<< "$2"
+	
 	for f in "${files[@]}"; do
 		echo "$f"
 		for t in "${types[@]}"; do 

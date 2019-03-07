@@ -2,7 +2,6 @@ pipeline {
     agent any
   
     triggers {
-        cron('H H H H H')
         pollSCM('H H H H H')
     }
 
@@ -17,18 +16,33 @@ pipeline {
         }
 
         stage('Test') {
+            when{
+                expression {return params.FORM == "normal"}
+            }
             steps {
-               
-                
+               sh 'files=(smoke-test,AMO,TXTC,FTTC,bugs,precompile)'
+               sh 'types=(http,websocket)'
 
+               sh './ci_test_flexiable.sh $files $types true'
+            }
+        }
+        stage("Test Sync"){
+            when{
+                expression {return params.FORM == "sync"}
+            }
+            steps{
+                sh 'files=(syncing_testcases)'
+                sh 'types=(http,websocket)'
+
+                sh './ci_test_flexiable.sh $files $types false'
             }
         }
 
     }
      post{
             always {
-
-
+                archiveArtifacts artifacts: 'testlog/*.txt,testReport/*.xml', fringerprint:true
+                junit 'testReport/*.xml'
             }
 
             success{

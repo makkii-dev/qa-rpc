@@ -136,7 +136,7 @@ rk-55-compiling contracts failsoccationally	x
 	x		Compile solidity contract 51	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
 	x		validate compile result 	rk-55-96	validFormat	[contract]			
 	x		Compile solidity contract 52	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
-	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		matches,TRANSACTION_HASH	rk-55-96	validFormat	[contract]			
 	x		Compile solidity contract 53	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
 	x		validate compile result 	rk-55-96	validFormat	[contract]			
 	x		Compile solidity contract 54	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
@@ -182,4 +182,5 @@ RK121 – aiwa send transaction with data = “”	x
 	x		send a transaction with data = “”	RK121-4	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString}]			
 	x		validate response	RK121-5	validFormat	[matches,TRANSACTION_HASH]			
 	x		personal send a transaction with data =”	RK121-6	requestMethod.personal_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString},password]			
-	x		validate response	RK121-7	validFormat	[matches,TRANSACTION_HASH]			
+	x		validate response	RK121-7	validFormat	[matches,TRANSACTION_HASH]		result=>txHash	
+	x		post step to make sure the tx is mined	RK121-7-post	requestMethod.eth_getTransactionReceipt	[_txHash]			
