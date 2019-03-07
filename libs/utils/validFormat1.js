@@ -15,7 +15,7 @@ var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2==
 
 
 
-const code_format = /^0x[0-9a-f]+$/;
+const code_format = /^0x[0-9a-f]*$/;
 const transaction_format = /^0x[0-9a-f]{64}$/;
 const blockHash_format = H160;
 const account_format = H256;
@@ -33,12 +33,12 @@ const VALID_BLOCK_OBJECT={
 	hash:H160,
 	logsBloom:HEX,
 	miner:H160,
-	nonce:HEX,
+	nonce:NULL_N_HEX,
 	number:_.isNumber,
 	parentHash:H160,
 	receiptsRoot:H160,
 	size:HEX,
-	solution:HEX,
+	solution:NULL_N_HEX,
 	stateRoot:H160,
 	timestamp:HEX,
 	totalDifficulty:HEX,
@@ -302,6 +302,9 @@ module.exports = function(row, rt, resolution){
 				let chain = params[2].split('.');
 				let actualValue = resolution.result;
 				chain.forEach((value,index)=>{
+					if(!isNaN(value)){
+						value = parseInt(value);
+					}
 					actualValue = actualValue[value];
 				});
 				if((typeof params[1] != typeof actualValue) && (typeof params[1] =='number' || typeof actualValue == 'number')){
@@ -329,7 +332,7 @@ module.exports = function(row, rt, resolution){
 			if(params[2]){
 				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[2])-parseInt(params[1]));
 			}else{
-				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[1]));
+				expect(parseFloat(resolution.result)).to.be.at.least(parseFloat(params[1]));
 			}
 			break;
 		default:

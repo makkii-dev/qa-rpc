@@ -1,1 +1,186 @@
 TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+PairKey transactions RK-29-0	x								
+	x		Pre-steps	PairKey-raw|TXTC01-1-00	helper.WaitNewBlock	[120]			
+	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-1-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate the unlock account	PairKey-raw|TXTC01-1-1	validFormat	[equal,true]			
+	x		create a pairkey account	PairKey-raw|TXTC01-1-2	helper.createPKAccount	{}			
+	x		save the balance of two accounts and sending value(2e16) without gasPrice	PairKey-raw|TXTC01-1-3	validationFunction.balanceValidate.pre	{from:_acc1,to:_newCreateAccount,value:20000000000000000}			
+	x	x	send some value(2e16) to pairkey account 	PairKey-raw|TXTC01-1-4	requestMethod.eth_sendTransaction	[{}]			
+	x		validate the transaction result	PairKey-raw|TXTC01-1-5	validationFunction.balanceValidate.post				
+	x		save the balance of two accounts and sending value(10) without gasPrice	PairKey-raw|TXTC01-1-6	validationFunction.balanceValidate.pre	{to:_acc1,from:_newCreateAccount,value:10,gasPrice:10000000000,gas:21000}			
+	x	x	prepare the raw tx	PairKey-raw|TXTC01-1-7	helper.prepareRawTx	{}			
+	x		send some value(1000) from pairKey account	PairKey-raw|TXTC01-1-8	requestMethod.eth_sendRawTransaction	[_rawTx.rawTransaction]			
+	x		validate the transaction result	PairKey-raw|TXTC01-1-9	validationFunction.balanceValidate.post				
+PairKey transactions RK-29-1	x								
+	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-2-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+	x		validate the unlock account	PairKey-raw|TXTC01-2-1	validFormat	[equal,true]			
+	x		create a pairkey account	PairKey-raw|TXTC01-2-2	helper.createPKAccount	{}			
+	x		save the balance of two accounts and sending value(2e16) without gasPrice	PairKey-raw|TXTC01-2-3	validationFunction.balanceValidate.pre	{from:_acc1,to:_newCreateAccount,value:20000000000000000}			
+	x	x	send some value(2e16) to pairkey account 	PairKey-raw|TXTC01-2-4	requestMethod.eth_sendTransaction	[{}]			
+	x		validate the transaction result	PairKey-raw|TXTC01-2-5	validationFunction.balanceValidate.post				
+	x		save the balance of two accounts and sending value(10) without gasPrice	PairKey-raw|TXTC01-2-6	validationFunction.balanceValidate.pre	{to:_acc1,from:_newCreateAccount,value:10,gasPrice:10000000000,gas:21000}			
+	x	x	prepare the raw tx	PairKey-raw|TXTC01-2-7	helper.prepareRawTx	{}			
+	x		send some value(1000) from pairKey account	PairKey-raw|TXTC01-2-8	requestMethod.eth_sendRawTransaction	[_rawTx.rawTransaction]			
+	x		validate the transaction result	PairKey-raw|TXTC01-2-9	validationFunction.balanceValidate.post				
+PairKey transactions RK-29-2	x								
+	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-3-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate the unlock account	PairKey-raw|TXTC01-3-1	validFormat	[equal,true]			
+	x		create a pairkey account	PairKey-raw|TXTC01-3-2	helper.createPKAccount	{}			
+	x		save the balance of two accounts and sending value(2e16) without gasPrice	PairKey-raw|TXTC01-3-3	validationFunction.balanceValidate.pre	{from:_acc1,to:_newCreateAccount,value:20000000000000000}			
+	x	x	send some value(2e16) to pairkey account 	PairKey-raw|TXTC01-3-4	requestMethod.eth_sendTransaction	[{}]			
+	x		validate the transaction result	PairKey-raw|TXTC01-3-5	validationFunction.balanceValidate.post				
+	x		save the balance of two accounts and sending value(10) without gasPrice	PairKey-raw|TXTC01-3-6	validationFunction.balanceValidate.pre	{to:_acc1,from:_newCreateAccount,value:10,gasPrice:10000000000,gas:21000}			
+	x	x	prepare the raw tx	PairKey-raw|TXTC01-3-7	helper.prepareRawTx	{}			
+	x		send some value(1000) from pairKey account	PairKey-raw|TXTC01-3-8	requestMethod.eth_sendRawTransaction	[_rawTx.rawTransaction]			
+	x		validate the transaction result	PairKey-raw|TXTC01-3-9	validationFunction.balanceValidate.post				
+									
+rk-55-compiling contracts failsoccationally	x								
+	x		Compile solidity contract 1	rk-55-1	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-2	validFormat	[contract]			
+	x		Compile solidity contract 2	rk-55-3	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-4	validFormat	[contract]			
+	x		Compile solidity contract 3	rk-55-5	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-6	validFormat	[contract]			
+	x		Compile solidity contract 4	rk-55-7	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-8	validFormat	[contract]			
+	x		Compile solidity contract 5	rk-55-9	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-10	validFormat	[contract]			
+	x		Compile solidity contract 6	rk-55-11	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-12	validFormat	[contract]			
+	x		Compile solidity contract 7	rk-55-13	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-14	validFormat	[contract]			
+	x		Compile solidity contract 8	rk-55-15	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-16	validFormat	[contract]			
+	x		Compile solidity contract 9	rk-55-17	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-18	validFormat	[contract]			
+	x		Compile solidity contract 10	rk-55-19	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-20	validFormat	[contract]			
+	x		Compile solidity contract 11	rk-55-21	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-22	validFormat	[contract]			
+	x		Compile solidity contract 12	rk-55-23	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-24	validFormat	[contract]			
+	x		Compile solidity contract 13	rk-55-25	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-26	validFormat	[contract]			
+	x		Compile solidity contract 14	rk-55-27	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-28	validFormat	[contract]			
+	x		Compile solidity contract 15	rk-55-29	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-30	validFormat	[contract]			
+	x		Compile solidity contract 16	rk-55-31	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-32	validFormat	[contract]			
+	x		Compile solidity contract 17	rk-55-33	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-34	validFormat	[contract]			
+	x		Compile solidity contract 18	rk-55-35	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-36	validFormat	[contract]			
+	x		Compile solidity contract 19	rk-55-37	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-38	validFormat	[contract]			
+	x		Compile solidity contract 20	rk-55-39	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-40	validFormat	[contract]			
+	x		Compile solidity contract 21	rk-55-41	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-42	validFormat	[contract]			
+	x		Compile solidity contract 22	rk-55-43	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-44	validFormat	[contract]			
+	x		Compile solidity contract 23	rk-55-45	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-46	validFormat	[contract]			
+	x		Compile solidity contract 24	rk-55-47	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-48	validFormat	[contract]			
+	x		Compile solidity contract 25	rk-55-49	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-50	validFormat	[contract]			
+	x		Compile solidity contract 26	rk-55-51	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-52	validFormat	[contract]			
+	x		Compile solidity contract 27	rk-55-53	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-54	validFormat	[contract]			
+	x		Compile solidity contract 28	rk-55-55	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-56	validFormat	[contract]			
+	x		Compile solidity contract 29	rk-55-57	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-58	validFormat	[contract]			
+	x		Compile solidity contract 30	rk-55-59	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-60	validFormat	[contract]			
+	x		Compile solidity contract 32	rk-55-61	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-62	validFormat	[contract]			
+	x		Compile solidity contract 33	rk-55-63	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-64	validFormat	[contract]			
+	x		Compile solidity contract 34	rk-55-65	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-66	validFormat	[contract]			
+	x		Compile solidity contract 35	rk-55-67	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-68	validFormat	[contract]			
+	x		Compile solidity contract 36	rk-55-69	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-70	validFormat	[contract]			
+	x		Compile solidity contract 37	rk-55-71	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-72	validFormat	[contract]			
+	x		Compile solidity contract 38	rk-55-73	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-74	validFormat	[contract]			
+	x		Compile solidity contract 39	rk-55-75	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-76	validFormat	[contract]			
+	x		Compile solidity contract 40	rk-55-77	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-78	validFormat	[contract]			
+	x		Compile solidity contract 41	rk-55-79	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-80	validFormat	[contract]			
+	x		Compile solidity contract 42	rk-55-81	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-82	validFormat	[contract]			
+	x		Compile solidity contract 43	rk-55-83	requestMethod.eth_compileSolidity	Token.sol			
+	x		validate compile result 	rk-55-84	validFormat	[contract]			
+	x		Compile solidity contract 44	rk-55-85	requestMethod.eth_compileSolidity	Token_2.sol			
+	x		validate compile result 	rk-55-86	validFormat	[contract]			
+	x		Compile solidity contract 45	rk-55-87	requestMethod.eth_compileSolidity	Counter.sol			
+	x		validate compile result 	rk-55-88	validFormat	[contract]			
+	x		Compile solidity contract 46	rk-55-89	requestMethod.eth_compileSolidity	personnel.sol			
+	x		validate compile result 	rk-55-90	validFormat	[contract]			
+	x		Compile solidity contract 47	rk-55-91	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-92	validFormat	[contract]			
+	x		Compile solidity contract 48	rk-55-93	requestMethod.eth_compileSolidity	Accounts.sol			
+	x		validate compile result 	rk-55-94	validFormat	[contract]			
+	x		Compile solidity contract 49	rk-55-95	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 50	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 51	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 52	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		matches,TRANSACTION_HASH	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 53	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 54	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 55	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 56	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 57	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 58	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 59	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 60	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 61	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 62	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+	x		Compile solidity contract 63	rk-55	requestMethod.eth_compileSolidity	DAO.sol			
+	x		validate compile result 	rk-55-96	validFormat	[contract]			
+									
+									
+Bug-invalid Energy causes nonce gap	x								
+	x		use personal send transaction send an invalid transaction	Bug-invalidErgNcGp-1	requestMethod.personal_sendTransaction	[{to:_acc1,from:_acc2,value:100,gas:0x012},password]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c,acc2=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		validate response	Bug-invalidErgNcGp-2	validFormat	[errorCode,-32010]			
+	x		use personal send transaction send a valid transaction	Bug-invalidErgNcGp-3	requestMethod.personal_sendTransaction	[{to:_acc1,from:_acc2,value:100,gas:0x6000},password]		result=>txHash	
+	x		cheked if the tx is mined	Bug-invalidErgNcGp-4	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate response	Bug-invalidErgNcGp-5	validFormat	[matches,VALID_TX_RECEIPT]			
+	x		unlock sender’s account to send txs	Bug-invalidErgNcGp-6	requestMethod.personal_unlockAccount	[_acc2,password,100]			
+	x		use eth_sendTransaction send an invalid transaction	Bug-invalidErgNcGp-7	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,gas:0x010}]			
+	x		validate response	Bug-invalidErgNcGp-8	validFormat	[errorCode,-32010]			
+	x		use eth_sendTransaction send a valid transaction	Bug-invalidErgNcGp-9	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,gas:0x6000}]		result=>txHash	
+	x		cheked if the tx is mined	Bug-invalidErgNcGp-10	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate response	Bug-invalidErgNcGp-11	validFormat	[matches,VALID_TX_RECEIPT]			
+									
+									
+RK121 – aiwa send transaction with data = “”	x								
+	x		estimate a transaction with data = “”	RK121-1	requestMethod.eth_estimateGas	[{from:_acc1,to:_acc2,value:1,data:_emptyString}]			acc1=0xa0944db1961d8e766b5d14ce6bd9246428b6ab50c52b0613f788fbc267ff96b0,acc2=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		validate response	RK121-2	validFormat	[matches,HEX]			
+	x		unlock account	RK121-3	requestMethod.personal_unlockAccount	[_acc1,password,123]			
+	x		send a transaction with data = “”	RK121-4	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString}]			
+	x		validate response	RK121-5	validFormat	[matches,TRANSACTION_HASH]			
+	x		personal send a transaction with data =”	RK121-6	requestMethod.personal_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString},password]			
+	x		validate response	RK121-7	validFormat	[matches,TRANSACTION_HASH]		result=>txHash	
+	x		post step to make sure the tx is mined	RK121-7-post	requestMethod.eth_getTransactionReceipt	[_txHash]			

@@ -21,13 +21,13 @@ FT-TC00-logFilter procondition preparision	x
 	x	s	deploy a contract at one address	FT-TC00-4	requestMethod.eth_sendTransaction	[{from:_acc1}]		result=>txHash1				
 	x		prepare contract deployment	FT-TC00-5	helper.newContract	[Counter]						
 	x	s	deploy a contract at one address	FT-TC00-6	requestMethod.eth_sendTransaction	[{from:_acc1}]		result=>txHash2				
-	x		get contractAddress for first contract	FT-TC00-7	requestMethod.eth_getTransactionReceipt							
-	x		get contractAddress for sec contract	FT-TC00-8	requestMethod.eth_getTransactionReceipt							
+	x		get contractAddress for first contract	FT-TC00-7	requestMethod.eth_getTransactionReceipt	[_txHash1]						
+	x		get contractAddress for sec contract	FT-TC00-8	requestMethod.eth_getTransactionReceipt	[_txHash2]						
 FT-TC3: log filter catch the log for a certain contract addr - requested FT-TC00		x										
-												
-												
-												
-												
+			get blockNumber		requestMethod.eth_blockNumber	[]		result=>blockNumber				
+					helper.prepareContractCall							
+		x			requestMethod.eth_sendTransaction							
+					helper.prepareContractCall							
 												
 												
 												

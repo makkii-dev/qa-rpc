@@ -252,8 +252,8 @@ function getEvent(funcABI){
 }
 
 // assume params are primary element
-var getContractFuncData = (funcABI, params)=>{
-
+var getContractFuncData = (funcABI, params,isConvert)=>{
+  isConvert = isConvert==undefined?true:isConvert;
 	if(funcABI==null  || funcABI == undefined || funcABI == {}){
 		return "0x"+ params.join("");
 	}
@@ -269,12 +269,12 @@ var getContractFuncData = (funcABI, params)=>{
 	let rest = '';
 	console.log(params);
 	params.forEach((param,index)=>{
-		if(funcABI.inputs[index].type=='string'){
+		if(funcABI.inputs[index].type=='string' && isConvert){
 			let offset = (funcABI.inputs[index].type,params.length -1-index) * 32 + rest.length;
 			funcSign += encoder("int",offset);
 			rest += encoder(funcABI.inputs[index].type,param)
 		}else{
-			funcSign += encoder(funcABI.inputs[index].type,param);
+			funcSign += encoder(funcABI.inputs[index].type,param,isConvert);
 		}
 
 	});
@@ -318,9 +318,15 @@ var getEvtData = (funcABI, params)=>{
 }
 
 
-var encoder = (type, param)=>{
+var encoder = (type, param,isConvert)=>{
 
 	console.log(type+":"+(typeof param=='object')?JSON.stringify(param):param);
+  isConvert = isConvert==undefined?true:isConvert;
+
+  if(!isConvert){
+    return /^0x/.test(param)?param.substring(2):param;
+  }
+
 	switch(type){
 		case "int8":
 		case "uint8":
@@ -341,12 +347,15 @@ var encoder = (type, param)=>{
 				])
 			return resb.toString("hex");
 		case "bytes32":
-			// let res = Buffer.concat([
-			// 		toBuffer(toUtf8Bytes(param)),
-			// 		Buffer.alloc(16 * Math.ceil(param.length/16) - param.length)
-			// 	])
-			// return res.toString("hex");
-			return /^0x/.test(param)?param.substring(2):param;
+			let res = Buffer.concat([
+
+
+          toBuffer(toUtf8Bytes(param)),
+          Buffer.alloc(32 * Math.ceil(param.length/32) - param.length)
+				])
+			return res.toString("hex");
+
+			 //
 
 	}
 
@@ -505,7 +514,8 @@ var Utils={
 	waitBlockUntil:waitBlockUntil,
 	getEvent:getEvent,
 	getEncodeTx:getEncodeTx,
-	getEvtData:getEvtData
+	getEvtData:getEvtData,
+  encoder:encoder
 }
 
 module.exports = Utils;

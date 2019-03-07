@@ -2,48 +2,59 @@ pipeline {
     agent any
   
     triggers {
-        cron('H H H H H')
         pollSCM('H H H H H')
-        upstream(upstreamProjects:"aion_rust", threshold: hudson.model.Result.SUCCESS)
     }
 
     stages {
         stage('Build') {
             steps {
+                echo 'test node'
+                sh 'node --version'
                 echo 'set up dependencies..'
                 sh 'npm install -f'
             }
         }
 
         stage('Test') {
+            when{
+                expression {return params.FORM == "normal"}
+            }
             steps {
-                echo "clean db"
-                sh 'rm -rf $HOME/.aion/chains'
-                echo "start aionminer"
-                // start aionminer
-                sh 'nohup $HOME/Downloads/aionminer -l 172.105.202.95:8008 -u 0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137 -d 0 -t 1 &'
-                echo "start aion_rust"
-                sh 'nohup ${AION_RUST_DIR}/target/release/aion --config=${TESTNET_CONFIG} --chain=${TESTNET_JSON} &'
-                sh 'sleep 15'
-                echo 'Testing..'
-                sh 'npm test --detectOpenHandles'
+               sh 'files=(smoke-test,AMO,TXTC,FTTC,bugs,precompile)'
+               sh 'types=(http,websocket)'
 
+               sh './ci_test_flexiable.sh $files $types true'
+            }
+        }
+        stage("Test Sync"){
+            when{
+                expression {return params.FORM == "sync"}
+            }
+            steps{
+                sh 'files=(syncing_testcases)'
+                sh 'types=(http,websocket)'
+
+                sh './ci_test_flexiable.sh $files $types false'
             }
         }
 
     }
      post{
+            always {
+                archiveArtifacts artifacts: 'testlog/*.txt,testReport/*.xml', fringerprint:true
+                junit 'testReport/*.xml'
+            }
 
             success{
                 slackSend channel: '@Miao',
                           color: 'good',
-                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. \nGrab the generated builds at ${env.BUILD_URL}\nCommit: ${GIT_COMMIT}"
+                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. \nGrab the generated builds at ${env.BUILD_URL}"
             }
             failure {
                 //cleanWs()
                 slackSend channel: '@Miao',
                 color: 'danger',
-                message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}.\nCommit: ${GIT_COMMIT}"
+                message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}."
             }
         }
 }

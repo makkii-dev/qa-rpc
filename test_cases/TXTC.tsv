@@ -116,6 +116,7 @@ TXTC05-1: nonce - two transactions with same nonce in pending	x
 	x		validate tx response -failed	TXTC05-2pending-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
 	x		send a transaction with nonce = nextnonce && gasPrice = 100000000010	TXTC05-3pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:100000000010}]								
 	x		validate tx response -failed	TXTC05-3pending-vali	validFormat	[error,NONCE_CONFLICT_ERROR]								
-	x		send a transaction with nonce = nextnonce && gasPrice = 112500000000	TXTC05-4pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:112500000000}]								
+	x		send a transaction with nonce = nextnonce && gasPrice = 112500000000	TXTC05-4pending	requestMethod.eth_sendTransaction	[{to:_acc1,from:_acc2,value:100,nonce:_nonce,gasPrice:112500000000}]		result=>txhash						
 	x		validate tx response -success	TXTC05-4pending-vali	validFormat	[matches,TRANSACTION_HASH]								
+	x		post wait for transaction complete	TXTC05-pending-post	requestMethod.eth_getTransactionReceipt	[_txhash]								
 	x		lock account	TXTC05-pending	requestMethod.personal_lockAccount	[_acc2,password]								

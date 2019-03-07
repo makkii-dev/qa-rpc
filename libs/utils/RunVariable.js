@@ -102,6 +102,9 @@ module.exports = (logger)=>{
 				this.signedMsg = resp.result;
 				break;
 
+			case "eth_call":
+				this.isCall = true;
+				break;
 
 			///stratum rpc variables:
 			case "getblocktemplate":
@@ -131,10 +134,11 @@ module.exports = (logger)=>{
 			let sourceName = vals[0].split(".");
 			let targetName = vals[1].split(".");
 			let sourceValue  = resp;
+			console.log(sourceValue);
 			for(let depth = 0; depth < sourceName.length; depth++){
 				let name = sourceName[depth];
 				console.log(name);
-				if(sourceValue[name]) sourceValue = sourceValue[name];
+				if(sourceValue[name]!== undefined) sourceValue = sourceValue[name];
 				else {
 					self.logger.error("fail to find field in response : "+ vals[0]);
 					throw new Error("fail to store variables : "+ instructions + JSON.stringify(resp));

@@ -3,6 +3,10 @@ var chai = require('chai');
 var Helper = require('./helper3');
 var BN = require('bn.js');
 
+var aionLib = require("../packages/aion-lib/src/index.js");
+var blake2b256 = aionLib.crypto.blake2b256;
+var toBuffer = aionLib.formats.toBuffer;
+
 
 
 var Validation = function(provider,logger){
@@ -176,37 +180,85 @@ Validation.prototype.minerStats = async (testRow,rt_var,resolution)=>{
 	}
 }
 
-Validation.prototype.checkRunTimeVarExist = async (testRow,rt_var,resolution)=>{
-	let params = testRow.params;
-	// params.forEach((key,index)=>{
-	// 	if(typeof key !== "string") 
-	// })
+// Validation.prototype.checkRunTimeVarExist = async (testRow,rt_var,resolution)=>{
+// 	let params = testRow.params;
+// 	// params.forEach((key,index)=>{
+// 	// 	if(typeof key !== "string")
+// 	// })
+//
+// }
 
+
+
+Validation.prototype.validateBlake2b = {};
+Validation.prototype.validateBlake2b.pre = async(testRow,rt_var,resolution)=>{
+//  rt_var.vals.callMethod = obj.testRow.method == "eth_call"? true: false; // "true" called locally; "false" call in another contract
+	console.log(testRow.params);
+	rt_var.nextTxObj = {};
+	rt_var.nextTxObj.data = testRow.params.data;
+	if(testRow.params.type !==undefined){
+		console.log()
+		testRow.params.data = utils.encoder(testRow.params.type,testRow.params.data)
+	}
+	console.log(testRow.params.data);
+	rt_var.expectOutput = aionLib.formats.bufferToHex(blake2b256(toBuffer(testRow.params.data)));
+	console.log(rt_var.expectOutput);
+	console.log(rt_var.nextTxObj);
+
+
+	return Promise.resolve(resolution);
+}
+
+Validation.prototype.validateBlake2b.post = async(testRow,rt_var,resolution)=>{
+	try{
+		if(rt_var.isCall){
+			console.log(resolution.result +" expect to be "+ rt_var.expectOutput);
+			chai.expect(resolution.result.substring(2)).to.equal(rt_var.expectOutput);
+		}else{
+			var receipt = await utils.getTxReceipt(resolution.result,this.provider);
+			console.log(receipt);
+			let index = testRow.params[0]||0;
+			let offset = testRow.params[1]||2;
+			chai.expect(receipt.result.logs[index].data.substring(offset)).to.equal(rt_var.expectOutput);
+		}
+		return Promise.resolve(resolution);
+	}catch(e){
+		return Promise.reject(e);
+	}
 }
 
 
-//
-// Validation.prototype.validateBlake2b = {};
-// Validation.prototype.validateBlake2b.pre = async(obj)=>{
-// 	obj.VERIFY_VARIABLES.vals.callMethod = obj.testRow.method == "eth_call"? true: false; // "true" called locally; "false" call in another contract
-// 	console.log(obj.testRow.params[0].data.substring(10));
-// 	obj.VERIFY_VARIABLES.vals.expectOutput = require("../packages/aion-lib/src/index.js").crypto.blake2b256(Buffer.from(obj.testRow.params[0].data.substring(2)));
-// 	return Promise.resolve(obj);
-// }
-//
-// Validation.prototype.validateBlake2b.post = async(obj)=>{
-// 	try{
-// 		if(obj.VERIFY_VARIABLES.vals.callMethod){
-// 			console.log(obj.result +" expect to be "+ obj.VERIFY_VARIABLES.vals.expectOutput);
-// 			chai.expect(obj.result).to.equal(obj.VERIFY_VARIABLES.vals.expectOutput);
-// 		}else{
-// 			var receipt = await utils.getTxReceipt(obj.result,this.provider);
-// 			console.log(receipt);
-// 		}
-// 	}catch(e){
-// 		return Promise.reject(e);
-// 	}
-// }
-//
+
+Validation.prototype.validateSignature={};
+Validation.prototype.validateSignature.pre= async (testRow,rt_var,resolution)=>{
+	let obj = Object.create(testRow.params[0]);
+	return utils.getRawTx(this.provider,obj,rt_var.accounts[testRow.params[0].from]).then((res)=>{
+		rt_var.hash = res.raw.messageHash.substring(2);
+		rt_var.sign1 =rt_var.accounts[testRow.params[0].from].signature.substring(2,66);
+		rt_var.sign2 = rt_var.accounts[testRow.params[0].from].signature.substring(66);
+		rt_var.publicKey = rt_var.accounts[testRow.params[0].from].publicKey.substring(2);
+		return Promise.resolve();
+	});
+}
+
+Validation.prototype.validateSignature.post = async(testRow,rt_var,resolution)=>{
+	try{
+		if(rt_var.isCall){
+			console.log(resolution.result +" expect to be "+ rt_var.publicKey);
+			chai.expect(resolution.result.substring(2)).to.equal(rt_var.publicKey);
+		}else{
+			var receipt = await utils.getTxReceipt(resolution.result,this.provider);
+			console.log(receipt);
+			let index = testRow.params[0]||0;
+			let isValid = testRow.params[1]||true;
+			rt_var.publicKey = isValid? rt_var.publicKey:"0000000000000000000000000000000000000000000000000000000000000000";
+			chai.expect(receipt.result.logs[index].data.substring(2)).to.equal(rt_var.publicKey);
+		}
+		return Promise.resolve(resolution);
+	}catch(e){
+		return Promise.reject(e);
+	}
+};
+
 
 module.exports = Validation;
