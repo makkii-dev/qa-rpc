@@ -1,0 +1,235 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+smoke eth_accounts	x								
+	x		get all the accounts in current kernel	Smoke-1	requestMethod.eth_accounts	[]			
+	x		validate response	smoke-1-vali	validFormat	[matches,ARRAY]			
+									
+smoke eth_blockNumber	x								
+	x		get the highest block number	Smoke-2	requestMethod.eth_blockNumber	[]			
+	x		validate response	Smoke-2-vali	validFormat	[match,NUMBER]			
+									
+Smoke eth_coinbase	x								
+	x		get the coin base	Smoke-4	requestMethod.eth_coinbase	[]			
+	x		validate response	Smoke-4-vali	validFormat	[match,ACCOUNT_FORMAT]			
+									
+smoke eth_gasPrice	x								
+	x		get the gas price	Smoke-7	requestMethod.eth_gasPrice	[]			
+	x		validate response	Smoke-7-vali	validFormat	[match,HEX]			
+									
+smoke eth_getBlockTransactionCountByNumber	x	x							
+	x		get block tx counts by number -latest	Smoke-12-latest	requestMethod.eth_getBlockTransactionCountByNumber	[latest]			
+	x		validate response latest block	Smoke-12-latest-vali	validFormat	[matches,HEX]			
+	x		get block tx counts by number -earliest	Smoke-12-earliest	requestMethod.eth_getBlockTransactionCountByNumber	[earliest]			
+	x		validate response earliest block	Smoke-12-earliest-vali	validFormat	[matches,HEX]			
+	x		get block tx counts by number -pending	Smoke-12-pending	requestMethod.eth_getBlockTransactionCountByNumber	[pending]			
+	x		validate response pending block	Smoke-12-pending-vali	validFormat	[matches,HEX]			
+	x		get block tx counts by number -0x0	Smoke-12-number-0x0	requestMethod.eth_getBlockTransactionCountByNumber	[0x0]			
+	x		validate response 0x0 block	Smoke-12-number-vali-0x0	validFormat	[matches,HEX]			
+	x		get block tx counts by number – miss params	Smoke-12-miss-params	requestMethod.eth_getBlockTransactionCountByNumber	[]			
+	x		validate response missing params	Smoke-12-miss-params-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+eth_getBlockTransactionCountByHash	x	x							
+	x		get block tx counts by hash	Smoke-11	requestMethod.eth_getBlockTransactionCountByHash	[_blockHash]			
+	x		validate response by hash	Smoke-11-vali	validFormat	[matches,HEX]			
+	x		get block tx counts by hash – miss param	Smoke-11-miss-param	requestMethod.eth_getBlockTransactionCountByHash	[]			
+	x		validate response by hash missing params	Smoke-11-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+									
+Smoke eth_getCompilers	x								
+	x		get support compiler names	Smoke-14	requestMethod.eth_getCompilers	[]			
+	x		validate response	Smoke-14-vali	validFormat	[contains,solidity]			
+									
+Smoke eth_mining	x								
+	x		check if current client is mining	Smoke-23	requestMethod.eth_mining	[]			
+	x		validate response	Smoke-23-vali	validFormat	[matches,BOOLEAN]			
+									
+Smoke eth_protocolVersion	x								
+	x		get Protocol version	Smoke-27	requestMethod.eth_protocolVersion	[]			
+	x		validate response	Smoke-27-vali	validFormat	[matches,HEX]			
+									
+smoke eth_syncing	x								
+	x		check if the current client is syncing	Smoke-34	requestMethod.eth_syncing	[]			
+	x		validate response	smoke-34-vali	validFormat	[matches,BOOLEAN]			
+									
+									
+smoke eth_sign 	x								
+	x		Pre-step: Rpc request to unlock account to sign	smoke-30-pre	requestMethod.personal_unlockAccount	[_acc1,password,60]			acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		sign a message	Smoke-30	requestMethod.eth_sign	[_acc1,0x123456]			
+	x		validate response for sign a message	Smoke-30-vali	validFormat	[matches,BINARY]			
+	x		sign a message with invalid password	Smoke-30-locked-account	requestMethod.eth_sign	[_acc2,0x123456]			
+	x		validate response for sign a message with invalid password	Smoke-30-locked-account-vali	validFormat	[error,LOCKED_ERROR]			
+	x		sign a message missing param	Smoke-30-miss-param	requestMethod.eth_sign	[_acc1]			
+	x		validate response for sign a message	Smoke-30-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+	x		sign an invalid encoded message	Smoke-30-invalid-msg	requestMethod.eth_sign	[_acc1,0x12345]			
+	x		validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+									
+smoke eth_signTransaction and eth_sendRawTransaction	x								
+	x		unlock account to sign a tx using eth_sign	Smoke-pre-43	requestMethod.personal_unlockAccount	[_acc1,password,240]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		sign a transaction using eth_signTransaction	Smoke-31	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:100}]		result.raw=>txRaw,result.tx.hash=>computeTxHash,result.tx=>tx	
+	x		validate response-eth_signTx	Smoke-31-vali	validFormat	[matches,VALID_SIGN_TRANSACTION]			
+	x		Pre-validation: restore the balance of the accounts before operation	Smoke-31-28-pre	validationFunction.balanceValidate.pre	_tx			
+	x		send the signed transaction to avoid nonce gap issue	Smoke-28-frompsigntx	requestMethod.eth_sendRawTransaction	[_txRaw]			
+	x		validate response or eth_sendRawTransaction	Smoke-28-frompsigntx-vali	validFormat	[equal,_computeTxHash]			
+	x		post-validation: compare the balance of the accounts after the operation	Smoke-42-28-post	validationFunction.balanceValidate.post				
+									
+smoke net module_solo node	x								
+	x		check if net is listening to its peers	Smoke-44-solo	requestMethod.net_listening	[]			
+	x		validate response for net_listening	Smoke-44-solo-vali	validFormat	[equal,true]			
+	x		check the number of peers	Smoke-45-solo	requestMethod.net_peerCount	[]			
+	x		validate response for net_peerCount	Smoke-45-solo-vali	validFormat	[equal,0]			
+	x		check net version	Smoke-46	requestMethod.net_version	[]			
+	x		validate response for net_version	Smoke-46-vali	validFormat	[match,STRING]			
+									
+smoke web3_*	x								
+	x		check web client version	Smoke-49	requestMethod.web3_clientVersion	[]			
+	x		validate response for web3_clientVersion	Smoke-49-vali	validFormat	[equal,Aion(R)/v0.1.1.1f9419f/x86_64-linux-gnu/rustc-1.28.0]			
+	x		check web_	rpc-web3_sha3	requestMethod.web3_sha3	[0x68656c6c6f20776f726c64]			
+	x		validate response for web3_sha3	rpc-web3_sha3-vali	validFormat	[equal,0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad]			
+									
+smoke contract related methods	x								
+	x		compile contract	Smoke-5	requestMethod.eth_compileSolidity	recursive.sol			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		validate response for compile contract	Smoke-5-vali	validFormat	[contract]			
+	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
+	x	x	estimate contract deployment	Smoke-6	requestMethod.eth_estimateGas	[{from:_acc1}]			
+	x		validate response of contract deployment estimation	Smoke-6-vali	validFormat	[match,HEX]			
+	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
+	x		unlock account to send contract	Pre-0	requestMethod.personal_unlockAccount	[_acc1,password,240]			
+	x		validate the account is unlocked	Pre-0-vali	validFormat	[equal,true]			
+	x	x	deploy the contract	Smoke-40-deploy	requestMethod.eth_sendTransaction	[{from:_acc1,gas:5000000}]			
+	x		get contract receipt and restore the startBlockNumber	Smoke-40-21	requestMethod.eth_getTransactionReceipt	[_txHash]		result.blockNumber=>startBlockNumber	
+	x		Validate contract receipt and restore the startBlockNumber	Smoke-40-21-vali	validFormat	[match,VALID_TX_RECEIPT]			
+	x		get code on deployed address	Smoke-13	requestMethod.eth_getCode	[_contractAddress]			
+	x		validate getCode result equal to the deployment code	Smoke-13-vali	validFormat	[deployedCode,_contract.Recursive.code]			
+	x		helper prepare contract function calls	helper	helper.prepareContractCall	[f,_contractAddress,3]			
+	x	x	send a method of a contract	smoke-40-fun-call	requestMethod.eth_sendTransaction	[{from:_acc1,to:_contractAddress}]			
+	x		get contract function call method receipt	Smoke-40-21-func-call	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate log events in receipt	Smoke-40-21-func-call-vali	validationFunction.rptLogs	[3,[{data:[3],topics:Evt,logIndex:0x0},{data:[2],topics:Evt,logIndex:0x1},{data:[1],topics:Evt,logIndex:0x2}]]			
+	x		get logs-eth_getLogs	Smoke-17	requestMethod.eth_getLogs	[{fromBlock:_startBlockNumber}]			
+	x		validate log events #	Smoke-17-vali	validFormat	[length,3]			
+	x		helper prepare contract function calls	helper	helper.prepareContractCall	[addr]			
+	x	x	eth_call methods	Smoke-3	requestMethod.eth_call	[{to:_contractAddress}]			
+	x		validate response for eth_call	Smoke-30-vali	validFormat	[equal,_contractAddress]			
+	x		get Storage At	Smoke-18	requestMethod.eth_getStorageAt	[_contractAddress,0,latest]			
+	x		validate response for eth_getStorageAt	Smoke-18-vali	validFormat	[equal,0x0000000000000000000000000000000c]			
+									
+									
+smoke eth_getTransactionCount 	x								
+	x		create a new Account with password	Smoke-20-Pre-new account	requestMethod.personal_newAccount	[password]		result=>newAccount	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		unlock account to send tx	Smoke-20-prepare-coin-newAcc-unlock	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+	x		send some coins to new account for the rest steps	Smoke-20-prepare-coin-newAcc	requestMethod.eth_sendTransaction	[{to:_newAccount,from:_acc1,value:100000000000000000,gas:21000}]		result=>txHash	
+	x		wait for tx mined	Smoke-20-wait-accountGetMoney	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		get current blockNumber	Smoke-20-get-current blocknumber	requestMethod.eth_blockNumber	[]		result=>startBlock	
+	x		unlock the new Account	Smoke-20-Unlock-new	requestMethod.personal_unlockAccount	[_newAccount,password,120]			
+	x		send transaction using new account by eth_sendTransaction	Smoke-20-eth_sendtx	requestMethod.eth_sendTransaction	[{from:_newAccount,to:_acc1,value:10}]			
+									
+	x		send transaction using new account by personal_sendTransaction	Smoke-20-personal-sendtx	requestMethod.personal_sendTransaction	[{from:_newAccount,to:_acc1,value:10},password]			
+smoke eth_sendTransaction	x	x							
+	x		sign a transaction using eth_signTransaction	Smoke-20-presignedtx	requestMethod.eth_signTransaction	[{from:_newAccount,to:_acc1,value:0x10}]		result.raw=>rawTx	
+	x		send signed transaction	Smoke-20-sendsignedtx	requestMethod.eth_sendRawTransaction	[_rawTx]		result=>txHash	
+	x		get receipt	Smoke-20-wait-lasttx-mined	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		get tx count for the new account at current block #	Smoke-20-latest	requestMethod.eth_getTransactionCount	[_newAccount,latest]			
+	x		validate response for eth_txCount	Smoke-20-latest-vali	validFormat	[equal,0x3]			
+	x		get tx count for the new account at startBlock #	Smoke-20-startblock	requestMethod.eth_getTransactionCount	[_newAccount,_startBlock]			
+	x		validate response for eth_txCount at startBlock #	Smoke-20-startblock-vali	validFormat	[equal,0x0]			
+smoke eth_getTransactionCount – easlist, pending	x	x							
+	x		get tx count for the new account at startBlock #	Smoke-20-pending	requestMethod.eth_getTransactionCount	[_newAccount,pending]			
+	x		validate response for eth_txCount at startBlock #	Smoke-20-pending-vali	validFormat	[equal,0x3]			
+	x		get tx count for the new account at startBlock #	Smoke-20-earliest	requestMethod.eth_getTransactionCount	[_newAccount,earliest]			
+	x		validate response for eth_txCount at startBlock #	Smoke-20-earliest-vali	validFormat	[equal,0x0]			
+									
+smoke filter:eth_newBlockFilter	x								
+	x		create a new block filter	Smoke-24	requestMethod.eth_newBlockFilter	[]		result=>filterID	
+	x		validate response for eth_newBlockFilter	smoke-24-valid	validFormat	[match,HEX]			
+	x		get current blockNumber	Smoke-24-getStartBlocknumber	requestMethod.eth_blockNumber	[]		result=>startBlock	
+	x		wait for 1 minutes( 60 seconds )	Smoke-helper-delay-60sec	helper.delay	[60]			
+	x		get current blockNumber – after 1 min	Smoke-24-getEndBlocknumber	requestMethod.eth_blockNumber	[]		result=>endBlock	
+	x		Get block filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterChanges	[_filterID]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,_startBlock,_endBlock]			
+	x		uninstall the filter	Smoke-35	requestMethod.eth_uninstallFilter	[_filterID]			
+	x		validate response – eth_uninstallFiler	Smoke-35-vali	validFormat	[equal,true]			
+	x		wait for 1 minutes( 60 seconds )	Smoke-helper-delay-60sec	helper.delay	[60]			
+	x		Get uninstalled block filter changes by calling eth_getFilterChanges	Smoke-15-removed	requestMethod.eth_getFilterChanges	[_filterID]			
+	x		validate response for eth_filterChanges	Smoke-15-removed-vali	validFormat	[length,0]			
+									
+smoke filter:eth_newPendingTx	x								
+	x		create a newPendingTransactionFilter	Smoke-26	requestMethod.eth_newPendingTransactionFilter	[]		result=>filterID	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		validate response for eth_newPendingTransactionFilter	Smoke-26-vali	validFormat	[match,HEX]			
+	x		sign a tx 1	Smoke-26-personalsigntx1	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:1},password]		result.raw=>rawTx1	
+	x		sign a tx 2	Smoke-26-personalsigntx2	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>rawTx2	
+	x		sign a tx 3	Smoke-26-personalsigntx3	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>rawTx3	
+	x		send signed tx 3	Smoke-26-sendRaw3	requestMethod.eth_sendRawTransaction	[_rawTx3]			
+	x		send signed tx 2	Smoke-26-sendRaw2	requestMethod.eth_sendRawTransaction	[_rawTx2]			
+	x		send signed tx 1	Smoke-26-sendRaw1	requestMethod.eth_sendRawTransaction	[_rawTx1]			
+	x		Get pendingTX filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterChanges	[_filterID]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,3]			
+	x		uninstall the filter	Smoke-35	requestMethod.eth_uninstallFilter	[_filterID]			
+	x		validate response – eth_uninstallFiler	Smoke-35-vali	validFormat	[equal,true]			
+	x		sign a tx 1 – uninstalled pending tx filter	Smoke-26-personalsigntx1-removed	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:1},password]		result.raw=>rawTx1	
+	x		sign a tx 2 – uninstalled pending tx filter	Smoke-26-personalsigntx2-removed	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>rawTx2	
+	x		sign a tx 3 – uninstalled pending tx filter	Smoke-26-personalsigntx3-removed	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>rawTx3	
+	x		send signed tx 3	Smoke-26-sendRaw3-removed	requestMethod.eth_sendRawTransaction	[_rawTx3]			
+	x		send signed tx 2	Smoke-26-sendRaw2-removed	requestMethod.eth_sendRawTransaction	[_rawTx2]			
+	x		send signed tx 1	Smoke-26-sendRaw1-removed	requestMethod.eth_sendRawTransaction	[_rawTx1]			
+	x		Get uninstalled pendingTx filter changes by calling eth_getFilterChanges	Smoke-15-removed	requestMethod.eth_getFilterChanges	[_filterID]			
+	x		validate response for eth_filterChanges	Smoke-15-removed-vali	validFormat	[length,0]			
+									
+Smoke filter:eth_newFilter	x								
+	x		getCoinBase Account as the contract sender	Smoke-25-getCoinbase	requestMethod.eth_coinbase	[]		result=>sender	
+	x		get fromBlock by eth_getBlockNumber	Smoke-25-getBlockNumber	requestMethod.eth_blockNumber	[]		result=>fromBlock	
+	x		create a new filter	Smoke-25	requestMethod.eth_newFilter	[{fromBlock:_fromBlock,toBlock:latest}]		result=>filterID1	
+	x		validate response for eth_newFilter	Smoke-25-vali	validFormat	[match,HEX]			
+	x		compile contract	Smoke-25-compile	requestMethod.eth_compileSolidity	recursive.sol			
+	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
+	x		unlock account to send contract	Smoke-25-deploy-pre	requestMethod.personal_unlockAccount	[_sender,password,999]			
+	x	x	deploy the contract	Smoke-25-deploy	requestMethod.eth_sendTransaction	[{from:_sender,gas:5000000}]		result=>txHash	
+	x		get contract receipt	Smoke-40-21	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		helper prepare contract function calls	helper	helper.prepareContractCall	[f,_contractAddress,4]			
+	x	x	send a method of a contract	smoke-40-fun-call	requestMethod.eth_sendTransaction	[{from:_sender,to:_contractAddress,gas:2000000}]		result=>txHash	
+	x		get contract function call method receipt	Smoke-40-21-func-call	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		Get pendingTX filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterChanges	[_filterID1]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,4]			
+	x		Get pendingTX filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterLogs	[_filterID1]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,4]			
+	x		helper get topic signature	helper	helper.getEvent	Evt			
+	x	x	create  new filter with fromBlock, toBlock, topics, address	Smoke-25-full	requestMethod.eth_newFilter	[{fromBlock:_fromBlock,toBlock:latest,address:_contractAddress}]		result=>filterID2	
+	x		validate response for eth_newFilter	Smoke-25-full-vali	validFormat	[match,HEX]			
+	x		helper prepare contract function calls – f 2	helper	helper.prepareContractCall	[f,_contractAddress,2]			
+	x	x	send a method of a contract – f 2	smoke-40-fun-call	requestMethod.eth_sendTransaction	[{from:_sender,to:_contractAddress,gas:2000000}]		result=>txHash	
+	x		get contract function call method receipt	Smoke-40-21-func-call	requestMethod.eth_getTransactionReceipt	[_txHash]		result.blockNumber=>blockNumber	
+	x		getBlockNumber	Smoke_getBlockNumber	requestMethod.eth_getBlockByNumber	[_blockNumber,true]			
+	x		Get pendingTX filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterChanges	[_filterID1]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,2]			
+	x		Get pendingTX filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterLogs	[_filterID1]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,6]			
+	x		Get pendingTX filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterChanges	[_filterID2]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,6]			
+	x		Get pendingTX filter changes by calling eth_getFilterChanges	Smoke-15	requestMethod.eth_getFilterLogs	[_filterID2]			
+	x		validate response for eth_filterChanges	Smoke-15-vali	validFormat	[length,6]			
+	x		uninstall the filter	Smoke-35	requestMethod.eth_uninstallFilter	[_filterID1]			
+	x		validate response – eth_uninstallFiler	Smoke-35-vali	validFormat	[equal,true]			
+	x		uninstall the filter	Smoke-35	requestMethod.eth_uninstallFilter	[_filterID2]			
+	x		validate response – eth_uninstallFiler	Smoke-35-vali	validFormat	[equal,true]			
+									
+Smoke eth_getTransactionByBlockNumber/HashAndIndex	x								
+	x		Pre-step:unlock the account	Pre-x	requestMethod.personal_unlockAccount	[_acc1,password,123]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		Pre-step: send a transaction	Pre-0	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:123}]		result=>txHash	
+	x		Pre-step:wait for tx mined	Pre-1	requestMethod.eth_getTransactionReceipt	[_txHash]		result.blockNumber=>blockNumber,result.blockHash=>blockHash	
+	x		get the tx in the latest block index=0x1	smoke-blocknNumberIndex-latest-0x1	requestMethod.eth_getTransactionByBlockNumberAndIndex	[latest,0x0]			
+	x		validate response	smoke-blocknNumberIndex-latest-0x1-vali	validFormat	[matches,VALID_TX]			
+	x		get the tx in the latest block index=1	Smoke-blocknNumberIndex-latest-1	requestMethod.eth_getTransactionByBlockNumberAndIndex	[latest,0]			
+	x		validate response	Smoke-blocknNumberIndex-latest-1-vali	validFormat	[matches,VALID_TX]			
+	x		get the tx in the given # block index=0x1	smoke-blocknNumberIndex-#-0x1	requestMethod.eth_getTransactionByBlockNumberAndIndex	[_blockNumber,0x0]			
+	x		validate response	smoke-blocknNumberIndex-#-0x1-vali	validFormat	[matches,VALID_TX]			
+	x		get the tx in the given hash block index=0x1	Smoke-blocknHashIndex-0x1	requestMethod.eth_getTransactionByBlockHashAndIndex	[_blockHash,0x0]			
+	x		validate response	Smoke-blocknHashIndex-0x1-vali	validFormat	[matches,VALID_TX]			
+	x		get the tx in the given # block index=1	Smoke-blocknNumberIndex-#-1	requestMethod.eth_getTransactionByBlockNumberAndIndex	[_blockNumber,0]			
+	x		validate response	Smoke-blocknNumberIndex-#-1-vali	validFormat	[matches,VALID_TX]			
+	x		get the tx in the given hash block index=1	Smoke-blocknHashIndex-1	requestMethod.eth_getTransactionByBlockHashAndIndex	[_blockHash,0]			
+	x		validate response	Smoke-blocknHashIndex-1-vali	validFormat	[matches,VALID_TX]			
+									
+									
+Smoke eth_hashrate and eth_submitHashrate (rk-124 & rk-125)	x								
+	x		Smoke test for eth_submitHashrate	Smoke-eth_submitHashrate	requestMethod.eth_submitHashrate	[0x0000000000000000000000000000000000000000000000000000000000001010,0x0101010101010101010101010101010101010101010101010101010101010101]			
+	x		Smoke test for eth_submitHashrate	Smoke-eth_submitHashrate	requestMethod.eth_submitHashrate	[0x0000000000000000000000000000000000000000000000000000000000000101,0x0101010101010101010101010101010101010101010101010101010101010101]			
+	x		validate response for eth_submitHashrate	Smoke-eth_submitHashrate-vali	validFormat	[equal,true]			
+	x		get miner hashrate	Smoke-22	requestMethod.eth_hashrate	[]			
+	x		validate response	Smoke-22-vali	validFormat	[matches,STRING]			
+	x		get miner hashrate	Smoke-22	requestMethod.eth_hashrate	[]			
+	x		validate response	Smoke-22-vali	validFormat	[matches,STRING]			

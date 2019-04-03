@@ -1,0 +1,46 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+eth_getBalance									
+			eth_getBalance with only one param	rpc-input-eth_getBalance-1	requestMethod.eth_getBalance	[_testAccount]			testAccount=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+			validate the response	rpc-input-eth_getBalance-1-vali	validFormat	[matches,HEX]			
+			eth_getBalance with two params	rpc-input-eth_getBalance-2	requestMethod.eth_getBalance	[_testAccount,earliest]			
+			validate the response	rpc-input-eth_getBalance-2-vali	validFormat	[matches,HEX]			
+Precondition-deploy contract									
+			compile contract	Pre-1	requestMethod.eth_compileSolidity	resursive.sol			testAccount=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+			unlock account	Pre-2	requestMethod.personal_unlockAccount	[_testAccount,password,100]			
+			prepare data for deployment	Pre-3	helper.newContract	Resursive			
+		x	send contract deployment tx	Pre-4	requestMethod.eth_sendTransaction	[{from:_testAccount}]		result=>txHash	
+			get the contract address	Pre-5	requestMethod.eth_getTransactionReceipt	[_txHash]		result.blockHash=>blockHash,result.blockNumber=>blockNumber	
+eth_getBlockByNumber		x	 						
+			eth_getBlockByNumber with only one param – default value = false	rpc-input-eth_getBlockByNumber-1	requestMethod.eth_getBlockByNumber	[_blockNumber]			
+			validate the response	rpc-input-eth_getBlockByNumber-1-vali	validFormat	[matches,VALID_BLOCK_OBJECT]			
+			eth_getBlockByNumber with two params – true	rpc-input-eth_getBlockByNumber-2	requestMethod.eth_getBlockByNumber	[_blockNumber,true]			
+			validate the response	rpc-input-eth_getBlockByNumber-2-vali	validFormat	[matches,VALID_FULL_BLOCK_OBJECT]			
+			eth_getBlockByNumber with two params – false	rpc-input-eth_getBlockByNumber-3	requestMethod.eth_getBlockByNumber	[_blockNumber,false]			
+			validate the response	rpc-input-eth_getBlockByNumber-3-vali	validFormat	[matches,VALID_BLOCK_OBJECT]			
+eth_getBlockByHash		x							
+			eth_getBlockByHash with only one param – default value = false	rpc-input-eth_getBlockByHash-1	requestMethod.eth_getBlockByHash	[_blockHash]			
+			validate the response	rpc-input-eth_getBlockByHash-1-vali	validFormat	[matches,VALID_BLOCK_OBJECT]			
+			eth_getBlockByHash with two params – true	rpc-input-eth_getBlockByHash-2	requestMethod.eth_getBlockByHash	[_blockHash,true]			
+			validate the response	rpc-input-eth_getBlockByHash-2-vali	validFormat	[matches,VALID_FULL_BLOCK_OBJECT]			
+			eth_getBlockByHash with two params – false	rpc-input-eth_getBlockByHash-3	requestMethod.eth_getBlockByHash	[_blockHash,false]			
+			validate the response	rpc-input-eth_getBlockByHash-3-vali	validFormat	[matches,VALID_BLOCK_OBJECT]			
+eth_getCode		x							
+			eth_getCode with only two params – default value = latest	rpc-input-eth_getCode-1	requestMethod.eth_getCode	[_contractAddress,0x0]			
+			validate the response	rpc-input-eth_getCode-1-vali	validFormat	[matches,HEX]			
+			eth_getCode with three params – latest	rpc-input-eth_getCode-2	requestMethod.eth_getCode	[_contractAddress,0x0,latest]			
+			validate the response	rpc-input-eth_getCode-2-vali	validFormat	[matches,HEX]			
+			eth_getCode with three params – earliest	rpc-input-eth_getCode-3	requestMethod.eth_getCode	[_contractAddress,0x0.earliest]			
+			validate the response	rpc-input-eth_getCode-3-vali	validFormat	[matches,HEX]			
+eth_getTransactionCount		x							
+			eth_getTransactionCount with only one param – default value = latest	rpc-input-eth_getTransactionCount-1	requestMethod.eth_getTransactionCount	[_testAccount]			
+			validate the response	rpc-input-eth_getTransactionCount-1-vali	validFormat	[matches,HEX]			
+			eth_getTransactionCount with two params – latest	rpc-input-eth_getTransactionCount-2	requestMethod.eth_getTransactionCount	[_testAccount,latest]			
+			validate the response	rpc-input-eth_getTransactionCount-2-vali	validFormat	[matches,HEX]			
+			eth_getTransactionCount with two params – earliest	rpc-input-eth_getTransactionCount-3	requestMethod.eth_getTransactionCount	[_testAccount,earliest]			
+			validate the response	rpc-input-eth_getTransactionCount-3-vali	validFormat	[matches,HEX]			
+eth_call		x							
+			prepare the contract call data	rpc-input-eth_call-0	helper.prepareContractCall	[addr]			
+			eth_call with only one param	rpc-input-eth_call-1	requestMethod.eth_call	[{to:_contractAddress}]			
+			validate the response	rpc-input-eth_call-1-vali	validFormat	[matches,ADDRESS]			
+			eth_call with two params	rpc-input-eth_call-2	requestMethod.eth_call	[{to:_contractAddress},earliest]			
+			validate the response	rpc-input-eth_call-2-vali	validFormat	[matches,HEX]			
