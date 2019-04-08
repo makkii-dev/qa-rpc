@@ -6,148 +6,245 @@ var _ = chaiMatchPattern.getLodashModule();
 var utils = require("./utils2");
 
 
-_.isH160= /^0x[0-9a-f]{160}$/;
-_.isH256= /^0x[0-9a-f]{256}$/;
-_.isH64=/^0x[0-9a-f]{64}$/;
-_.isHEX=/^0x[0-9a-f]*$/;
-_.isJAVA_HEX = /^[0-9a-f]*$/
-_.isBINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2===0)}};
+
+var H160= /^0x[0-9a-f]{160}$/;
+var H256= /^0x[0-9a-f]{256}$/;
+var H64=/^0x[0-9a-f]{64}$/;
+var HEX=/^0x[0-9a-f]*$/;
+var JAVA_HEX = /^[0-9a-f]*$/
+var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2===0)}};
 
 
 
-_.iscode_format = _.isHEX;
-_.istransaction_format =_.isH64;
-_.isblockHash_format = _.isH64;
-_.isaccount_format = _.isH64;
-_.ispublic_key = _.isH64;
-_.isNULL_N_HEX = ()=>{
+var code_format = HEX;
+var transaction_format = H64;
+var blockHash_format =  H64;
+var account_format = H64;
+var public_key = H64;
+var NULL_N_HEX = ()=>{
 		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
 	}
-_.isNULL_N_INT = ()=>{return {test:(value)=>{return _.isNull(value) || _.isNumber(value);}}};
+var NULL_N_INT = ()=>{return {test:(value)=>{return _.isNull(value) || _.isNumber(value);}}};
+
+_.mixin({
+	isNull_N_Hex: function(elem){
+		return HEX.test(elem)|| _.isNull(elem);
+	},
+	isNull_N_Hex64: function(elem){
+		return /^0x[0-9a-f]{64}$/.test(elem) || _.isNull(elem);
+	},
+	isBinary: function(elem){
+		return /^0x[0-9a-f]*$/.test(elem) && val.length%2===0;
+	},
+	isAccountFormat: function(elem){
+		return /^0xa0[0-9a-f]{62}$/.test(elem);
+	}
+})
+
+
 
 const VALID_BLOCK_OBJECT={
-	difficulty:_.isHEX,
-	extraData:_.isHEX,
-	gasLimit:_.isHEX,
-	gasUsed:_.isHEX,
-	hash:_.isH160,
-	logsBloom:_.isHEX,
-	miner:_.isH160,
-	nonce:_.isNULL_N_HEX,
-	number:_.isNumber,
-	parentHash:_.isH160,
-	receiptsRoot:_.isH160,
-	size:_.isHEX,
-	solution:_.isNULL_N_HEX,
-	stateRoot:_.isH160,
-	timestamp:_.isHEX,
-	totalDifficulty:_.isHEX,
+	difficulty:HEX,
+	extraData:HEX,
+	gasLimit:HEX,
+	gasUsed:HEX,
+	nrgUsed:HEX,
+	nrgLimit:HEX,
+	hash:H64,
+	logsBloom:HEX,
+	miner:H64,
+	nonce:NULL_N_HEX,
+	number:HEX,
+	parentHash:H64,
+	receiptsRoot:H64,
+	size:HEX,
+	solution:NULL_N_HEX,
+	stateRoot:H64,
+	timestamp:HEX,
+	totalDifficulty:HEX,
 	transactions:_.isArray,
-	transactionsRoot:_.istransaction_format
+	transactionsRoot:transaction_format
 }
 
-const VALID_FULL_BLOCK_OBJECT =```
-		difficulty:_.isHEX,
-		extraData:_.isHEX,
-		gasLimit:_.isHEX,
-		gasUsed:_.isHEX,
-		hash:_.isH160,
-		logsBloom:_.isHEX,
-		miner:_.isH160,
-		nonce:_.isNULL_N_HEX,
-		number:_.isNumber,
-		parentHash:_.isH160,
-		receiptsRoot:_.isH160,
-		size:_.isHEX,
-		solution:_.isNULL_N_HEX,
-		stateRoot:_.isH160,
-		timestamp:_.isHEX,
-		totalDifficulty:_.isHEX,
+const VALID_FULL_MINED_BLOCK_OBJECT = `{
+		difficulty:/^0x[0-9a-f]*$/,
+		extraData:/^0x[0-9a-f]*$/,
+		gasLimit:/^0x[0-9a-f]*$/,
+		gasUsed:/^0x[0-9a-f]*$/,
+		nrgUsed:/^0x[0-9a-f]*$/,
+		nrgLimit:/^0x[0-9a-f]*$/,
+		hash:/^0x[0-9a-f]{64}$/,
+		logsBloom:/^0x[0-9a-f]*$/,
+		miner:/^0x[0-9a-f]{64}$/,
+		nonce:/^0x[0-9a-f]*$/,
+		number:/^0x[0-9a-f]*$/,
+		parentHash:/^0x[0-9a-f]{64}$/,
+		receiptsRoot:/^0x[0-9a-f]{64}$/,
+		size:/^0x[0-9a-f]*$/,
+		solution:_.isNull,
+		stateRoot:/^0x[0-9a-f]{160}$/,
+		timestamp:/^0x[0-9a-f]*$/,
+		totalDifficulty:/^0x[0-9a-f]*$/,
 		transactions:{
 			<=: {
-				nrgPrice:_.isHEX,
-				nrg:_.isHEX,
-				transactionIndex:_.isHEX,
-				nonce:_.isHEX,
-				input:_.isHEX,
-				blockNumber:_.isH64,
-				gas:_.isHEX,
-				gasPrice:_.isHEX,
-				from:_.isaccount_format,
-				to:_.isaccount_format,
-				value:_.isHEX,
-				hash:_.istransaction_format,
-				timestamp:_.isHEX
+				nrgPrice:/^0x[0-9a-f]*$/,
+				nrg:/^0x[0-9a-f]*$/,
+				transactionIndex:/^0x[0-9a-f]*$/,
+				nonce:/^0x[0-9a-f]*$/,
+				input:/^0x([0-9a-f]{2})*$/,
+				blockNumber:/^0x[0-9a-f]{64}$/,
+				gas:/^0x[0-9a-f]*$/,
+				gasPrice:/^0x[0-9a-f]*$/,
+				from:/^0x[0-9a-f]{64}$/,
+				to:/^0x[0-9a-f]{64}$/,
+				value:/^0x[0-9a-f]*$/,
+				hash:/^0x[0-9a-f]{64}$/,
+				timestamp:/^0x[0-9a-f]*$/
 			}
 		},
-		transactionsRoot:_.istransaction_format
-```
+		transactionsRoot:/^0x[0-9a-f]{64}$/
+}
+`
+const VALID_FULL_PENDING_BLOCK_OBJECT = `{
+		difficulty:/^0x[0-9a-f]*$/,
+		extraData:/^0x[0-9a-f]*$/,
+		gasLimit:/^0x[0-9a-f]*$/,
+		gasUsed:/^0x[0-9a-f]*$/,
+		nrgUsed:/^0x[0-9a-f]*$/,
+		nrgLimit:/^0x[0-9a-f]*$/,
+		hash:/^0x[0-9a-f]{64}$/,
+		logsBloom:/^0x[0-9a-f]*$/,
+		miner:_.isNull,
+		nonce:_.isNull,
+		number:/^0x[0-9a-f]*$/,
+		parentHash:/^0x[0-9a-f]{64}$/,
+		receiptsRoot:/^0x[0-9a-f]{64}$/,
+		size:/^0x[0-9a-f]*$/,
+		solution:/^0x[0-9a-f]*$/,
+		stateRoot:/^0x[0-9a-f]{160}$/,
+		timestamp:/^0x[0-9a-f]*$/,
+		totalDifficulty:/^0x[0-9a-f]*$/,
+		transactions:{
+			<=: {
+				nrgPrice:/^0x[0-9a-f]*$/,
+				nrg:/^0x[0-9a-f]*$/,
+				transactionIndex:/^0x[0-9a-f]*$/,
+				nonce:/^0x[0-9a-f]*$/,
+				input:/^0x([0-9a-f]{2})*$/,
+				blockNumber:/^0x[0-9a-f]{64}$/,
+				gas:/^0x[0-9a-f]*$/,
+				gasPrice:/^0x[0-9a-f]*$/,
+				from:/^0x[0-9a-f]{64}$/,
+				to:/^0x[0-9a-f]{64}$/,
+				value:/^0x[0-9a-f]*$/,
+				hash:/^0x[0-9a-f]{64}$/,
+				timestamp:/^0x[0-9a-f]*$/
+			}
+		},
+		transactionsRoot:/^0x[0-9a-f]{64}$/
+}
+`
+
 
 const VALID_SYNCING_INFO = {
-       startingBlock: _.isHEX,
-       currentBlock: _.isHEX,
-       highestBlock: _.isHEX
+       startingBlock: HEX,
+       currentBlock: HEX,
+       highestBlock: HEX
 			 // ,
        // blockGap: _.isArray
 };
 
 const VALID_TRANSACTION_RECEIPT = {
-	    blockHash:  _.isNULL_N_HEX,
-        blockNumber:  _.isNULL_N_HEX,
-        contractAddress:  _.isNULL_N_HEX,
-        cumulativeGasUsed:  _.isHEXHEX,
-        from:  _.isaccount_format,
-        to:  _.isaccount_format,
-        gasUsed:  _.isHEX,
-				gasPrice: _.isHEX,
+	    blockHash:  NULL_N_HEX,
+        blockNumber:  NULL_N_HEX,
+        contractAddress:  NULL_N_HEX,
+        cumulativeGasUsed:  HEX,
+        from:  account_format,
+        to: account_format,
+        gasUsed:  HEX,
+			//	gasPrice: HEX,
         logs: _.isArray,
-        logsBloom: _.isH256,
+        logsBloom:H256,
         /*Quantity - ‘0x0’ indicates transaction failure , ‘0x1’ indicates transaction success. Set for blocks mined after Byzantium hard fork EIP609, null before.*/
-        status:_.isHEX,
-        transactionHash: _.istransaction_format,
-        transactionIndex: _.isHEX,
-        cumulativeNrgUsed: _.isHEX,
-        nrgPrice:_.isHEX,
-        nrgUsed:_.isHEX
+        status:HEX,
+        transactionHash:transaction_format,
+        transactionIndex: HEX,
+        cumulativeNrgUsed: HEX,
+        nrgPrice:HEX,
+				gasPrice:HEX,
+        nrgUsed:HEX,
+				nrgLimit:HEX,
+				gasLimit:HEX
 
 }
+const VALID_FULL_TRANSACTION_RECEIPT=`{
+	blockHash:  _.isNull_N_Hex,
+	blockNumber:  _.isNull_N_Hex,
+	contractAddress:  _.isNull_N_Hex,
+	cumulativeGasUsed:  /^0x[0-9a-f]*$/,
+	from:  /^0x[0-9a-f]*$/,
+	to: /^0x[0-9a-f]*$/,
+	gasUsed:  /^0x[0-9a-f]*$/,
+	logs: {
+		<=: {
+			address:/^0x[0-9a-f]{64}$/,
+			logIndex: /^0x[0-9a-f]*$/,
+			data: /^0x[0-9a-f]*$/,
+			topics:_.isArray,
+			blockNumber: /^0x[0-9a-f]*$/,
+			transactionIndex: /^0x[0-9a-f]*$/
+		}
+	}
+	logsBloom:/^0x[0-9a-f]{256}$/,
+	status:/^0x[0-9a-f]*$/,
+	transactionHash:/^0x[0-9a-f]{64}$/,
+	transactionIndex:/^0x[0-9a-f]*$/,
+	cumulativeNrgUsed: /^0x[0-9a-f]*$/,
+	nrgPrice:/^0x[0-9a-f]*$/,
+	gasPrice:/^0x[0-9a-f]*$/,
+	nrgUsed:/^0x[0-9a-f]*$/,
+	nrgLimit:/^0x[0-9a-f]*$/,
+	gasLimit:/^0x[0-9a-f]*$/
+}`
+
+
 
 const TX_OBJECT= {
-	blockHash:_.isNULL_N_HEX,
-	blockNumber:_.isNULL_N_HEX,
-	chainId:_.isNULL_N_HEX,
-	contractAddress:_.isNULL_N_HEX,
-	from:_.isaccount_format,
-	gas:_.isHEX,
-	gasPrice:_.isHEX,
-	hash:_.istransaction_format,
-	input:_.isBINARY,
-	nonce:_.isHEX,
+	blockHash:NULL_N_HEX,
+	blockNumber:NULL_N_HEX,
+	chainId:NULL_N_HEX,
+	contractAddress:NULL_N_HEX,
+	from:account_format,
+	gas:HEX,
+	gasPrice:HEX,
+	hash:transaction_format,
+	input:BINARY,
+	nonce:HEX,
 
-	timestamp:_.isHEX,
-	to:_.isaccount_format,
-	transactionIndex:_.isNULL_N_HEX,
-	value:_.isHEX,
-	nrg:_.isHEX,
-	nrgPrice:_.isHEX
+	timestamp:HEX,
+	to:account_format,
+	transactionIndex:NULL_N_HEX,
+	value:HEX,
+	nrg:HEX,
+	nrgPrice:HEX
 }
 
 
 
 const VALID_SIGN_TRANSACTION = {
-	raw: _.isHEX,
+	raw: HEX,
 	tx:{
-		nrgPrice:_.isHEX,
-		gasPrice:_.isHEX,
-		input:_.isHEX,
-		nrg:_.isHEX,
-		gas:_.isHEX,
-		to: _.isaccount_format,
-		nonce:_.isHEX,
-		value:_.isHEX,
-		hash:_.istransaction_format,
-		timestamp:_.isHEX,
-		signature:_.isHEX,
+		nrgPrice:HEX,
+		gasPrice:HEX,
+		input:HEX,
+		nrg:HEX,
+		gas:HEX,
+		to: account_format,
+		nonce:HEX,
+		value:HEX,
+		hash:transaction_format,
+		timestamp:HEX,
+		signature:HEX,
 		type:_.isString
 	}
 }
@@ -156,7 +253,7 @@ const VALID_SIGN_TRANSACTION = {
 
 const COMPILE_RESUILT={
 
-		code:_.isHEX,
+		code:HEX,
 		info:{
 			abiDefinition:_.isArray,
 			compilerVersion:_.isString,
@@ -168,11 +265,11 @@ const COMPILE_RESUILT={
 }
 
 const VALID_WORKTEMPLATE={
-	blockBaseReward:_.isJAVA_HEX,
- 	blockTxFee:_.isJAVA_HEX,
- 	headerHash:_.isJAVA_HEX,
+	blockBaseReward:JAVA_HEX,
+ 	blockTxFee:JAVA_HEX,
+ 	headerHash:JAVA_HEX,
 	height:_.isNumber,
-	previousblockhash:_.isJAVA_HEX,
+	previousblockhash:JAVA_HEX,
 	target:_.isJAVA_HEX
 }
 
@@ -183,36 +280,36 @@ const VALID_LOGS={
 
 var VALID_BLOCK_HEADER = {
 	blockHeader:{
-		coinBase:_.isJAVA_HEX,
-		difficulty:_.isJAVA_HEX,
-		energyConsumed:_.isJAVA_HEX,
-		energyLimit:_.isJAVA_HEX,
-		extraData:_.isJAVA_HEX,
-		logsBloom:_.isJAVA_HEX,
-		number:_.isJAVA_HEX,
-		parentHash:_.isJAVA_HEX,
-		receiptTrieRoot:_.isJAVA_HEX,
-		stateRoot:_.isJAVA_HEX,
-		timestamp:_.isJAVA_HEX,
-		txTrieRoot:_.isJAVA_HEX,
+		coinBase:JAVA_HEX,
+		difficulty:JAVA_HEX,
+		energyConsumed:JAVA_HEX,
+		energyLimit:JAVA_HEX,
+		extraData:JAVA_HEX,
+		logsBloom:JAVA_HEX,
+		number:JAVA_HEX,
+		parentHash:JAVA_HEX,
+		receiptTrieRoot:JAVA_HEX,
+		stateRoot:JAVA_HEX,
+		timestamp:JAVA_HEX,
+		txTrieRoot:JAVA_HEX,
 		version:_.isString
 	},
 	code:_.isNumber,
-	headerHash:_.isJAVA_HEX,
+	headerHash:JAVA_HEX,
 	message:_.isNull,
-	nonce:_.isJAVA_HEX,
-	solution:_.isJAVA_HEX
+	nonce:JAVA_HEX,
+	solution:JAVA_HEX
 }
 
 
 var formats ={
 
-		TRANSACTION_HASH:_.istransaction_format,
-		ACCOUNT_FORMAT:_.isaccount_format,
-		HEX:_.isHEX,
-		H160:_.isH160,
-		CONTRACT_VALUE_FORMAT:_.isHEX,
-		BALANCE_FORMAT:utils.isBIGNUMBER,
+		TRANSACTION_HASH:transaction_format,
+		ACCOUNT_FORMAT:_.isAccountFormat,
+		HEX:HEX,
+		H160:H160,
+		CONTRACT_VALUE_FORMAT:HEX,
+		BALANCE_FORMAT:HEX,
 		BLOCK_NUMBER_FORMAT:_.isNumber,
 		BOOLEAN:_.isBoolean,
 		ARRAY:_.isArray,
@@ -222,14 +319,16 @@ var formats ={
 		NULL:_.isNull,
 
 		VALID_BLOCK_OBJECT:VALID_BLOCK_OBJECT,
-		VALID_FULL_BLOCK_OBJECT:VALID_FULL_BLOCK_OBJECT,
+		VALID_FULL_BLOCK_OBJECT:VALID_FULL_MINED_BLOCK_OBJECT,
+		VALID_PENDING_BLOCK_OBJECT:VALID_FULL_PENDING_BLOCK_OBJECT,
 		VALID_SYNCING_INFO:VALID_SYNCING_INFO,
 		VALID_TRANSACTION_RECEIPT:VALID_TRANSACTION_RECEIPT,
+		VALID_FULL_TRANSACTION_RECEIPT:VALID_FULL_TRANSACTION_RECEIPT,
 		VALID_WORKTEMPLATE:VALID_WORKTEMPLATE,
 		VALID_SIGN_TRANSACTION:VALID_SIGN_TRANSACTION,
 		VALID_TX:TX_OBJECT,
 		COMPILE_RESUILT:COMPILE_RESUILT,
-		VALID_TX_RECEIPT:VALID_TX_RECEIPT,
+		VALID_TX_RECEIPT:VALID_TRANSACTION_RECEIPT,
 		RPC_MODULES:{
 			eth:'1.0',
 			net:'1.0',
