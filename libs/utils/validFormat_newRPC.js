@@ -21,10 +21,10 @@ var transaction_format = H64;
 var blockHash_format =  H64;
 var account_format = H64;
 var public_key = H64;
-var NULL_N_HEX = ()=>{
-		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
-	}
-var NULL_N_INT = ()=>{return {test:(value)=>{return _.isNull(value) || _.isNumber(value);}}};
+// var NULL_N_HEX = ()=>{
+// 		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
+// 	}
+// var NULL_N_INT = ()=>{return {test:(value)=>{return _.isNull(value) || _.isNumber(value);}}};
 
 _.mixin({
 	isNull_N_Hex: function(elem){
@@ -34,7 +34,7 @@ _.mixin({
 		return /^0x[0-9a-f]{64}$/.test(elem) || _.isNull(elem);
 	},
 	isBinary: function(elem){
-		return /^0x[0-9a-f]*$/.test(elem) && val.length%2===0;
+		return /^0x[0-9a-f]*$/.test(elem) && elem.length%2===0;
 	},
 	isAccountFormat: function(elem){
 		return /^0xa0[0-9a-f]{62}$/.test(elem);
@@ -53,12 +53,12 @@ const VALID_BLOCK_OBJECT={
 	hash:H64,
 	logsBloom:HEX,
 	miner:H64,
-	nonce:NULL_N_HEX,
+	nonce:_.isNull_N_Hex,
 	number:HEX,
 	parentHash:H64,
 	receiptsRoot:H64,
 	size:HEX,
-	solution:NULL_N_HEX,
+	solution:_.isNull_N_Hex,
 	stateRoot:H64,
 	timestamp:HEX,
 	totalDifficulty:HEX,
@@ -155,9 +155,9 @@ const VALID_SYNCING_INFO = {
 };
 
 const VALID_TRANSACTION_RECEIPT = {
-	    blockHash:  NULL_N_HEX,
-        blockNumber:  NULL_N_HEX,
-        contractAddress:  NULL_N_HEX,
+	      blockHash:  _.isNull_N_Hex64,
+        blockNumber:  _.isNull_N_Hex,
+        contractAddress:  _.isNull_N_Hex64,
         cumulativeGasUsed:  HEX,
         from:  account_format,
         to: account_format,
@@ -178,9 +178,9 @@ const VALID_TRANSACTION_RECEIPT = {
 
 }
 const VALID_FULL_TRANSACTION_RECEIPT=`{
-	blockHash:  _.isNull_N_Hex,
+	blockHash:  _.isNull_N_Hex64,
 	blockNumber:  _.isNull_N_Hex,
-	contractAddress:  _.isNull_N_Hex,
+	contractAddress:  _.isNull_N_Hex64,
 	cumulativeGasUsed:  /^0x[0-9a-f]*$/,
 	from:  /^0x[0-9a-f]*$/,
 	to: /^0x[0-9a-f]*$/,
@@ -210,10 +210,10 @@ const VALID_FULL_TRANSACTION_RECEIPT=`{
 
 
 const TX_OBJECT= {
-	blockHash:NULL_N_HEX,
-	blockNumber:NULL_N_HEX,
-	chainId:NULL_N_HEX,
-	contractAddress:NULL_N_HEX,
+	blockHash:_.isNull_N_Hex,
+	blockNumber:_.isNull_N_Hex,
+//	chainId:_.isNull_N_Hex,
+	contractAddress:_.isNull_N_Hex,
 	from:account_format,
 	gas:HEX,
 	gasPrice:HEX,
@@ -223,7 +223,7 @@ const TX_OBJECT= {
 
 	timestamp:HEX,
 	to:account_format,
-	transactionIndex:NULL_N_HEX,
+	transactionIndex:_.isNull_N_Hex,
 	value:HEX,
 	nrg:HEX,
 	nrgPrice:HEX
@@ -244,7 +244,7 @@ const VALID_SIGN_TRANSACTION = {
 		value:HEX,
 		hash:transaction_format,
 		timestamp:HEX,
-		signature:HEX,
+	//	signature:HEX,
 		type:_.isString
 	}
 }

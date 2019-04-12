@@ -33,6 +33,11 @@ var runMethod = it;
 var paramsParser = require("./libs/utils/parsers");
 var RequestMethod = require("./libs/utils/requestMethod");
 
+// get minier and kernel process builder
+
+const Miner = require("./libs/controller/miner");
+const Kernel = require("./libs/controller/kernel");
+
 
 
 /**
@@ -57,7 +62,7 @@ function formParam(str,currentMethod){
 	return result;
 }
 
-
+//------------------------------------------------------------------------
 //load arguements from command line and create a provider
 for(let i = 0; i < process.argv.length; i++){
 	if(process.argv[i]=='--type') {
@@ -125,6 +130,17 @@ var Step_Action = function(rows,resolves){
 	});
 }
 
+//------initiate Kernel and Miner
+var miner = new Miner();
+var kernel = new Kernel();
+
+miner.configure({"-l":"localhost:8008","-t":1});
+kernel.configure({
+  "author":"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137"
+});
+
+
+
 //read driver file
 var data = readCSVDriver(DRIVER_PATH);
 
@@ -136,8 +152,11 @@ data.forEach((testSuite)=>{
 			xit("testSuite.name");
 			return;
 		}
-		if(!testSuite.usePreparedData)
+		if(!testSuite.usePreparedData){
 			RUNTIME_VARIABLES.reset();
+		}else{
+
+		}
 		//VERIFY_VARIABLES.reset();
 
 		let startTime;
