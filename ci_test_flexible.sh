@@ -21,7 +21,7 @@ else
 		for t in "${types[@]}"; do
 
 			echo "$t"
-			./node_modules/mocha/bin/mocha testApp_190408.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts --reporter mocha-junit-reporter --reporter-options mochaFile=testReport/"$f"-"$t"-$(date +%y%m%d%H%M).xml
+			./node_modules/mocha/bin/mocha testApp_190408.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts #--reporter mocha-junit-reporter --reporter-options mochaFile=testReport/"$f"-"$t"-$(date +%y%m%d%H%M).xml
 		done
 	done
 fi

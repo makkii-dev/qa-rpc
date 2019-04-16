@@ -132,7 +132,9 @@ var Step_Action = function(rows,resolves){
 
 //------initiate Kernel and Miner
 var miner = new Miner();
-var kernel = new Kernel();
+var kernel = Kernel.getInstance();
+kernel.setLog(logger);
+miner.setLog(logger);
 
 miner.configure({"-l":"localhost:8008","-t":1});
 kernel.configure({
@@ -146,26 +148,56 @@ var data = readCSVDriver(DRIVER_PATH);
 
 
 
-data.forEach((testSuite)=>{
+data.forEach((testSuite,index)=>{
 	describe(testSuite.name,()=>{
 		if(testSuite.execute == undefined){
 			xit("testSuite.name");
 			return;
 		}
+
+		//VERIFY_VARIABLES.reset();
 		if(!testSuite.usePreparedData){
 			RUNTIME_VARIABLES.reset();
-		}else{
-
 		}
-		//VERIFY_VARIABLES.reset();
 
 		let startTime;
 		before(()=>{
-			startTime = Date.now();
-		})
+			return new Promise((resolve)=>{
+				logger.log("\n---------------Pre-steps----------------------")
+				if(kernel.process && !kernel.process.killed){
+					kernel.stop();
+					console.log("wait for 10 sec")
+					setTimeout(()=>{
+						startTime = Date.now();
+						miner.start();
+						kernel.start(logger.logFullPath);
+
+						setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
+					},10000);
+				}else{
+					console.log("no wait")
+					startTime = Date.now();
+					miner.start();
+					kernel.start(logger.logFullPath).then(()=>{
+						setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
+					});
+
+				}
+			});
+
+		});
+
 		after(()=>{
+			logger.log("\n---------------Post actions------------------");
 			logger.log(`${testSuite.name} took ${(Date.now()-startTime)/1000} seconds`);
-		})
+
+			kernel.stop();
+			miner.stop();
+
+			logger.log("---------------END Post actions------------------\n");
+		});
+
+
 		it(testSuite.name,(done)=>{
 			logger.title(testSuite.name);
 			let testcases = testSuite.tests;
@@ -176,5 +208,20 @@ data.forEach((testSuite)=>{
 				done(err);
 			});
 		});
+
+
 	});
+});
+
+process.on('exit', (code) => {
+	logger.log("\n---------------ON EXIT: Clean Test Suite------------------");
+  if(kernel.process!==null){
+		logger.log("kernel: " +kernel.process.pid);
+		logger.log("kernel: " + kernel.process.killed);
+		kernel.terminate();
+	}
+	if(miner.process!==null && !miner.process.killed){
+		logger.log("miner: " +miner.process.pid);
+		miner.stop();
+	}
 });

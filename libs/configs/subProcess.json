@@ -1,5 +1,10 @@
 {
   "miner":"/home/aion/Downloads/aionminer",
-  "aionr":"/home/aion/miao_ws/aionr_packages/aionr-0.1.1-20-g1f9419f-20190130",
-  "aion": "/home/aion/miao_ws/aionr_packages/aion"
+  "aionr":{
+    "dir":"/home/aion/miao_ws/aionr/package/master-20190221",
+    "db":"/home/aion/.aion/chains/"
+  },
+  "aion": {
+    "dir":"/home/aion/miao_ws/aionr_packages/aion"
+    }
 }

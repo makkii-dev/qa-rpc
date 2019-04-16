@@ -19,21 +19,21 @@ describe("Test Miner and Kernel modules",()=>{
       miner.stop();
     });
 
-    xit("start a kernel with default",(done)=>{
-      var kernel = new Kernel(undefined,undefined,undefined);
+    it("start a kernel with default",(done)=>{
+      var kernel = Kernel.getInstance();
        console.log(kernel.type);
        console.log(kernel.net);
 
-       new Promise((res)=>{
-         console.log(kernel.start("a"));
-         setTimeout(()=>{
-           resolve();
-         },1000000);
-       }).then(()=>{
-         kernel.stop();
-         done();
-       })
-    })
-    
+      console.log(kernel.start("ab"));
+     setTimeout(()=>{
+       kernel.stop();
+       setTimeout(done,1000);
+     },5000);
+
+  }).timeout(0);
+  after(()=>{
+    console.log(Kernel.getInstance().process.pid);
+    //Kernel.getInstance().process.kill("SIGTERM");
   })
-})
+});
+});
