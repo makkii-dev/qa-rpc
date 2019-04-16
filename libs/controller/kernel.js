@@ -6,7 +6,7 @@ const DEFAULT_SETTINGS = require("../configs/subProcess.json");
 class Kernel extends CommonProcess{
 
 
-  constructor(kernelDir,network,kernelType){
+  constructor(kernelType,network,kernelDir){
     super();
     this.type = kernelType||"aionr";
     this.dir = kernelDir || DEFAULT_SETTINGS[this.type].dir;
@@ -36,11 +36,13 @@ class Kernel extends CommonProcess{
     }else{
       this.db = this.dir +"/"+this.net+"/database";
     }
+    this.log("Database updated. new path:"+this.db,this.getName());
     return this;
   }
 
   resetDB(){
     fs.rmdirSync(this.db);
+    this.log("Database cleaned. Path:"+this.db,this.getName());
     return this;
   }
 
@@ -91,32 +93,49 @@ class Kernel extends CommonProcess{
   async start(logName){
 
     let name = this.getName();
+    if( this.process && this.process.pid && !this.process.killed ){
+      this.log("WARNING: The previous kernel process has not been terminated.", name)
+      await this.terminate();
+    }
     switch (this.type) {
       case "aion":
-        this.log("under-construction",name);
-        return new Promise.reject();
-      default:
-        if( this.process && this.process.pid && !this.process.killed ){
-          this.log("WARNING: The previous kernel process has not been terminated.", name)
-          await this.terminate();
+        var arg = [];
+        arg.push("-n");
+        arg.push(this.net);
+        for(var configopt in this.config){
+          arg.push(configObj);
+          if(this.config[configopt]!==null){
+            arg.push(this.config[configopt]);
+          }
         }
+        this.process = spawn("./aion.sh",arg,{
+          cwd: this.dir,
+          stdio:[0,
+            //fs.openSync("log-"+(logName?logName:Date.now())+".out", 'w'),
+            fs.openSync(logName?logName:("kernelLog/"+Date.now()+".out"),"a"),
+            2
+          ]
+        });
+
+        break;
+      default:
         var arg = [];
         for(var configopt in this.config){
           arg.push("--"+configopt+"="+this.config[configopt]);
         }
         this.process = spawn("./"+this.net+".sh", arg,
-                            {
-                              cwd:this.dir,
-                              stdio:[0,
-                                //fs.openSync("log-"+(logName?logName:Date.now())+".out", 'w'),
-                                1,
-                                fs.openSync(logName?logName:("kernelLog/"+Date.now()+".out"),"a")
-                              ]
-                            }
-                          );
-        this.log("kernel is starting; PID: "+ this.process.pid+". Its configure: "+ JSON.stringify(this.config), name);
-        return Promise.resolve(this.process.pid);
+          {
+            cwd:this.dir,
+            stdio:[0,
+              //fs.openSync("log-"+(logName?logName:Date.now())+".out", 'w'),
+              1,
+              fs.openSync(logName?logName:("kernelLog/"+Date.now()+".out"),"a")
+            ]
+          }
+        );
     }
+    this.log("kernel is starting; PID: "+ this.process.pid+". Its configure: "+ JSON.stringify(this.config), name);
+    return Promise.resolve(this.process.id);
   }
 
 
@@ -143,7 +162,6 @@ class Kernel extends CommonProcess{
   terminate(){
     this.log("Terminate all the child process",this.getName())
     spawn("pkill",["-2","-P",this.process.pid],{stdio:[0,
-      //fs.openSync("log-"+(logName?logName:Date.now())+".out", 'w'),
       1,
       2
     ]});
