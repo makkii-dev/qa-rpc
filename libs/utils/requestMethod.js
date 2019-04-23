@@ -1,8 +1,14 @@
 class RequestMethod{
 	constructor(provider){
 		this.provider = provider;
+		this.rawRequest= (currentRow,rt_val)=>{
+			return this.provider.sendRaw(currentRow.params).then((resp)=>{
+					return Promise.resolve(resp);
+			});
+		};
 	}
 	registerMethod(method){
+		if(this[method]) return;
 		this[method] = (currentRow,rt_val)=>{
 			var startTime = Date.now();
 			var self = this;
@@ -38,5 +44,8 @@ class RequestMethod{
 	}
 
 }
+
+
+
 
 module.exports = RequestMethod;

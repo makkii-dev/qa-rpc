@@ -28,7 +28,7 @@ function _parseJsonIshObj(str,start,end,rt_vars){
 			}
 			start = ++i;
 		}else if(ichar == '['){
-			console.log(i,ichar);
+			//console.log(i,ichar);
 			let res = _parseJsonIshArr(str, i+1,end,rt_vars);
 			value = res.res;
 			i = res.index;

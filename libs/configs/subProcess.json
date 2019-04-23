@@ -5,6 +5,6 @@
     "db":"/home/aion/.aion/chains/"
   },
   "aion": {
-    "dir":"/home/aion/miao_ws/aionr_packages/aion"
+    "dir":"/home/aion/miao_ws/aion"
     }
 }

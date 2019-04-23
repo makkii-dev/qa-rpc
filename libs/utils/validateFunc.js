@@ -15,7 +15,7 @@ var Validation = function(provider,logger){
 }
 
 Validation.prototype.putProvider=(provider,logger)=>{
-	console.log(provider);
+	//console.log(provider);
 	this.provider = provider||console;
 	this.logger = logger;
 	this.helper = new Helper({provider:provider,logger:logger});
@@ -29,10 +29,10 @@ Validation.prototype.balanceValidate.pre = async (obj)=>{
 	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc||obj.VERIFY_VARIABLES.account.addr;
 	let toAcc = obj.testRow.params[0].to || obj.VERIFY_VARIABLES.vals.toAcc;
 
-	
+
 	obj.VERIFY_VARIABLES.vals.fromBal = new BN((await utils.getBalance(this.provider, fromAcc)).result.substring(2),16);
 	obj.VERIFY_VARIABLES.vals.toBal = new BN(toAcc===null||toAcc ===undefined ? "0x" : (await utils.getBalance(this.provider, toAcc)).result.substring(2),16);
-	
+
 	let changeValue = obj.testRow.params[0].value;
 	obj.VERIFY_VARIABLES.vals.changeValue = (/^0x/.test(changeValue))? new BN(changeValue.substring(2),16): new BN( changeValue,10);
 
@@ -47,17 +47,17 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	let self = this;
 	let fromAcc = obj.testRow.params[0].from || obj.VERIFY_VARIABLES.vals.fromAcc||obj.VERIFY_VARIABLES.account.addr;
 	let toAcc = obj.testRow.params[0].to || obj.VERIFY_VARIABLES.vals.toAcc;
-	
+
 	await self.helper.WaitNewBlock([120,1]);
 	//await self.helper.delay([10]);
-	
+
 	let newFromBal = new BN((await utils.getBalance(self.provider, fromAcc)).result.substring(2),16);
 	let newToBal = new BN((await utils.getBalance(self.provider, toAcc)).result.substring(2),16);
-	
+
 	self.logger.log("new from balance: "+newFromBal.toString(16));
 	self.logger.log("new to balance: "+newToBal.toString(16));
 	self.logger.log(JSON.stringify(obj.VERIFY_VARIABLES.vals));
-	
+
 	console.log(obj.VERIFY_VARIABLES.defaultGasPrice);
 	let gasPrice = obj.VERIFY_VARIABLES.vals.actualTx? new BN(obj.VERIFY_VARIABLES.vals.actualTx.gasPrice.buf): (obj.testRow.params[0].gasPrice? (typeof obj.testRow.params[0].gasPrice == 'number'? new BN(obj.testRow.params[0].gasPrice): new BN(obj.testRow.params[0].gasPrice.substring(2),16)):new BN(obj.VERIFY_VARIABLES.defaultGasPrice.substr(2),16));
 
@@ -66,9 +66,9 @@ Validation.prototype.balanceValidate.post = async (obj)=>{
 	self.logger.log(gasPrice.toString(10));
 	self.logger.log(obj.VERIFY_VARIABLES.vals.actualTx);
 	self.logger.log(obj.testRow.params[0].gasPrice);
-	
+
 	let fromChanges = obj.VERIFY_VARIABLES.vals.changeValue.add(gas.mul(gasPrice));
-	
+
 	let checkFrom = obj.VERIFY_VARIABLES.vals.fromBal.isub(fromChanges);
 	let checkTo   = obj.VERIFY_VARIABLES.vals.toBal.iadd(obj.VERIFY_VARIABLES.vals.changeValue);
 
@@ -114,7 +114,7 @@ Validation.prototype.validateBlake2b = {};
 Validation.prototype.validateBlake2b.pre = async(obj)=>{
 	obj.VERIFY_VARIABLES.vals.callMethod = obj.testRow.method == "eth_call"? true: false; // "true" called locally; "false" call in another contract
 	console.log(obj.testRow.params[0].data.substring(10));
-	obj.VERIFY_VARIABLES.vals.expectOutput = require("../packages/aion-lib/src/index.js").crypto.blake2b256(Buffer.from(obj.testRow.params[0].data.substring(2)));  
+	obj.VERIFY_VARIABLES.vals.expectOutput = require("../packages/aion-lib/src/index.js").crypto.blake2b256(Buffer.from(obj.testRow.params[0].data.substring(2)));
 	return Promise.resolve(obj);
 }
 

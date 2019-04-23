@@ -4,7 +4,7 @@
 
 
 if [ "$1" == "-h" ] ; then
-	echo "USAGE: ./ci_test.sh <list of test data file names> <list of rpc types> <whether starts miner>"
+	echo "USAGE: ./ci_test_flexible.sh <list of test data file names> <list of rpc types> <whether starts miner>"
 
 else
 	if [ "$3" == true ] ; then

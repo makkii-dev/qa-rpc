@@ -47,3 +47,13 @@ eth_call	x	x
 	x		prepare the contract call data	rpc-input-eth_call-0	helper.prepareContractCall	[addr]			
 	x	x	eth_call with two params	rpc-input-eth_call-2	requestMethod.eth_call	[{to:_contractAddress},earliest]			
 	x		validate the response	rpc-input-eth_call-2-vali	validFormat	[matches,HEX]			
+eth_sentTransaction- new field “type”	x	x							
+	x		Pre-step: unlock account for send transaction	rpc-input-eth_sendTransaction-0	requestMethod.personal_unlockAccount	[_testAccount,password,11]			acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		eth_sendTransaction with “type” field	rpc-input-eth_sendTransaction+1	requestMethod.eth_sendTransaction	[{from:_testAccount,to:_acc2,value:0x1000,type:0x00}]		result=>txHash	
+	x		validate the response	rpc-input-eth_sendTransaction-validate	validFormat	[matches,TRANSACTION_HASH]			
+	x		eth_getTransactionReceipt to check if the transaction mined	rpc-input-eth_sendTransaction+3	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate the response	rpc-input-eth_sendTransaction+4	validFormat	[matches,VALID_TRANSACTION_RECEIPT]			
+eth_signTransaction-new field “type”	x	x							
+	x		Pre-step: unlock account for send transaction	rpc-input-eth_signTransaction-0	requestMethod.personal_unlockAccount	[_testAccount,password,11]			
+	x		eth_signTransaction with “type” field	rpc-input-eth_signTransaction+1	requestMethod.eth_signTransaction	[{from:_testAccount,to:_acc2,value:0x1000,type:0x00}]			
+	x		validate the response	rpc-input-eth_signTransaction+2	validFormat	[matches,VALID_SIGN_TRANSACTION]			

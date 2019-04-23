@@ -58,7 +58,7 @@ function formParam(str,currentMethod){
 	}
 
 	var result = paramsParser(str,RUNTIME_VARIABLES);
-	console.log(JSON.stringify(result));
+	//console.log(JSON.stringify(result));
 	return result;
 }
 
@@ -106,8 +106,12 @@ var Step_Action = function(rows,resolves){
 			stepAction.requestMethod.registerMethod(levels[i+1],currentRow.id);
 		}
 	}
+	logger.info(JSON.stringify(currentRow.method));
+	if(currentRow.method !== "requestMethod.rawRequest"){
 
-	currentRow.params = formParam(currentRow.params,currentRow.method);
+		currentRow.params = formParam(currentRow.params,currentRow.method);
+		logger.info(JSON.stringify(currentRow.params));
+	}
 
 	if(currentRow.usePreparedData){
 	//	logger.log(JSON.stringify(RUNTIME_VARIABLES.nextTxObj));

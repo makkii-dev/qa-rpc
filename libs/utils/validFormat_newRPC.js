@@ -275,7 +275,12 @@ const VALID_WORKTEMPLATE={
 
 
 const VALID_LOGS={
-
+	address:_.isAccountFormat,
+	logIndex: _.isHEX,
+	data: _.isBinary,
+	topics:_.isArray,
+	blockNumber: _.isHEX,
+	transactionIndex: _.isHEX
 }
 
 var VALID_BLOCK_HEADER = {
