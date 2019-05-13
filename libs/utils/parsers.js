@@ -68,7 +68,9 @@ function _parseJsonIshArr(str,start,end,rt_vars){
 
 		if(ichar == ","){
 			value = _parseValue(str.substring(start,i),rt_vars);
-			partialResult.push(value);
+			if(start<i){
+				partialResult.push(value);
+			}
 			i++;
 			start = i;
 		}else if(ichar == '['){

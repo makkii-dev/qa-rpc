@@ -14,7 +14,8 @@ eth_coinbase	x
 eth_gasPrice	x								
 	x		get the gas price	Smoke-7	requestMethod.eth_gasPrice	[]			
 	x		validate response	Smoke-7-vali	validFormat	[match,HEX]			
-eth_getBlockByNumber									
+									
+									
 									
 									
 eth_getBlockTransactionCountByNumber	x	x							
@@ -152,14 +153,19 @@ Smoke eth_getTransactionByBlockNumber/HashAndIndex	x
 	x		validate response	Smoke-blocknHashIndex-1-vali	validFormat	[matches,VALID_TX]			
 									
 									
-Smoke eth_hashrate and eth_submitHashrate	x								
+eth_hashrate and eth_submitHashrate	x								
 	x		Smoke test for eth_submitHashrate	Smoke-eth_submitHashrate	requestMethod.eth_submitHashrate	[0x000000000000000000121,0x0101010101010101010101010101010101010101010101010101010101010101]			
 	x		validate response for eth_submitHashrate	Smoke-eth_submitHashrate-vali	validFormat	[equal,true]			
 	x		get miner hashrate	Smoke-22	requestMethod.eth_hashrate	[]			
 	x		validate response	Smoke-22-vali	validFormat	[matches,HEX]			
 									
-eth_getBlockTransactionCountByNumber/Hash	x								
-	x		call eth_getBlockTransactionCountByNumber		requestMethod.eth_getBlockTransactionCountByNumber	[0x0]			
-	x		validate response						
-	x		call eth_getBlockTransactionCountByHash		requestMethod.eth_getBlockTransactionCountByHash	[_blockHash]			
-	x		validate response						
+eth_getBlockByNumber/Hash	x								
+	x		call eth_getBlockByNumber	eth_getBlockByNumber	requestMethod.eth_getBlockByNumber	[0x0,false]		result.hash=>blockHash	
+	x		validate response	eth_getBlockByNumber-vali	validFormat	[matches,VALID_BLOCK_OBJECT]			
+	x		call eth_getBlockByHash	eth_getBlockByHash	requestMethod.eth_getBlockByHash	[_blockHash,false]			
+	x		validate response	eth_getBlockByHash-vali	validFormat	[matches,VALID_BLOCK_OBJECT]			
+eth_getBlockTransactionCountByNumber/Hash	x	x							
+	x		call eth_getBlockTransactionCountByNumber	eth_getBlockTransactionCountByNumber	requestMethod.eth_getBlockTransactionCountByNumber	[0x0]			
+	x		validate response	eth_getBlockTransactionCountByNumber-vali	validFormat	[matches,HEX]			
+	x		call eth_getBlockTransactionCountByHash	eth_getBlockTransactionCountByHash	requestMethod.eth_getBlockTransactionCountByHash	[_blockHash]			
+	x		validate response	eth_getBlockTransactionCountByHash-vali	validFormat	[matches,HEX]			

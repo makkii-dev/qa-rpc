@@ -1,7 +1,8 @@
 var aionLib = require('../packages/aion-lib/src/index');
 var aionAccount = aionLib.accounts;
 var utils = require("./utils2");
-
+var AVM = require('../packages/web3-avm-contract/src/index');
+var ABI = require('../packages/web3-avm-codec/src/index');
 
 
 var Helper = function(options){
@@ -121,7 +122,7 @@ Helper.prototype.newContract = (testRow,rt_var)=>{
 		}else{
 			rt_var.nextTxObj.data = rt_var.contract[rt_var.contract.names[0]].code;
 		}
-
+		rt_var.nextTxObj.tx_type = "0x01";
 
 		resolve();
 	})
@@ -140,7 +141,7 @@ Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 			check whether the function is calling a pre-compiled contract which starting with "prec_"
 			or a user defined contract function
 		*/
-
+		rt_var.nextTxObj.type = "0x01";
 		if(/^prec_/.test(newOptions[0])){
 			rt_var.nextTxObj.data = utils.getContractFuncData(null,newOptions.slice(1));
 			rt_var.nextTxObj.to = rt_var.precompile[newOptions[0].substring(5)];
@@ -155,6 +156,8 @@ Helper.prototype.prepareContractCall = (testRow,rt_var) =>{
 			rt_var.nextTxObj.to = rt_var.contractAddress;
 			console.log(rt_var.nextTxObj);
 		}
+
+
 		this.logger.log(JSON.stringify(testRow.params));
 		resolve();
 
@@ -222,6 +225,47 @@ Helper.prototype.inc = async (testRow,rt_var,resolution)=>{
 	})
 	return Promise.resolve(resolution);
 }
+
+
+/*****************************************************************
+ *  AVM related helper function
+******************************************************************/
+
+/********************************************
+ *  params expected to be the path(name) of AVM jar and argument type array and arg array
+ * e.g [testContract/dapp.jar [string,int],[hello,2]]
+*********************************************/
+Helper.prototype.newAVMContract = async (testRow, rt_var,resolution)=>{
+	rt_var.avmContract = new AVM();
+	rt_var.avmContract.deploy(testRow.params[0]);
+	if(!rt_var.nextTxObj) rt_var.nextTxObj = {};
+	rt_var.nextTxObj.data = testRow.params.length > 1? rt_var.avmContract.args(testRow.params[1],testRow.params[2]).init(): rt_var.avmContract.init();
+	rt_var.nextTxObj.tx_type = 2;
+	return Promise.resolve(resolution);
+};
+
+/********************************************
+ *  params expected to be the function name and argument type array and arg array
+ * e.g [functon, [string,int],[hello,2]]
+*********************************************/
+Helper.prototype.callAVMMethod = async(testRow, rt_var, resolution)=>{
+	rt_var.avmContract.method(testRow.params[0]);
+	if(testRow.params.length > 1) rt_var.avmContract.inputs(testRow.params[1],testRow.params[2]);
+	if(!rt_var.nextTxObj) rt_var.nextTxObj={};
+	rt_var.nextTxObj.data = rt_var.avmContract.encode();
+	rt_var.nextTxObj.tx_type = 1;
+
+	return Promise.resolve(resolution);
+};
+
+
+Helper.prototype.parseAVMResult = async(testRow,rt_var,resolution)=>{
+	if(!rt_var.avmContract) rt_var.avmContract = new AVM();
+	var new_resol = rt_var.avmContract.decode(testRow.params[0], testRow.params[1]);
+	return Promise.resolve(new_resol);
+};
+
+
 
 
 module.exports=Helper;

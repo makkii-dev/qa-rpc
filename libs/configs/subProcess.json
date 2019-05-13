@@ -1,8 +1,8 @@
 {
   "miner":"/home/aion/Downloads/aionminer",
   "aionr":{
-    "dir":"/home/aion/miao_ws/aionr/package/master-20190221",
-    "db":"/home/aion/.aion/chains/"
+    "dir":"/home/aion/miao_ws/aionr/package/aionr_dev_avm_folkNum_190510",
+    "db":"/home/aion/.aion/chains"
   },
   "aion": {
     "dir":"/home/aion/miao_ws/aion"

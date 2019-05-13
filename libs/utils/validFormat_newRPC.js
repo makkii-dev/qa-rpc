@@ -315,12 +315,12 @@ var formats ={
 		H160:H160,
 		CONTRACT_VALUE_FORMAT:HEX,
 		BALANCE_FORMAT:HEX,
-		BLOCK_NUMBER_FORMAT:_.isNumber,
+	//	BLOCK_NUMBER_FORMAT:_.isNumber,
 		BOOLEAN:_.isBoolean,
 		ARRAY:_.isArray,
 		STRING:_.isString,
 		BINARY:BINARY,
-		NUMBER:_.isNumber,
+	//	NUMBER:_.isNumber,
 		NULL:_.isNull,
 
 		VALID_BLOCK_OBJECT:VALID_BLOCK_OBJECT,
@@ -348,12 +348,12 @@ var formats ={
 		VALID_BLOCK_HEADER:VALID_BLOCK_HEADER,
 
 		LOCKED_ERROR:{
-			code:2,
+			code:1,
 			message:"Unauthorized",
 			data:"NotUnlocked"
 		},
 		LOCKED_INVALID_ACC_ERROR:{
-			code:2,
+			code:1,
 			message:"Unauthorized",
 			data:"SStore(InvalidAccount)"
 		},
@@ -363,62 +363,15 @@ var formats ={
 			...
 		}`,
 
-
-		// WRONG_PW_ERROR:{
-		// 	code:-32023,
-		// 	message:_.isString,
-		// 	data:"InvalidPassword"
-		// },
-		// INVALID_ACC_ERROR:{
-		// 	code: -32023,
-		//   	message: /Unable to \w*lock the account/,
-		//   	data: 'InvalidAccount'
-		// },
 		INVALID_METHOD:{
 			code:-32601,
 			message:"Method not found"
 		},
 
-		/*
-		// Expect error code upate to 3
-
-		GAS_LOW_ERROR:{
-			code:-32010,
-			message:/^Transaction gas is too low. There is not enough gas to cover minimal cost of/
-		},
-		NOT_ENOUGH_BALANCE_ERROR:{
-			code:-32010,
-			message:/^Insufficient funds. The account you tried to send transaction from does not have enough funds/
-		},
-		NONCE_CONFLICT_ERROR:{
-			code:-32010,
-			message:/Transaction gas price is too low. There is another transaction with same nonce in the queue/
-		},
-		INVALID_GAS_PRICE:{
-			code: -32010,
-  			message:/Transaction gas price is either too low or too high/
-  		},
-  		INVALID_GAS:{
-  			code:-32010,
-  			message:/Invalid transaction gas/
-  		},
-  		INVALID_CREATION_GAS:{
-  			code:-32010,
-  			message:/Invalid contract creation gas/
-  		}
-     */
 		 EXECUTION_ERROR:`{
 			 code:3
 			 ...
 		 }`
-
-
-  		// PERSONAL_INVALID_PASSWORD:`{
-  		// 	code: -32021,
-  		// 	data: /InvalidPassword/
-  		// 	...
-  		// }`
-
 
 };
 

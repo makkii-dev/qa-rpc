@@ -154,7 +154,7 @@ async function getRawTx(provider,txObj,account){
 
 	txObj.gasPrice = toAionLong(txObj.gasPrice);
 	txObj.gas = toAionLong(txObj.gas);
-	txObj.type = toAionLong(txObj.type || 1);
+	txObj.type = toAionLong(txObj.type || "0x00");
 
 	console.log(txObj);
 
@@ -200,7 +200,7 @@ async function getEncodeTx(provider,txObj){
 
 	txObj.gasPrice = toAionLong(txObj.gasPrice);
 	txObj.gas = toAionLong(txObj.gas);
-	txObj.type = toAionLong(txObj.type || 1);
+	txObj.type = toAionLong(txObj.type || "0x00");
 
 	console.log(txObj);
 
