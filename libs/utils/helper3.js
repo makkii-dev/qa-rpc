@@ -240,7 +240,7 @@ Helper.prototype.newAVMContract = async (testRow, rt_var,resolution)=>{
 	rt_var.avmContract.deploy(testRow.params[0]);
 	if(!rt_var.nextTxObj) rt_var.nextTxObj = {};
 	rt_var.nextTxObj.data = testRow.params.length > 1? rt_var.avmContract.args(testRow.params[1],testRow.params[2]).init(): rt_var.avmContract.init();
-	rt_var.nextTxObj.tx_type = 2;
+	rt_var.nextTxObj.type = "0x02";
 	return Promise.resolve(resolution);
 };
 
@@ -249,11 +249,11 @@ Helper.prototype.newAVMContract = async (testRow, rt_var,resolution)=>{
  * e.g [functon, [string,int],[hello,2]]
 *********************************************/
 Helper.prototype.callAVMMethod = async(testRow, rt_var, resolution)=>{
-	rt_var.avmContract.method(testRow.params[0]);
+	if(testRow.params.length >0) rt_var.avmContract.method(testRow.params[0]);
 	if(testRow.params.length > 1) rt_var.avmContract.inputs(testRow.params[1],testRow.params[2]);
 	if(!rt_var.nextTxObj) rt_var.nextTxObj={};
 	rt_var.nextTxObj.data = rt_var.avmContract.encode();
-	rt_var.nextTxObj.tx_type = 1;
+	rt_var.nextTxObj.type = "0x01";
 
 	return Promise.resolve(resolution);
 };

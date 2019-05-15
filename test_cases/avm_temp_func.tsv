@@ -1,0 +1,29 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+smoke avm deploy simple contract									
+			prepare a avm contract named SimpleContract.jar	avmSimple_prepare	helper.newAVMContract	[testContracts/SimpleContract.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+			unlock test account	avmSimple_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+		x	send Dapp deployment tx	avmSimple_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+			get contract address	avmSimple_storeContractAddress	requestMethod.eth_getTransactionReceipt	[_txHash]			
+			prepare simpleContract main function	avmSimple_simpleMain	helper.callAVMMethod	[xx]			
+		x	call simpleContract main	avmSimple_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+			validate return value/view the log for debug info	avmSimple_validate	validFormat	[equal,null]			
+									
+smoke avm deploy ByteArrayHolder contract	x								
+	x		prepare a avm contract named ByteArrayHolder.jar	avmByteArr_prepare	helper.newAVMContract	[testContracts/ByteArrayHolder.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	avmByteArr_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	avmByteArr_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
+	x		get contract address	avmByteArr_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]		result=>txHash	
+	x		prepare ByteArrayHolder main function	avmByteArr_prepareMain	helper.callAVMMethod	[xxx]			
+	x	x	call ByteArrayHolder main	avmByteArr_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x		validate return value//view the log for debug info	avmByteArr_validate	validFormat	[equal,0x0102]			
+									
+smoke avm deploy AvmCrossCallDispatcher									
+			prepare a avm contract named ByteArrayHolder.jar	avmByteArr_prepare	helper.newAVMContract	[testContracts/AvmCrossCallDispatcher.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+			unlock test account	avmByteArr_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+		x	send Dapp deployment tx	avmByteArr_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
+			get contract address	avmByteArr_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]		result=>txHash	
+			prepare ByteArrayHolder main function	avmByteArr_prepareMain	helper.callAVMMethod	[xxx,[address,string],[0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf000,lalala]]			
+		x	call ByteArrayHolder main	avmByteArr_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+			validate return value//view the log for debug info	avmByteArr_call	validFormat	[equal,null]			
+									
+avm test log event – Counter.jar									

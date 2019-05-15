@@ -1,0 +1,21 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+Syncing: eth_syncing	x								
+	x		Check eth_syncing when connect to a network with higher block #	Sync-eth_syncing	requestMethod.eth_syncing	[]			
+	x		validate response	Sync-eth_syncing-vali	validFormat	[matches,VALID_SYNCING_INFO]			
+									
+Syncing: net_peerCount	x								
+	x		Check net_peerCount when connecting to a network	Sync-net_peerCount	requestMethod.net_peerCount	[]			
+	x		validate response	Sync-net_peerCount-vali	validFormat	[atLeast,1]			
+									
+Syncing: FT-TC1, eth_newBlockFilter	x								
+	x		create a new Block filter while syncing with a network	FT-TC1_eth_newBlockFilter	requestMethod.eth_newBlockFilter	[]		result=>filterID	
+	x		get start block #	FT-TC1_eth_blockNumber-t0	requestMethod.eth_blockNumber	[]		result=>fromBlock	
+	x		syncing blocks for 5 seconds	FT-TC1_delay	helper.delay	[5]			
+	x		get end block #	FT-TC1_eth_blockNumber-t1	requestMethod.eth_blockNumber	[]		result=>toBlock	
+	x		call eth_getFilterChanges	FT-TC1-eth_getFilterChanges	requestMethod.eth_getFilterChanges	[_filterID]			
+	x		validate eth_getFilterChanges response to see if the filter changes the syncing block	FT-TC1-eth_getFilterChanges-vali	validFormat	[atLeast,_fromBlock,_toBlock]			
+									
+Syncing: check eth_syncing									
+			prepare a db that nearly fully sync						
+			start the kernel using that db						
+			check eth_syncing status until currentBlock < highestblock-3 						

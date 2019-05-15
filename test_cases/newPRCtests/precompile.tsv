@@ -1,0 +1,64 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+test procomile functions with eth_call	x								
+	x		get block number	PPC-Test	requestMethod.eth_blockNumber	[]		result=>blockNumber	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		Prepare validation data for blake2b256	PPC-Test-local-blake2b-valiPre	validationFunction.validateBlake2b.pre	{from:_acc1,data:012345}			
+	x	x	perpare the data for eth_call	PPC-Test-local-blake2b-pre	helper.prepareContractCall	[prec_blake2b256,_nextTxObj.data]			
+	x	x	local call blake2b256	PPC-Test-local-blake2b-call	requestMethod.eth_call	[{from:_acc1}]			
+	x		Process validation data for blake2b256	PPC-Test-local-blake2b-valiPost	validationFunction.validateBlake2b.post				
+	x		perpare the data for eth_call	PPC-Test-local-txhash-1	helper.prepareContractCall	[prec_transactionhash]			
+	x	x	local call transactionhash	PPC-Test-local-txhash-2	requestMethod.eth_call	[{}]			
+	x		validate format	PPC-Test-local-txhash-3	validFormat	[matches,TRANSACTION_HASH]			
+	x		Prepare validation data for edverify	PPC-Test-local-edverify-valiPre	validationFunction.validateSignature.pre	[{to:_acc1,from:_acc2,value:100,gas:0x6000}]			
+	x		prepare the data for eth_call	PPC-Test-local-edverify-pre	helper.prepareContractCall	[prec_edverify,_hash,_publicKey,_sign1,_sign2]			
+	x	x	local call ebverify	PPC-Test-local-edverify-call	requestMethod.eth_call	[{from:_acc1}]			
+	x		Process validation data for edverify	PPC-Test-local-edverify-valiPost	validationFunction.validateSignature.post				
+test procomile functions by calling function address	x	x							
+	x		unlock an account to deploy the contract	PPC-Test	requestMethod.personal_unlockAccount	[_acc1,password,100000]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		perpare the data for eth_transaction	PPC-Test-blake2b-pre	helper.prepareContractCall	[prec_blake2b256 01920192]			
+	x	x	local call blake2b256	PPC-Test-blake2b-sendTx	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		get Transaction Receipt blake2b256	PPC-Test-blake2b-rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate format	PPC-Test-blake2b-rpt-vali	validFormat	[equal,0x1,status]			
+	x		perpare the data for eth_transaction	PPC-Test-txhash-pre	helper.prepareContractCall	[prec_transactionhash]			
+	x	x	local call transactionhash - send transaction	PPC-Test-txhash-sendTx	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		get Transaction Receipt txhash	PPC-Test-txhash-rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate format	PPC-Test-txhash-rpt-vali	validFormat	[equal,0x1,status]			
+	x		perpare the data for eth_transaction	PPC-Test-edverify-pre	helper.prepareContractCall	[prec_edverify,_hash,_publicKey,_sign1,_sign2]			
+	x	x	local call ebverify	PPC-Test-edverify-sendtx	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		get Transaction Receipt edverify	PPC-Test-edverify-rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate format	PPC-Test-blake2b-rpt-vali	validFormat	[equal,0x1,status]			
+test procomile functions in contract	x	x							
+	x		unlock an account to deploy the contract	PPC-Test	requestMethod.personal_unlockAccount	[_acc1,password,100000]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		compile test contract	PPC-Test-contract	requestMethod.eth_compileSolidity	TestPreCompile.sol			
+	x		Prepare ContractDepth2 deployment code	PPC-Test-contract	helper.newContract	[ContractDepth2]			
+	x	x	deploy the test contract - ContractDepth2	PPC-Test-contract	requestMethod.eth_sendTransaction	[{from:_acc1,gas:300000}]			
+	x		get the contract address	PPC-Test-contract	requestMethod.eth_getTransactionReceipt	[_txHash]	contractAddress=>secContractAddress	result.contractAddress=>contractAddress	
+	x		Prepare TestPrecompile deployment code	PPC-Test-contract	helper.newContract	[TestPrecompile]			
+	x	x	deploy the test contract -TestPrecompile	PPC-Test-contract	requestMethod.eth_sendTransaction	[{from:_acc1,gas:300000}]			
+	x		get the contract address	PPC-Test-contract	requestMethod.eth_getTransactionReceipt	[_txHash]		result.contractAddress=>contractAddress	
+	x		Prepare validation data for blake2b256	PPC-Test-contract	validationFunction.validateBlake2b.pre	{data:012345,type:bytes32}			
+	x	x	Prepare testBlake2b256 data	PPC-Test-contract	helper.prepareContractCall	[testBlake2b256,_nextTxObj.data]			
+	x	x	call function blake2b256	PPC-Test-contract	requestMethod.eth_sendTransaction	[{from:_acc1,to:_contractAddress}]			
+	x		get Transaction Receipt blake2b256	PPC-Test-contract	validationFunction.validateBlake2b.post	[0,66]			
+test procomile transactionhash function	x	x							
+	x		prepare testTransactionhash	PPC-Test-contract	helper.prepareContractCall	[testTransactionhash]			
+	x	x	call function transactionhash	PPC-Test-contract	requestMethod.eth_sendTransaction	[{from:_acc1,to:_contractAddress}]			
+	x		get Transaction Receipt transactionhash	PPC-Test-contract	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate log data	PPC-Test-contract-vali	validFormat	[equal,_txHash,logs.0.data]			
+test procomile edverify function	x	x							
+	x		Prepare validation data for edverify	PPC-Test-local-edverify-valiPre	validationFunction.validateSignature.pre	[{to:_acc1,from:_acc2,value:100,gas:0x6000}]			
+	x		prepare testEdiverify data for valid signature	PPC-Test-contract-valid-edv	helper.prepareContractCall	[testEdverify,false,_hash,_publicKey,_sign1,_sign2]			sign_invalid=0x0004340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x	x	call function ebverify	PPC-Test-contract	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		Prepare validation data for edverify	PPC-Test-local-edverify-valiPre	validationFunction.validateSignature.post	[0,true]			
+	x		prepare testEdiverify data for invalid signature	PPC-Test-contract-invalid-edv	helper.prepareContractCall	[testEdverify,false,_hash,_publicKey,_sign1,_sign_invalid]			
+	x	x	call function ebverify-invalid	PPC-Test-contract	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		get Transaction Receipt edverify invalid	PPC-Test-contract	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate invalid ebverify-invalid	PPC-Test-contract-invalid-edv	validFormat	[equal,0x0000000000000000000000000000000000000000000000000000000000000000,logs.0.data]			
+test txhash in depth=2	x	x							
+	x		prepare testTransactionhashFromAnotherCnt data	PPC-Test-2-contract	helper.prepareContractCall	[testTransactionhashFromAnotherCnt,_secContractAddress]			
+	x	x	call function transactionhash where contract depth = 2	PPC-Test-2-contract	requestMethod.eth_sendTransaction	[{from:_acc1}]			
+	x		get Transaction Receipt  transactionhash where contract depth = 2	PPC-Test-2-contract	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate transaction hash	ttttttttttttttttttt	validFormat	[equal,_txHash,logs.0.data]			
+	x		validate transaction hash	ttttttttttttttttttt	validFormat	[equal,_txHash,logs.1.data]			
+	x		get Logs	PPC-Test-logs	requestMethod.eth_getLogs	[{address:_contractAddress,fromBlock:_blockNumber,toBlock:latest}]			
+	x		validate log number	PPC-Test-logs	validFormat	[length,5]			
+	x		post action lock account	PPC-Test-POST	requestMethod.personal_lockAccount	[_acc1,password]			

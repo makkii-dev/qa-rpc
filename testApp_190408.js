@@ -142,7 +142,8 @@ miner.setLog(logger);
 
 miner.configure({"-l":"localhost:8008","-t":1});
 kernel.configure({
-  "author":"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137"
+  "author":"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137",
+	"log-file":"log.txt"
 });
 
 

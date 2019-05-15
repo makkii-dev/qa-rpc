@@ -1,7 +1,7 @@
 {
   "miner":"/home/aion/Downloads/aionminer",
   "aionr":{
-    "dir":"/home/aion/miao_ws/aionr/package/aionr_dev_avm_folkNum_190510",
+    "dir":"/home/aion/miao_ws/aionr_dev_avm/package/amama",
     "db":"/home/aion/.aion/chains"
   },
   "aion": {
