@@ -122,7 +122,7 @@ Helper.prototype.newContract = (testRow,rt_var)=>{
 		}else{
 			rt_var.nextTxObj.data = rt_var.contract[rt_var.contract.names[0]].code;
 		}
-		rt_var.nextTxObj.tx_type = "0x01";
+		rt_var.nextTxObj.type = "0x01";
 
 		resolve();
 	})

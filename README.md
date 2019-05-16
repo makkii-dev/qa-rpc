@@ -43,6 +43,7 @@ Go to `libs/configs/subProcess.json` and edit the fields:
 }
 
 ```
+*`miner` field is the miner for Aionr Kernel.*
 
 ##RUN Test
 Require NPM, NODE installed;
@@ -53,8 +54,15 @@ optional aionr kernel /miner installed.
 ./installDependencies.sh
 ```
 
-### run tests using quick run script
+### Create / Check Test Cases
+This tool is data-driven test tool. All the test data files are located `test_cases`. The contracts that may be used by the tests are located at `testContracts`.
 
+Before running the testcases, you need to
+1. Check if `libs/utils/providers/providers_config.json` and `libs/configs/subProcess.json` contains the correct information.
+2. All the test accounts have enough balance and the keystores are accessiable to the Kernel. Some testdcases involve balance validation, make sure those testcases use an account other than the coinbase.
+3. For Aion (JAVA) Kernel check if the miner and RPC is enabled.
+
+### run tests using quick run script
 ```bash
 ./ci_test_flexible.sh <tsv test case files> <socket type> <kernel type>
 ```

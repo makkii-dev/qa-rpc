@@ -31,7 +31,7 @@ _.mixin({
 		return HEX.test(elem)|| _.isNull(elem);
 	},
 	isNull_N_Hex64: function(elem){
-		return /^0x[0-9a-f]{64}$/.test(elem) || _.isNull(elem);
+		return elem == undefined || /^0x[0-9a-f]{64}$/.test(elem) || _.isNull(elem);
 	},
 	isBinary: function(elem){
 		return /^0x[0-9a-f]*$/.test(elem) && elem.length%2===0;
@@ -160,7 +160,7 @@ const VALID_TRANSACTION_RECEIPT = {
         contractAddress:  _.isNull_N_Hex64,
         cumulativeGasUsed:  HEX,
         from:  account_format,
-        to: account_format,
+        to: _.isNull_N_Hex64,
         gasUsed:  HEX,
 			//	gasPrice: HEX,
         logs: _.isArray,
@@ -183,7 +183,7 @@ const VALID_FULL_TRANSACTION_RECEIPT=`{
 	contractAddress:  _.isNull_N_Hex64,
 	cumulativeGasUsed:  /^0x[0-9a-f]*$/,
 	from:  /^0x[0-9a-f]*$/,
-	to: /^0x[0-9a-f]*$/,
+	to: _.isNull_N_Hex64,
 	gasUsed:  /^0x[0-9a-f]*$/,
 	logs: {
 		<=: {
@@ -222,7 +222,7 @@ const TX_OBJECT= {
 	nonce:HEX,
 
 	timestamp:HEX,
-	to:account_format,
+	to:_.isNull_N_Hex64,
 	transactionIndex:_.isNull_N_Hex,
 	value:HEX,
 	nrg:HEX,
@@ -239,7 +239,7 @@ const VALID_SIGN_TRANSACTION = {
 		input:HEX,
 		nrg:HEX,
 		gas:HEX,
-		to: account_format,
+		to: _.isNull_N_Hex64,
 		nonce:HEX,
 		value:HEX,
 		hash:transaction_format,
