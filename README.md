@@ -54,6 +54,7 @@ optional aionr kernel /miner installed.
 ```
 
 ### run tests using quick run script
+
 ```bash
 ./ci_test_flexible.sh <tsv test case files> <socket type> <kernel type>
 ```
@@ -69,6 +70,7 @@ node_modules/mocha/bin/mocha testApp_190404 --testsuite test_cases/smoke_test.ts
 provider type: accept http, default, websocket, ipc. Default type is http
 
 testApp_dummy.js: for test rust input
+
 ```bash
 ./node_modules/mocha/bin/mocha testApp_dummy.js --testsuite test_cases/rust_java_input.csv --type http  --no-timeouts [--string]
 
@@ -80,4 +82,5 @@ testApp_dummy.js: for test rust input
 ```bash
 ./node_modules/junit-viewer/bin/junit-viewer --results=testReport/ --port=3003
 ```
+
 Then open browser and navigate to localhost:3003
