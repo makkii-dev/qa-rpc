@@ -50,7 +50,12 @@ optional aionr kernel /miner installed.
 
 ### install dependencies
 ```bash
-npm install
+./installDependencies.sh
+```
+
+### run tests using quick run script
+```bash
+./ci_test_flexible.sh <tsv test case files> <socket type> <kernel type>
 ```
 
 ### run from mocha

@@ -1,12 +1,12 @@
 TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
-smoke avm deploy simple contract									
-			prepare a avm contract named SimpleContract.jar	avmSimple_prepare	helper.newAVMContract	[testContracts/SimpleContract.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
-			unlock test account	avmSimple_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
-		x	send Dapp deployment tx	avmSimple_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
-			get contract address	avmSimple_storeContractAddress	requestMethod.eth_getTransactionReceipt	[_txHash]			
-			prepare simpleContract main function	avmSimple_simpleMain	helper.callAVMMethod	[xx]			
-		x	call simpleContract main	avmSimple_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
-			validate return value/view the log for debug info	avmSimple_validate	validFormat	[equal,null]			
+smoke avm deploy simple contract	x								
+	x		prepare a avm contract named SimpleContract.jar	avmSimple_prepare	helper.newAVMContract	[testContracts/SimpleContract.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	avmSimple_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	avmSimple_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+	x		get contract address	avmSimple_storeContractAddress	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		prepare simpleContract main function	avmSimple_simpleMain	helper.callAVMMethod	[xx]			
+	x	x	call simpleContract main	avmSimple_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value/view the log for debug info	avmSimple_validate	validFormat	[equal,0x]			
 									
 smoke avm deploy ByteArrayHolder contract	x								
 	x		prepare a avm contract named ByteArrayHolder.jar	avmByteArr_prepare	helper.newAVMContract	[testContracts/ByteArrayHolder.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
@@ -14,16 +14,32 @@ smoke avm deploy ByteArrayHolder contract	x
 	x	x	send Dapp deployment tx	avmByteArr_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
 	x		get contract address	avmByteArr_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]		result=>txHash	
 	x		prepare ByteArrayHolder main function	avmByteArr_prepareMain	helper.callAVMMethod	[xxx]			
-	x	x	call ByteArrayHolder main	avmByteArr_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x	x	call ByteArrayHolder main	avmByteArr_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
 	x		validate return value//view the log for debug info	avmByteArr_validate	validFormat	[equal,0x0102]			
 									
-smoke avm deploy AvmCrossCallDispatcher									
-			prepare a avm contract named ByteArrayHolder.jar	avmByteArr_prepare	helper.newAVMContract	[testContracts/AvmCrossCallDispatcher.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
-			unlock test account	avmByteArr_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
-		x	send Dapp deployment tx	avmByteArr_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
-			get contract address	avmByteArr_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]		result=>txHash	
-			prepare ByteArrayHolder main function	avmByteArr_prepareMain	helper.callAVMMethod	[xxx,[address,string],[0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf000,lalala]]			
-		x	call ByteArrayHolder main	avmByteArr_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
-			validate return value//view the log for debug info	avmByteArr_call	validFormat	[equal,null]			
+smoke avm deploy AvmCrossCallDispatcher	x								
+	x		prepare a avm contract named AvmCrossCallDispater.jar	AvmCrossCallDispater_prepare	helper.newAVMContract	[testContracts/AvmCrossCallDispatcher.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	AvmCrossCallDispater_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	AvmCrossCallDispater_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+	x		get contract address	AvmCrossCallDispater_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		prepare AvmCrossCallDispater main function	AvmCrossCallDispater_prepareMain	helper.callAVMMethod	[xxx,[address,string],[0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf000,lalala]]			
+	x	x	call AvmCrossCallDispater main	AvmCrossCallDispater_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value//view the log for debug info	AvmCrossCallDispater_validate	validFormat	[equal,0x]			
 									
-avm test log event – Counter.jar									
+avm test log event – Counter.jar	x								
+	x		prepare a avm contract named Counter.jar	Counter_prepare	helper.newAVMContract	[testContracts/Counter.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	Counter_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	Counter_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+	x		get contract address	Counter_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		prepare Counter increment(8) function	Counter_prepareinc	helper.callAVMMethod	[incrementCounter,[int],[8]]			
+	x	x	call increment(8) main	Counter_sendInc	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x		getRecipt/review log manually	Counter_incRpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		prepare Counter getCount function	Counter_preparegetCount	helper.callAVMMethod	[getCount]			
+	x	x	call getCount	Counter_sendgetCount	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value//view the log for debug info	Counter_validate	validFormat	[equal,0x08]			
+	x		prepare Counter increment(8) function	Counter_prepareinc	helper.callAVMMethod	[incrementCounter,[int],[8]]			
+	x	x	call increment(8) main	Counter_sendInc	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x		getRecipt/review log manually	Counter_incRpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		prepare Counter getCount function	Counter_preparegetCount	helper.callAVMMethod	[getCount]			
+	x	x	call getCount	Counter_sendgetCount	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value//view the log for debug info	Counter_validate	validFormat	[equal,0x10]			
