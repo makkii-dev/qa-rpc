@@ -91,8 +91,6 @@ eth_newPendingTxFilter eth_uninstallFilter	x
 	x		uninstall newPendingTransactionFilter	eth_uninstallFt	requestMethod.eth_uninstallFilter	[_filterID]			
 	x		validate response for eth_newPendingTransactionFilter	eth_uninstallFt-vali	validFormat	[equal,true]			
 									
-									
-									
 eth_newFilter, eth_sendTransaction, eth_getTransactionByHash ,eth_getFilterCh/log eth_getTransaction*	x								
 	x		getCoinBase Account as the contract sender	Smoke-25-getCoinbase	requestMethod.eth_coinbase	[]		result=>sender	
 	x		get fromBlock by eth_getBlockNumber	Smoke-25-getBlockNumber	requestMethod.eth_blockNumber	[]		result=>fromBlock	
