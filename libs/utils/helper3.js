@@ -4,7 +4,9 @@ var utils = require("./utils2");
 var AVM = require('../packages/web3-avm-contract/src/index');
 var ABI = require('../packages/web3-avm-codec/src/index');
 
-
+/****************************************************************************************
+* Helper is a class that is used to control the test process or form test data for later use.
+*****************************************************************************************/
 var Helper = function(options){
 	this.logger;
 	this.provider;
@@ -31,9 +33,6 @@ Helper.prototype.WaitNewBlock =  (testRow,rt_var,resolution)=>{
 		if(testRow.params.length >1)
 			newBlockNum = parseInt(testRow.params[1]);
 	}
-
-	//console.log("timeout:"+timeout);
-	//console.log("newBlockNum:"+typeof newBlockNum + "\t"+newBlockNum)
 
 	timeout = parseInt(timeout);
 	return new Promise((resolve,reject)=>{
@@ -83,9 +82,6 @@ Helper.prototype.createPKAccount = (testRow,rt_var)=>{
 		let account = aionAccount.createKeyPair(testRow.params);
 		account.addr = aionAccount.createA0Address(account.publicKey);
 		rt_var.update("pairKeyCreateAcc", account);
-		//this.logger.info(JSON.stringify(rt_var));
-		// if(!rt_var.nextTxObj) rt_var.nextTxObj = {};
-		// rt_var.nextTxObj.to = r.params[0].to||account.addr;
 		resolve();
 	});
 }
@@ -97,8 +93,7 @@ Helper.prototype.prepareRawTx = (testRow,rt_var,resolution)=>{
 
 				rt_var.rawTx = txObj.raw;
 				rt_var.actualTx = txObj.readable;
-				//VERIFY_VARIABLES.vals.toAcc = rt_var.actualTx.to;
-				//VERIFY_VARIABLES.vals.actualTx = rt_var.actualTx;
+
 				console.log("\nvpreprocess\n");
 				console.log(rt_var.rawTx);
 				testRow.params[0] = rt_var.rawTx.rawTransaction;
@@ -192,10 +187,6 @@ Helper.prototype.getSign = (testRow,rt_var)=>{
 			rt_var.publicKey = rt_var.accounts[testRow.params[0].from].publicKey.substring(2);
 			resolve();
 		})
-		//RUNTIME_VARIABLES.sign1 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(2,66);
-		//RUNTIME_VARIABLES.sign2 = RUNTIME_VARIABLES.accounts[testRow.params[0]].signature.substring(66);
-
-
 
 	})
 }
@@ -232,7 +223,8 @@ Helper.prototype.inc = async (testRow,rt_var,resolution)=>{
 ******************************************************************/
 
 /********************************************
- *  params expected to be the path(name) of AVM jar and argument type array and arg array
+ *  description: reading .jar file and prepare "data" for contract deployement
+ *  params expected to be the relative path(name) of AVM jar and argument type array and arg array
  * e.g [testContract/dapp.jar [string,int],[hello,2]]
 *********************************************/
 Helper.prototype.newAVMContract = async (testRow, rt_var,resolution)=>{
@@ -245,6 +237,7 @@ Helper.prototype.newAVMContract = async (testRow, rt_var,resolution)=>{
 };
 
 /********************************************
+ * 	description: prepare "data" for AVM contract call
  *  params expected to be the function name and argument type array and arg array
  * e.g [functon, [string,int],[hello,2]]
 *********************************************/
@@ -257,11 +250,16 @@ Helper.prototype.callAVMMethod = async(testRow, rt_var, resolution)=>{
 
 	return Promise.resolve(resolution);
 };
-
+/********************************************
+ * 	description: decode avm return value to readable value
+ *  params expected to be the data type and raw data
+ * e.g [dataType,rawData]
+*********************************************/
 
 Helper.prototype.parseAVMResult = async(testRow,rt_var,resolution)=>{
 	if(!rt_var.avmContract) rt_var.avmContract = new AVM();
 	var new_resol = rt_var.avmContract.decode(testRow.params[0], testRow.params[1]);
+	console.log(new_resol);
 	return Promise.resolve(new_resol);
 };
 
