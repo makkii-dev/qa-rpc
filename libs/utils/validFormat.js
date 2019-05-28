@@ -1,8 +1,9 @@
 var chaiMatchPattern = require('chai-match-pattern');
 var chai= require("chai");
 chai.use(chaiMatchPattern);
+var expect = chai.expect;
 var _ = chaiMatchPattern.getLodashModule();
-var utils = require("./utils1");
+var utils = require("./utils");
 
 
 var H160= /^0x[0-9a-f]{1,160}$/;
@@ -14,7 +15,7 @@ var BINARY=()=>{return {test:(val)=>(/^0x[0-9a-f]*$/.test(val) && val.length%2==
 
 
 
-const code_format = /^0x[0-9a-f]+$/;
+const code_format = /^0x[0-9a-f]*$/;
 const transaction_format = /^0x[0-9a-f]{64}$/;
 const blockHash_format = H160;
 const account_format = H256;
@@ -32,12 +33,12 @@ const VALID_BLOCK_OBJECT={
 	hash:H160,
 	logsBloom:HEX,
 	miner:H160,
-	nonce:HEX,
+	nonce:NULL_N_HEX,
 	number:_.isNumber,
 	parentHash:H160,
 	receiptsRoot:H160,
 	size:HEX,
-	solution:HEX,
+	solution:NULL_N_HEX,
 	stateRoot:H160,
 	timestamp:HEX,
 	totalDifficulty:HEX,
@@ -46,10 +47,11 @@ const VALID_BLOCK_OBJECT={
 }
 
 const VALID_SYNCING_INFO = {
-       StartingBlock: H160,
+       startingBlock: H160,
        currentBlock:H160,
-       highestBlock:H160,
-       blockGap: _.isArray
+       highestBlock:H160
+			 // ,
+       // blockGap: _.isArray
 };
 
 const VALID_TRANSACTION_RECEIPT = {
@@ -105,10 +107,7 @@ const TX_OBJECT= {
 	hash:transaction_format,
 	input:BINARY,
 	nonce:_.isNumber,
-	//publicKey:public_key,
-	//raw:HEX,
-	//sig:BINARY,
-	//standardV:HEX,
+
 	timestamp:_.isNumber,
 	to:account_format,
 	transactionIndex:NULL_N_HEX,
@@ -124,37 +123,10 @@ const VALID_SIGN_TRANSACTION = {
 	tx:TX_OBJECT
 }
 
-/*
-const expectblk_tx = {
-	difficulty:expect.any(BigNumber),
-	extraData:expect.anything(),
-	gasLimit:expect.anything(),
-	gasUsed:expect.anything(),
-	hash:expect.anything(),
-	logsBloom:expect.anything(),
-	miner:expect.anything(),
-	nonce:expect.anything(),
-	number:expect.any(Number),
-	parentHash:expect.anything(),
-	receiptsRoot:expect.anything(),
-	size:expect.any(Number),
-	solution:expect.anything(),
-	stateRoot:expect.anything(),
-	timestamp:expect.any(Number),
-	totalDifficulty:expect.any(BigNumber),
-	transactions:expect.arrayContaining([expect.objectContaining(expect_tx)]),
-	transactionsRoot:expect.anything(),
-	nrgLimit:expect.anything(),
-	nrgUsed:expect.anything(),
-}
-
-*/
-
-
 
 
 const COMPILE_RESUILT={
-	
+
 		code:code_format,
 		info:{
 			abiDefinition:_.isArray,
@@ -163,27 +135,50 @@ const COMPILE_RESUILT={
 			languageVersion:_.isString,
 			source:_.isString
 		}
-	
+
 }
 
 const VALID_WORKTEMPLATE={
-	blockBaseReward:HEX,
- 	blockTxFee:HEX,
- 	headerHash:HEX,
+	blockBaseReward:JAVA_HEX,
+ 	blockTxFee:JAVA_HEX,
+ 	headerHash:JAVA_HEX,
 	height:_.isNumber,
-	previousblockhash:HEX,
-	target:HEX
+	previousblockhash:JAVA_HEX,
+	target:JAVA_HEX
 }
 
 
 const VALID_LOGS={
-	
+
+}
+
+var VALID_BLOCK_HEADER = {
+	blockHeader:{
+		coinBase:JAVA_HEX,
+		difficulty:JAVA_HEX,
+		energyConsumed:JAVA_HEX,
+		energyLimit:JAVA_HEX,
+		extraData:JAVA_HEX,
+		logsBloom:JAVA_HEX,
+		number:JAVA_HEX,
+		parentHash:JAVA_HEX,
+		receiptTrieRoot:JAVA_HEX,
+		stateRoot:JAVA_HEX,
+		timestamp:JAVA_HEX,
+		txTrieRoot:JAVA_HEX,
+		version:_.isString
+	},
+	code:_.isNumber,
+	headerHash:JAVA_HEX,
+	message:_.isNull,
+	nonce:JAVA_HEX,
+	solution:JAVA_HEX
 }
 
 
-module.exports={
-	SINGLE:{
-		TRANSACTION_FORMAT:transaction_format,
+var formates ={
+
+		TRANSACTION_HASH:transaction_format,
 		ACCOUNT_FORMAT:account_format,
 		HEX:HEX,
 		H160:H160,
@@ -194,10 +189,9 @@ module.exports={
 		ARRAY:_.isArray,
 		STRING:_.isString,
 		BINARY:BINARY,
-		INTEGER:_.isNumber,
-		NULL:_.isNull
-	},
-	OBJECT:{
+		NUMBER:_.isNumber,
+		NULL:_.isNull,
+
 		VALID_BLOCK_OBJECT:VALID_BLOCK_OBJECT,
 		VALID_SYNCING_INFO:VALID_SYNCING_INFO,
 		VALID_TRANSACTION_RECEIPT:VALID_TRANSACTION_RECEIPT,
@@ -207,14 +201,18 @@ module.exports={
 		COMPILE_RESUILT:COMPILE_RESUILT,
 		VALID_TX_RECEIPT:VALID_TX_RECEIPT,
 		RPC_MODULES:{
-			eth:_.isString,
-			net:_.isString,
-			personal:_.isString,
-			pubsub:_.isString,
-			rpc:_.isString,
-			stratum:_.isString,
-			web3:_.isString
+			eth:'1.0',
+			net:'1.0',
+			personal:'1.0',
+			//pubsub:'1.0',
+			rpc:'1.0',
+			stratum:'1.0',
+			web3:'1.0',
+			ping:'1.0'
 		},
+
+		VALID_BLOCK_HEADER:VALID_BLOCK_HEADER,
+
 		LOCKED_ERROR:{
 			code:-32020,
 			message:"Your account is locked. Unlock the account via CLI, personal_unlockAccount or use Trusted Signer.",
@@ -237,7 +235,7 @@ module.exports={
 		},
 		INVALID_ACC_ERROR:{
 			code: -32023,
-		  	message: 'Unable to unlock the account.',
+		  	message: /Unable to \w*lock the account/,
 		  	data: 'InvalidAccount'
 		},
 		INVALID_METHOD:{
@@ -256,7 +254,7 @@ module.exports={
 			code:-32010,
 			message:/Transaction gas price is too low. There is another transaction with same nonce in the queue/
 		},
-		INVALID_GAS_PRICE:{ 
+		INVALID_GAS_PRICE:{
 			code: -32010,
   			message:/Transaction gas price is either too low or too high/
   		},
@@ -267,14 +265,81 @@ module.exports={
   		INVALID_CREATION_GAS:{
   			code:-32010,
   			message:/Invalid contract creation gas/
-  		}
-	}
-	
+  		},
+  		PERSONAL_INVALID_PASSWORD:`{
+  			code: -32021,
+  			data: /InvalidPassword/
+  			...
+  		}`
+
+
 };
-/*
-	error code -32602 messages:
-		1. message:"Invalid RLP.", data:"RlpExpectedToBeList"
-		2. message: 'Invalid params: Invalid bytes format. Expected a 0x-prefixed hex string with even length.'
-		3. message":"Couldn't parse parameters: `params` should have at least 1 argument(s),data:"\"\
-		4. message: 'Invalid params: invalid length 1, expected a tuple of size 2.'
-*/
+
+
+module.exports = function(row, rt, resolution){
+	let params = row.params;
+	console.log(params);
+	console.log("validateFormate: ",resolution.result,resolution.error)
+	switch(params[0]){
+
+		case 'error':
+			expect(resolution.error).to.matchPattern(formates[params[1]]);
+			break;
+		case "errorCode":
+			expect(resolution.error.code).to.equal(params[1]);
+			break;
+		case 'contains':
+			expect(resolution.result).to.include(params[1]);
+			break;
+		case 'deployedCode':
+			resolution.result = resolution.result.substring(2);
+			params[1] = params[1].substring(params[1].length-resolution.result.length);
+			//console.log(resolution.result.length + "\t"+params[1].length);
+			expect(resolution.result).to.equal(params[1]);
+			break;
+		case 'equal':
+			if(params[2]){
+				let chain = params[2].split('.');
+				let actualValue = resolution.result;
+				chain.forEach((value,index)=>{
+					if(!isNaN(value)){
+						value = parseInt(value);
+					}
+					actualValue = actualValue[value];
+				});
+				if((typeof params[1] != typeof actualValue) && (typeof params[1] =='number' || typeof actualValue == 'number')){
+					params[1]=parseInt(params[1]);
+					actualValue = parseInt(actualValue);
+				}
+				expect(actualValue).to.equal(params[1]);
+			}else{
+				expect(resolution.result).to.equal(params[1]);
+			}
+			break;
+		case "length":
+			if(params[2]){
+				expect(resolution.result).to.have.lengthOf(parseInt(params[2])-parseInt(params[1]));
+			}else{
+				expect(resolution.result).to.have.lengthOf(parseInt(params[1]));
+			}
+			break;
+		case "contract":
+			Object.values(resolution.result).forEach((value,index)=>{
+				expect(value).to.matchPattern(formates.COMPILE_RESUILT);
+			});
+			break;
+		case "atLeast":
+			if(params[2]){
+				expect(parseInt(resolution.result)).to.be.at.least(parseInt(params[2])-parseInt(params[1]));
+			}else{
+				expect(parseFloat(resolution.result)).to.be.at.least(parseFloat(params[1]));
+			}
+			break;
+		default:
+			expect(resolution.result).to.matchPattern(formates[params[1]]);
+
+	}
+
+	//rt.reassign(row.runtimeVal).storeVariables(row.storeVariables,resolution);
+	return Promise.resolve(resolution);
+}

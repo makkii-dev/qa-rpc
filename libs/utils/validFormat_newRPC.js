@@ -3,7 +3,7 @@ var chai= require("chai");
 chai.use(chaiMatchPattern);
 var expect = chai.expect;
 var _ = chaiMatchPattern.getLodashModule();
-var utils = require("./utils2");
+var utils = require("./utils");
 
 
 

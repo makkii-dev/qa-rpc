@@ -13,13 +13,13 @@ var DRIVER_PATH = "./test_cases/new.tsv";
 var provider_type;
 
 // internal dependencies
-const validFormat= require("./libs/utils/validFormat1");
-var readCSVDriver = require("./libs/utils/readCSV1");
+const validFormat= require("./libs/utils/validFormat_newRPC");
+var readCSVDriver = require("./libs/utils/readCSV");
 const Provider = require("./libs/utils/provider");
-var utils = require("./libs/utils/utils2");
+var utils = require("./libs/utils/utils");
 
-var Helper = require("./libs/utils/helper3");
-var validationFunc= require('./libs/utils/validateFunc1');
+var Helper = require("./libs/utils/helper");
+var validationFunc= require('./libs/utils/validateFunc');
 var RUNTIME_VARIABLES = require("./libs/utils/RunVariable.js")(logger);
 
 //validate tools
@@ -30,8 +30,8 @@ var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
 var runMethod = it;
 
-//var paramsParser = require("./libs/utils/parsers");
-var paramsParser = require("./libs/utils/parsers-hexify")
+var paramsParser = require("./libs/utils/parsers");
+//var paramsParser = require("./libs/utils/parsers-hexify")
 var RequestMethod = require("./libs/utils/requestMethod");
 
 
@@ -53,8 +53,8 @@ function formParam(str,currentMethod){
 		return [contract];
 	}
 
-	//var result = paramsParser(str,RUNTIME_VARIABLES);
-	var result = paramsParser(str, RUNTIME_VARIABLES,  currentMethod);
+	var result = paramsParser(str,RUNTIME_VARIABLES);
+	//var result = paramsParser(str, RUNTIME_VARIABLES,  currentMethod);
 	console.log(JSON.stringify(result));
 	return result;
 }
