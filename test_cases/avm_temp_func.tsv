@@ -70,6 +70,9 @@ decoder int
 									
 									
 xxxx	x								
-	x		xxxxxxxx	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
-	x		xxxxxxxx	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,data:0xd0d1188a00000000000000000000000000000032,gas:200000}]		result=>txHash	
+	x		xxxxxxxx	xxxx	requestMethod.eth_getBalance	[_testAcc,latest]			testAcc=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		prepare a avm contract named Recursive.jar	Counter_prepare	helper.newAVMContract	[testContracts/Simplest.jar]			
+	x		xxxxxxxx	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	xxxxxxxx	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:200000}]		result=>txHash	
 	x		xxxxxxxx	xxxx	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		xxxxxxxx	xxxx	requestMethod.eth_getBalance	[_testAcc,latest]			testAcc=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334

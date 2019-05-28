@@ -2,7 +2,6 @@
 
 npm install
 
-npm install
 
 cd libs/packages/aion-lib && npm install
 

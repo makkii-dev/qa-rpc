@@ -154,11 +154,12 @@ async function getRawTx(provider,txObj,account){
 
 	txObj.gasPrice = toAionLong(txObj.gasPrice);
 	txObj.gas = toAionLong(txObj.gas);
-	txObj.type = toAionLong(txObj.type || "0x00");
+	txObj.type = toAionLong(txObj.type || 1);
 
 	console.log(txObj);
 
 	expectSeq.forEach((property)=>{preEncodeSeq.push(txObj[property]);});
+  console.log("[this is pre-rlp] : ", preEncodeSeq);
 
 	let rlpEncoded = rlp.encode(preEncodeSeq);
 	console.log("[this is pre-blake2b] : "+ rlpEncoded);
