@@ -14,6 +14,10 @@ class Logger{
 		this.logName = "testlog_"+ts.toISOString()+".txt"
 		this.logFullPath = this._dir+"/"+this.logName;
 		this.step = "";
+		this.pLog = (msg,processName)=>{
+			if(this.FILE_LOG)fs.appendFileSync(this.logFullPath,"[pLog|"+processName+"]\t:\t"+msg+"\n");
+			if(this.CONSOLE_LOG)console.log("[plog|"+processName+"]"+msg+"\n");
+		}
 	}
 	updateName(testfile){
 		let ts = new Date();

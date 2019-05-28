@@ -1,0 +1,72 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+Error code=1: Unauthorized-eth_sendTransaction – send tx from a locked account	x								
+	x		send a transaction without unlock the sender’s account	err1-eth_sendTx	requestMethod.eth_sendTransaction	[{from:_acc1,to:acc2,value:120120120120120}]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		expected get an error with code = 1	err1-eth_sendTx-validate	validFormat	[errorCode,1]			
+									
+Error code=1: Unauthorized-eth_signTransaction – sign tx using a locked account	x								
+	x		sign a transaction without unlock the sender’s account	err1-eth_signTx	requestMethod.eth_signTransaction	[{from:_acc1,to:acc2,value:120120120120120},password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		expected get an error with code = 1	err1-eth_signTx-validate	validFormat	[errorCode,1]			
+									
+Error code=2: Action not allowed – call the method that disabled in config									
+			disable net module in config, and call eth_version	err2-net_version	requestMethod.net_version	[]			
+			expected get an error with code = 2	err2-net_version-validation	validFormat	[errorCode,2]			
+			disable net module in config, and call eth_listening	err2-net_listening	requestMethod.net_listening	[]			
+			expected get an error with code = 2	err2-net_listening-validation	validFormat	[errorCode,2]			
+			disable net module in config, and call eth_peerCount	err2-net_peerCount	requestMethod.net_peerCount	[]			
+			expected get an error with code = 2	err2-net_peerCount-validation	validFormat	[errorCode,2]			
+									
+Error code=3:transaction failure – invalid nonce									
+			Pre-step: unlock test account	err3-invalid_nonce-pre	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+			send a transaction with invalid nonce	err3-invalid_nonce-pre-1	requestMethod.eth_sendTransaction	[{from:_acc1,to:acc2,value:120},password]		result=>txHash	
+			wait for the tx mined	err3-invalid_nonce-pre-2	requestMethod.eth_getTransactionReceipt	[_txHash]			
+			send a transaction with invalid nonce	err3-invalid_nonce	requestMethod.eth_sendTransaction	[{from:_acc1,to:acc2,value:120,nonce:0},password]			
+			expected get an error with code = 3	err3-invalid_nonce-validate	validFormat	[errorCode,3]			
+Error code=3:transaction failure – invalid gas		x							
+			Pre-step: unlock test account	err3-invalid_gas-pre	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+			send a transaction with invalid gas	err3-invalid_gas	requestMethod.eth_sendTransaction	[{from:_acc1,to:acc2,value:120,gas:10},password]			
+			expected get an error with code = 3	err3-invalid_gas-validate	validFormat	[errorCode,3]			
+Error code=3:transaction failure – invalid gasPrice		x							
+			Pre-step: unlock test account	err3-invalid_gasPrice-pre	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+			send a transaction with invalid gasPrice	err3-invalid_gasPrice	requestMethod.eth_sendTransaction	[{from:_acc1,to:acc2,value:120,gasPrice:10},password]			
+			expected get an error with code = 3	err3-invalid_gasPrice-validate	validFormat	[errorCode,3]			
+Error code=3:transaction failure – insufficient balance		x							
+			Pre-step: unlock test account	err3-insufficientBalance-pre	requestMethod.personal_unlockAccount	[_acc1,password,10]			
+			send a transaction that total cost > account balance	err3-insufficientBalance	requestMethod.eth_sendTransaction	[{from:_acc1,to:acc2,value:1200000000000000000000000,gasPrice:10000000000000},password]			
+			expected get an error with code = 3	err3-insufficientBalance-validate	validFormat	[errorCode,3]			
+									
+Error code=4: compilation error: compile a buggy contract									
+			compile a buggy contract	err4-compileFailure	requestMethod.eth_compileSolidity	invalid.sol			
+			expected get an error with code = 4	err4-compileFailure-validate	validFormat	[errorCode,3]			
+									
+error code=-32700: request is an invalid JSON	x								
+	x		call a request that is an invalid JSON object	err-32700-invalid-JSON	requestMethod.rawRequest	{”id”:”err-32700-invalid-JSON”,”jsonrpc”:”2.0”,”method:ping”,”params”:[}			
+	x		expected get an error with code = -32700	err-32700-invalid-JSON-valid	validFormat	[errorCode,-32700]			
+									
+									
+error code=-32600: missing id, params, method, jsonrpc fields	x								
+	x		call a request without id	err-32600-miss-id	requestMethod.rawRequest	{”jsonrpc”:”2.0”,”method”:”eth_accounts”,”params”:[]}			
+	x		expected get an error with code = -32600	err-32600-miss-id-validate	validFormat	[errorCode,-32600]			
+	x		call a request without params	err-32600-miss-params	requestMethod.rawRequest	{”id”:”err-32600-miss-params”,”jsonrpc”:”2.0”,”method”:”eth_accounts”}			
+	x		expected get an error with code = -32600	err-32600-miss-params-validate	validFormat	[errorCode,-32600]			
+	x		call a request without method	err-32600-miss-method	requestMethod.rawRequest	{”id”:”err-32600-miss-method”,”jsonrpc”:”2.0”,”params”:[]}			
+	x		expected get an error with code = -32600	err-32600-miss-method-validate	validFormat	[errorCode,-32600]			
+	x		call a request without jsonrpc	err-32600-miss-jsonrpc	requestMethod.rawRequest	{”id”:”err-32600-miss-jsonrpc”,”method”:”eth_accounts”,”params”:[]}			
+	x		expected get an error with code = -32600	err-32600-miss-jsonrpc-validate	validFormat	[errorCode,-32600]			
+									
+error code=-32601: send a request that method is not support by Kernel									
+			call a request with invalid method	err-32601-invalid-method	requestMethod.slslslsl	[]			
+			expected get an error with code = -32601	err-32601-invalid-method-validate	validFormat	[errorCode,-32601]			
+									
+error code=-32602: send a request contains extra params									
+			call a request that no need to params but got one	err-32602-additional-params	requestMethod.eth_account	[alalalllalal]			
+			expected get an error with code = -32602	err-32602-additional-params-validate	validFormat	[errorCode,-32602]			
+									
+									
+error code=-32602: send a request misses params			call a request that requires 3 params but only get one	err-32602-miss-params	requestMethod.presonal_unlockAccount	[_acc1,password]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+			expected get an error with code = -32602	err-32602-miss-params-validate	validFormat	[errorCode,-32602]			
+									
+error code=-32602: send a request contains invalid data type									
+			call a request that params need to be a DATA but get odd-length hex	err-32602-invalid-param-format	requestMethod.eth_getStorageAt	[_invalidAddr,0x0,latest]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad2533
+			expected get an error with code = -32602	err-32602-invalid-param-format-validate	validFormat	[errorCode,-32602]			
+									
+error code=-32603: unknown condition									

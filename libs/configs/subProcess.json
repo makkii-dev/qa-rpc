@@ -1,0 +1,10 @@
+{
+  "miner":"/home/aion/Downloads/aionminer",
+  "aionr":{
+    "dir":"/home/aion/miao_ws/aionr_dev_may/package/aionr-0.2.2",
+    "db":"/home/aion/.aion/chains"
+  },
+  "aion": {
+    "dir":"/home/aion/miao_ws/aion"
+    }
+}

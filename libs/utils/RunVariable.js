@@ -67,6 +67,7 @@ module.exports = (logger)=>{
 				this.contract.event = {};
 
 				this.contract.names = Object.keys(resp.result);
+				console.log(this.contract.names);
 				Object.keys(resp.result).forEach((contract,index)=>{
 					console.log(contract);
 					this.contract[contract] = {}

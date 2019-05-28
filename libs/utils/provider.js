@@ -22,7 +22,7 @@ class Provider{
 				break;
 			default:
 				this.provider = require('./providers/http_provider');
-				
+
 		}
 		this.rpc_version = "2.0";
 		this.path = PATHS[this.type];
@@ -33,7 +33,7 @@ class Provider{
 
 	Path(newPath){
 		if(newPath==undefined) return this.path;
-		
+
 		if(typeof newPath== 'string'){
 			this.path = newPath;
 		}
@@ -53,13 +53,16 @@ class Provider{
 				break;
 			default:
 				this.provider = require('./providers/http_provider');
-				
+
 		};
 		return this;
 	}
 
 	sendRequest(id,method,params,log_visible){
-		return this.provider(this.path, id, method, params, this.rpc_version, this.logger, log_visible);
+		return this.provider.sendRequest(this.path, id, method, params, this.rpc_version, this.logger, log_visible);
+	}
+	sendRaw(jsonString,log_visible){
+		return this.provider.sendRaw(this.path, jsonString,this.logger,log_visible);
 	}
 }
 

@@ -30,7 +30,8 @@ var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
 var runMethod = it;
 
-var paramsParser = require("./libs/utils/parsers");
+//var paramsParser = require("./libs/utils/parsers");
+var paramsParser = require("./libs/utils/parsers-hexify")
 var RequestMethod = require("./libs/utils/requestMethod");
 
 
@@ -52,7 +53,8 @@ function formParam(str,currentMethod){
 		return [contract];
 	}
 
-	var result = paramsParser(str,RUNTIME_VARIABLES);
+	//var result = paramsParser(str,RUNTIME_VARIABLES);
+	var result = paramsParser(str, RUNTIME_VARIABLES,  currentMethod);
 	console.log(JSON.stringify(result));
 	return result;
 }
@@ -106,15 +108,17 @@ var Step_Action = function(rows,resolves){
 
 	if(currentRow.usePreparedData){
 	//	logger.log(JSON.stringify(RUNTIME_VARIABLES.nextTxObj));
-		Object.entries(RUNTIME_VARIABLES.nextTxObj).forEach((pair,index)=>{
-			if(currentRow.params && Array.isArray(currentRow.params)){
-				currentRow.params[0][pair[0]] = pair[1];
-			}else if(typeof currentRow.params=== 'Object' || typeof currentRow.params==='object'){
-				currentRow.params[pair[0]] = pair[1];
-			}
+		if(RUNTIME_VARIABLES.nextTxObj){
+			Object.entries(RUNTIME_VARIABLES.nextTxObj).forEach((pair,index)=>{
+				if(currentRow.params && Array.isArray(currentRow.params)){
+					currentRow.params[0][pair[0]] = pair[1];
+				}else if(typeof currentRow.params=== 'Object' || typeof currentRow.params==='object'){
+					currentRow.params[pair[0]] = pair[1];
+				}
 
-		});
-		delete RUNTIME_VARIABLES.nextTxObj;
+			});
+			delete RUNTIME_VARIABLES.nextTxObj;
+		}
 	}
 	logger.testStep(currentRow.testDescription);
 	return aFunction(currentRow,RUNTIME_VARIABLES,resolves).then((result)=>{
