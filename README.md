@@ -113,8 +113,9 @@ File type: .tsv (Tab Separated Values)
 
 #### Table Header:  
 
+
 |TestSet|execute|usePreparedData|testDescription|id|method|params|runtimeVal|storeVariables|preStoreVariables|
-|---|---|---|---|---|---|---|---|---|---|---|
+
 
 * **TestSet**: defines the test case name.
 * **execute**: whether to execute the line. If the cell is marked, that line will be executed.
@@ -130,21 +131,21 @@ module|method|description|params|Require PreparedData
 requestMethod|JSON-RPC methods|send RPC request; <br> * eth_getTransactionReceipt will keep sending requests until the response is not null or reaching the timeout (4 min);<br> * Customed method: rawRequest – for sending invalid rpc request objects | JSON-RPC params, except for rawRequest. rawRequest takes entire rpcjson string|Depend on situations; often used by eth_sendTransaction / personal_sendTransaction
 validFormat|none|the valid basic RPC response format / value|[ keyword, defined_format or value[, additional_value]) ]|No
 helper|delay|pause the test for certain seconds|[timeout_in_sec]|no
- |createPKAccount|create a pair-key account and store account info into runtime_variables.account and runtime_variables.newCreateAccount|[ option object ]|no
- |prepareRawTx|prepare the signed transaction using the info of runtime_variables.account, and store the signed transaction into runtime_variables.rawTx for future usage|[ transaction object ]|No;
- |newContract|prepare the deploy code for certain contract that has been compiled, and store the compiled code into runtime_variables.nextObj.data for future usage|[contract_name]|No; but to deploy the contract, eth_sendTransaction needs to mark yes.
- |prepareContractCall|prepare the tx data for a contract function call, and store the compiled code into runtime_variables.nextObj.data for future usage|[func_name[, param1[,...]]|No; but to call the contract method, eth_sendTransaction needs to mark yes.
- |getEvent|prepare the event signature for next filter, and store the compiled code into runtime_variables.nextObj.topics for future usage|event_name|No, but to put topics when eth_getLogs need the topics that row need to mark yes
- |data0xPrefix|add/remove "0x" for given variables|[ boolean,runtime_variable_names ]|no
- |inc|increase runtime_variables by given amounts (can be negative value)|{  runtime_variable_name: amount , ...  }|no
- |newAVMContract|Prepare tx data for avm contract|[contract.jar[, argument types array, argument array] ]|No; but to deploy the contract, eth_sendTransaction needs to mark yes.
- |callAVMMethod|Prepare tx data for avm contract call|[method r[, argument types array, argument array] ]|No; but to call the contract method, eth_sendTransaction/eth_call needs to mark yes.
- |parseAVMResult|Decode avm return data||
+helper|createPKAccount|create a pair-key account and store account info into runtime_variables.account and runtime_variables.newCreateAccount|[ option object ]|no
+helper|prepareRawTx|prepare the signed transaction using the info of runtime_variables.account, and store the signed transaction into runtime_variables.rawTx for future usage|[ transaction object ]|No;
+helper|newContract|prepare the deploy code for certain contract that has been compiled, and store the compiled code into runtime_variables.nextObj.data for future usage|[contract_name]|No; but to deploy the contract, eth_sendTransaction needs to mark yes.
+helper|prepareContractCall|prepare the tx data for a contract function call, and store the compiled code into runtime_variables.nextObj.data for future usage|[func_name[, param1[,...]]|No; but to call the contract method, eth_sendTransaction needs to mark yes.
+helper|getEvent|prepare the event signature for next filter, and store the compiled code into runtime_variables.nextObj.topics for future usage|event_name|No, but to put topics when eth_getLogs need the topics that row need to mark yes
+helper|data0xPrefix|add/remove "0x" for given variables|[ boolean,runtime_variable_names ]|no
+helper|inc|increase runtime_variables by given amounts (can be negative value)|{  runtime_variable_name: amount , ...  }|no
+helper|newAVMContract|Prepare tx data for avm contract|[contract.jar[, argument types array, argument array] ]|No; but to deploy the contract, eth_sendTransaction needs to mark yes.
+helper|callAVMMethod|Prepare tx data for avm contract call|[method r[, argument types array, argument array] ]|No; but to call the contract method, eth_sendTransaction/eth_call needs to mark yes.
+helper|parseAVMResult|Decode avm return data||
 validateFunction|balanceValidate.pre|a function paired with balanceValicate.post; check sender and receiver's balance and track down gasPrice, transaction value before sending the transaction; the transaction object will be stored in runtime_variables.nextObj for future usage|transaction object|No; but to call the send the trx, eth_sendTransaction needs to make yes.
- |balanceValidate.post|a function paired with balanceValicate.pre; check sender and receiver's balance and validate the result with the expected result.|null|no
- |validateMining|a function to validate if an account receives mining rewards|[ test_account, boolean (whether the acc gets rewards) ]|no
- |rptLogs|validate the logs in receipt|[logs_number,[ logObjectCriteria ] ]|no
- |minerStats|validate the minerStats|test_account|no
+validateFunction|balanceValidate.post|a function paired with balanceValicate.pre; check sender and receiver's balance and validate the result with the expected result.|null|no
+validateFunction|validateMining|a function to validate if an account receives mining rewards|[ test_account, boolean (whether the acc gets rewards) ]|no
+validateFunction|rptLogs|validate the logs in receipt|[logs_number,[ logObjectCriteria ] ]|no
+validateFunction|minerStats|validate the minerStats|test_account|no
 
 * **params**: a JSON-liked string that presents the method params: the string contains no quotation marks
   * any number without "0x" will parse into a number
