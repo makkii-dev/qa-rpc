@@ -2,8 +2,8 @@ pragma solidity ^0.4.0;
 
 contract Recursive {
 
-    event Evt(uint n);
-    uint128 called = 1200;
+    event Evt(uint256 n);
+    uint128 called = 12;
 
     function f(address a, uint n) returns (uint) {
         Evt(n);
