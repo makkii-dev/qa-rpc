@@ -47,7 +47,7 @@ putStorageAddress	x	x
 	x	x	Send putStorageAddress	putStorageAddress_send	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
 	x		get receipt	putStorageAddress_rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
 	x		validate rpt status	putStorageAddress_rpt_validate	validFormat	[equal,0x1,status]			
-	x		prepare validateStoragePreviousTxLength	putStorageLengthOne_prepare-vali	helper.callAVMMethod	[validateStoragePreviousTxLength,[int],[32			
+	x		prepare validateStoragePreviousTxLength	putStorageLengthOne_prepare-vali	helper.callAVMMethod	[validateStoragePreviousTxLength,[int],[32]]			
 	x	x	send validateStoragePreviousTxLength	validateStoragePreviousTxLength_send	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
 	x		get rpt	validateStoragePreviousTxLength_rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
 	x		validate rpt status	validateStoragePreviousTxLength_rpt_validate	validFormat	[equal,0x1,status]			

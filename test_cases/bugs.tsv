@@ -1,16 +1,17 @@
 TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
 PairKey transactions RK-29-0	x								
-	x		Pre-steps	PairKey-raw|TXTC01-1-00	helper.WaitNewBlock	[120]			
+			Pre-steps	PairKey-raw|TXTC01-1-00	helper.WaitNewBlock	[120]			
 	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-1-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate the unlock account	PairKey-raw|TXTC01-1-1	validFormat	[equal,true]			
 	x		create a pairkey account	PairKey-raw|TXTC01-1-2	helper.createPKAccount	{}			
 	x		save the balance of two accounts and sending value(2e16) without gasPrice	PairKey-raw|TXTC01-1-3	validationFunction.balanceValidate.pre	{from:_acc1,to:_newCreateAccount,value:20000000000000000}			
 	x	x	send some value(2e16) to pairkey account 	PairKey-raw|TXTC01-1-4	requestMethod.eth_sendTransaction	[{}]			
 	x		validate the transaction result	PairKey-raw|TXTC01-1-5	validationFunction.balanceValidate.post				
-	x		save the balance of two accounts and sending value(10) without gasPrice	PairKey-raw|TXTC01-1-6	validationFunction.balanceValidate.pre	{to:_acc1,from:_newCreateAccount,value:10,gasPrice:10000000000,gas:21000}			
+	x		prepare a avm contract named ByteArrayHolder.jar	avmByteArr_prepare	helper.newAVMContract	[testContracts/ByteArrayHolder.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x	x	save the balance of two accounts and sending value(10) without gasPrice	PairKey-raw|TXTC01-1-6	validationFunction.balanceValidate.pre	{to:_acc1,from:_newCreateAccount,value:10,gasPrice:10000000000,gas:5000000}			
 	x	x	prepare the raw tx	PairKey-raw|TXTC01-1-7	helper.prepareRawTx	{}			
 	x		send some value(1000) from pairKey account	PairKey-raw|TXTC01-1-8	requestMethod.eth_sendRawTransaction	[_rawTx.rawTransaction]			
-	x		validate the transaction result	PairKey-raw|TXTC01-1-9	validationFunction.balanceValidate.post				
+			validate the transaction result	PairKey-raw|TXTC01-1-9	validationFunction.balanceValidate.post				
 PairKey transactions RK-29-1	x								
 	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-2-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			
 	x		validate the unlock account	PairKey-raw|TXTC01-2-1	validFormat	[equal,true]			
@@ -157,7 +158,7 @@ rk-55-compiling contracts failsoccationally	x
 	x		validate compile result 	rk-55-96	validFormat	[contract]			
 	x		Compile solidity contract 62	rk-55	requestMethod.eth_compileSolidity	wallet.sol			
 	x		validate compile result 	rk-55-96	validFormat	[contract]			
-	x		Compile solidity contract 63	rk-55	requestMethod.eth_compileSolidity	DAO.sol			
+	x		Compile solidity contract 63	rk-55	requestMethod.eth_compileSolidity	Token_2.sol			
 	x		validate compile result 	rk-55-96	validFormat	[contract]			
 									
 									
@@ -184,3 +185,19 @@ RK121 – aiwa send transaction with data = “”	x
 	x		personal send a transaction with data =”	RK121-6	requestMethod.personal_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString},password]			
 	x		validate response	RK121-7	validFormat	[matches,TRANSACTION_HASH]		result=>txHash	
 	x		post step to make sure the tx is mined	RK121-7-post	requestMethod.eth_getTransactionReceipt	[_txHash]			
+									
+									
+different minimum create gas limit issue � below 20k	x								
+	x		unlock test account 	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		deploy contract create tx with gas below 20K	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,data:0xd0d1188a00000000000000000000000000000032,gas:199999}]			
+	x		validate response	xxxx	validFormat	[errorCode,3]			
+									
+different minimum create gas limit issue � 20k	x								
+	x		unlock test account 	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		deploy contract create tx with gas equal 20K	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,data:0xd0d1188a00000000000000000000000000000032,gas:200000}]			
+	x		validate reponse	xxxx	validFormat	[errorCode,3]			
+									
+different minimum create gas limit issue � 22.1k	x								
+	x		unlock test account 	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		deploy contract create tx with gas equal 22.1K	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,data:0xd0d1188a00000000000000000000000000000032,gas:221000}]		result=>txHash	
+	x		Get Transaction Receipt? Will it failed on Rust Kernel	xxxx	validFormat	[_txHash]			

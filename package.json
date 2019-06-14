@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "start": "./node_modules/mocha/bin/mocha testApp.js"
+    "start": "./ci_test.sh"
   },
   "devDependencies": {}
 }
