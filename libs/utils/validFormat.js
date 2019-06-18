@@ -283,7 +283,11 @@ module.exports = function(row, rt, resolution){
 	switch(params[0]){
 
 		case 'error':
-			expect(resolution.error).to.matchPattern(formates[params[1]]);
+			if(params.length==1){
+				expect(resolution).to.have.own.property("error");
+			}else{
+				expect(resolution.error).to.matchPattern(formates[params[1]]);
+			}
 			break;
 		case "errorCode":
 			expect(resolution.error.code).to.equal(params[1]);

@@ -1,6 +1,6 @@
 TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
 PairKey transactions RK-29-0	x								
-			Pre-steps	PairKey-raw|TXTC01-1-00	helper.WaitNewBlock	[120]			
+	x		Pre-steps	PairKey-raw|TXTC01-1-00	helper.WaitNewBlock	[120]			
 	x		unlock account w/ timeout==10; unlock account for 10 sec	PairKey-raw|TXTC01-1-0	requestMethod.personal_unlockAccount	[_acc1,password,10]			acc1=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate the unlock account	PairKey-raw|TXTC01-1-1	validFormat	[equal,true]			
 	x		create a pairkey account	PairKey-raw|TXTC01-1-2	helper.createPKAccount	{}			
@@ -176,28 +176,28 @@ Bug-invalid Energy causes nonce gap	x
 	x		validate response	Bug-invalidErgNcGp-11	validFormat	[matches,VALID_TX_RECEIPT]			
 									
 									
-RK121 â€“ aiwa send transaction with data = â€œâ€	x								
-	x		estimate a transaction with data = â€œâ€	RK121-1	requestMethod.eth_estimateGas	[{from:_acc1,to:_acc2,value:1,data:_emptyString}]			acc1=0xa0944db1961d8e766b5d14ce6bd9246428b6ab50c52b0613f788fbc267ff96b0,acc2=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+RK121 = aiwa send transaction with data = “”	x								
+	x		estimate a transaction with data = “”	RK121-1	requestMethod.eth_estimateGas	[{from:_acc1,to:_acc2,value:1,data:_emptyString}]			acc1=0xa0944db1961d8e766b5d14ce6bd9246428b6ab50c52b0613f788fbc267ff96b0,acc2=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
 	x		validate response	RK121-2	validFormat	[matches,HEX]			
 	x		unlock account	RK121-3	requestMethod.personal_unlockAccount	[_acc1,password,123]			
-	x		send a transaction with data = â€œâ€	RK121-4	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString}]			
+	x		send a transaction with data = “”	RK121-4	requestMethod.eth_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString}]			
 	x		validate response	RK121-5	validFormat	[matches,TRANSACTION_HASH]			
-	x		personal send a transaction with data =â€	RK121-6	requestMethod.personal_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString},password]			
+	x		personal send a transaction with data =“”	RK121-6	requestMethod.personal_sendTransaction	[{from:_acc1,to:_acc2,value:1,data:_emptyString},password]			
 	x		validate response	RK121-7	validFormat	[matches,TRANSACTION_HASH]		result=>txHash	
 	x		post step to make sure the tx is mined	RK121-7-post	requestMethod.eth_getTransactionReceipt	[_txHash]			
 									
 									
-different minimum create gas limit issue ï¿½ below 20k									
+different minimum create gas limit issue ï¿½ below 20k	x								
 	x		unlock test account 	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
 	x		deploy contract create tx with gas below 20K	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,data:0xd0d1188a00000000000000000000000000000032,gas:199999}]			
 	x		validate response	xxxx	validFormat	[errorCode,3]			
 									
-different minimum create gas limit issue ï¿½ 20k									
+different minimum create gas limit issue ï¿½ 20k	x								
 	x		unlock test account 	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
 	x		deploy contract create tx with gas equal 20K	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,data:0xd0d1188a00000000000000000000000000000032,gas:200000}]			
 	x		validate reponse	xxxx	validFormat	[errorCode,3]			
 									
-different minimum create gas limit issue ï¿½ 22.1k									
+different minimum create gas limit issue ï¿½ 22.1k	x								
 	x		unlock test account 	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
 	x		deploy contract create tx with gas equal 22.1K	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,data:0xd0d1188a00000000000000000000000000000032,gas:221000}]		result=>txHash	
 	x		Get Transaction Receipt? Will it failed on Rust Kernel	xxxx	validFormat	[_txHash]			

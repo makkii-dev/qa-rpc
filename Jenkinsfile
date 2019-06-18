@@ -1,6 +1,6 @@
 pipeline {
     agent any
-  
+
     triggers {
         pollSCM('H H H H H')
     }
@@ -11,7 +11,7 @@ pipeline {
                 echo 'test node'
                 sh 'node --version'
                 echo 'set up dependencies..'
-                sh 'npm install -f'
+                sh './installDependencies.sh'
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
                sh 'files=(smoke-test,AMO,TXTC,FTTC,bugs,precompile)'
                sh 'types=(http,websocket)'
 
-               sh './ci_test_flexiable.sh $files $types true'
+               sh './ci_test_flexiable.sh $files $types'
             }
         }
         stage("Test Sync"){
@@ -34,7 +34,7 @@ pipeline {
                 sh 'files=(syncing_testcases)'
                 sh 'types=(http,websocket)'
 
-                sh './ci_test_flexiable.sh $files $types false'
+                sh './ci_test_flexiable.sh $files $types'
             }
         }
 

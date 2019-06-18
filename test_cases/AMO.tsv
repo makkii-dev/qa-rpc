@@ -2,7 +2,7 @@ TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	stor
 AMO -TS1: create accounts	x								
 	x		list account	AMO-TS1-step1	requestMethod.personal_listAccounts	[]		result.length=>accLength	
 	x		(negative)create account w/out password	AMO-TS1-step2	requestMethod.personal_newAccount	[]			
-	x		validate response	AMO-TS1-step2-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+	x		validate response	AMO-TS1-step2-vali	validFormat	[error]			
 	x		create account with password	AMO-TS1-step3	requestMethod.personal_newAccount	[password]		result=>newAccount	
 	x		list account(size + 1)	AMO-TS1-step4	requestMethod.personal_listAccounts	[]			
 	x		validate response	AMO-TS1-step4-vali	validFormat	[length,-1,_accLength]			

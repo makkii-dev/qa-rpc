@@ -27,7 +27,7 @@ testApp_190408.js:
 * [Customed TestCases](#Custom-TestCases)
   * [Test Case Files](#Test-Case-Files)
     * [Table Header](#Table-Header)
-  
+
 
 ## Configuration:
 
@@ -42,8 +42,9 @@ Go to `libs/utils/providers/providers_config.json` and edit the fields:
 }
 ```
 
-### configure kernel and miner
-Go to `libs/configs/subProcess.json` and edit the fields:
+### configure kernel and miner locations
+If launching test script using `./ci_test_flexible.sh`, go to `libs/configs/subProcess.json` and edit the fields:
+
 ```json
 {
   "miner":"/absolute/path/of/miner",
@@ -55,9 +56,31 @@ Go to `libs/configs/subProcess.json` and edit the fields:
     "dir":"/absolute/path/of/aion/package/directory"
     }
 }
-
 ```
 *`miner` field is the miner for Aionr Kernel.*
+
+### configure kernels and test Accounts
+Update the genesis file and configuration of each kernel(`kernel_configs/aion` and `kernel_configs/aionr`), so the test account can have some pre-mined balance.
+
+Many test cases use keystore accounts to perform the transactions, the test accounts `kernel_configs/testing_accounts.tar.gz` needs to be added into each kernel.
+* aion (JAVA):
+```bash
+cp <extracted account folder> custom/keystore
+
+# check if account has been imported
+./aion.sh -n -a list
+
+```
+* aionr (Rust):
+```bash
+./custom.sh account import <extracted account folder>/*
+
+# check if account has been imported
+./custom.sh account list
+
+```
+
+
 
 ## RUN Test
 Require NPM, NODE installed;
@@ -80,6 +103,9 @@ Before running the testcases, you need to
 ```bash
 ./ci_test_flexible.sh <tsv test case files> <socket type> <kernel type>
 ```
+**tsv test case file** *should be placed in "test_cases" folder.*
+**socket type** *accept http,websocket,ipc*
+**kernel type** *accept "aion","aionr" (default value is aionr)*
 
 ### run from mocha
 ```bash
@@ -153,3 +179,75 @@ validateFunction|minerStats|validate the minerStats|test_account|no
   * Data format: field_name1=>variable_name1[,field_name2=>variable_name2,...] (no white space allowed).  
 * **preStoreVariables (optional)**:  pre-defined some runtime_variables before running current step.
 * **Data Format**: runtime_variable_name1=value1[,runtime_variable_name2=value2] (no white space allowed)
+
+### Test Tutorials
+#### Tutorial 1: Run a Simple RPC Test
+
+Expect to run a rpc request and validate its response, for example: eth_blockNumber
+
+First break the test into steps:
+1.Send a Rpc request to the kernel; method is eth_blockNumber, params is an empty array.
+2.When get the response, check if the result is QUANTITY [1].
+
+Secondly, start to write a tsv file:
+
+* Open an old test case file in a text editor, remove data except the header row and save it as new tsv file
+* (optional) Open the new tsv file in spreadsheet editor and select “separated by tab”
+* Give a name to “TestSet”, for example: eth_blockNumber smoke
+* Mark “execute” column in the same row
+* Put the test steps above into “testDescription” column and fill other columns, like this
+
+TestSet |execute |usePreparedData |testDescription |id |method |params
+---|---|---|---|---|---|---
+Eth_blockNumber smoke |x| | | | |
+  |x| |Send a Rpc request to the kernel; method is eth_blockNumber, params is an empty array |Eth_blockNumber-request |requestMethod.eth_blockNumber |[]
+  |x| |When get the response, check if the result is QUANTITY|Eth_blockNumber-valid|validFormat|[match,HEX]
+
+* Save the file, in case the spreadsheet editor will auto reformat the file. Reopen the file in a plain text editor to double check if each field are separated by tab.
+* Go to `chaion_qa` folder, run “./ci_test_flexible.sh <new test name> < RPC connection type >”
+
+#### Tutorial 2: Run RPC test with helper and validateFunc
+Here comes a test scenario that create local account, and send value from this account and check if the transaction succeeded:
+
+Steps:
+1. Create a paired keys with helper.createPKAccount
+2. Receive some value from pre-mined account:
+  a. Check the balance of both the pre-mined account and new created account(validationFunction.balanceValidate.pre)
+  b. Unlock the pre-mined account
+  c. Send the value to the new account
+  d. Validate the transaction result (validationFunction.balanceValidate.post)
+3. Send some value back to the pre-mined account:
+  a. Sign transaction local(helper.prepareRawTx)
+  b. Check the balance of both account (validationFunction.balanceValidate.pre)
+  c. Send the signed transaction
+  d. Validate the transaction result (validationFunction.balanceValidate.post)
+
+Translate to steps in tsv file.
+
+TestSet |execute |usePreparedData |testDescription |id |method |params |runtimeVal |storeVariables |preStoreVariables
+---|---|---|---|---|---|---|---|---|---
+Create a local account and receive and send value |x| | | | | | | |
+ |x| |Create a paired keys with helper.createPKAccount |1|helper.createPKAccount|{}| | |Acc1= 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+ |x| |Check the balance of both the pre-mined account and new created account|2a|validationFunction.balanceValidate.pre|{from:_Acc1,to:_newCreateAccount,value: 20000000000000000}| | |
+ |x| |Unlock the pre-mined account|2b|requestMethod.personal_unlockAccount|[_Acc1,password,10]| | |
+ |x|x|Send the value to the new account|2c|requestMethod.eth_sendTransaction|[{}]| | |  
+ |x| |Validate the transaction result|2d|validationFunction.balanceValidate.post| | | |
+ |x| |Sign transaction local|3a|helper.prepareRawTx|{from:_newCreateAccount,to:_Acc1,value: 10000000000000000}| | |
+ |x|x|Check the balance of both account|3b|validationFunction.balanceValidate.pre|{}| | |
+ |x| |Send the signed transaction|3c|requestMethod.eth_sendRawTransaction|[_rawTx.rawTransaction]| | |
+ |x| |Validate the transaction result|3d|validationFunction.balanceValidate.post| | | |
+
+
+### availiable test cases:
+Under "test_cases" folder:
+- AMO.tsv : account management related testcases
+- bugs.tsv : previous bugs
+- FTTC.tsv : filter testcases
+- TXTC.tsv : transaction testcases
+- precompile.tsv: precompile related testcases
+- avm.tsv: avm related testcase
+- smoke-test: rpc smoke testcases
+
+For RPC normalization:
+- newRPCtests: update testcases to match the new RPC specifications
+- RPC_normalization_tests: the testcases aiming at the known differencies between the old rpc and new standards

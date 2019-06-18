@@ -13,7 +13,7 @@ var DRIVER_PATH = "./test_cases/new.tsv";
 var provider_type;
 
 // internal dependencies
-const validFormat= require("./libs/utils/validFormat_newRPC");
+const validFormat= require("./libs/utils/validFormat");
 var readCSVDriver = require("./libs/utils/readCSV");
 const Provider = require("./libs/utils/provider");
 var utils = require("./libs/utils/utils");

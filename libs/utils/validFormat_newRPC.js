@@ -338,7 +338,7 @@ var formats ={
 			eth:'1.0',
 			net:'1.0',
 			personal:'1.0',
-			pubsub:'1.0',
+			//pubsub:'1.0',
 			rpc:'1.0',
 			stratum:'1.0',
 			web3:'1.0',
@@ -383,7 +383,11 @@ module.exports = function(row, rt, resolution){
 	switch(params[0]){
 
 		case 'error':
-			expect(resolution.error).to.matchPattern(formats[params[1]]);
+			if(params.length == 1){
+				expect(resolution).to.have.own.property("error");
+			}else{
+				expect(resolution.error).to.matchPattern(formats[params[1]]);
+			}
 			break;
 		case "errorCode":
 			expect(resolution.error.code).to.equal(params[1]);
