@@ -17,15 +17,17 @@ testApp_190408.js:
 # Content
 * [Configuration](#configuration)
   * [configure RPC](#configure-rpc)
-	* [configure kernel and miner](#configure-kernel-and-miner)
+    * [configure kernel and miner](#configure-kernel-and-miner)
 * [RUN Test](#run-test)
-	* [install dependencies](#install-dependencies)
+  * [install dependencies](#install-dependencies)
   * [Create / Check Test Cases](#create-/-Check-test-cases)
   * [run tests using quick run script](#run-tests-using-quick-run-script)
-	* [run from mocha](#run-from-mocha)
+  * [run from mocha](#run-from-mocha)
 * [View Test Report](#view-test-report)
 * [Customed TestCases](#Custom-TestCases)
-
+  * [Test Case Files](#Test-Case-Files)
+    * [Table Header](#Table-Header)
+  
 
 ## Configuration:
 
@@ -89,14 +91,6 @@ node_modules/mocha/bin/mocha testApp_190404 --testsuite test_cases/smoke_test.ts
 
 provider type: accept http, default, websocket, ipc. Default type is http
 
-testApp_dummy.js: for test rust input
-
-```bash
-./node_modules/mocha/bin/mocha testApp_dummy.js --testsuite test_cases/rust_java_input.csv --type http  --no-timeouts [--string]
-
-# --string: using integer string for nonce, value, gas, gasPrice, blockNumber, storagePosition; otherwise: using integer(number) for those values
-
-```
 
 ## View Test Report:
 ```bash
@@ -113,8 +107,8 @@ File type: .tsv (Tab Separated Values)
 
 #### Table Header:  
 
-
-|TestSet|execute|usePreparedData|testDescription|id|method|params|runtimeVal|storeVariables|preStoreVariables|
+TestSet|execute|usePreparedData|testDescription|id|method|params|runtimeVal|storeVariables|preStoreVariables
+---|---|---|---|---|---|---|---|---|---
 
 
 * **TestSet**: defines the test case name.
