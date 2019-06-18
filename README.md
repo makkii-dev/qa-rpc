@@ -101,10 +101,15 @@ Before running the testcases, you need to
 
 ### run tests using quick run script
 ```bash
-./ci_test_flexible.sh <tsv test case files> <socket type> <kernel type>
+./ci_test_flexible.sh <tsv test case files under test_cases folder> <socket type> <kernel type>
+
+#example
+./ci_test_flexible.sh AMO,TXTC,AVM,precompile http,websocket aionr
 ```
 **tsv test case file** *should be placed in "test_cases" folder.*
+
 **socket type** *accept http,websocket,ipc*
+
 **kernel type** *accept "aion","aionr" (default value is aionr)*
 
 ### run from mocha
@@ -186,6 +191,7 @@ validateFunction|minerStats|validate the minerStats|test_account|no
 Expect to run a rpc request and validate its response, for example: eth_blockNumber
 
 First break the test into steps:
+
 1.Send a Rpc request to the kernel; method is eth_blockNumber, params is an empty array.
 2.When get the response, check if the result is QUANTITY [1].
 
@@ -206,7 +212,7 @@ Eth_blockNumber smoke |x| | | | |
 *BLANK: A placeholder;to leave that field blank*
 
 * Save the file, in case the spreadsheet editor will auto reformat the file. Reopen the file in a plain text editor to double check if each field are separated by tab.
-* Go to `chaion_qa` folder, run “./ci_test_flexible.sh <new test name> < RPC connection type >”
+* Go to `qa-rpc` folder, run `./ci_test_flexible.sh <new test name> <RPC connection type>`
 
 #### Tutorial 2: Run RPC test with helper and validateFunc
 Here comes a test scenario that create local account, and send value from this account and check if the transaction succeeded:
@@ -239,6 +245,7 @@ Create a local account and receive and send value |x| | | | | | | |
  BLANK|x| |Send the signed transaction|3c|requestMethod.eth_sendRawTransaction|[_rawTx.rawTransaction]| | |
  BLANK|x| |Validate the transaction result|3d|validationFunction.balanceValidate.post| | | |
 
+*BLANK: A placeholder;to leave that field blank*
 
 ### availiable test cases:
 Under "test_cases" folder:
@@ -251,5 +258,6 @@ Under "test_cases" folder:
 - smoke-test: rpc smoke testcases
 
 For RPC normalization:
-- newRPCtests: update testcases to match the new RPC specifications
-- RPC_normalization_tests: the testcases aiming at the known differencies between the old rpc and new standards
+- newRPCtests: update testcases to match the new RPC specifications; will be used in the future
+- RPC_normalization_tests: the testcases aiming at the known differencies between the old rpc and new standards; will be used in the future
+
