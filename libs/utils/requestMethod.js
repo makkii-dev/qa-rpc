@@ -35,7 +35,7 @@ class RequestMethod{
 							}
 						});
 
-					},1200);
+					},2000);
 
 				});
 

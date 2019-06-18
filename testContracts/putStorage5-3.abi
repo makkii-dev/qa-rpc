@@ -1,0 +1,8 @@
+0.0
+avmtest.PutStorage
+Clinit: ()
+public static void init()
+public static void putStore()
+public static byte[] getStore1()
+public static byte[] getStore2()
+public static byte[] getStore3()
