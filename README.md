@@ -60,7 +60,7 @@ If launching test script using `./ci_test_flexible.sh`, go to `libs/configs/subP
 *`miner` field is the miner for Aionr Kernel.*
 
 ### configure kernels and test Accounts
-Update the genesis file and configuration of each kernel(`kernel_configs/aion` and `kernel_configs/aionr`), so the test account can have some pre-mined balance.
+Update the genesis file and configuration of each kernel(`kernel_configs/aion` and `kernel_configs/aionr`), so the test accounts can have some pre-mined balance.
 
 Many test cases use keystore accounts to perform the transactions, the test accounts `kernel_configs/testing_accounts.tar.gz` needs to be added into each kernel.
 * aion (JAVA):
@@ -68,7 +68,7 @@ Many test cases use keystore accounts to perform the transactions, the test acco
 cp <extracted account folder> custom/keystore
 
 # check if account has been imported
-./aion.sh -n -a list
+./aion.sh -n custom -a list
 
 ```
 * aionr (Rust):
@@ -101,10 +101,15 @@ Before running the testcases, you need to
 
 ### run tests using quick run script
 ```bash
-./ci_test_flexible.sh <tsv test case files> <socket type> <kernel type>
+./ci_test_flexible.sh <tsv test case files under test_cases folder> <socket type> <kernel type>
+
+#example
+./ci_test_flexible.sh AMO,TXTC,AVM,precompile http,websocket aionr
 ```
 **tsv test case file** *should be placed in "test_cases" folder.*
+
 **socket type** *accept http,websocket,ipc*
+
 **kernel type** *accept "aion","aionr" (default value is aionr)*
 
 ### run from mocha
@@ -186,6 +191,7 @@ validateFunction|minerStats|validate the minerStats|test_account|no
 Expect to run a rpc request and validate its response, for example: eth_blockNumber
 
 First break the test into steps:
+
 1.Send a Rpc request to the kernel; method is eth_blockNumber, params is an empty array.
 2.When get the response, check if the result is QUANTITY [1].
 
@@ -200,11 +206,13 @@ Secondly, start to write a tsv file:
 TestSet |execute |usePreparedData |testDescription |id |method |params
 ---|---|---|---|---|---|---
 Eth_blockNumber smoke |x| | | | |
-  |x| |Send a Rpc request to the kernel; method is eth_blockNumber, params is an empty array |Eth_blockNumber-request |requestMethod.eth_blockNumber |[]
-  |x| |When get the response, check if the result is QUANTITY|Eth_blockNumber-valid|validFormat|[match,HEX]
+ BLANK|x| |Send a Rpc request to the kernel; method is eth_blockNumber, params is an empty array |Eth_blockNumber-request |requestMethod.eth_blockNumber |[]
+ BLANK|x| |When get the response, check if the result is QUANTITY|Eth_blockNumber-valid|validFormat|[match,HEX]
+
+*BLANK: A placeholder;to leave that field blank*
 
 * Save the file, in case the spreadsheet editor will auto reformat the file. Reopen the file in a plain text editor to double check if each field are separated by tab.
-* Go to `chaion_qa` folder, run “./ci_test_flexible.sh <new test name> < RPC connection type >”
+* Go to `qa-rpc` folder, run `./ci_test_flexible.sh <new test name> <RPC connection type>`
 
 #### Tutorial 2: Run RPC test with helper and validateFunc
 Here comes a test scenario that create local account, and send value from this account and check if the transaction succeeded:
@@ -227,16 +235,17 @@ Translate to steps in tsv file.
 TestSet |execute |usePreparedData |testDescription |id |method |params |runtimeVal |storeVariables |preStoreVariables
 ---|---|---|---|---|---|---|---|---|---
 Create a local account and receive and send value |x| | | | | | | |
- |x| |Create a paired keys with helper.createPKAccount |1|helper.createPKAccount|{}| | |Acc1= 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
- |x| |Check the balance of both the pre-mined account and new created account|2a|validationFunction.balanceValidate.pre|{from:_Acc1,to:_newCreateAccount,value: 20000000000000000}| | |
- |x| |Unlock the pre-mined account|2b|requestMethod.personal_unlockAccount|[_Acc1,password,10]| | |
- |x|x|Send the value to the new account|2c|requestMethod.eth_sendTransaction|[{}]| | |  
- |x| |Validate the transaction result|2d|validationFunction.balanceValidate.post| | | |
- |x| |Sign transaction local|3a|helper.prepareRawTx|{from:_newCreateAccount,to:_Acc1,value: 10000000000000000}| | |
- |x|x|Check the balance of both account|3b|validationFunction.balanceValidate.pre|{}| | |
- |x| |Send the signed transaction|3c|requestMethod.eth_sendRawTransaction|[_rawTx.rawTransaction]| | |
- |x| |Validate the transaction result|3d|validationFunction.balanceValidate.post| | | |
+ BLANK|x| |Create a paired keys with helper.createPKAccount |1|helper.createPKAccount|{}| | |Acc1= 0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+ BLANK|x| |Check the balance of both the pre-mined account and new created account|2a|validationFunction.balanceValidate.pre|{from:_Acc1,to:_newCreateAccount,value: 20000000000000000}| | |
+ BLANK|x| |Unlock the pre-mined account|2b|requestMethod.personal_unlockAccount|[_Acc1,password,10]| | |
+ BLANK|x|x|Send the value to the new account|2c|requestMethod.eth_sendTransaction|[{}]| | |  
+ BLANK|x| |Validate the transaction result|2d|validationFunction.balanceValidate.post| | | |
+ BLANK|x| |Sign transaction local|3a|helper.prepareRawTx|{from:_newCreateAccount,to:_Acc1,value: 10000000000000000}| | |
+ BLANK|x|x|Check the balance of both account|3b|validationFunction.balanceValidate.pre|{}| | |
+ BLANK|x| |Send the signed transaction|3c|requestMethod.eth_sendRawTransaction|[_rawTx.rawTransaction]| | |
+ BLANK|x| |Validate the transaction result|3d|validationFunction.balanceValidate.post| | | |
 
+*BLANK: A placeholder;to leave that field blank*
 
 ### availiable test cases:
 Under "test_cases" folder:
@@ -249,5 +258,6 @@ Under "test_cases" folder:
 - smoke-test: rpc smoke testcases
 
 For RPC normalization:
-- newRPCtests: update testcases to match the new RPC specifications
-- RPC_normalization_tests: the testcases aiming at the known differencies between the old rpc and new standards
+- newRPCtests: update testcases to match the new RPC specifications; will be used in the future
+- RPC_normalization_tests: the testcases aiming at the known differencies between the old rpc and new standards; will be used in the future
+
