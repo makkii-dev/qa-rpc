@@ -50,7 +50,7 @@ pipeline {
     }
      post{
             always {
-                archiveArtifacts artifacts: 'testlog/*.txt,testReport/*.xml', fringerprint:true
+                archiveArtifacts artifacts: 'testlog/*.txt,testReport/*.xml', fingerprint:true
                 junit 'testReport/*.xml'
             }
 
