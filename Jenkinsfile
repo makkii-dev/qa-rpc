@@ -17,33 +17,40 @@ pipeline {
             steps {
                 echo 'test node'
                 sh 'node --version'
-                echo 'set up dependencies..'
-                sh './installDependencies'
+
+                script{
+                    try{
+                        //sh 'set -o pipefail'
+                        echo 'set up dependencies..'
+                        sh './installDependencies.sh'
+                    }catch(e){
+                        echo "ignore missing dependencies"
+                    }
+                }
             }
         }
 
         stage("get Aionr"){
-          when{
-            expression {return ${kernel_type} == "aionr"}
-          }
+
           steps{
             sh 'mkdir kernels || echo "kernels folder exist"'
-            sh "cp ${kernel_src} kernels/aionr"
+            sh "cp -R ${kernel_src} kernels/aionr"
             dir('kernels/aionr'){
               echo 'remove custom database'
-              sh './custom.sh db kill'
+              sh './custom.sh db kill || echo "no database"'
             }
           }
         }
         stage('Test') {
-            when{
-                expression {return ${run_mode} == "normal"}
-            }
-            steps {
-               sh 'files=(smoke-test,AMO,TXTC,FTTC,bugs,precompile,avm)'
-               sh 'types=(http)'
 
-               sh './ci_test_flexiable.sh $files $types aionr'
+            steps {
+               sh './ci_test_flexible.sh -h'
+               sh './ci_test_flexible.sh smoke-test,AMO,TXTC,FTTC,bugs,precompile,avm http aionr'
+            }
+        }
+        stage('clean test workspace'){
+            steps{
+                sh 'rm -r kernels'
             }
         }
 

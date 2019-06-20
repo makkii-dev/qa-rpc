@@ -1,6 +1,4 @@
-
 #！/bin/bash
-## ./ci_test_flexible.sh "${file[@]}" "${type[@]}" false
 
 
 if [ "$1" == "-h" ] ; then
@@ -17,7 +15,7 @@ else
 
 		for t in "${types[@]}"; do
 			if [ "$3" == "aion" ] ; then
-				./node_modules/mocha/bin/mocha testApp_190408_aion.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts
+				./node_modules/mocha/bin/mocha testApp_190408_aion.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts --reporter mocha-junit-reporter --reporter-options mochaFile=testReport/"$f"-"$t"-$(date +%y%m%d%H%M).xml
 			else
 				./node_modules/mocha/bin/mocha testApp_190408.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts --reporter mocha-junit-reporter --reporter-options mochaFile=testReport/"$f"-"$t"-$(date +%y%m%d%H%M).xml
 			fi
