@@ -21,7 +21,7 @@ Smoke eth_getBalance	x
 	x		get balance for the earliest block	Smoke-8-earliest	requestMethod.eth_getBalance	[_testAcc,earliest]			
 	x		validate response eariltest block	Smoke-8-earliest-vali	validFormat	[match,HEX]			
 	x		get balance for the pending block	Smoke-8-pending	requestMethod.eth_getBalance	[_testAcc,pending]			
-	xx		validate response pending block	Smoke-8-pending-vali	validFormat	[match,HEX]			
+	x		validate response pending block	Smoke-8-pending-vali	validFormat	[match,HEX]			
 	x		get balance for the number block	Smoke-8-number	requestMethod.eth_getBalance	[_testAcc,0]			
 	x		validate response the number block	Smoke-8-number-vali	validFormat	[match,HEX]			
 									
@@ -91,14 +91,14 @@ smoke personal_lockAccount and UnlockAccount	x
 	x		Pre-step: validate response to make sure the account is unlocked	Smoke-36-vali	validFormat	[equal,true]			
 	x		lock an account with invalid password	Smoke-38-invalid-ps	requestMethod.personal_lockAccount	[_testAcc,wrong]			
 	x		validate response	Smoke-38-invalid-ps-vali	validFormat	[equal,false]			
-	x		wait until the account is locked	helper	helper.delay	[5]			
+	x		wait until the account is locked	helper	helper.delay	[6]			
 	x		try to send a transaction to check if account is locked	Smoke-38-invalid-ps-tx	requestMethod.eth_sendTransaction	[{from:_testAcc,value:0x1}]			
 	x		validate response	Smoke-38-invalid-ps-tx-vali	validFormat	[error]			
 	x		lock an account missing one params	Smoke-38-miss-param	requestMethod.personal_lockAccount	[_testAcc]			
 	x		validate response	Smoke-38-miss-param-vali	validFormat	[error]			
 	x		lock an account with account not in system	Smoke-38-invalid-acc	requestMethod.personal_lockAccount	[0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2d,password]			
 	x		validate response	Smoke-38-invalid-acc-vali	validFormat	[equal,false]			
-	x		wait for 25 second	Smoke-help	helper.delay	[5]			
+	x		wait for 25 second	Smoke-help	helper.delay	[6]			
 	x		try to send a transaction to check if account is locked	Smoke-38-invalid-ps-tx	requestMethod.eth_sendTransaction	[{from:_testAcc,value:0x1}]			
 	x		validate response	Smoke-38-invalid-ps-tx-vali	validFormat	[error]			
 	x		unlock account with wrong password	Smoke-43-wrong	requestMethod.personal_unlockAccount	[_testAcc,wrong,100]			
@@ -129,18 +129,18 @@ smoke personal_sendTransaction
 	x		post-validation: compare the balance of the accounts after the operation	Ssmoke-40-custom-gasPrice-post-vali	validationFunction.balanceValidate.post				
 									
 smoke personal_sign(not supported by aion java)									
-smoke eth_sign 									
-			Pre-step: Rpc request to unlock account to sign	smoke-30-pre	requestMethod.personal_unlockAccount	[_acc1,password,60]			acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
-			sign a message	Smoke-30	requestMethod.eth_sign	[_acc1,0x123456]			
-			validate response for sign a message	Smoke-30-vali	validFormat	[matches,BINARY]			
-			sign a message with invalid password	Smoke-30-locked-account	requestMethod.eth_sign	[_acc2,0x123456]			
-			validate response for sign a message with invalid password	Smoke-30-locked-account-vali	validFormat	[error]			
-			sign a message missing param	Smoke-30-miss-param	requestMethod.eth_sign	[_acc1]			
-			validate response for sign a message	Smoke-30-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
-			sign an invalid encoded message	Smoke-30-invalid-msg	requestMethod.eth_sign	[_acc1,0x12345]			
-			validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
-			sign an invalid encoded message	Smoke-30-invalid-msg	requestMethod.eth_sign	[_acc1,1]			
-			validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+smoke eth_sign 	x								
+	x		Pre-step: Rpc request to unlock account to sign	smoke-30-pre	requestMethod.personal_unlockAccount	[_acc1,password,60]			acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
+	x		sign a message	Smoke-30	requestMethod.eth_sign	[_acc1,0x123456]			
+	x		validate response for sign a message	Smoke-30-vali	validFormat	[matches,BINARY]			
+	x		sign a message with invalid password	Smoke-30-locked-account	requestMethod.eth_sign	[_acc2,0x123456]			
+	x		validate response for sign a message with invalid password	Smoke-30-locked-account-vali	validFormat	[error]			
+	x		sign a message missing param	Smoke-30-miss-param	requestMethod.eth_sign	[_acc1]			
+	x		validate response for sign a message	Smoke-30-miss-param-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+	x		sign an invalid encoded message	Smoke-30-invalid-msg	requestMethod.eth_sign	[_acc1,0x12345]			
+	x		validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
+	x		sign an invalid encoded message	Smoke-30-invalid-msg	requestMethod.eth_sign	[_acc1,1]			
+	x		validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
 									
 smoke personal_signTransaction(not support by aion java), eth_signTransaction and eth_sendRawTransaction	x								
 			sign a transaction using personal_signTx	Smoke-42	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>txRaw,result.tx.hash=>computeTxHash,result.tx=>tx	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
@@ -152,7 +152,7 @@ smoke personal_signTransaction(not support by aion java), eth_signTransaction an
 			validate response	smoke-19-p-raw-vali	validFormat	[matches,VALID_TX]			
 			post-validation: compare the balance of the accounts after the operation	Smoke-42-28-post	validationFunction.balanceValidate.post				
 	x		unlock account to sign a tx using eth_sign	Smoke-pre-43	requestMethod.personal_unlockAccount	[_acc1,password,240]			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
-	x		sign a transaction using eth_signTransaction	Smoke-31	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:100,gas:21000,gasPrice:100000000000}]		result.raw=>txRaw,result.tx.hash=>computeTxHash,result.tx=>tx	
+	x		sign a transaction using eth_signTransaction	Smoke-31	requestMethod.eth_signTransaction	[{from:_acc1,to:_acc2,value:0x64,gas:0x5208,gasPrice:0x174876e800}]		result.raw=>txRaw,result.tx.hash=>computeTxHash,result.tx=>tx	
 	x		validate response-eth_signTx	Smoke-31-vali	validFormat	[matches,VALID_SIGN_TRANSACTION]			
 	x		Pre-validation: restore the balance of the accounts before operation	Smoke-31-28-pre	validationFunction.balanceValidate.pre	_tx			
 	x		send the signed transaction to avoid nonce gap issue	Smoke-28-frompsigntx	requestMethod.eth_sendRawTransaction	[_txRaw]			

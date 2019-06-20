@@ -1,10 +1,10 @@
 {
-  "miner":"/home/aion/Downloads/aionminer",
+  "miner":"/run/aionminer",
   "aionr":{
-    "dir":"/home/aion/miao_ws/aionr_dev_may/package/aionr-0.2.3-20190602",
-    "db":"/home/aion/.aion/chains"
+    "dir":"/run/.jenkins/workspace/rpc-qa/kernels/aionr",
+    "db":"/root/.aion/chains"
   },
   "aion": {
-    "dir":"/home/aion/miao_ws/aion"
+    "dir":"/run/.jenkins/workspace/rpc-qa/kernels/aion"
     }
 }
