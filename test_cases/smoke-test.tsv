@@ -228,6 +228,7 @@ smoke eth_getTransactionCount 	x
 	x		unlock the new Account	Smoke-20-Unlock-new	requestMethod.personal_unlockAccount	[_newAccount,password,120]			
 	x		send transaction using new account by eth_sendTransaction	Smoke-20-eth_sendtx	requestMethod.eth_sendTransaction	[{from:_newAccount,to:_acc1,value:10}]			
 smoke eth_sendTransaction	x	x							
+	x		unlock account to send tx	Smoke-20-prepare-coin-newAcc-unlock	requestMethod.personal_unlockAccount	[_acc1,password,10]			
 	x		sign a transaction using eth_signTransaction	Smoke-20-presignedtx	requestMethod.eth_signTransaction	[{from:_newAccount,to:_acc1,value:0x10}]		result.raw=>rawTx	
 	x		send signed transaction	Smoke-20-sendsignedtx	requestMethod.eth_sendRawTransaction	[_rawTx]		result=>txHash	
 	x		get receipt	Smoke-20-wait-lasttx-mined	requestMethod.eth_getTransactionReceipt	[_txHash]			
@@ -236,6 +237,7 @@ smoke eth_sendTransaction	x	x
 	x		get tx count for the new account at startBlock #	Smoke-20-startblock	requestMethod.eth_getTransactionCount	[_newAccount,_startBlock]			
 	x		validate response for eth_txCount at startBlock #	Smoke-20-startblock-vali	validFormat	[equal,0x0]			
 smoke eth_getTransactionCount – easlist, pending	x	x							
+	x		unlock account to send tx	Smoke-20-prepare-coin-newAcc-unlock	requestMethod.personal_unlockAccount	[_acc1,password,10]			
 	x		get tx count for the new account at startBlock #	Smoke-20-pending	requestMethod.eth_getTransactionCount	[_newAccount,pending]			
 	x		validate response for eth_txCount at startBlock #	Smoke-20-pending-vali	validFormat	[equal,0x2]			
 	x		get tx count for the new account at startBlock #	Smoke-20-earliest	requestMethod.eth_getTransactionCount	[_newAccount,earliest]			
@@ -349,12 +351,12 @@ Smoke mining pool:	x
 	x		validate response	Smoke-getBlockTemplate-emptyObj-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
 	x		Smoke-other-9	Smoke-getHeader	requestMethod.getHeaderByBlockNumber	[_headerHeight]			
 	x		validate response	Smoke-getHeader-vali	validFormat	[matches,VALID_BLOCK_HEADER]			
-	x		Helper – remove 0x prefix	helper	helper.data0xPrefix	[false,headerNonce,solution,headerHash]			
-	x		Smoke-other-10	Smoke-submit-block-no-0x	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
-	x		validate response	Smoke-submit-block-no-0x-vali	validFormat	[equal,true]			
-	x		Helper – add 0x prefix	helper	helper.data0xPrefix	[true,headerNonce,solution,headerHash]			
-	x		Smoke-other-11	Smoke-submit-block-0x	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
-	x		validate response	Smoke-submit-block-0x-vali	validFormat	[equal,true]			
+			Helper – remove 0x prefix	helper	helper.data0xPrefix	[false,headerNonce,solution,headerHash]			
+			Smoke-other-10	Smoke-submit-block-no-0x	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
+			validate response	Smoke-submit-block-no-0x-vali	validFormat	[equal,true]			
+			Helper – add 0x prefix	helper	helper.data0xPrefix	[true,headerNonce,solution,headerHash]			
+			Smoke-other-11	Smoke-submit-block-0x	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
+			validate response	Smoke-submit-block-0x-vali	validFormat	[equal,true]			
 									
 									
 									
