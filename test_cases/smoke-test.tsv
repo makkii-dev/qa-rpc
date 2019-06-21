@@ -227,16 +227,16 @@ smoke eth_getTransactionCount 	x
 	x		get current blockNumber	Smoke-20-get-current blocknumber	requestMethod.eth_blockNumber	[]		result=>startBlock	
 	x		unlock the new Account	Smoke-20-Unlock-new	requestMethod.personal_unlockAccount	[_newAccount,password,120]			
 	x		send transaction using new account by eth_sendTransaction	Smoke-20-eth_sendtx	requestMethod.eth_sendTransaction	[{from:_newAccount,to:_acc1,value:10}]			
-smoke eth_sendTransaction	x	x							
+smoke eth_sendTransaction		x							
 	x		unlock account to send tx	Smoke-20-prepare-coin-newAcc-unlock	requestMethod.personal_unlockAccount	[_acc1,password,10]			
 	x		sign a transaction using eth_signTransaction	Smoke-20-presignedtx	requestMethod.eth_signTransaction	[{from:_newAccount,to:_acc1,value:0x10}]		result.raw=>rawTx	
 	x		send signed transaction	Smoke-20-sendsignedtx	requestMethod.eth_sendRawTransaction	[_rawTx]		result=>txHash	
 	x		get receipt	Smoke-20-wait-lasttx-mined	requestMethod.eth_getTransactionReceipt	[_txHash]			
 	x		get tx count for the new account at current block #	Smoke-20-latest	requestMethod.eth_getTransactionCount	[_newAccount,latest]			
-	x		validate response for eth_txCount	Smoke-20-latest-vali	validFormat	[equal,0x2]			
-	x		get tx count for the new account at startBlock #	Smoke-20-startblock	requestMethod.eth_getTransactionCount	[_newAccount,_startBlock]			
-	x		validate response for eth_txCount at startBlock #	Smoke-20-startblock-vali	validFormat	[equal,0x0]			
-smoke eth_getTransactionCount – easlist, pending	x	x							
+			validate response for eth_txCount	Smoke-20-latest-vali	validFormat	[equal,0x2]			
+			get tx count for the new account at startBlock #	Smoke-20-startblock	requestMethod.eth_getTransactionCount	[_newAccount,_startBlock]			
+			validate response for eth_txCount at startBlock #	Smoke-20-startblock-vali	validFormat	[equal,0x0]			
+smoke eth_getTransactionCount – easlist, pending		x							
 	x		unlock account to send tx	Smoke-20-prepare-coin-newAcc-unlock	requestMethod.personal_unlockAccount	[_acc1,password,10]			
 	x		get tx count for the new account at startBlock #	Smoke-20-pending	requestMethod.eth_getTransactionCount	[_newAccount,pending]			
 	x		validate response for eth_txCount at startBlock #	Smoke-20-pending-vali	validFormat	[equal,0x2]			
