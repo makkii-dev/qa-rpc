@@ -9,7 +9,7 @@ var process = require('process');
 const fs = require('fs');
 
 //test arguements variables
-var DRIVER_PATH = "./test_cases/new.tsv";
+var DRIVER_PATH = "./test_cases/smoke-test.tsv";
 var provider_type;
 
 // internal dependencies
@@ -30,7 +30,7 @@ var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
 var runMethod = it;
 
-var paramsParser = require("./libs/utils/parsers");
+var paramsParser = require("./libs/utils/parsers-hexify");
 var RequestMethod = require("./libs/utils/requestMethod");
 
 // get minier and kernel process builder
@@ -57,7 +57,7 @@ function formParam(str,currentMethod){
 		return [contract];
 	}
 
-	var result = paramsParser(str,RUNTIME_VARIABLES);
+	var result = paramsParser(str,RUNTIME_VARIABLES,currentMethod);
 	//console.log(JSON.stringify(result));
 	return result;
 }

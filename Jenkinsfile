@@ -44,19 +44,26 @@ pipeline {
         stage('Test') {
 
             steps {
+               script{
+                   try{
+                       sh 'rm -rf testlog testReport'
+                   }catch(e){
+                       echo 'no previous test log and resport'
+                   }
+               }
+
                sh './ci_test_flexible.sh -h'
-               sh './ci_test_flexible.sh smoke-test,AMO,TXTC,FTTC,bugs,precompile,avm http aionr'
+               sh "./ci_test_flexible.sh ${test_cases} ${test_socket} aionr"
             }
         }
-        stage('clean test workspace'){
-            steps{
-                sh 'rm -r kernels'
-            }
-        }
+      
 
     }
      post{
             always {
+                script{
+                  sh 'rm -r kernels'
+                }
                 archiveArtifacts artifacts: 'testlog/*.txt,testReport/*.xml', fingerprint:true
                 junit 'testReport/*.xml'
             }

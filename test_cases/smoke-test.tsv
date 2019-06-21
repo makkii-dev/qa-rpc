@@ -121,7 +121,7 @@ smoke eth_newAccount	x
 	x		check if new account listed in the system using personal_listAccounts	Smoke-37	requestMethod.personal_listAccounts	[]			
 	x		validate response of checking if new account listed in the system using personal_listAccounts	Smoke-37-vali	validFormat	[contains,_newAccount]			
 									
-smoke personal_sendTransaction	x								
+smoke personal_sendTransaction									
 	x		Pre-validation: restore the balance of the accounts before operation	Smoke-40-pre-vali	validationFunction.balanceValidate.pre	{from:_acc1,to:_acc2,value:123123123123}			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x	x	unlock the sender’s account for one time use and send the a transaction	Smoke-40	requestMethod.personal_sendTransaction	[{},password]			
 	x		post-validation: compare the balance of the accounts after the operation	Smoke-40-post-vali	validationFunction.balanceValidate.post				
@@ -155,7 +155,7 @@ smoke eth_sign required smoke personal_sign	x	x
 	x		validate response for sign a message	Smoke-30-invalid-msg-vali	validFormat	[error,PARAMS_FORMAT_ERROR]			
 	x		validate response or eth_sendRawTransaction	Smoke-28-frompsigntx-vali	validFormat	[equal,_computeTxHash]			
 									
-smoke personal_signTransaction, eth_signTransaction and eth_sendRawTransaction	x								
+smoke personal_signTransaction, eth_signTransaction and eth_sendRawTransaction									
 	x		sign a transaction using personal_signTx	Smoke-42	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:100},password]		result.raw=>txRaw,result.tx.hash=>computeTxHash,result.tx=>tx	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate response-personal_signTx	Smoke-42-vali	validFormat	[matches,VALID_SIGN_TRANSACTION]			
 	x		Pre-validation: restore the balance of the accounts before operation	Smoke-42-28-pre	validationFunction.balanceValidate.pre	_tx			
@@ -186,13 +186,13 @@ smoke net module_solo node	x
 	x		check net version	Smoke-46	requestMethod.net_version	[]			
 	x		validate response for net_version	Smoke-46-vali	validFormat	[match,STRING]			
 									
-smoke other module	x								
+smoke other module									
 	x		check available rpc modules	Smoke-47	requestMethod.rpc_modules	[]			
 	x		validate response for rpc_modules	Smoke-47-vali	validFormat	[match,RPC_MODULES]			
 	x		check web client version	Smoke-49	requestMethod.web3_clientVersion	[]			
 	x		validate response for web3_clientVersion	Smoke-49-vali	validFormat	[equal,Aion(R)/v0.2.5.a60ae38/x86_64-linux-gnu/rustc-1.28.0]			
 									
-smoke contract related methods	x								
+smoke contract related methods									
 	x		compile contract	Smoke-5	requestMethod.eth_compileSolidity	recursive.sol			acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
 	x		validate response for compile contract	Smoke-5-vali	validFormat	[contract]			
 	x		helper function to compose the contract	helper	helper.newContract	[Recursive]			
@@ -255,7 +255,7 @@ smoke filter:eth_newBlockFilter
 	x		Get uninstalled block filter changes by calling eth_getFilterChanges	Smoke-15-removed	requestMethod.eth_getFilterChanges	[_filterID]			
 	x		validate response for eth_filterChanges	Smoke-15-removed-vali	validFormat	[length,0]			
 									
-smoke filter:eth_newPendingTx	x								
+smoke filter:eth_newPendingTx									
 	x		create a newPendingTransactionFilter	Smoke-26	requestMethod.eth_newPendingTransactionFilter	[]		result=>filterID	acc1=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334,acc2=0xa00a2d0d10ce8a2ea47a76fbb935405df2a12b0e2bc932f188f84b5f16da9c2c
 	x		validate response for eth_newPendingTransactionFilter	Smoke-26-vali	validFormat	[match,HEX]			
 	x		sign a tx 1	Smoke-26-personalsigntx1	requestMethod.personal_signTransaction	[{from:_acc1,to:_acc2,value:1},password]		result.raw=>rawTx1	

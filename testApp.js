@@ -30,8 +30,8 @@ var _ = chaiMatchPattern.getLodashModule();
 var RLP = require("rlp");
 var runMethod = it;
 
-var paramsParser = require("./libs/utils/parsers");
-//var paramsParser = require("./libs/utils/parsers-hexify")
+//var paramsParser = require("./libs/utils/parsers");
+var paramsParser = require("./libs/utils/parsers-hexify")
 var RequestMethod = require("./libs/utils/requestMethod");
 
 
@@ -53,7 +53,7 @@ function formParam(str,currentMethod){
 		return [contract];
 	}
 
-	var result = paramsParser(str,RUNTIME_VARIABLES);
+	var result = paramsParser(str,RUNTIME_VARIABLES,currentMethod);
 	//var result = paramsParser(str, RUNTIME_VARIABLES,  currentMethod);
 	console.log(JSON.stringify(result));
 	return result;
