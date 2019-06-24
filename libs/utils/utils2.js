@@ -477,6 +477,14 @@ function getTxReceipt(txHash,provider,timeout){
 }
 
 
+function avmTypeFormater(inputType){
+  var result = inputType;
+  if(inputType.endsWith("Array")){
+    result = inputType.substring(0,inputType.length-5)+"[]";
+  }
+  return result;
+}
+
 
 var Utils={
 
@@ -516,7 +524,9 @@ var Utils={
 	getEvent:getEvent,
 	getEncodeTx:getEncodeTx,
 	getEvtData:getEvtData,
-  encoder:encoder
+  encoder:encoder,
+
+  avmTypeFormater:avmTypeFormater
 }
 
 module.exports = Utils;

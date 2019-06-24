@@ -1,4 +1,4 @@
- 	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
 smoke avm deploy storages contract	x								
 	x		prepare a avm contract named jdk11/RemovedStorageTest.jar	RemovedStorageTest_prepare	helper.newAVMContract	[testContracts/jdk11/RemovedStorageTest.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
 	x		unlock test account	RemovedStorageTest_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
@@ -16,7 +16,7 @@ Put [] for storage	x	x
 	x		get rpt	validateStoragePreviousTxLength_rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
 	x		validate rpt status	validateStoragePreviousTxLength_rpt_validate	validFormat	[equal,0x1,status]			
 Put[0] for storage	x	x							
-	x		prepare putStorageLengthOne main function	putStorageLengthOne_prepare	helper.callAVMMethod	[putStorageLengthZero]			
+	x		prepare putStorageLengthOne main function	putStorageLengthOne_prepare	helper.callAVMMethod	[putStorageLengthOne]			
 	x		unlock test account	RemovedStorageTest_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
 	x	x	send putStorageLengthOne	putStorageLengthOne_send	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
 	x		get receipt	putStorageLengthOne_rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
@@ -50,4 +50,14 @@ putStorageAddress	x	x
 	x		prepare validateStoragePreviousTxLength	putStorageLengthOne_prepare-vali	helper.callAVMMethod	[validateStoragePreviousTxLength,[int],[32]]			
 	x	x	send validateStoragePreviousTxLength	validateStoragePreviousTxLength_send	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
 	x		get rpt	validateStoragePreviousTxLength_rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate rpt status	validateStoragePreviousTxLength_rpt_validate	validFormat	[equal,0x1,status]			
+setStorageSameKey	x	x							
+	x		prepare setStorageSameKey main function	setStorageSameKey_prepare	helper.callAVMMethod	[setStorageSameKey,[byteArray],[[0xff,0xff,0xff,0xff]]]			
+	x		unlock test account	setStorageSameKey_prepare	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	Send setStorageSameKey	setStorageSameKey_send	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x		get receipt	setStorageSameKey_rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate rpt status	setStorageSameKey_rpt_validate	validFormat	[equal,0x1,status]			
+	x		prepare getStorageOneKey	getStorageOneKey_prepare-vali	helper.callAVMMethod	[getStorageOneKey,[int],[4]]			
+	x	x	send getStorageOneKey	getStorageOneKey_send	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x		get rpt	getStorageOneKey_rpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
 	x		validate rpt status	validateStoragePreviousTxLength_rpt_validate	validFormat	[equal,0x1,status]			
