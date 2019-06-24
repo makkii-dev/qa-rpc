@@ -112,8 +112,9 @@ function defineProperty(object, name, value) {
 }
 
 function padZeros(value, length) {
+  console.log(value);
     value = arrayify(value);
-
+console.log(value);
     if (length < value.length) { throw new Error('cannot pad'); }
 
     var result = Buffer.alloc(length);
