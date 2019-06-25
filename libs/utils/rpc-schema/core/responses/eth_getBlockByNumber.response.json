@@ -1,10 +1,9 @@
 {
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "response.json",
-
     "title": "eth_getBlockByNumber response",
     "description": "Returns information about a block by block number.",
 
-    "type": "object",
     "additionalProperties": false,
     "required": [
         "number", "hash", "parentHash", "nonce", "logsBloom", "transactionsRoot", "stateRoot", "receiptsRoot", "miner", "difficulty", "totalDifficulty", "extraData", "size", "nrgLimit", "nrgUsed", "gasLimit", "gasUsed", "timestamp", "transactions", "solution"
@@ -175,8 +174,34 @@
               "timestamp": "0x5c8c04f9"
             }
           ],
-          "solution": "0x006521b29b"
-        }
+          "solution": "0x00909090909090"
+        },
+        {
+
+            "number": "0x28cce9",
+            "hash": "0x",
+            "parentHash": "0xc1e7987aedf107c81b663ce7d092251dddca6c5e2c37e07e2d937b7db0cc6108",
+            "nonce": "0x000000000000000000000000c001b43b00000000000000006437700000000000",
+            "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000001000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440000000000000000000000000000000000000000000000000000000000000001000000000000000",
+            "transactionsRoot": "0xcf105253fc2f325a908abd66cfb200f3dfb58f401c58751e64186af97d5202ac",
+            "stateRoot": "0x1dd00fa0fd6b1635e54dbee33d5ce19454bfb948d5027f5a989dfb4cd46fee99",
+            "receiptsRoot": "0x9417d2515d3656d3aaf316506bf8afcb740759de5d23cd6538ba8269486d88aa",
+            "miner": "0xa0f9f5d4925501974403b34226bbf01eceba58582719c5744f86880959c052d2",
+            "difficulty": "0x8a4214",
+            "totalDifficulty": "0x1d598faf9420",
+            "extraData": "0x4c55584f52000000000000000000000000000000000000000000000000000000",
+            "size": "0x84a",
+            "nrgLimit": "0xe4b058",
+            "nrgUsed": "0x7c1e",
+            "gasLimit": "0xe4b058",
+            "gasUsed": "0x7c1e",
+            "timestamp": "0x5c8c04f9",
+            "transactions": [
+              "0xc1e7987aedf107c81b663ce7d092251dddca6c5e2c37e07e2d937b7db0cc6108"
+            ],
+            "solution": "0x00909090909090"
+          }
+
 
     ]
 }

@@ -1,5 +1,5 @@
 {
-    
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "type.json",
 
     "definitions": {
@@ -44,7 +44,7 @@
         "QUANTITY": {
             "type": "string",
             "minLength": 3,
-            "pattern": "^0x[0-9a-fA-F]*$",
+            "pattern": "^0x[0-9a-fA-F]+$",
             "description": "When encoding a QUANTITY (integers, numbers): encode as hex, prefix with \"0x\", the most compact representation (slight exception: zero should be represented as \"0x0\").",
             "examples": [
                 "0x41",
