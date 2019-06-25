@@ -1,0 +1,80 @@
+{
+    
+    "$id": "object.json",
+    "definitions": {
+        "TRANSACTION": {
+          "type":"object",
+          "description": "Transaction object in RPC response.",
+          "required":[
+            "blockNumber","from","gas","gasPrice","hash","input","nonce","nrg","nrgPrice","timestamp","transactionIndex","to","value"
+          ],
+          "properties":{
+            "blockNumber":{
+              "anyOf":[
+                  {"$ref":"type.json#/definitions/QUANTITY"},
+                  {"type":"null"}
+                ],
+              "description": "number of the block where this transaction was in. `null` when its pending"
+            },
+            "from":{
+              "$ref":"type.json#/definitions/ADDRESS",
+              "description":"address of the sender"
+            },
+            "gas":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas limit of this transaction"
+            },
+            "gasPrice":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas price of this transaction"
+            },
+            "hash":{
+              "$ref":"type.json#/definitions/DATA32",
+              "description": "The hash of this transaction"
+            },
+            "input":{
+              "$ref":"type.json#/definitions/DATA",
+              "description":"The data in the transaction"
+            },
+            "nonce":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "the number of transactions made by the sender prior to this one"
+            },
+            "nrg":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas limit of this transaction"
+            },
+            "nrgPrice":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas price of this transaction"
+            },
+            "timestamp":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"the unix timestamp for when the transaction was sent, in seconds"
+            },
+            "transactionIndex":{
+              "anyOf":[
+                {"$ref":"type.json#/definitions/QUANTITY"},
+                {"type":"null"}
+              ],
+              "description":"the transaction index in current block"
+            },
+            "to":{
+              "anyOf":[
+                {"$ref":"type.json#/definitions/ADDRESS"},
+                {"type":"null"}
+              ],
+              "description":"address of the receiver. null when its a contract creation transaction"
+            },
+            "value":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"the transfered value"
+            }
+          }
+        },
+
+        "LOG":{
+
+        }
+      }
+}
