@@ -59,7 +59,10 @@
         "ADDRESS":{
           "type":"string",
           "pattern":"0x[aA]0([0-9a-fA-F][0-9a-fA-F]){31}$",
-          "discription":"Data that presents Aion address starting with \"0xa0\"."
+          "discription":"Data that presents Aion address starting with \"0xa0\".",
+          "examples":[
+            "0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334"
+          ]
         }
     }
 }

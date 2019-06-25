@@ -42,10 +42,10 @@ test_data.getBlockByNumber_response.forEach((example,index)=>{
 
 
 test_data.getBlockByNumber_request.forEach((example,index)=>{
-  // console.log(example);
-  console.log(typeof example);
-  if(!ajv.validate("request.json",example.result)){
-    console.log("\n validation failed:")
+   console.log(example);
+
+  if(!ajv.validate("request.json",example)){
+    console.log("\nx_x|| validation failed:")
     console.log(ajv.errors);
   }else{
     console.log(":) passed schema validation")
