@@ -14,6 +14,7 @@
                 "0x"
             ]
         },
+
         "DATA32": {
             "type": "string",
             "minLength": 66,
@@ -55,14 +56,6 @@
             "type": "string",
             "enum": ["latest", "earliest", "pending"],
             "description": "Some methods have an extra default block parameter; for instance, eth_getBalance or eth_getTransactionCount.  When requests are made that act on the state of an Aion blockchain, the default block parameter determines the height of the block. This parameter uses the data type, TAG."
-        },
-        "ADDRESS":{
-          "type":"string",
-          "pattern":"0x[aA]0([0-9a-fA-F][0-9a-fA-F]){31}$",
-          "discription":"Data that presents Aion address starting with \"0xa0\".",
-          "examples":[
-            "0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334"
-          ]
         }
     }
 }

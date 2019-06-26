@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getTransactionCount.request.json",
+    "title": "eth_getTransactionCount request parameters",
+    "description": "Returns the receipt of a transaction by transaction hash",
+
+
+    "additionalItems": false,
+    "items": [
+      {
+        "$ref":"type.json#/definitions/DATA32",
+        "description":"hash of a transaction"
+      }
+    ],
+
+    "maxItems": 1,
+
+    "examples": [
+      [
+        "0x8571465914fca68c39dfd127a3a429856fccc9e121ccfc276ced4f95f3331831"
+      ]
+	 ]
+}

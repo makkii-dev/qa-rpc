@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_gasPrice.request.json",
+    "title": "eth_gasPrice request parameters",
+    "description": "Returns the current price per gas in nAmps",
+
+    "additionalItems": false,
+    "items":[],
+    "maxItems": 0,
+
+    "examples": [
+      []
+	]
+}

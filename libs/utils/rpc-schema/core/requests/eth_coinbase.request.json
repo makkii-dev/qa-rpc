@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_coinbase.request.json",
+    "title": "eth_coinbase request parameters",
+    "description": "Returns the client coinbase address.",
+
+    "additionalItems": false,
+    "items":[],
+    "maxItems": 0,
+
+    "examples": [
+      []
+	]
+}

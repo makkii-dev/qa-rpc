@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getLogs.request.json",
+    "title": "eth_getLogs request parameters",
+    "description": "Returns an array of all logs matching a given filter object.",
+
+    "additionalItems": false,
+    "items":[
+      {
+        "$ref":"object.json#/definitions/FILTER"
+      }
+    ],
+
+    "maxItems": 1,
+
+    "examples": [
+      ["0x0"],
+      ["0x3a"]
+	]
+}

@@ -1,0 +1,10 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getLogs.response.json",
+    "title": "eth_getLogs response results",
+    "description": "Returns an array of all logs matching a given filter object.",
+
+    "additionalItems":false,
+    "$ref":"eth_getFilterChanges.response.json"
+
+}

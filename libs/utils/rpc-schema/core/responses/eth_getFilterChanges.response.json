@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getFilterChanges.response.json",
+    "title": "eth_getFilterChanges response results",
+    "description": "Polling method for a filter, which returns an array of logs which occurred since last poll.",
+
+    "additionalItems":false,
+    "items":{
+      "oneOf":[
+        {
+          "$ref":"type.json#/definitions/DATA32",
+          "description":"Block hash for filter created with eth_newBlockFilter; transaction hash for filter created with eth_newPendingTransactionFilter"
+        },{
+          "$ref":"object.json#/definitions/LOG",
+          "description":"log object for filter created with eth_newFilter"
+        }
+      ]
+    },
+
+
+    "examples": [
+      [
+        {
+          "blockHash": "0xf4dccf26fcfc3893b0a38cde4e4694b8c9279e1cd4a94d6eb21f039efd76ccb2",
+          "logIndex": "0x0",
+          "address": "0xa01296dd95f309110aef8ffbd3ce551d3081d08afeb12206b077ba4cd494a8d9",
+          "removed": false,
+          "data": "0x",
+          "topics": [
+            "0x67eeaf805d3ba71d5d1df73b5f05e3249852980c184ea5611bb188b3b2265d28",
+            "0x0000000000000000000000000000000000000000000000000000000000000539",
+            "0x23b22795e3b013308903cff5d6637f761a15b7075a6b5e0e167d821e8831a93d"
+          ],
+          "blockNumber": "0x24b5",
+          "transactionIndex": "0x0",
+          "transactionHash": "0xfb155778c1be20834a797361f8bc2866661ff3d85d36560bb38f44277065fb74"
+        }
+      ],
+      ["0xf4dccf26fcfc3893b0a38cde4e4694b8c9279e1cd4a94d6eb21f039efd76ccb2"]
+	   ]
+
+}

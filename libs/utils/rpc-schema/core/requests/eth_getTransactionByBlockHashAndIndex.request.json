@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getTransactionByBlockHashAndIndex.request.json",
+    "title": "eth_getTransactionByBlockHashAndIndex request parameters",
+    "description": "Returns information about a transaction by block hash and transaction index position.",
+
+    "additionalItems": false,
+    "items":[
+      {
+        "$ref":"type.json#/definitions/DATA32",
+        "description":"hash of a block"
+      },{
+        "$ref":"type.json#/definitions/QUANTITY",
+        "description":"integer of the transaction index position"
+      }
+    ],
+
+
+    "maxItems": 2,
+
+    "examples": [
+      [
+          "0x49dc23204e4b0afcc0c43461777d13b67fbb77979d98c7f637adfed9086fb465",
+          "0x6"
+      ]
+	]
+}

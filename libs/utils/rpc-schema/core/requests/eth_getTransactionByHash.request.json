@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getTransactionByHash.request.json",
+    "title": "eth_getTransactionByHash request parameters",
+    "description": "Returns information about a transaction requested by transactioin hash.",
+
+    "additionalItems": false,
+    "items":[
+      {
+        "$ref":"type.json#/definitions/DATA32",
+        "description":"hash of a transaction"
+      },
+    ],
+
+
+    "maxItems": 1,
+
+    "examples": [
+      [
+          "0x49dc23204e4b0afcc0c43461777d13b67fbb77979d98c7f637adfed9086fb465"
+      ]
+	]
+}

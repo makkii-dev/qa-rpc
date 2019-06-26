@@ -1,0 +1,8 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getTransactionByBlockNumberAndIndex.response.json",
+    "title": "eth_getTransactionByBlockNumberAndIndex response results",
+    "description": "Returns information about a transaction by block number and transaction index position.",
+
+    "$ref":"eth_getTransactionByHash.response.json#"
+}

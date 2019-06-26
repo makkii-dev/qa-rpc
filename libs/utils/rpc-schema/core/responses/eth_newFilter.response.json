@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_newFilter.response.json",
+    "title": "eth_newFilter response results",
+    "description": "Creates a filter object, based on filter options, to notify when the state changes(logs).",
+    "$comment":"To check if the state has changed, call `eth_getFilterChanges`.",
+
+    "$ref": "type.json#/definitions/QUANTITY",
+
+    "examples": [
+      "0x1",
+      "0x506f"
+	]
+
+}

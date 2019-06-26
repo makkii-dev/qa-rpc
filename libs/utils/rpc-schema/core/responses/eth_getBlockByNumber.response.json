@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "response.json",
+    "$id": "eth_getBlockByNumber.response.json",
     "title": "eth_getBlockByNumber response",
     "description": "Returns information about a block by block number.",
 

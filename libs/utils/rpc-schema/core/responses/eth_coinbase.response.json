@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_coinbase.response.json",
+    "title": "eth_coinbase response results",
+    "description": "Returns the client coinbase address.",
+
+    "$ref": "type.json#/definitions/DATA32",
+
+    "examples": [
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "0xa06f54954371d8352ab18c2df7a711a64eb72d5e53717f281b45fd00fe4e5985"
+	]
+  
+}

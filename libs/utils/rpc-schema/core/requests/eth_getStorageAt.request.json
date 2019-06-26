@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getStorageAt.request.json",
+    "title": "eth_getStorageAt request parameters",
+    "description": "Returns the value from a storage position at a given address",
+
+    "additionalItems": false,
+    "items":[
+      {
+        "$ref":"type.json#/definitions/DATA32",
+        "description":"address of the storage"
+      },{
+        "$ref":"type.json#/definitions/QUANTITY",
+        "description":"integer of the position in the storage"
+      },{
+        "oneOf":[
+          {"$ref":"type.json#/definitions/QUANTITY"},
+          {"$ref":"type.json#/definitions/TAG"}
+        ],
+        "description":"integer block number, or the string \"latest\",\"earliest\" or \"pending\"."
+      }
+    ],
+
+
+    "maxItems": 3,
+
+    "examples": [
+      ["0xa0dc23204e4b0afcc0c43461777d13b67fbb77979d98c7f637adfed9086fb465", "0x0", "latest"]
+	]
+}

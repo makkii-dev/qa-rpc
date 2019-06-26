@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getBlockByNumber.request.json",
+    "title": "eth_getBlockByNumber request parameters",
+    "description": "Returns information about a block by block number.",
+
+
+    "additionalItems": false,
+    "items": [
+        {
+            "$ref": "type.json#/definitions/DATA32",
+            "description": "Hash of a block"
+        },
+        {
+            "type": "boolean",
+            "description": "(optional) If true it returns the full transaction objects, if false only the hashes of the transactions. If not provided, assumed to be false."
+        }
+    ],
+    "minItems": 1,
+    "maxItems": 2,
+
+    "examples": [
+        [ "0xcf105253fc2f325a908abd66cfb200f3dfb58f401c58751e64186af97d5202ac", false ],
+        [ "0xcf105253fc2f325a908abd66cfb200f3dfb58f401c58751e64186af97d5202ac"]
+	]
+}
