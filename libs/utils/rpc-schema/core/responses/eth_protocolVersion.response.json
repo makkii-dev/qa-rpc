@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_protocolVersion.response.json",
+    "title": "eth_protocolVersion response results",
+    "description": "Returns the Aion network P2p protocol version of the kernel.",
+
+    "$ref": "type.json#/definitions/QUANTITY",
+
+    "examples": [
+      "0x0"
+	]
+
+}

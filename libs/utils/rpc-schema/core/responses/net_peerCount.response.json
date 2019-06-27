@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"net_peerCount.response.json",
+    "title": "net_peerCount response results",
+    "description": "Returns number of peers currently connected to the client.",
+
+    "$ref": "type.json#/definitions/QUANTITY",
+
+
+    "examples": [
+      "0x0","0xf"
+	]
+
+}

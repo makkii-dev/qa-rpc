@@ -85,7 +85,7 @@
               "oneOf":[{
                   "$ref":"type.json#/definitions/QUANTITY"
                 },{
-                  "$type":"null"
+                  "type":"null"
                 }
               ],
               "description":"integer of the log index position in the block. null when its pending log"
@@ -94,7 +94,7 @@
               "oneOf":[{
                   "$ref":"type.json#/definitions/QUANTITY"
                 },{
-                  "$type":"null"
+                  "type":"null"
                 }
               ],
               "description":"integer of the transactions index position log was created from. null when its pending log."
@@ -103,7 +103,7 @@
               "oneOf":[{
                   "$ref":"type.json#/definitions/DATA32"
                 },{
-                  "$type":"null"
+                  "type":"null"
                 }
               ],
               "description":"hash of the transactions this log was created from. null when its pending log."
@@ -112,7 +112,7 @@
               "oneOf":[{
                   "$ref":"type.json#/definitions/DATA32"
                 },{
-                  "$type":"null"
+                  "type":"null"
                 }
               ],
               "description": "hash of the block where this log was in. null when its pending log."
@@ -121,7 +121,7 @@
               "oneOf":[{
                   "$ref":"type.json#/definitions/QUANTITY"
                 },{
-                  "$type":"null"
+                  "type":"null"
                 }
               ],
               "description": "the block number where this log was in. null when its pending log."

@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_submitHashrate.request.json",
+    "title": "eth_submitHashrate request parameters",
+    "description": "Used for submitting mining hashrate`",
+
+    "additionalItems": false,
+    "items": [
+      {
+        "$ref" : "type.json#/definitions/QUANTITY",
+        "description" : "a hexadecimal string representation(32 bytes) of the hashrate"
+      },{
+        "$ref" : "type.json#/definitions/DATA",
+        "description" : "a hexadecimal(32 bytes) ID identifying client"
+      }
+    ],
+    "minItems": 2,
+    "maxItems": 2,
+
+    "examples": [
+      ["0x1f","0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c"]
+	 ]
+}

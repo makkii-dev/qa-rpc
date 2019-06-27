@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_sign.request.json",
+    "title": "eth_sign request parameters",
+    "description": "The sign method calculates an Aion-specific signature with: `sign(keccak256(\"\x15Aion Signed Message:\n\" + len(message) + message)))`",
+    "$comment":"By adding a prefix to the message makes the calculated signature recognisable as an Ethereum specific signature. This prevents misuse where a malicious DApp can sign arbitrary data (e.g. transaction) and use the signature to impersonate the victim. \nThis method requires that the account of the transaction sender be unlocked.",
+
+    "additionalItems": false,
+    "items": [
+      {
+        "$ref" : "type.json#/definitions/DATA32",
+        "description" : "address"
+      },{
+        "$ref" : "type.json#/definitions/DATA",
+        "description" : "message to sign"
+      }
+    ],
+    "minItems": 2,
+    "maxItems": 2,
+
+    "examples": [
+      ["0xa03a4a3ccff2b2f0f6ba368f2668126ee01e73b6b44faf801135a2d4183edb2c", "0xdeadbeef"]
+	 ]
+}

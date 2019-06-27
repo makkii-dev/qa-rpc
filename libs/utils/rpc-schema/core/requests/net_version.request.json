@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"net_version.request.json",
+    "title": "net_version request parameters",
+    "description": "Returns the current network id.",
+
+    "additionalItems": false,
+    "items": [],
+
+    "maxItems": 0,
+
+    "examples": [
+      []
+	 ]
+}

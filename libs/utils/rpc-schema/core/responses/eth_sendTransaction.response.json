@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_sendTransaction.response.json",
+    "title": "eth_sendTransaction response results",
+    "description": "Creates new message call transaction or a contract creation, if the data field contains code. \nThis method requires that the account of the transaction sender be unlocked.",
+
+    "$ref": "type.json#/definitions/DATA32",
+
+    "examples": [
+      "0x99207e6fe9b3a728c28779410014ce5b7e1a4864fd6590f8cd3a423ecc827f93"
+	]
+
+}

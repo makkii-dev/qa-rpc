@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_sendRawTransaction.request.json",
+    "title": "eth_sendRawTransaction request parameters",
+    "description": "Creates new message call transaction or a contract creation for signed transactions.",
+
+    "additionalItems": false,
+    "items": [{
+      "$ref" : "type.json#/definitions/DATA",
+      "description" : "The signed transaction data"
+      }],
+    "minItems": 1,
+    "maxItems": 1,
+
+    "examples": [
+      ["0xf89c0ba0a06092bf447554df44b55531d6fdc08dd2d3eb00be432fc24660579102f300620a80870584b388195418830186a08800000002540be40001b860baa9780538faa8beae8b51968ef34922086135bc5a442a7187a5924828ba568efcaa4d2ee4643424c3c2890fbfa9a92d97aedcac62ac860fc3bd02be7aebc50402d9b38c98dc9ccc77660ea8dae3f3a14aa1fcddeb3d282e63d58ad3382c7002"]
+	 ]
+}
