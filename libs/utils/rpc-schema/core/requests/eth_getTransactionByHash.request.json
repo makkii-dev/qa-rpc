@@ -9,7 +9,7 @@
       {
         "$ref":"type.json#/definitions/DATA32",
         "description":"hash of a transaction"
-      },
+      }
     ],
 
 

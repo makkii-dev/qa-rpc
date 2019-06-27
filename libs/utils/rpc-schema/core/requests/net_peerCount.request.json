@@ -5,8 +5,7 @@
     "description": "Returns number of peers currently connected to the client.",
 
     "additionalItems": false,
-    "items": [],
-
+    "type": "array",
     "maxItems": 0,
 
     "examples": [

@@ -5,8 +5,9 @@
     "description": "Returns the client coinbase address.",
 
     "additionalItems": false,
-    "items":[],
+    "type": "array",
     "maxItems": 0,
+
 
     "examples": [
       []

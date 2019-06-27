@@ -5,7 +5,7 @@
     "description": "Returns the Aion network P2p protocol version of the kernel.",
 
     "additionalItems": false,
-    "items": [],
+    "type": "array",
     "maxItems": 0,
 
     "examples": [

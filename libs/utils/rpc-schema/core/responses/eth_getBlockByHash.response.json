@@ -3,5 +3,5 @@
     "$id": "eth_getBlockByHash.response.json",
     "title": "eth_getBlockByHash response",
     "description": "Returns information about a block by block hash.",
-    "$ref":"eth_getBlockByNumber.response.json#"
+    "$ref":"eth_getBlockByNumber.response.json"
 }

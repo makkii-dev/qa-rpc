@@ -5,6 +5,6 @@
     "description": "Returns an array of all logs matching a given filter object.",
 
     "additionalItems":false,
-    "$ref":"eth_getFilterChanges.response.json"
+    "$ref":"eth_getFilterLogs.response.json"
 
 }

@@ -5,9 +5,9 @@
     "description": "Returns an object with data about the sync status or `false`.",
 
     "additionalItems": false,
-    "items": [],
-
+    "type": "array",
     "maxItems": 0,
+
 
     "examples": [
       []

@@ -4,5 +4,5 @@
     "title": "eth_getTransactionByBlockNumberAndIndex response results",
     "description": "Returns information about a transaction by block number and transaction index position.",
 
-    "$ref":"eth_getTransactionByHash.response.json#"
+    "$ref":"eth_getTransactionByHash.response.json"
 }

@@ -8,7 +8,7 @@
     "additionalItems": false,
     "items": [
       {
-        "$ref":"object.json#/definitions/TRANSACTION_CALL",
+        "$ref":"object.json#/definitions/TRANSACTION_CALL#",
         "required":["to"]
       },
       {

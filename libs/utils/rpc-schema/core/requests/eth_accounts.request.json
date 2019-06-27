@@ -6,7 +6,7 @@
 
 
     "additionalItems": false,
-    "items": [],
+    "type": "array",
     "maxItems": 0,
 
     "examples": [

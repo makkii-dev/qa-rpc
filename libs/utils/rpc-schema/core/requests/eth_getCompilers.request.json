@@ -5,9 +5,9 @@
     "description": "Returns a list of available compilers in the client",
 
     "additionalItems": false,
-    "items":[],
-
+    "type": "array",
     "maxItems": 0,
+
 
     "examples": [
       []

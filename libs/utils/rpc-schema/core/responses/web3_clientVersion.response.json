@@ -4,7 +4,7 @@
     "title": "web3_clientVersion response results",
     "description": "Returns the current kernel version",
 
-    "type": "String",
+    "type": "string",
 
 
     "examples": [

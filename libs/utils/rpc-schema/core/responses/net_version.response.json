@@ -4,7 +4,7 @@
     "title": "net_version response results",
     "description": "Returns the current network id.\n\"1\":Aion Mainnet; \n \"32\": Mastery Testnet ",
 
-    "type": "String",
+    "type": "string",
 
 
     "examples": [

@@ -5,13 +5,10 @@
     "description": "Creates new message call transaction or a contract creation, if the data field contains code. \nThis method requires that the account of the transaction sender be unlocked.",
 
     "additionalItems": false,
-    "items": [{
+    "items": {
       "$ref" : "object.json#/definitions/TRANSACTION_CALL",
       "additionalProperties":{
-        "type":{
-          "$ref":"type.json#/definitions/DATA",
-          "description":"Type code of transaction; defaults to `0x00`."
-        },
+
         "nonce":{
           "$ref":"type.json#/definitions/QUANTITY",
           "description":"Integer of a nonce. This allows to overwrite to your own pending transactions that use the same nonce."
@@ -19,7 +16,7 @@
       },
       "required":["from"],
       "description" : "The transaction object"
-      }],
+      },
     "minItems": 1,
     "maxItems": 1,
 

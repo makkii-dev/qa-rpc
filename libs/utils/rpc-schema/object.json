@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
+
     "$id": "object.json",
     "definitions": {
         "TRANSACTION": {
@@ -140,9 +140,10 @@
               "minItems" : 0,
               "description":"Array of 0 to 4 32 Bytes DATA of indexed log arguments.",
               "$comment":"n solidity: The first topic is the hash of the signature of the event (e.g. Deposit(address,bytes32,uint256)), except you declared the event with the anonymous specifier."
-            },
-            "required":["removed","logIndex","transactionIndex","transactionHash","blockHash","blockNumber","address","data","topics"]
-          }
+            }
+
+          },
+          "required": ["removed","logIndex","transactionIndex","transactionHash","blockHash","blockNumber","address","data","topics"]
         },
         "FILTER":{
           "type":"object",
@@ -223,6 +224,10 @@
             "value":{
               "$ref":"type.json#/definitions/QUANTITY",
               "description":"Integer of the value sent with this transaction"
+            },
+            "type":{
+              "$ref":"type.json#/definitions/DATA",
+              "description":"Type code of transaction; defaults to `0x00`."
             },
             "data":{
               "$ref":"type.json#/definitions/QUANTITY",

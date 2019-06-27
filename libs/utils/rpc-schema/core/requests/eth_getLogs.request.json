@@ -14,7 +14,13 @@
     "maxItems": 1,
 
     "examples": [
-      ["0x0"],
-      ["0x3a"]
+      [{
+        "fromBlock":"earliest","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
+        }],[
+        {
+          "toBlock":"0x23","address":["0xa0a6efc1029bf24d80779872781ed6efd993124e6370c04998b29f7730b8eae5"]
+
+        }
+      ]
 	]
 }

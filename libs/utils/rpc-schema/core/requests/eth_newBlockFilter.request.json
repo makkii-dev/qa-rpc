@@ -7,14 +7,9 @@
 
 
     "additionalItems": false,
-    "items": [
-      {
-        "$ref":"type.json#/definitions/QUANTITY",
-        "description":"a filter id"
-      }
-    ],
-    "minItems": 1,
-    "maxItems": 1,
+    "type": "array",
+    "maxItems": 0,
+
 
     "examples": [
       []

@@ -6,8 +6,8 @@
 
 
     "additionalItems": false,
-    "items": [],
-    "minItems": 0,
+    "type": "array",
+    "maxItems": 0,
 
     "examples": [
       []

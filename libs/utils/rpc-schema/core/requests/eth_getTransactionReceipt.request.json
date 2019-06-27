@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id":"eth_getTransactionCount.request.json",
-    "title": "eth_getTransactionCount request parameters",
+    "$id":"eth_getTransactionReceipt.request.json",
+    "title": "eth_getTransactionReceipt request parameters",
     "description": "Returns the receipt of a transaction by transaction hash",
 
 
