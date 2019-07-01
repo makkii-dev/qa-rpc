@@ -38,6 +38,12 @@ let ajv = new Ajv({
 ajv.addSchema(schema.TYPES);
 ajv.addSchema(schema.OBJECTS);
 
+if(ajv.validateSchema(require("../response.json"))){
+  ajv.addSchema(require("../response.json"));
+}else{
+  console.log(ajv.errors);
+}
+
 
 for(let sname in schema.requests){
   console.log("checking requests schema - %s",sname);
