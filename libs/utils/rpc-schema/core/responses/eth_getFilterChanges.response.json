@@ -6,12 +6,16 @@
 
     "additionalItems":false,
     "items":{
-      "oneOf":[
+      "anyOf":[
         {
           "$ref":"type.json#/definitions/DATA32",
           "description":"Block hash for filter created with eth_newBlockFilter; transaction hash for filter created with eth_newPendingTransactionFilter"
         },{
-          "$ref":"object.json#/definitions/LOG",
+          "allOf":[
+            {"$ref":"object.json#/definitions/BASIC_LOG"},
+            {"$ref":"object.json#/definitions/FULL_LOG"}
+          ],
+
           "description":"log object for filter created with eth_newFilter"
         }
       ]

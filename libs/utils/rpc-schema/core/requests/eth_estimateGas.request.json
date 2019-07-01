@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id":"eth_estimateGas.request.json",
     "title": "eth_estimateGas request parameters",
-    "description": "Generates and returns an estimate of how much energy is necessary to allow the transaction to complete. The transaction will not be added to the blockchain. Note that the estimate may be significantly more than the amount of energy actually used by the transaction, for a variety of reasons including VM mechanics and node performance.",
+    "description": "Generates and returns an estimate of how much energy is necessary to allow the transaction to complete. The transaction will not be added to the blockchain. Note that the estimate may be significantly more than the amount of energy actually used by the transaction, for a variety of reasons including VM mechanics and node performance.\nIf no gas limit is specified geth uses the block gas limit from the pending block as an upper bound. As a result the returned estimate might not be enough to executed the call/transaction when the amount of gas is higher than the pending block gas limit.",
 
 
     "additionalItems": false,
@@ -20,7 +20,6 @@
     ],
     "minItems": 1,
     "maxItems": 2,
-    "$comment": "If no gas limit is specified geth uses the block gas limit from the pending block as an upper bound. As a result the returned estimate might not be enough to executed the call/transaction when the amount of gas is higher than the pending block gas limit.",
 
     "examples": [
       [

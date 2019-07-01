@@ -6,7 +6,10 @@
 
     "additionalItems":false,
     "items":{
-      "$ref":"object.json#/definitions/LOG",
+      "allOf":[
+        {"$ref":"object.json#/definitions/BASIC_LOG"},
+        {"$ref":"object.json#/definitions/FULL_LOG"}
+      ],
       "description":"log object for filter created with eth_newFilter"
     },
     "examples":[

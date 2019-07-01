@@ -8,8 +8,12 @@
     "additionalItems": false,
     "items": [
       {
-        "$ref":"object.json#/definitions/TRANSACTION_CALL#",
-        "required":["to"]
+        "allOf":[
+          {"$ref":"object.json#/definitions/TRANSACTION_CALL#"},
+          {"required":["to"] }
+        ]
+
+
       },
       {
         "oneOf":[

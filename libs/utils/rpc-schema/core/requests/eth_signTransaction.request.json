@@ -2,8 +2,8 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id":"eth_signTransaction.request.json",
     "title": "eth_signTransaction request parameters",
-    "description": "Signs a transaction object(but does not send it).",
-    "$comment":"This method requires that the account of the transaction sender be unlocked.",
+    "description": "Signs a transaction object(but does not send it). \nThis method requires that the account of the transaction sender be unlocked.",
+
 
     "$ref":"eth_sendTransaction.request.json#",
 

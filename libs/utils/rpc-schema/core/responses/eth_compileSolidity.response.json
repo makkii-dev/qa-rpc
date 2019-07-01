@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "eth_compileSolidity.response.json",
+  "title": "eth_compileSolidity response results",
+  "description": "Creates a filter in the node, to notify when a new block arrives. \nTo check if the state has changed, call `eth_getFilterChanges`.",
+  "patternProperties": {
+    "^[a-zA-Z0-9]": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "code": {
+          "$ref": "type.json#/definitions/DATA",
+          "description": "compiled contract code"
+        },
+        "info": {
+          "description": "contract information details",
+          "abiDefinition": {
+            "type": "array",
+            "description": "contract ABIs",
+            "items": {
+              "type": "object",
+              "properties": {
+                "outputs": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "list of all the output arguments info",
+                  "items": {
+                    "type": "object",
+                    "description": "one output argument info",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "constant": {
+                  "type": "boolean"
+                },
+                "payable": {
+                  "type": "boolean"
+                },
+                "inputs": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "description": "list of all the input arguments info",
+                  "items": {
+                    "type": "object",
+                    "description": "one input argument info",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "name": {
+                  "type": "string",
+                  "description": "name of variable or function"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "languageVersion": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compilerVersion": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "test": {
+        "code": "0x605060405234156100105760006000fd5b610015565b60a3806100236000396000f30060506040526000356c01000000000000000000000000900463ffffffff16806390a1703f14603157602b565b60006000fd5b3415603c5760006000fd5b605060048080359060100190919050506066565b6040518082815260100191505060405180910390f35b60006007820290506072565b9190505600a165627a7a72305820a1f5bcb63660014f2677e1b038aba97bb1e515e52f77923115e4b5a11c1c24d80029",
+        "info": {
+          "abiDefinition": [
+            {
+              "outputs": [
+                {
+                  "name": "d",
+                  "type": "uint128"
+                }
+              ],
+              "constant": false,
+              "payable": false,
+              "inputs": [
+                {
+                  "name": "a",
+                  "type": "uint128"
+                }
+              ],
+              "name": "multiply",
+              "type": "function"
+            }
+          ],
+          "languageVersion": "0",
+          "language": "Solidity",
+          "compilerVersion": "0.4.15+commit.ecf81ee5.Linux.g++",
+          "source": "contract test { function multiply(uint a) returns(uint d) {   return a * 7;   } }"
+        }
+      },
+      "test1": {
+        "code": "0x605060405234156100105760006000fd5b610015565b60a3806100236000396000f30060506040526000356c01000000000000000000000000900463ffffffff16806390a1703f14603157602b565b60006000fd5b3415603c5760006000fd5b605060048080359060100190919050506066565b6040518082815260100191505060405180910390f35b60006007820290506072565b9190505600a165627a7a72305820a1f5bcb63660014f2677e1b038aba97bb1e515e52f77923115e4b5a11c1c24d80029",
+        "info": {
+          "abiDefinition": [
+            {
+              "outputs": [
+                {
+                  "name": "d",
+                  "type": "uint128"
+                }
+              ],
+              "constant": false,
+              "payable": false,
+              "inputs": [
+                {
+                  "name": "a",
+                  "type": "uint128"
+                }
+              ],
+              "name": "multiply",
+              "type": "function"
+            }
+          ],
+          "languageVersion": "0",
+          "language": "Solidity",
+          "compilerVersion": "0.4.15+commit.ecf81ee5.Linux.g++",
+          "source": "contract test { function multiply(uint a) returns(uint d) {   return a * 7;   } }"
+        }
+      }
+    }
+  ]
+}

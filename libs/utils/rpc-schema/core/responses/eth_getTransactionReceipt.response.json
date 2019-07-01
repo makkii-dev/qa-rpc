@@ -1,142 +1,163 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id":"eth_getTransactionReceipt.response.json",
-    "title": "eth_getTransactionReceipt response results",
-    "description": "Returns the receipt of a transaction by transaction hash",
-    "$comment":"The receipt is not available for pending transactions.",
-
-    "oneOf":[
-      {
-        "type":"null",
-        "description":"`null` when no receipt was found"
-      },{
-        "type":"object",
-        "required":["transactionHash","transactionIndex","blockHash","blockNumber",
-          "from","cumulativeNrgUsed","cumulativeGasUsed","nrgUsed","gasUsed",
-          "nrgLimit","gasLimit","nrgPrice","gasPrice","logs","logsBloom","root","status"],
-        "properties":{
-          "transactionHash":{
-            "$ref":"type.json#/definitions/DATA32",
-            "description":"hash of the transaction"
-          },
-          "transactionIndex":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"integer of the transaction's index position in the block."
-          },
-          "blockHash":{
-            "$ref":"type.json#/definitions/DATA32",
-            "description":"hash of the block where this transaction was in."
-          },
-          "blockNumber":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"block number where this transaction was in."
-          },
-          "from":{
-            "$ref":"type.json#/definitions/DATA32",
-            "description":"address of the sender"
-          },
-          "to":{
-            "oneOf":[
-              {"$ref":"type.json#/definitions/DATA32"},
-              {"type":"null"}
-            ],
-
-            "description":"address of the receiver; `null` when it's a contract creation transaction."
-          },
-          "cumulativeNrgUsed":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"The total amount of energy used when this transaction was executed in the block."
-          },
-          "cumulativeGasUsed":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"same as cumulativeNrgUsed; duplicated for Ethereum-compatibility purposes."
-          },
-          "nrgUsed":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"The amount of energy used by this specific transaction alone."
-          },
-          "gasUsed":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"same as nrgUsed; duplicated for Ethereum-compatibility purposes."
-          },
-          "nrgLimit":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"The energy limit for the transaction"
-          },
-          "gasLimit":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"same as nrgLimit; duplicated for Ethereum-compatibility purposes."
-          },
-          "nrgPrice":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"energy price provided by the sender in nAmps"
-          },
-          "gasPrice":{
-            "$ref":"type.json#/definitions/QUANTITY",
-            "description":"same as nrgPrice; duplicated for Ethereum-compatibility purposes."
-          },
-          "contractAddress":{
-            "oneOf":[
-              {"$ref":"type.json#/definitions/DATA32"},
-              {"type":"null"}
-            ],
-            "description":"The contract address created, if the transaction was a contract creation, otherwise `null`."
-          },
-          "logs":{
-            "type":"array",
-            "items":{"$ref":"object.json#/definitions/LOG"},
-            "minItems":0
-          },
-          "logsBloom":{
-            "$ref":"type.json#/definitions/DATA256",
-            "description":"Bloom filter for light clients to quickly retrieve related logs."
-          },
-          "root":{
-            "$ref":"type.json#/definitions/DATA32",
-            "description":"post-transaction stateroot if it was successful."
-          },
-          "status":{
-            "type": "string",
-            "enum": ["0x0","0x1"],
-            "description":"either `1`(success) or `0` (failure)."
-          }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "eth_getTransactionReceipt.response.json",
+  "title": "eth_getTransactionReceipt response results",
+  "description": "Returns the receipt of a transaction by transaction hash, \n The receipt is not available for pending transactions.",
+  "type": [
+    "object",
+    "null"
+  ],
+  "required": [
+    "transactionHash",
+    "transactionIndex",
+    "blockHash",
+    "blockNumber",
+    "from",
+    "cumulativeNrgUsed",
+    "cumulativeGasUsed",
+    "nrgUsed",
+    "gasUsed",
+    "nrgLimit",
+    "gasLimit",
+    "nrgPrice",
+    "gasPrice",
+    "logs",
+    "logsBloom",
+    "root",
+    "status"
+  ],
+  "properties": {
+    "transactionHash": {
+      "$ref": "type.json#/definitions/DATA32",
+      "description": "hash of the transaction"
+    },
+    "transactionIndex": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "integer of the transaction's index position in the block."
+    },
+    "blockHash": {
+      "$ref": "type.json#/definitions/DATA32",
+      "description": "hash of the block where this transaction was in."
+    },
+    "blockNumber": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "block number where this transaction was in."
+    },
+    "from": {
+      "$ref": "type.json#/definitions/DATA32",
+      "description": "address of the sender"
+    },
+    "to": {
+      "oneOf": [
+        {
+          "$ref": "type.json#/definitions/DATA32"
+        },
+        {
+          "type": "null"
         }
-      }
-    ],
-
-    "examples": [
-      {
-        "transactionHash": "0x8571465914fca68c39dfd127a3a429856fccc9e121ccfc276ced4f95f3331831",
-        "transactionIndex": "0x0",
-        "blockHash": "0x8f8b3dd16c6c972d0910af4c50e13b4521966ff6d9909922bc1e366461b4fe52",
-        "blockNumber": "0x28cce9",
-        "from": "0xa0cfe4620faef3d35f8a842e361d228520f1697eec05b643b34293b88cca2aec",
-        "to": "0xa03c3dc1f9c3cc2a02155fde9ad33f80e2d0a3ea6216aba5b2d11962d25f27bf",
-        "cumulativeNrgUsed": "0x7c1e",
-        "cumulativeGasUsed": "0x7c1e",
-        "nrgUsed": "0x7c1e",
-        "gasUsed": "0x7c1e",
-        "nrgPrice": "0x04a817c800",
-        "gasPrice": "0x04a817c800",
-        "nrgLimit": "0x7c1e",
-        "gasLimit": "0x7c1e",
-        "contractAddress": null,
-        "logs": [
-          {
-            "address": "0xa03c3dc1f9c3cc2a02155fde9ad33f80e2d0a3ea6216aba5b2d11962d25f27bf",
-            "logIndex": "0x0",
-            "data": "0x00000000000000000000000000000021",
-            "topics": [
-              "0x8d58ad5a07d0080c710a21010568c7fd3ccbefcb02a313581024843b98e03513"
-            ],
-            "blockNumber": "0x28cce9",
-            "transactionIndex": "0x0"
-          }
-        ],
-        "root": "9417d2515d3656d3aaf316506bf8afcb740759de5d23cd6538ba8269486d88aa",
-        "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000001000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440000000000000000000000000000000000000000000000000000000000000001000000000000000",
-        "status": "0x1"
-      }
-    ]
-
+      ],
+      "description": "address of the receiver; `null` when it's a contract creation transaction."
+    },
+    "cumulativeNrgUsed": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "The total amount of energy used when this transaction was executed in the block."
+    },
+    "cumulativeGasUsed": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "same as cumulativeNrgUsed; duplicated for Ethereum-compatibility purposes."
+    },
+    "nrgUsed": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "The amount of energy used by this specific transaction alone."
+    },
+    "gasUsed": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "same as nrgUsed; duplicated for Ethereum-compatibility purposes."
+    },
+    "nrgLimit": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "The energy limit for the transaction"
+    },
+    "gasLimit": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "same as nrgLimit; duplicated for Ethereum-compatibility purposes."
+    },
+    "nrgPrice": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "energy price provided by the sender in nAmps"
+    },
+    "gasPrice": {
+      "$ref": "type.json#/definitions/QUANTITY",
+      "description": "same as nrgPrice; duplicated for Ethereum-compatibility purposes."
+    },
+    "contractAddress": {
+      "oneOf": [
+        {
+          "$ref": "type.json#/definitions/DATA32"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The contract address created, if the transaction was a contract creation, otherwise `null`."
+    },
+    "logs": {
+      "type": "array",
+      "items": {
+        "$ref":"object.json#/definitions/BASIC_LOG"
+      },
+      "minItems": 0
+    },
+    "logsBloom": {
+      "$ref": "type.json#/definitions/DATA256",
+      "description": "Bloom filter for light clients to quickly retrieve related logs."
+    },
+    "root": {
+      "$ref": "type.json#/definitions/DATA32",
+      "description": "post-transaction stateroot if it was successful."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "0x0",
+        "0x1"
+      ],
+      "description": "either `1`(success) or `0` (failure)."
+    }
+  },
+  "examples": [
+    {
+      "transactionHash": "0x8571465914fca68c39dfd127a3a429856fccc9e121ccfc276ced4f95f3331831",
+      "transactionIndex": "0x0",
+      "blockHash": "0x8f8b3dd16c6c972d0910af4c50e13b4521966ff6d9909922bc1e366461b4fe52",
+      "blockNumber": "0x28cce9",
+      "from": "0xa0cfe4620faef3d35f8a842e361d228520f1697eec05b643b34293b88cca2aec",
+      "to": "0xa03c3dc1f9c3cc2a02155fde9ad33f80e2d0a3ea6216aba5b2d11962d25f27bf",
+      "cumulativeNrgUsed": "0x7c1e",
+      "cumulativeGasUsed": "0x7c1e",
+      "nrgUsed": "0x7c1e",
+      "gasUsed": "0x7c1e",
+      "nrgPrice": "0x04a817c800",
+      "gasPrice": "0x04a817c800",
+      "nrgLimit": "0x7c1e",
+      "gasLimit": "0x7c1e",
+      "contractAddress": null,
+      "logs": [
+        {
+          "address": "0xa03c3dc1f9c3cc2a02155fde9ad33f80e2d0a3ea6216aba5b2d11962d25f27bf",
+          "logIndex": "0x0",
+          "data": "0x00000000000000000000000000000021",
+          "topics": [
+            "0x8d58ad5a07d0080c710a21010568c7fd3ccbefcb02a313581024843b98e03513"
+          ],
+          "blockNumber": "0x28cce9",
+          "transactionIndex": "0x0"
+        }
+      ],
+      "root": "0x9417d2515d3656d3aaf316506bf8afcb740759de5d23cd6538ba8269486d88aa",
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000001000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440000000000000000000000000000000000000000000000000000000000000001000000000000000",
+      "status": "0x1"
+    },
+    null
+  ]
 }

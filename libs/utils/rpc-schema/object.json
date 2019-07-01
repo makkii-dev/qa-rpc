@@ -72,15 +72,11 @@
             }
           }
         },
+        "BASIC_LOG":{
 
-        "LOG":{
-          "type":"object",
-          "description":"The log object",
+          "description":"The basic properties in log in transaction receipt",
+          "required":["logIndex","transactionIndex","blockNumber","address","topics","data"],
           "properties":{
-            "removed":{
-              "type":"boolean",
-              "description":"true when the log was removed, due to a chain reorganization. false if its a valid log."
-            },
             "logIndex":{
               "oneOf":[{
                   "$ref":"type.json#/definitions/QUANTITY"
@@ -98,24 +94,6 @@
                 }
               ],
               "description":"integer of the transactions index position log was created from. null when its pending log."
-            },
-            "transactionHash":{
-              "oneOf":[{
-                  "$ref":"type.json#/definitions/DATA32"
-                },{
-                  "type":"null"
-                }
-              ],
-              "description":"hash of the transactions this log was created from. null when its pending log."
-            },
-            "blockHash":{
-              "oneOf":[{
-                  "$ref":"type.json#/definitions/DATA32"
-                },{
-                  "type":"null"
-                }
-              ],
-              "description": "hash of the block where this log was in. null when its pending log."
             },
             "blockNumber":{
               "oneOf":[{
@@ -140,10 +118,45 @@
               "minItems" : 0,
               "description":"Array of 0 to 4 32 Bytes DATA of indexed log arguments.",
               "$comment":"n solidity: The first topic is the hash of the signature of the event (e.g. Deposit(address,bytes32,uint256)), except you declared the event with the anonymous specifier."
+            },
+            "data":{
+              "description":"contains the non-indexed arguments of the log.",
+              "$ref":"type.json#/definitions/DATA"
+            }
+          }
+        },
+        "FULL_LOG":{
+
+          "description":"The additional properties in full log",
+          "properties":{
+            "removed":{
+              "type":"boolean",
+              "description":"true when the log was removed, due to a chain reorganization. false if its a valid log."
+            },
+
+            "transactionHash":{
+              "oneOf":[{
+                  "$ref":"type.json#/definitions/DATA32"
+                },{
+                  "type":"null"
+                }
+              ],
+              "description":"hash of the transactions this log was created from. null when its pending log."
+            },
+            "blockHash":{
+              "oneOf":[{
+                  "$ref":"type.json#/definitions/DATA32"
+                },{
+                  "type":"null"
+                }
+              ],
+              "description": "hash of the block where this log was in. null when its pending log."
             }
 
+
+
           },
-          "required": ["removed","logIndex","transactionIndex","transactionHash","blockHash","blockNumber","address","data","topics"]
+          "required": ["removed","transactionHash","blockHash"]
         },
         "FILTER":{
           "type":"object",

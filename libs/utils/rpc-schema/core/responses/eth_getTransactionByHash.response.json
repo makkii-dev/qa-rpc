@@ -3,20 +3,22 @@
   "$id": "eth_getTransactionByHash.response.json",
   "title": "eth_getTransactionByHash response results",
   "description": "Returns information about a transaction requested by transaction hash.",
-  "$ref": "object.json#/definitions/TRANSACTION",
-  "additionalProperties": {
-    "blockHash": {
-      "oneOf": [
-        {
-          "$ref": "type.json#/definitions/DATA32"
-        },
-        {
-          "type": "null"
+  "allOf":[
+    {"$ref": "object.json#/definitions/TRANSACTION"},
+    {"properties": {
+        "blockHash": {
+          "oneOf": [
+            {
+              "$ref": "type.json#/definitions/DATA32"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "hash of the block where this transaction was in. `null` when it is pending."
         }
-      ],
-      "description": "hash of the block where this transaction was in. `null` when it is pending."
-    }
-  },
+      }}
+  ],
   "examples": [
     {
       "blockHash": "0x49dc23204e4b0afcc0c43461777d13b67fbb77979d98c7f637adfed9086fb465",
