@@ -106,7 +106,7 @@ function _parseValue(input,rt_vars,method){
 	//console.log(input);
 	if(!isNaN(input) && typeof input ==='string' && !/^0[0-9a-fA-Fx]+$/.test(input) ){
 		input = parseInt(input);
-		if( method.includes("requestMethod") && (method.includes("eth_") || method.includes("Transaction"))){
+		if( method.includes("balanceValidate") || (method.includes("requestMethod") && (method.includes("eth_") || method.includes("Transaction")))){
 			return "0x"+input.toString(16);
 		}
 	}else if(/^_/.test(input)){
