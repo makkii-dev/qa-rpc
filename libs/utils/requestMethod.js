@@ -77,7 +77,10 @@ class RequestMethod{
 
   			}).then((resp)=>{
           // if don't have json schema locally, skip format validation
-          if(!METHODS.includes(method)) resolve(resp);
+          console.log(METHODS.includes(method));
+          if(!METHODS.includes(method)){
+            resolve(resp);
+          }else{
           // make sure the response go through the validation
           console.log("\n\n\t >>>>> checking response json schema");
 
@@ -107,6 +110,7 @@ class RequestMethod{
   					console.log(self.ajv.errors);
   					reject(JSON.stringify(self.ajv.errors));
   				}
+        }
   			});
 
 			})
