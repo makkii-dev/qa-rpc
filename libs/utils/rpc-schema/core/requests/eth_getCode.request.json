@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getCode.request.json",
+    "title": "eth_getCode request parameters",
+    "description": "Returns code at a given address.",
+
+    "additionalItems": false,
+    "items":[
+      {
+        "$ref" : "type.json#/definitions/DATA32",
+        "description":"address"
+      },{
+        "oneOf":[
+          {"$ref":"type.json#/definitions/QUANTITY"},
+          {"$ref":"type.json#/definitions/TAG"}
+        ],
+        "description" : "integer block number, or the string \"latest\", \"earliest\" or \"pending\", see the default block parameter"
+      }
+    ],
+    "minItems": 1,
+    "maxItems": 2,
+
+    "examples": [
+      [
+        "0xa0f37e8c51b4677a4925f6ba623319ca45262b567e98104af5879b7a88c2f25b"
+      ],[
+
+        "0xa0f37e8c51b4677a4925f6ba623319ca45262b567e98104af5879b7a88c2f25b",
+        "earliest"
+      ]
+	]
+}

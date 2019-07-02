@@ -1,0 +1,9 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {
+    "json-schema-faker": "0.5.0-rc17",
+    "ajv": "^6.10.0"
+  },
+  "devDependencies": {}
+}

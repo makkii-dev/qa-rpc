@@ -1,0 +1,88 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_signTransaction.response.json",
+    "title": "eth_signTransaction response results",
+    "description": "Signs a transaction object(but does not send it).",
+    "$comment":"This method requires that the account of the transaction sender be unlocked.",
+
+    "additionalProperties":false,
+    "required":["tx","raw"],
+    "properties":{
+      "tx":{
+        "type":"object",
+        "required":["value","input","nrg","gas","nrgPrice","gasPrice","nonce","hash","timestamp","type"],
+        "description":"The transaction that was signed (missing optional parameters are automatically populated by the kernel and those values are shown here).",
+        "properties":{
+          "to":{
+            "$ref":"type.json#/definitions/DATA32",
+            "description" : "the address of receiver"
+          },
+          "value":{
+            "$ref":"type.json#/definitions/QUANTITY",
+            "description" : "the transfered value"
+          },
+          "input":{
+            "$ref":"type.json#/definitions/DATA",
+            "description":"The data in the transaction"
+          },
+          "nrg":{
+            "$ref":"type.json#/definitions/QUANTITY",
+            "description": "The gas limit of this transaction"
+          },
+          "gas":{
+            "$ref":"type.json#/definitions/QUANTITY",
+            "description": "The gas limit of this transaction"
+          },
+          "timestamp":{
+            "$ref":"type.json#/definitions/QUANTITY",
+            "description":"the unix timestamp for when the transaction was sent, in seconds"
+          },
+          "nrgPrice":{
+            "$ref":"type.json#/definitions/QUANTITY",
+            "description": "The gas price of this transaction"
+          },
+          "gasPrice":{
+            "$ref":"type.json#/definitions/QUANTITY",
+            "description": "The gas price of this transaction"
+          },
+          "nonce":{
+            "$ref":"type.json#/definitions/QUANTITY",
+            "description": "the number of transactions made by the sender prior to this one"
+          },
+          "hash":{
+            "$ref":"type.json#/definitions/DATA32",
+            "description": "The hash of this transaction"
+          },
+          "type":{
+            "$ref":"type.json#/definitions/DATA",
+            "description":"Type code of transaction"
+          }
+        }
+      },
+      "raw":{
+        "$ref":"type.json#/definitions/DATA",
+        "description":"RLP-encoding of the signed transaction"
+      }
+    },
+
+
+    "examples": [
+      {
+        "tx": {
+          "nrgPrice": "0x2540be400",
+          "input": "0x",
+          "nrg": "0xea60",
+          "gas": "0xea60",
+          "to": "0xa01296dd95f309110aef8ffbd3ce551d3081d08afeb12206b077ba4cd494a8d9",
+          "nonce": "0x0d",
+          "value": "0x0a",
+          "hash": "0x3ad98b558a9b59f00c2326d5027dc473fea23c773a4a5b0a374bc7c6d8b43f1e",
+          "gasPrice": "0x2540be400",
+          "timestamp": "0x5c8c04f9",
+          "type": "0x00"
+        },
+        "raw": "0xf89c0da0a06092bf447554df44b55531d6fdc08dd2d3eb00be432fc24660579102f300620a8088000584f12f9c168882ea608800000002540be40001b860baa9780538faa8beae8b51968ef34922086135bc5a442a7187a5924828ba568e3af7c88b14f6209567eb2cd3ffaeb877327becf8722a13452c00469e0a5effd6ca87652036a03d6dd6a0c36581746946bc2318bf9334f2dd1cae5c4e26557b0b"
+      }
+	]
+
+}

@@ -1,0 +1,252 @@
+{
+
+    "$id": "object.json",
+    "definitions": {
+        "TRANSACTION": {
+          "type":"object",
+          "description": "Transaction object in RPC response.",
+          "required":[
+            "blockNumber","from","gas","gasPrice","hash","input","nonce","nrg","nrgPrice","timestamp","transactionIndex","to","value"
+          ],
+          "properties":{
+            "blockNumber":{
+              "anyOf":[
+                  {"$ref":"type.json#/definitions/QUANTITY"},
+                  {"type":"null"}
+                ],
+              "description": "number of the block where this transaction was in. `null` when it is pending."
+            },
+            "from":{
+              "$ref":"type.json#/definitions/DATA32",
+              "description":"address of the sender"
+            },
+            "gas":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas limit of this transaction"
+            },
+            "gasPrice":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas price of this transaction"
+            },
+            "hash":{
+              "$ref":"type.json#/definitions/DATA32",
+              "description": "The hash of this transaction"
+            },
+            "input":{
+              "$ref":"type.json#/definitions/DATA",
+              "description":"The data in the transaction"
+            },
+            "nonce":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "the number of transactions made by the sender prior to this one"
+            },
+            "nrg":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas limit of this transaction"
+            },
+            "nrgPrice":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description": "The gas price of this transaction"
+            },
+            "timestamp":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"the unix timestamp for when the transaction was sent, in seconds"
+            },
+            "transactionIndex":{
+              "oneOf":[
+                {"$ref":"type.json#/definitions/QUANTITY"},
+                {"type":"null"}
+              ],
+              "description":"the transaction index in current block"
+            },
+            "to":{
+              "anyOf":[
+                {"$ref":"type.json#/definitions/DATA32"},
+                {"type":"null"}
+              ],
+              "description":"address of the receiver. null when its a contract creation transaction"
+            },
+            "value":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"the transfered value"
+            }
+          }
+        },
+        "BASIC_LOG":{
+
+          "description":"The basic properties in log in transaction receipt",
+          "required":["logIndex","transactionIndex","blockNumber","address","topics","data"],
+          "properties":{
+            "logIndex":{
+              "oneOf":[{
+                  "$ref":"type.json#/definitions/QUANTITY"
+                },{
+                  "type":"null"
+                }
+              ],
+              "description":"integer of the log index position in the block. null when its pending log"
+            },
+            "transactionIndex":{
+              "oneOf":[{
+                  "$ref":"type.json#/definitions/QUANTITY"
+                },{
+                  "type":"null"
+                }
+              ],
+              "description":"integer of the transactions index position log was created from. null when its pending log."
+            },
+            "blockNumber":{
+              "oneOf":[{
+                  "$ref":"type.json#/definitions/QUANTITY"
+                },{
+                  "type":"null"
+                }
+              ],
+              "description": "the block number where this log was in. null when its pending log."
+            },
+            "address":{
+              "$ref":"type.json#/definitions/DATA32",
+              "description":"address from which this log originated."
+            },
+            "topics":{
+              "type":"array",
+              "additionalItems":false,
+              "items":{
+                "$ref":"type.json#/definitions/DATA32"
+              },
+              "maxItems" : 4,
+              "minItems" : 0,
+              "description":"Array of 0 to 4 32 Bytes DATA of indexed log arguments.",
+              "$comment":"n solidity: The first topic is the hash of the signature of the event (e.g. Deposit(address,bytes32,uint256)), except you declared the event with the anonymous specifier."
+            },
+            "data":{
+              "description":"contains the non-indexed arguments of the log.",
+              "$ref":"type.json#/definitions/DATA"
+            }
+          }
+        },
+        "FULL_LOG":{
+
+          "description":"The additional properties in full log",
+          "properties":{
+            "removed":{
+              "type":"boolean",
+              "description":"true when the log was removed, due to a chain reorganization. false if its a valid log."
+            },
+
+            "transactionHash":{
+              "oneOf":[{
+                  "$ref":"type.json#/definitions/DATA32"
+                },{
+                  "type":"null"
+                }
+              ],
+              "description":"hash of the transactions this log was created from. null when its pending log."
+            },
+            "blockHash":{
+              "oneOf":[{
+                  "$ref":"type.json#/definitions/DATA32"
+                },{
+                  "type":"null"
+                }
+              ],
+              "description": "hash of the block where this log was in. null when its pending log."
+            }
+
+
+
+          },
+          "required": ["removed","transactionHash","blockHash"]
+        },
+        "FILTER":{
+          "type":"object",
+          "description":"The filter options",
+          "properties":{
+            "fromBlock":{
+              "oneOf":[
+                {"$ref":"type.json#/definitions/QUANTITY"},
+                {"$ref":"type.json#/definitions/TAG"}
+              ],
+              "description":"(optional, default: \"latest\") Integer block number, or \"latest\" for the last mined block or \"pending\", \"earliest\" for not yet mined transactions"
+            },
+            "toBlock":{
+              "oneOf":[
+                {"$ref":"type.json#/definitions/QUANTITY"},
+                {"$ref":"type.json#/definitions/TAG"}
+              ],
+              "description":"(optional, default: \"latest\") Integer block number, or \"latest\" for the last mined block or \"pending\", \"earliest\" for not yet mined transactions"
+            },
+            "address":{
+              "oneOf":[
+                {"$ref":"type.json#/definitions/DATA32"},
+                {
+                  "type":"array",
+                  "items":{"$ref":"type.json#/definitions/DATA32"}
+                }
+              ],
+              "description":"(optional) Contract address or a list of addresses from which logs should originate."
+            },
+            "topics":{
+              "type":"array",
+              "description":"(optional) Array of 32 Bytes DATA topics. Topics are order-dependent. Each topic can also be an array of DATA with \"or\" options.",
+              "items":{
+                "anyOf":[
+                  {"$ref":"type.json#/definitions/DATA32"},
+                  {"type":"null"},
+                  {
+                    "type":"array",
+                    "items":{"$ref":"type.json#/definitions/DATA32"}
+                  }
+                ]
+              },
+
+
+              "examples":[
+                [
+                  "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                  null,
+                  [
+                    "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                    "0x000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"
+                  ]
+                ]
+              ]
+            }
+          }
+        },
+        "TRANSACTION_CALL":{
+          "type":"object",
+          "description":"The transaction call object",
+          "properties":{
+            "from":{
+              "$ref":"type.json#/definitions/DATA32",
+              "description":"The address the transaction is sent from."
+            },
+            "to":{
+              "$ref":"type.json#/definitions/DATA32",
+              "description":"The address the transaction is directed from."
+            },
+            "gas":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"Integer of the energy provided for the transaction execution."
+            },
+            "gasPrice":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"Integer of the gasPrice used for each paid energy"
+            },
+            "value":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"Integer of the value sent with this transaction"
+            },
+            "type":{
+              "$ref":"type.json#/definitions/DATA",
+              "description":"Type code of transaction; defaults to `0x00`."
+            },
+            "data":{
+              "$ref":"type.json#/definitions/QUANTITY",
+              "description":"Empty for pure balance transfers; otherwise, the encoding of a contract for deployment or a contract method call. Details for encoding depends on VM for that type of transaction: \n[AionVM ABI specification](https://github.com/aionnetwork/AVM/wiki/ABI-Specification)\n[FastVM ABI specification](https://github.com/aionnetwork/aion_fastvm/wiki/Specifications#abi-types)"
+            }
+          }
+        }
+      }
+}

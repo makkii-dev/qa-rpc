@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"web3_sha3.request.json",
+    "title": "web3_sha3 request parameters",
+    "description": "Returns Keccak-256(NOT the standardized SHA3-256) of the given data.",
+
+    "additionalItems": false,
+    "items": [{
+      "$ref":"type.json#/definitions/DATA",
+      "description":"the data to convert into a SHA3(Keccak-256) hash."
+      }],
+    "minItems": 1,
+    "maxItems": 1,
+
+    "examples": [
+      ["0x68656c6c6f20776f726c64"]
+	 ]
+}

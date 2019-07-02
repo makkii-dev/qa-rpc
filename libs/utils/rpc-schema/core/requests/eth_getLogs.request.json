@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getLogs.request.json",
+    "title": "eth_getLogs request parameters",
+    "description": "Returns an array of all logs matching a given filter object.",
+
+    "additionalItems": false,
+    "items":[
+      {
+        "$ref":"object.json#/definitions/FILTER"
+      }
+    ],
+
+    "maxItems": 1,
+
+    "examples": [
+      [{
+        "fromBlock":"earliest","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
+        }],[
+        {
+          "toBlock":"0x23","address":["0xa0a6efc1029bf24d80779872781ed6efd993124e6370c04998b29f7730b8eae5"]
+
+        }
+      ]
+	]
+}

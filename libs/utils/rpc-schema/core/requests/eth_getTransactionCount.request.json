@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getTransactionCount.request.json",
+    "title": "eth_getTransactionCount request parameters",
+    "description": "Returns the number of transactions sent from an address.",
+
+
+    "additionalItems": false,
+    "items": [
+      {
+        "$ref":"type.json#/definitions/DATA32",
+        "description":"address"
+      },{
+        "oneOf":[
+          {"$ref":"type.json#/definitions/QUANTITY"},
+          {"$ref":"type.json#/definitions/TAG"}
+        ],
+        "description":"(optional) integer block number, or the string \"latest\", \"earliest\" or \"pending\"."
+      }
+    ],
+    "minItems": 1,
+    "maxItems": 2,
+
+    "examples": [
+      [
+      "0xa0cfe4620faef3d35f8a842e361d228520f1697eec05b643b34293b88cca2aec",
+      "latest"
+    ],[
+      "0xa0cfe4620faef3d35f8a842e361d228520f1697eec05b643b34293b88cca2aec"
+    ]
+	 ]
+}

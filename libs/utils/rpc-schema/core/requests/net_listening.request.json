@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"net_listening.request.json",
+    "title": "net_listening request parameters",
+    "description": "Returns `true` if client is actively listening for network connections.",
+
+    "additionalItems": false,
+    "type": "array",
+    "maxItems": 0,
+
+    "examples": [
+      []
+	 ]
+}

@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_estimateGas.response.json",
+    "title": "eth_estimateGas response results",
+    "description": "Generates and returns an estimate of how much energy is necessary to allow the transaction to complete. The transaction will not be added to the blockchain. Note that the estimate may be significantly more than the amount of energy actually used by the transaction, for a variety of reasons including VM mechanics and node performance.\nAs a result the returned estimate might not be enough to executed the call/transaction when the amount of gas is higher than the pending block gas limit",
+
+    "$ref": "type.json#/definitions/QUANTITY",
+
+
+
+    "examples": [
+      "0x0", "0x572e"
+	]
+}

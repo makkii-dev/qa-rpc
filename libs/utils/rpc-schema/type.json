@@ -1,0 +1,61 @@
+{
+
+    "$id": "type.json",
+
+    "definitions": {
+        "DATA": {
+            "type": "string",
+            "minLength": 2,
+            "pattern": "^0x([0-9a-fA-F][0-9a-fA-F])*$",
+            "description": "When encoding unformatted DATA (byte arrays, account addresses, hashes, bytecode arrays): encode as hex, prefix with \"0x\", two hex digits per byte.",
+            "examples": [
+                "0x41",
+                "0x004200",
+                "0x"
+            ]
+        },
+
+        "DATA32": {
+            "type": "string",
+            "minLength": 66,
+            "maxLength": 66,
+            "pattern": "^0x([0-9a-fA-F][0-9a-fA-F]){32}$",
+            "description": "DATA of length 32",
+            "examples": [
+                "0x8f8b3dd16c6c972d0910af4c50e13b4521966ff6d9909922bc1e366461b4fe52"
+            ]
+        },
+        "DATA256": {
+            "type": "string",
+            "minLength": 514,
+            "maxLength": 514,
+            "pattern": "^0x([0-9a-fA-F][0-9a-fA-F]){256}$",
+            "description": "DATA of length 256",
+            "examples": [
+                "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000001000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440000000000000000000000000000000000000000000000000000000000000001000000000000000"
+            ]
+        },
+        "DATA1408": {
+            "type": "string",
+            "minLength": 1410,
+            "maxLength": 1410,
+            "pattern": "^0x([0-9a-fA-F][0-9a-fA-F]){1408}$",
+            "description": "DATA of length 1408"
+        },
+        "QUANTITY": {
+            "type": "string",
+            "minLength": 3,
+            "pattern": "^0x[0-9a-fA-F]+$",
+            "description": "When encoding a QUANTITY (integers, numbers): encode as hex, prefix with \"0x\", the most compact representation (slight exception: zero should be represented as \"0x0\").",
+            "examples": [
+                "0x41",
+                "0x400"
+            ]
+        },
+        "TAG": {
+            "type": "string",
+            "enum": ["latest", "earliest", "pending"],
+            "description": "Some methods have an extra default block parameter; for instance, eth_getBalance or eth_getTransactionCount.  When requests are made that act on the state of an Aion blockchain, the default block parameter determines the height of the block. This parameter uses the data type, TAG."
+        }
+    }
+}

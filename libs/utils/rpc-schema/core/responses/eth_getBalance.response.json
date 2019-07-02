@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getBalance.response.json",
+    "title": "eth_getBalance response results",
+    "description": "Returns the balance of the account of given address",
+
+    "$ref": "type.json#/definitions/QUANTITY",
+
+    "examples": [
+      "0x2540be40ddd0",
+      "0x0"
+	]
+
+}

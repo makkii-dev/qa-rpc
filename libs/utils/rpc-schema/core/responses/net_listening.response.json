@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"net_listening.response.json",
+    "title": "net_listening response results",
+    "description": "Returns `true` if client is actively listening for network connections.",
+
+    "type": "boolean",
+
+
+    "examples": [
+      true,false
+	]
+
+}

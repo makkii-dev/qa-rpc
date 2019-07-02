@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_newFilter.request.json",
+    "title": "eth_newFilter request parameters",
+    "description": "Creates a filter object, based on filter options, to notify when the state changes(logs).",
+    "$comment":"To check if the state has changed, call `eth_getFilterChanges`.",
+
+
+    "additionalItems": false,
+    "items": [
+      {
+        "$ref":"object.json#/definitions/FILTER",
+        "description":"a filter options"
+      }
+    ],
+    "minItems": 1,
+    "maxItems": 1,
+
+    "examples": [
+      [
+        {
+          "topics": ["0x67eeaf805d3ba71d5d1df73b5f05e3249852980c184ea5611bb188b3b2265d28"]
+        }
+      ]
+	 ]
+}

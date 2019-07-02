@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_syncing.request.json",
+    "title": "eth_syncing request parameters",
+    "description": "Returns an object with data about the sync status or `false`.",
+
+    "additionalItems": false,
+    "type": "array",
+    "maxItems": 0,
+
+
+    "examples": [
+      []
+	 ]
+}

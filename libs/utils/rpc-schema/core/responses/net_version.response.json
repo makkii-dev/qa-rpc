@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"net_version.response.json",
+    "title": "net_version response results",
+    "description": "Returns the current network id.\n\"1\":Aion Mainnet; \n \"32\": Mastery Testnet ",
+
+    "type": "string",
+
+
+    "examples": [
+      "32","1","0"
+	]
+
+}

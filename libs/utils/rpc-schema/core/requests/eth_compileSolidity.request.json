@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_compileSolidity.request.json",
+    "title": "eth_compileSolidity request parameters",
+    "description": "Returns compiled solidity code.",
+
+    "additionalItems": false,
+    "items": [{
+      "type":"string",
+      "description":"the source code."
+      }],
+    "minItems": 1,
+    "maxItems": 1,
+
+    "examples": [
+      ["contract test { function multiply(uint a) returns(uint d) { return a * 7; } }"]
+	 ]
+}

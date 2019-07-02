@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_newPendingTransactionFilter.request.json",
+    "title": "eth_newPendingTransactionFilter request parameters",
+    "description": "Creates a filter in the node, to notify when new pending transactions arrive.",
+    "$comment":"To check if the state has changed, call `eth_getFilterChanges`.",
+
+
+    "additionalItems": false,
+    "type": "array",
+    "maxItems": 0,
+
+    "examples": [
+      []
+	 ]
+}

@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_hashrate.response.json",
+    "title": "eth_hashrate response results",
+    "description": "Returns the number of hashes per second that the node is mining with.",
+
+    "$ref": "type.json#/definitions/QUANTITY",
+
+    "examples": [
+      "0x0",
+      "0x506f"
+	]
+
+}

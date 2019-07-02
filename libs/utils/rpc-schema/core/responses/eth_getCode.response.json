@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getCode.response.json",
+    "title": "eth_getCode response results",
+    "description": "Returns code at a given address.",
+
+    "$ref":"type.json#/definitions/DATA",
+
+
+    "examples": [
+      "0x60506040526000356c"
+	]
+
+}

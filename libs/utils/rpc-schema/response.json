@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "response.json",
+  "title": "general structure of RPC response",
+  "required": [
+    "id",
+    "jsonrpc"
+  ],
+  "allOf": [
+    {
+      "required":["id","jsonrpc"],
+      "properties": {
+        "id": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "jsonrpc": {
+          "type": "string",
+          "enum": ["2.0"]
+        }
+      }
+    },
+    {
+      "oneOf": [
+        {
+          "required": [
+            "result"
+          ],
+          "properties": {
+            "result": {
+              "type": [
+                "array",
+                "object",
+                "string",
+                "number",
+                "null",
+                "boolean"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "error"
+          ],
+          "properties": {
+            "error": {
+              "properties": {
+                "code": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "examples":[
+    {"id":1,"result":null,"jsonrpc":"2.0"},
+    {"id":"2.2","error":{"code":-1,"message":"placehold"},"jsonrpc":"2.0"}
+  ]
+}

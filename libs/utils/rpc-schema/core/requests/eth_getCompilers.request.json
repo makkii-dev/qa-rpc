@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getCompilers.request.json",
+    "title": "eth_getCompilers request parameters",
+    "description": "Returns a list of available compilers in the client",
+
+    "additionalItems": false,
+    "type": "array",
+    "maxItems": 0,
+
+
+    "examples": [
+      []
+	]
+}

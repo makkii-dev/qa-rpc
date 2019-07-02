@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_uninstallFilter.request.json",
+    "title": "eth_uninstallFilter request parameters",
+    "description": "Uninstalls a filter with a given id. Should always be called when watch is no longer needed.\nAdditonally Filters timeout when they aren't requested with eth_getFilterChanges for a period of time.",
+
+    "additionalItems": false,
+    "items": [{
+      "$ref":"type.json#/definitions/QUANTITY",
+      "description":"The filter ID"
+      }],
+
+    "maxItems": 1,
+
+    "examples": [
+      []
+	 ]
+}

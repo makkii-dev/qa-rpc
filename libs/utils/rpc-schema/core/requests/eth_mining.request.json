@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_mining.request.json",
+    "title": "eth_mining request parameters",
+    "description": "Returns `true` if node is actively mining new blocks",
+
+
+    "additionalItems": false,
+    "type": "array",
+    "maxItems": 0,
+
+    "examples": [
+      []
+	 ]
+}

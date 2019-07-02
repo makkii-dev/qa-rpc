@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_getBlockTransactionCountByNumber.request.json",
+    "title": "eth_getBlockTransactionCountByNumber request parameters",
+    "description": "Returns the number of transactions in a block from a block matching the given block number.",
+
+    "additionalItems": false,
+    "items":[
+      {
+        "anyOf":[
+          {"$ref":"type.json#/definitions/QUANTITY"},
+          {"$ref":"type.json#/definitions/TAG"}
+        ],
+        "description":"integer of a block number, or the string \"earliest\", \"latest\" or \"pending\", as in the default block parameter"
+      }
+    ],
+    "maxItems": 1,
+
+    "examples": [
+      ["0x2"],
+      ["latest"],
+      ["earliest"]
+	]
+}

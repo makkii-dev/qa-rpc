@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"eth_call.response.json",
+    "title": "eth_call response results",
+    "description": "Executes a new message call immediately without creating a transaction on the block chain.",
+
+    "$ref": "type.json#/definitions/DATA",
+
+    "examples": [
+      "0x", "0x3211"
+	]
+  
+}

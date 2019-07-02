@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id":"web3_clientVersion.response.json",
+    "title": "web3_clientVersion response results",
+    "description": "Returns the current kernel version",
+
+    "type": "string",
+
+
+    "examples": [
+      "Aion(J)/v0.3.3.fe7a3ea/Linux/Java-11.0.1"
+	]
+
+}
