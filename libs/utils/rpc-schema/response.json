@@ -67,5 +67,9 @@
         }
       ]
     }
+  ],
+  "examples":[
+    {"id":1,"result":null,"jsonrpc":"2.0"},
+    {"id":"2.2","error":{"code":-1,"message":"placehold"},"jsonrpc":"2.0"}
   ]
 }
