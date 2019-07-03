@@ -48,7 +48,7 @@
       "description": "address of the sender"
     },
     "to": {
-      "oneOf": [
+      "anyOf": [
         {
           "$ref": "type.json#/definitions/DATA32"
         },
