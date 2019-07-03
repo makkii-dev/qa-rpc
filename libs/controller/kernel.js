@@ -108,6 +108,7 @@ class Kernel extends CommonProcess{
             arg.push(this.config[configopt]);
           }
         }
+
         this.process = spawn("./aion.sh",arg,{
           cwd: this.dir,
           stdio:[0,
@@ -129,6 +130,7 @@ class Kernel extends CommonProcess{
             stdio:[0,
               //fs.openSync("log-"+(logName?logName:Date.now())+".out", 'w'),
               1,
+            //  fs.openSync(logName?logName:("kernelLog/"+Date.now()+".out"),"a"),
               fs.openSync(logName?logName:("kernelLog/"+Date.now()+".out"),"a")
             ]
           }

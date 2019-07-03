@@ -4,12 +4,9 @@
 
 
 if [ "$1" == "-h" ] ; then
-	echo "USAGE: ./ci_test_flexible.sh <list of test data file names> <list of rpc types> <whether starts miner>"
+	echo "USAGE: ./ci_test_flexible.sh <list of test data file names> <list of rpc types> <kernel type>"
 
 else
-	if [ "$3" == true ] ; then
-		nohup /run/aionminer -l 127.0.0.1:8008 -t 2 &
-	fi
 
 	echo "$1"
 
@@ -17,11 +14,14 @@ else
 	IFS=',' read -r -a types <<< "$2"
 
 	for f in "${files[@]}"; do
-		echo "$f"
-		for t in "${types[@]}"; do
 
-			echo "$t"
-			./node_modules/mocha/bin/mocha testApp_190408.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts #--reporter mocha-junit-reporter --reporter-options mochaFile=testReport/"$f"-"$t"-$(date +%y%m%d%H%M).xml
+		for t in "${types[@]}"; do
+			if [ "$3" == "aion" ] ; then
+				./node_modules/mocha/bin/mocha testApp_190408_aion.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts
+			else
+				./node_modules/mocha/bin/mocha testApp_190408.js --type "$t" --testsuite test_cases/"$f".tsv --no-timeouts #--reporter mocha-junit-reporter --reporter-options mochaFile=testReport/"$f"-"$t"-$(date +%y%m%d%H%M).xml
+			fi
+
 		done
 	done
 fi

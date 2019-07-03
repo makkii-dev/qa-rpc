@@ -1,0 +1,201 @@
+TestSet	execute	usePreparedData	testDescription	id	method	params	runtimeVal	storeVariables	preStoreVariables
+smoke avm deploy simple contract	x								
+	x		prepare a avm contract named SimpleContract.jar	avmSimple_prepare	helper.newAVMContract	[testContracts/jdk11/SimpleContract.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	avmSimple_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	avmSimple_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+	x		get contract address	avmSimple_storeContractAddress	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate deploy status	avmSimple_deploy_status	validFormat	[equal,0x1,status]			
+	x		prepare simpleContract main function	avmSimple_simpleMain	helper.callAVMMethod	[xx]			
+	x	x	call simpleContract main	avmSimple_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value/view the log for debug info	avmSimple_validate	validFormat	[equal,0x]			
+									
+smoke avm deploy ByteArrayHolder contract	x								
+	x		prepare a avm contract named ByteArrayHolder.jar	avmByteArr_prepare	helper.newAVMContract	[testContracts/jdk11/ByteArrayHolder.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	avmByteArr_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	avmByteArr_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
+	x		get contract address	avmByteArr_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]		result=>txHash	
+	x		validate deploy status	avmByteArr_deploy_status	validFormat	[equal,0x1,status]			
+	x		prepare ByteArrayHolder main function	avmByteArr_prepareMain	helper.callAVMMethod	[xxx]			
+	x	x	call ByteArrayHolder main	avmByteArr_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value//view the log for debug info	avmByteArr_validate	validFormat	[equal,0x0102]			
+									
+smoke avm deploy AvmCrossCallDispatcher	x								
+	x		prepare a avm contract named AvmCrossCallDispater.jar	AvmCrossCallDispater_prepare	helper.newAVMContract	[testContracts/jdk11/AvmCrossCallDispatcher.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	AvmCrossCallDispater_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	AvmCrossCallDispater_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+	x		get contract address	AvmCrossCallDispater_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate deploy status	avmCrossCallDispater_deploy_status	validFormat	[equal,0x1,status]			
+	x		prepare AvmCrossCallDispater main function	AvmCrossCallDispater_prepareMain	helper.callAVMMethod	[xxx,[address,string],[0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf000,lalala]]			
+	x	x	call AvmCrossCallDispater main	AvmCrossCallDispater_call	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value//view the log for debug info	AvmCrossCallDispater_validate	validFormat	[equal,0x]			
+									
+avm test log event â€“ Counter.jar	x								
+	x		prepare a avm contract named Counter.jar	Counter_prepare	helper.newAVMContract	[testContracts/jdk11/Counter.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+	x		unlock test account	Counter_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	Counter_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+	x		get contract address	Counter_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate deploy status	Counter_deploy_status	validFormat	[equal,0x1,status]			
+	x		prepare Counter increment(8) function	Counter_prepareinc	helper.callAVMMethod	[incrementCounter,[int],[8]]			
+	x	x	call increment(8) main	Counter_sendInc	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x		getRecipt/review log manually	Counter_incRpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate increment(8) status	Counter_inc_status	validFormat	[equal,0x1,status]			
+	x		prepare Counter getCount function	Counter_preparegetCount	helper.callAVMMethod	[getCount]			
+	x	x	call getCount	Counter_sendgetCount	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value//view the log for debug info	Counter_validate	validFormat	[equal,0x08]			
+	x		prepare Counter increment(8) function	Counter_prepareinc	helper.callAVMMethod	[incrementCounter,[int],[8]]			
+	x	x	call increment(8) main	Counter_sendInc	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+	x		getRecipt/review log manually	Counter_incRpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate increment(8) status	Counter_inc_status	validFormat	[equal,0x1,status]			
+	x		prepare Counter getCount function	Counter_preparegetCount	helper.callAVMMethod	[getCount]			
+	x	x	call getCount	Counter_sendgetCount	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		validate return value//view the log for debug info	Counter_validate	validFormat	[equal,0x10]			
+									
+AVM recursive jar could be used for call-depth edge case									
+			get blockNumber	xxxxxx	requestMethod.eth_blockNumber	[]		result=>blockNumber	
+			create a log filter	cccc	requestMethod.eth_newFilter	[{fromBlock:_blockNumber,toBlock:latest}]		result=>filterId	
+			prepare a avm contract named Recursive.jar	Counter_prepare	helper.newAVMContract	[testContracts/jdk11/Recursive_callable_5.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+			unlock test account	Counter_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+		x	send Dapp deployment tx	Counter_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+			get contract address	Counter_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+			prepare recursive (11) function	Counter_prepareinc	helper.callAVMMethod	[recursive,[address,int],[_contractAddress,15]]			
+		x	call recursive(11) function	Counter_sendInc	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]		result=>txHash	
+			get rpt	Counter_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+			get a filter changes	xxxx	requestMethod.eth_getFilterChanges	[_filterId]			
+debug log limits									
+			prepare a avm contract named demo-0.3.0.jar	demo_prepare	helper.newAVMContract	[testContracts/demo-0.3.0.jar]			testAcc=0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137
+			unlock test account	demo_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+		x	send Dapp deployment tx	demo_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]		result=>txHash	
+			get contract address	demo_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+			prepare demo function	demo_prepareMain	helper.callAVMMethod	[callExt]			
+		x	call demo main	demo_call	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]		result=>txHash	
+			get rpt	demo_validate	requestMethod.eth_getTransactionReceipt	[_txHash]			
+									
+									
+decoder int									
+			check web3 decode libs	web3-decode-int	helper.parseAVMResult	[int,0x050000000a]			
+									
+									
+xxxx									
+			xxxxxxxx	xxxx	requestMethod.eth_getBalance	[_testAcc,latest]			testAcc=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+			prepare a avm contract named Recursive.jar	Counter_prepare	helper.newAVMContract	[testContracts/jdk11/Simplest.jar]			
+			xxxxxxxx	xxxx	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+		x	xxxxxxxx	xxxx	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:200000}]		result=>txHash	
+			xxxxxxxx	xxxx	requestMethod.eth_getTransactionReceipt	[_txHash]			
+			xxxxxxxx	xxxx	requestMethod.eth_getBalance	[_testAcc,latest]			
+									
+putStorage									
+	x		prepare a avm contract named putStorage	putS_prepare	helper.newAVMContract	[testContracts/jdk11/putStorage3-diff.jar]			testAcc=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	putS_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
+	x		get contract address	putS_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate deploy status	putS_deploy_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage for first key when there is no storage at this moment	puts_preparedataFirstStorage-before	helper.callAVMMethod	[getStore1]			
+	x	x	call first Storage	puts_callFirstStorage-before	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		prepare init func put 5 storage with null and first with new byte[0]	putS_prepareNullStorages	helper.callAVMMethod	[init]			
+	x	x	send tx	putS_putNullStorages	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]			
+	x		get rpt	putS_initRpt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+PutStorage-get first key storage new byte[0]		x							
+	x		prepare first storage Blockchain.putStorage(key, new byte[0]);	puts_preparedataFirstStorage	helper.callAVMMethod	[getStore1]			
+	x	x	call first Storage	puts_callFirstStorage	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get address start with 0x110000	puts_valid-0x110020	validFormat	[equal,0x110000]			
+PutStorage-get second key storage null		x							
+	x		prepare second storage Blockchain.putStorage(key, null);	puts_preparedataSecStorage	helper.callAVMMethod	[getStore2]			
+	x	x	call second Storage	puts_callSecStorage	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get address start with 0x110020	puts_valid-0x3211	validFormat	[equal,0x3211]			
+PutStorage-get third key storage new byte[1]		x							
+	x		prepare third storage Blockchain.putStorage(key, new byte[1]);	puts_preparedatathirdStorage	helper.callAVMMethod	[getStore3]			
+	x	x	call third Storage	puts_callthirdStorage	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get address start with 0x110020	puts_valid-0x11000100	validFormat	[equal,0x11000100]			
+									
+									
+									
+getStorage									
+	x		prepare a avm contract named putCallerAddress	putS_prepare	helper.newAVMContract	[testContracts/jdk11/putCallerAddress.jar]			testAcc=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	putS_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
+	x		get contract address	putS_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		prepare	putS_preparePutStorage	helper.callAVMMethod	[put]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage with sender	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage without sender	puts_getStorage without sender	requestMethod.eth_call	[{to:_contractAddress}]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			fixedAddr=0xa0eb0d6a8a691dae2cd15ed0369931ce0a949ecafa5c3f93f8121833646e15c3
+	x	x	call getStorage with java-default account	puts_getStorage withJavaDefault	requestMethod.eth_call	[{to:_contractAddress,from:_fixedAddr}]			
+									
+									
+getStorage_ver1 – deploy	x								
+	x		prepare a avm contract named getStorage_ver1; which use deployer address as key and update its value by different functions	putS_prepare	helper.newAVMContract	[testContracts/jdk11/GetStorage_ver3.jar]			testAcc=0xa054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x	x	send Dapp deployment tx	putS_deploy	requestMethod.eth_sendTransaction	[{from:_testAcc,gas:0x4c4b40}]			
+	x		get contract address	putS_storeContractAddr	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate deploy status	putS_deploy_status	validFormat	[equal,0x1,status]			
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		get prepare local call before putting any values	putS_precallGet-before	helper.callAVMMethod	[get]			
+	x	x	do eth_cal	putS_callGet-before	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get null value(0x3211)	Puts-valid-null	validFormat	[equal,0x3211]			
+getStorage_ver1 – try local_call after putting sender’s address into storage	x	x							
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		prepare put sender’s address into storage	putS_preparePutStorage	helper.callAVMMethod	[put]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage expected get(sender’s address)	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get address start with 0x110020	puts_valid-0x110020	validFormat	[equal,0x110020a054340a3152d10006b66c4248cfa73e5725056294081c476c0e67ef5ad25334]			
+getStorage_ver1– try local_call after putting Java to storage	x	x							
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		prepare put java bytes into storage	putS_preparePutStorage	helper.callAVMMethod	[updateJava]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage with sender	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get value 0x1100046a617661	puts_valid-0x1100046a617661	validFormat	[equal,0x1100046a617661]			
+getStorage_ver1 – try local_call after putting NULL to storage	x	x							
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		prepare	putS_preparePutStorage	helper.callAVMMethod	[updateNull]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage with sender	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get null value(0x3211)	puts_valid-java-string	validFormat	[equal,0x3211]			
+getStorage_ver1 – try local_call after new byte[0] to storage	x	x							
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		prepare	putS_preparePutStorage	helper.callAVMMethod	[updateNewByte,[int],[0]]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage with sender	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get [] (0x110000)	puts_valid-empty-byte	validFormat	[equal,0x110000]			
+getStorage_ver1 – try local_call after new byte[1] to storage	x	x							
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		prepare	putS_preparePutStorage	helper.callAVMMethod	[updateNewByte,[int],[1]]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage with sender	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get [0] (0x11000100)	puts_valid-1-byte	validFormat	[equal,0x11000100]			
+getStorage_ver1 – try local_call after new byte[4] to storage	x	x							
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		prepare	putS_preparePutStorage	helper.callAVMMethod	[updateNewByte,[int],[4]]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage with sender	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get [0,0,0,0](0x11000400000000)	puts_valid-4bytes	validFormat	[equal,0x11000400000000]			
+getStorage_ver1 – try local_call after re-update java to storage	x	x							
+	x		unlock test account	putS_unlock	requestMethod.personal_unlockAccount	[_testAcc,password,60]			
+	x		prepare put java bytes into storage	putS_preparePutStorage	helper.callAVMMethod	[updateJava]			
+	x	x	send tx	putS_SentPutStorageTx	requestMethod.eth_sendTransaction	[{from:_testAcc,to:_contractAddress,gas:0x1e8480}]			
+	x		get rpt	putS_getReceipt	requestMethod.eth_getTransactionReceipt	[_txHash]			
+	x		validate func status	putS_func_status	validFormat	[equal,0x1,status]			
+	x		prepare getStorage	puts_prepareGetStorage	helper.callAVMMethod	[get]			
+	x	x	call getStorage with sender	puts_getStorage with sender	requestMethod.eth_call	[{from:_testAcc,to:_contractAddress}]			
+	x		expected to get value 0x1100046a617661	puts_valid-0x1100046a617661	validFormat	[equal,0x1100046a617661]			
