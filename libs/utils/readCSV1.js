@@ -20,13 +20,16 @@ var readCSV = (driver_path)=>{
 	data.forEach((item)=>{
 		if(item.TestSet!==undefined){
 			let oneSet = {name:item.TestSet,tests:[],execute:item.execute};
-			if(item.rust!==undefined)
-				oneSet.rust = item.rust;
-			if(item.java != undefined)
-				oneSet.java = item.java;
+			// if(item.rust!==undefined)
+			// 	oneSet.rust = item.rust;
+			// if(item.java != undefined)
+			// 	oneSet.java = item.java;
+
+			if(item.k_network !==undefined) oneSet.network = item.k_network;
+			if(item.k_configuration !==undefined) oneSet.config = item.k_configuration;
 			reformData.push(oneSet);
 		}else{
-		
+
 			let ts_No = reformData.length-1;
 			reformData[ts_No].tests.push(item);
 		}

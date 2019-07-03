@@ -1,7 +1,7 @@
 {
   "miner":"/home/aion/Downloads/aionminer",
   "aionr":{
-    "dir":"/home/aion/miao_ws/aionr_dev_may/package/aionr-0.2.3-20190602",
+    "dir":"/home/aion/miao_ws/aionr_dev_rf/package/190702-d240da5",
     "db":"/home/aion/.aion/chains"
   },
   "aion": {

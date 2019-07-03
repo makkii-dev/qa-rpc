@@ -38,6 +38,15 @@ var RequestMethod = require("./libs/utils/requestMethod");
 const Miner = require("./libs/controller/miner");
 const Kernel = require("./libs/controller/kernel");
 
+// default miner kernel settings
+
+var default_network = "custom";
+var default_kernel_config = {
+  "author":"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137",
+	"log-file":"log.txt"
+};
+var default_miner_config = {"-l":"localhost:8008","-t":2};
+
 
 
 /**
@@ -57,7 +66,7 @@ function formParam(str,currentMethod){
 		return [contract];
 	}
 
-	var result = paramsParser(str,RUNTIME_VARIABLES);
+	var result = paramsParser(str,RUNTIME_VARIABLES,currentMethod);
 	//console.log(JSON.stringify(result));
 	return result;
 }
@@ -140,11 +149,9 @@ var kernel = Kernel.getInstance();
 kernel.setLog(logger);
 miner.setLog(logger);
 
-miner.configure({"-l":"localhost:8008","-t":2});
-kernel.configure({
-  "author":"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137",
-	"log-file":"log.txt"
-});
+miner.configure(default_miner_config);
+kernel.network(default_network);
+kernel.configure(default_kernel_config);
 
 
 
@@ -156,28 +163,7 @@ var data = readCSVDriver(DRIVER_PATH);
 describe(DRIVER_PATH,()=>{
 
 	before(()=>{
-		return new Promise((resolve)=>{
-			logger.log("\n---------------Pre-steps----------------------")
-			if(kernel.process && !kernel.process.killed){
-				kernel.stop();
-				console.log("wait for 10 sec")
-				setTimeout(()=>{
-					
-					miner.start();
-					kernel.start(logger.logFullPath);
 
-					setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
-				},10000);
-			}else{
-				console.log("no wait")
-
-				miner.start();
-				kernel.start(logger.logFullPath).then(()=>{
-					setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
-				});
-
-			}
-		});
 
 	});
 
@@ -211,6 +197,37 @@ describe(DRIVER_PATH,()=>{
 				let startTime;
 				before(()=>{
 					startTime = Date.now();
+					testSuite.config = testSuite.config?paramsParser(testSuite.config,RUNTIME_VARIABLES,''):undefined;
+
+					if(kernel.process==undefined || kernel.process.killed || (testSuite.network!==undefined && testSuite.network!== default_network) || !kernel.isSameConfig(testSuite.config)){
+						default_network = testSuite.network||default_network;
+						kernel.network(default_network);
+						if(testSuite.config !==undefined) kernel.config(testSuite.config);
+
+							return new Promise((resolve)=>{
+								logger.log("\n---------------Pre-steps----------------------")
+								if(kernel.process && !kernel.process.killed){
+									kernel.stop();
+									console.log("wait for 10 sec")
+									setTimeout(()=>{
+
+										miner.start();
+										kernel.start(logger.logFullPath);
+
+										setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},10000);
+									},10000);
+								}else{
+									console.log("no wait")
+
+									miner.start();
+									kernel.start(logger.logFullPath).then(()=>{
+										setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},10000);
+									});
+
+								}
+							});
+						}
+
 				})
 				after(()=>{
 					logger.log(`${testSuite.name} took ${(Date.now()-startTime)/1000} seconds`);
