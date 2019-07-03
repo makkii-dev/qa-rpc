@@ -152,69 +152,86 @@ var data = readCSVDriver(DRIVER_PATH);
 
 
 
-data.forEach((testSuite,index)=>{
-	describe(testSuite.name,()=>{
-		if(testSuite.execute == undefined){
-			xit("testSuite.name");
-			return;
-		}
+describe(DRIVER_PATH,()=>{
 
-		//VERIFY_VARIABLES.reset();
-		if(!testSuite.usePreparedData){
-			RUNTIME_VARIABLES.reset();
-		}
-
-		let startTime;
-		before(()=>{
-			return new Promise((resolve)=>{
-				logger.log("\n---------------Pre-steps----------------------")
-				if(kernel.process && !kernel.process.killed){
-					kernel.stop();
-					console.log("wait for 10 sec")
-					setTimeout(()=>{
-						startTime = Date.now();
-						miner.start();
-						kernel.start(logger.logFullPath);
-
-						setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
-					},10000);
-				}else{
-					console.log("no wait")
-					startTime = Date.now();
+	before(()=>{
+		return new Promise((resolve)=>{
+			logger.log("\n---------------Pre-steps----------------------")
+			if(kernel.process && !kernel.process.killed){
+				kernel.stop();
+				console.log("wait for 10 sec")
+				setTimeout(()=>{
+					
 					miner.start();
-					kernel.start(logger.logFullPath).then(()=>{
-						setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
-					});
+					kernel.start(logger.logFullPath);
 
-				}
-			});
+					setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
+				},10000);
+			}else{
+				console.log("no wait")
 
+				miner.start();
+				kernel.start(logger.logFullPath).then(()=>{
+					setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},7000);
+				});
+
+			}
 		});
-
-		after(()=>{
-			logger.log("\n---------------Post actions------------------");
-			logger.log(`${testSuite.name} took ${(Date.now()-startTime)/1000} seconds`);
-
-			kernel.stop();
-			miner.stop();
-
-			logger.log("---------------END Post actions------------------\n");
-		});
-
-
-		it(testSuite.name,(done)=>{
-			logger.title(testSuite.name);
-			let testcases = testSuite.tests;
-			Step_Action(testcases).then((res)=>{
-				done();
-			}).catch((err)=>{
-				logger.error(err);
-				done(err);
-			});
-		});
-
 
 	});
+
+
+	after(()=>{
+		logger.log("\n---------------Post actions------------------");
+
+
+		kernel.stop();
+		miner.stop();
+
+		logger.log("---------------END Post actions------------------\n");
+	});
+
+
+		data.forEach((testSuite,index)=>{
+			describe(testSuite.name,()=>{
+				if(testSuite.execute == undefined){
+					xit("testSuite.name");
+					return;
+				}
+
+				//VERIFY_VARIABLES.reset();
+				if(!testSuite.usePreparedData){
+					RUNTIME_VARIABLES.reset();
+				}
+				//remove nextTxObj in case test cases misteaks
+				delete RUNTIME_VARIABLES.nextTxObj;
+
+				// record execution time
+				let startTime;
+				before(()=>{
+					startTime = Date.now();
+				})
+				after(()=>{
+					logger.log(`${testSuite.name} took ${(Date.now()-startTime)/1000} seconds`);
+				})
+
+
+
+
+				it(testSuite.name,(done)=>{
+					logger.title(testSuite.name);
+					let testcases = testSuite.tests;
+					Step_Action(testcases).then((res)=>{
+						done();
+					}).catch((err)=>{
+						logger.error(err);
+						done(err);
+					});
+				});
+
+
+			});
+		});
 });
 
 process.on('exit', (code) => {
