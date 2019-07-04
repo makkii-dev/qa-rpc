@@ -45,7 +45,7 @@ var default_kernel_config = {
   "author":"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137",
 	"log-file":"log.txt"
 };
-var default_miner_config = {"-l":"localhost:8008","-t":2};
+var default_miner_config = {"-l":"localhost:3333","-t":2,"-u":"0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137"};
 
 
 

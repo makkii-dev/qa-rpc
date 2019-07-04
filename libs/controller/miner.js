@@ -31,7 +31,10 @@ class Miner extends CommonProcess{
       this.terminate();
     }
 
-    this.process = spawn(this.path,arg,{stdio:[0,1,(logName?fs.openSync(logName,"a"):2)]});
+    this.process = spawn(this.path,arg,{stdio:[0,1,
+      (logName?fs.openSync(logName,"a"):2)
+      //2
+    ]});
     this.log("miner is starting; PID: "+ this.process.pid, this.getName());
     return this.process.pid;
   }
