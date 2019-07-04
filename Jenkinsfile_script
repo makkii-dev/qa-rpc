@@ -1,0 +1,81 @@
+
+def mainProcess(){
+  node{
+    withEnv([
+        "JAVA_HOME=/run/jdk-11",
+        "PATH=${env.JAVA_HOME}/bin:${env.PATH}",
+        "LIBRARY_PATH=${env.JAVA_HOME}/lib/server",
+        "LD_LIBRARY_PATH=${env.LIBRARY_PATH}:/usr/local/lib:/run/libs"
+    ]){
+
+      stage("Build"){
+        sh "printenv"
+        echo 'test node'
+        sh 'node --version'
+        checkout scm
+        try{
+            //sh 'set -o pipefail'
+            echo 'set up dependencies..'
+            sh './installDependencies.sh'
+        }catch(e){
+            echo "ignore missing dependencies"
+        }
+
+      }
+
+      stage("get AionR"){
+          sh 'mkdir kernels || echo "kernels folder exist"'
+          sh "cp -R ${kernel_src} kernels/aionr"
+          dir('kernels/aionr'){
+            echo 'remove custom database'
+            sh './custom.sh db kill || echo "no database"'
+          }
+      }
+
+      stage("RPC testing"){
+         try{
+             sh 'rm -rf testlog testReport'
+         }catch(e){
+             echo 'no previous test log and resport'
+         }
+
+        docker.image("chaionclibackup/miningpool:1").withRun('--network host'){ c->
+
+             sh './ci_test_flexible.sh -h'
+             sh "./ci_test_flexible.sh ${test_cases} ${test_socket} aionr"
+        }
+
+      }
+
+      stage("save reports"){
+        junit 'testReport/*.xml'
+        archiveArtifacts artifacts: 'testlog/*.txt,testReport/*.xml', fingerprint:true
+
+         slackSend channel: '@Miao',
+              color: 'good',
+              message: "The pipeline ${currentBuild.fullDisplayName} completed successfully. \nGrab the generated builds at ${env.BUILD_URL}"
+
+      }
+    }
+  }
+
+}
+
+
+try{
+  mainProcess()
+}catch(caughtError){
+  node{
+    junit 'testReport/*.xml'
+    archiveArtifacts artifacts: 'testlog/*.txt,testReport/*.xml', fingerprint:true
+
+    slackSend channel: '@Miao',
+                    color: 'danger',
+                    message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}."
+   
+  }
+} finally{
+  stage("clean"){
+    sh "rm -r kernels"
+  }
+}
