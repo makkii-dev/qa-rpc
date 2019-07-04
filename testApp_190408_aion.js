@@ -159,6 +159,7 @@ data.forEach((testSuite,index)=>{
 
 		let startTime;
 		before(()=>{
+			delete RUNTIME_VARIABLES.nextTxObj;
 			return new Promise((resolve)=>{
 				logger.log("\n---------------Pre-steps----------------------")
 				if(kernel.process && !kernel.process.killed){

@@ -8,6 +8,9 @@ var blake2b256 = aionLib.crypto.blake2b256;
 var toBuffer = aionLib.formats.toBuffer;
 
 
+var requestMethod = require("../")
+
+
 
 var Validation = function(provider,logger){
 	var self = this;
@@ -259,6 +262,23 @@ Validation.prototype.validateSignature.post = async(testRow,rt_var,resolution)=>
 		return Promise.reject(e);
 	}
 };
+
+
+/*
+*	expected testRow.params contains
+* [filterID, [pending_tx_hash array..]]
+* expected rt_var contains
+*/
+
+
+Validation.prototype.validatePendingTxFilter = async (testRow,rt_var,resolution)=>{
+	try{
+
+	}catch(e){
+
+	}
+
+}
 
 
 module.exports = Validation;

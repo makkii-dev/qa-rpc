@@ -120,7 +120,7 @@ const VALID_FULL_PENDING_BLOCK_OBJECT = `{
 		parentHash:/^0x[0-9a-f]{64}$/,
 		receiptsRoot:/^0x[0-9a-f]{64}$/,
 		size:/^0x[0-9a-f]*$/,
-		solution:/^0x[0-9a-f]*$/,
+		solution:_.isNull,
 		stateRoot:/^0x[0-9a-f]{160}$/,
 		timestamp:/^0x[0-9a-f]*$/,
 		totalDifficulty:/^0x[0-9a-f]*$/,
@@ -320,7 +320,7 @@ var formats ={
 		ARRAY:_.isArray,
 		STRING:_.isString,
 		BINARY:BINARY,
-	//	NUMBER:_.isNumber,
+		NUMBER:_.isNumber,
 		NULL:_.isNull,
 
 		VALID_BLOCK_OBJECT:VALID_BLOCK_OBJECT,

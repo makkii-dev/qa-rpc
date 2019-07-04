@@ -91,7 +91,7 @@
       "description": "same as nrgPrice; duplicated for Ethereum-compatibility purposes."
     },
     "contractAddress": {
-      "oneOf": [
+      "anyOf": [
         {
           "$ref": "type.json#/definitions/DATA32"
         },

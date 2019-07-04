@@ -4,18 +4,18 @@ const TYPES_SCHEMA = require("./rpc-schema/type.json");
 const RESPONSE_SCHEMA= require("./rpc-schema/response.json");
 
 const METHODS =[
-  "eth_accounts","eth_blockNumber","eth_call","eth_coinbase","eth_estimateGas",
-  "eth_gasPrice","eth_getBalance","eth_getBlockByNumber","eth_getBlockByHash",
-  "eth_getBlockTransactionCountByHash","eth_getBlockTransactionCountByNumber",
-  "eth_getCode","eth_getCompilers","eth_getFilterChanges","eth_getFilterLogs",
-  "eth_getLogs","eth_getStorageAt","eth_getTransactionByBlockHashAndIndex",
-  "eth_getTransactionByBlockNumberAndIndex",
-  "eth_getTransactionByHash","eth_getTransactionCount","eth_getTransactionReceipt",
-  "eth_hashrate","eth_mining","eth_newBlockFilter","eth_newFilter",
-  "eth_newPendingTransactionFilter","eth_protocolVersion","eth_sendRawTransaction",
-  "eth_sendTransaction","eth_sign","eth_signTransaction","eth_submitHashrate",
-  "eth_syncing","eth_uninstallFilter","net_listening","net_peerCount","net_version",
-  "web3_clientVersion","eth_compileSolidity"
+  // "eth_accounts","eth_blockNumber","eth_call","eth_coinbase","eth_estimateGas",
+  // "eth_gasPrice","eth_getBalance","eth_getBlockByNumber","eth_getBlockByHash",
+  // "eth_getBlockTransactionCountByHash","eth_getBlockTransactionCountByNumber",
+  // "eth_getCode","eth_getCompilers","eth_getFilterChanges","eth_getFilterLogs",
+  // "eth_getLogs","eth_getStorageAt","eth_getTransactionByBlockHashAndIndex",
+  // "eth_getTransactionByBlockNumberAndIndex",
+  // "eth_getTransactionByHash","eth_getTransactionCount","eth_getTransactionReceipt",
+  // "eth_hashrate","eth_mining","eth_newBlockFilter","eth_newFilter",
+  // "eth_newPendingTransactionFilter","eth_protocolVersion","eth_sendRawTransaction",
+  // "eth_sendTransaction","eth_sign","eth_signTransaction","eth_submitHashrate",
+  // "eth_syncing","eth_uninstallFilter","net_listening","net_peerCount","net_version",
+  // "web3_clientVersion","eth_compileSolidity"
 ];
 
 
@@ -60,7 +60,10 @@ class RequestMethod{
 							//rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
 						}
 					 return Promise.resolve(resp);
-					}else{
+         }else{
+
+           console.log("\n\n\n\n\n ---DEBUGGING receipt null checked");
+           return new Promise((res,rej)=>{
   					var receiptLoop = setInterval(()=>{
 
   						self.provider.sendRequest(currentRow.id,method,currentRow.params).then((resp)=>{
@@ -68,11 +71,13 @@ class RequestMethod{
   								clearInterval(receiptLoop);
   								rt_val.update(method,resp,currentRow.params);
   								//rt_val.reassign(currentRow.runtimeVal).storeVariables(currentRow.storeVariables,resp);
-  							  return Promise.resolve(resp);
+  							  res(resp);
   							}
   						});
 
   					},2000);
+          });
+
           }
 
   			}).then((resp)=>{
@@ -82,18 +87,18 @@ class RequestMethod{
             resolve(resp);
           }else{
           // make sure the response go through the validation
-          console.log("\n\n\t >>>>> checking response json schema");
+          console.log("\n\n\t >>>>>DEBUGGING checking response json schema");
 
 
   				if(self.ajv.validate("response.json",resp)){
 
 
-            console.log("\n\n\t >>>>> validated response json schema");
+            console.log("\n\n\t >>>>>DEBUGGING validated response json schema");
   					if(resp.result !== undefined){
-              console.log("\n\n\t >>>>> checking response result json schema");
+              console.log("\n\n\t >>>>>DEBUGGING checking response result json schema");
 
   						if(self.ajv.validate(method+".response.json",resp.result)){
-                console.log("\n\n\t >>>>> passed "+method+" response json schema");
+                console.log("\n\n\t >>>>>DEBUGGING passed "+method+" response json schema");
   							resolve(resp);
   						}else{
   							console.log(resp.result);
@@ -101,7 +106,7 @@ class RequestMethod{
     						reject(JSON.stringify(self.ajv.errors));
   						}
   					}else {
-              console.log("\n\n\t >>>>> passed error response json schema");
+              console.log("\n\n\t >>>>>DEBUGGING passed error response json schema");
   						resolve(resp);
   					}
   				}else{

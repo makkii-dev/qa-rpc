@@ -147,6 +147,7 @@ data.forEach((testSuite)=>{
 		let startTime;
 		before(()=>{
 			startTime = Date.now();
+			delete RUNTIME_VARIABLES.nextTxObj;
 		})
 		after(()=>{
 			logger.log(`${testSuite.name} took ${(Date.now()-startTime)/1000} seconds`);
