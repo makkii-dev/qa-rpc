@@ -8,7 +8,7 @@ var blake2b256 = aionLib.crypto.blake2b256;
 var toBuffer = aionLib.formats.toBuffer;
 
 
-var requestMethod = require("../")
+
 
 
 
