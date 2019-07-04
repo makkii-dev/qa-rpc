@@ -14,6 +14,7 @@ class Kernel extends CommonProcess{
     this.db = this.type == "aionr"?
                           (DEFAULT_SETTINGS[this.type].db+"/"+this.net)
                           : (DEFAULT_SETTINGS[this.type].dir+"/"+ this.net + "/database");
+    this.config = {};
     return this;
   }
 
@@ -64,21 +65,33 @@ class Kernel extends CommonProcess{
     if(configObj === undefined){
       return this.config;
     }else{
-      if(this.config == null)
-        this.config = configObj;
-      else {
-        for(var pro in configObj){
-          this.config[pro] = configObj[pro];
-        }
+
+      for(var pro in configObj){
+        this.config[pro] = configObj[pro];
       }
       return this.updateDB();
     }
   }
 
   resetConfig(){
-    this.config = null;
+    this.config = {};
     return this.updateDB();
   }
+
+  isSameConfig(config){
+    // configuration == undefined means use whatever previous configuration
+    if(config==undefined) return true;
+
+    // if they don't have some length  of properties, they are different configuration
+    if(Object.entries(this.config).length !=Object.entries(config).length ) return false;
+
+    // check each properties
+    for(var pro in configObj){
+      if(this.config[pro] != config[pro]) return false;
+    }
+    return true;
+  }
+
 
   network(network){
     if(network === undefined || network == null){
