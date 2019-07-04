@@ -190,12 +190,15 @@ describe(DRIVER_PATH,()=>{
 				if(!testSuite.usePreparedData){
 					RUNTIME_VARIABLES.reset();
 				}
-				//remove nextTxObj in case test cases misteaks
-				delete RUNTIME_VARIABLES.nextTxObj;
+
+
 
 				// record execution time
 				let startTime;
 				before(()=>{
+          //remove nextTxObj in case test cases misteaks
+          delete RUNTIME_VARIABLES.nextTxObj;
+
 					startTime = Date.now();
 					testSuite.config = testSuite.config?paramsParser(testSuite.config,RUNTIME_VARIABLES,''):undefined;
 
@@ -211,7 +214,7 @@ describe(DRIVER_PATH,()=>{
 									console.log("wait for 10 sec")
 									setTimeout(()=>{
 
-										miner.start();
+										miner.start(logger.logFullPath);
 										kernel.start(logger.logFullPath);
 
 										setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},10000);
@@ -219,7 +222,7 @@ describe(DRIVER_PATH,()=>{
 								}else{
 									console.log("no wait")
 
-									miner.start();
+									miner.start(logger.logFullPath);
 									kernel.start(logger.logFullPath).then(()=>{
 										setTimeout(()=>{logger.log("---------------END Pre-steps------------------\n");resolve();},10000);
 									});

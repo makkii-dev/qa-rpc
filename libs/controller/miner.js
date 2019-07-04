@@ -21,7 +21,7 @@ class Miner extends CommonProcess{
   getName(){
     return "Miner-"+(this.process?this.process.pid:"null");
   }
-  start(){
+  start(logName){
     var arg = [];
     for(var opt in this.config){
       arg.push(opt);
@@ -31,7 +31,7 @@ class Miner extends CommonProcess{
       this.terminate();
     }
 
-    this.process = spawn(this.path,arg,{stdio:[0,"ignore","ignore"]});
+    this.process = spawn(this.path,arg,{stdio:[0,1,(logName?fs.openSync(logName,"a"):2)]});
     this.log("miner is starting; PID: "+ this.process.pid, this.getName());
     return this.process.pid;
   }
