@@ -1,3 +1,6 @@
+env.JAVA_HOME="/run/jdk-11"
+env.LIBRARY_PATH="${env.JAVA_HOME}/lib/server"
+
 
 def mainProcess(){
   node{
@@ -39,7 +42,7 @@ def mainProcess(){
              echo 'no previous test log and resport'
          }
 
-        docker.image("chaionclibackup/miningpool:1").withRun('--network host'){ c->
+        docker.image("chaionclibackup/solopool:latest").withRun('--network host -u pooladm'){ c->
 
              sh './ci_test_flexible.sh -h'
              sh "./ci_test_flexible.sh ${test_cases} ${test_socket} aionr"
@@ -72,10 +75,12 @@ try{
     slackSend channel: '@Miao',
                     color: 'danger',
                     message: "The pipeline ${currentBuild.fullDisplayName} failed at ${env.BUILD_URL}."
-   
+
   }
 } finally{
-  stage("clean"){
-    sh "rm -r kernels"
-  }
+    node{
+      stage("clean"){
+        sh "rm -r kernels"
+      }
+    }
 }
