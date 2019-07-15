@@ -169,13 +169,13 @@ Validation.prototype.minerStats = async (testRow,rt_var,resolution)=>{
 	}else{
 		try{
 			if(rt_var.coinbase === testRow.params){
-				chai.expect(parseInt(resolution.result.minerHashrate)).to.be.above(0);
-				chai.expect(parseInt(resolution.result.minerHashrateShare)).to.be.above(0);
+				chai.expect(parseFloat(resolution.result.minerHashrate)).to.be.above(0.00);
+				chai.expect(parseFloat(resolution.result.minerHashrateShare)).to.be.above(0.00);
 			}else{
-				chai.expect(parseInt(resolution.result.minerHashrate)).to.equal(0);
-				chai.expect(parseInt(resolution.result.minerHashrateShare)).to.equal(0);
+				chai.expect(parseFloat(resolution.result.minerHashrate)).to.equal(0.00);
+				chai.expect(parseFloat(resolution.result.minerHashrateShare)).to.equal(0.00);
 			}
-			chai.expect(parseInt(resolution.result.networkHashrate)).to.be.above(0);
+			chai.expect(parseFloat(resolution.result.networkHashrate)).to.be.above(0.00);
 			return Promise.resolve(resolution);
 		}catch(e){
 			return Promise.reject(e);
