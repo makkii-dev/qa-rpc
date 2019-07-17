@@ -29,6 +29,7 @@ def mainProcess(){
       stage("get AionR"){
           sh 'mkdir kernels || echo "kernels folder exist"'
           sh "cp -R ${kernel_src} kernels/aionr"
+          sh "cp -R kernel_configs/aionr kernels/aionr/custom"
           dir('kernels/aionr'){
             echo 'remove custom database'
             sh './custom.sh db kill || echo "no database"'
