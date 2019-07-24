@@ -1,8 +1,8 @@
 {
-  "miner":"/run/aionminer",
+  "miner":"/home/aion/Downloads/aionminer-origin",
   "aionr":{
-    "dir":"/run/.jenkins/workspace/rpc-qa/kernels/aionr",
-    "db":"/root/.aion/chains"
+    "dir":"/home/aion/miao_ws/aionr_dev_rf/package/190704-70e9deb",
+    "db":"/home/aion/.aion/chains"
   },
   "aion": {
     "dir":"/run/.jenkins/workspace/rpc-qa/kernels/aion"
