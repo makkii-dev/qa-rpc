@@ -143,8 +143,8 @@ class Kernel extends CommonProcess{
             stdio:[0,
               //fs.openSync("log-"+(logName?logName:Date.now())+".out", 'w'),
               1,
-            //  fs.openSync(logName?logName:("kernelLog/"+Date.now()+".out"),"a"),
-              fs.openSync(logName?logName:("kernelLog/"+Date.now()+".out"),"a")
+              (logName?fs.openSync(logName,"a"):2),
+              //2
             ]
           }
         );
