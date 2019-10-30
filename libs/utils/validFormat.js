@@ -23,6 +23,9 @@ const public_key = H64;
 const NULL_N_HEX = ()=>{
 		return {test:(value)=>{return HEX.test(value)|| _.isNull(value);}};
 	}
+const STRING_N_HEX = ()=>{
+		return {test:(value)=>{return HEX.test(value)|| _.isString(value);}};
+	}
 const NULL_N_INT = ()=>{return {test:(value)=>{return _.isNull(value) || _.isNumber(value);}}};
 
 const VALID_BLOCK_OBJECT={
@@ -30,6 +33,8 @@ const VALID_BLOCK_OBJECT={
 	extraData:HEX,
 	gasLimit:HEX,
 	gasUsed:HEX,
+	nrgLimit:HEX,
+	nrgUsed:HEX,
 	hash:H160,
 	logsBloom:HEX,
 	miner:H160,
@@ -41,6 +46,7 @@ const VALID_BLOCK_OBJECT={
 	solution:NULL_N_HEX,
 	stateRoot:H160,
 	timestamp:HEX,
+	sealType:HEX,
 	totalDifficulty:HEX,
 	transactions:_.isArray,
 	transactionsRoot:transaction_format
@@ -166,7 +172,7 @@ var VALID_BLOCK_HEADER = {
 		stateRoot:JAVA_HEX,
 		timestamp:JAVA_HEX,
 		txTrieRoot:JAVA_HEX,
-		version:_.isString
+		sealType:STRING_N_HEX
 	},
 	code:_.isNumber,
 	headerHash:JAVA_HEX,
