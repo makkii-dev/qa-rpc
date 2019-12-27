@@ -40,19 +40,6 @@ disable = false
 path = "$BASE/jsonrpc.ipc"
 apis = ["all"]
 
-[wallet]
-disable = true
-secure_connect = false
-interface = "local"
-port = 8547
-#zmq_key_path = None
-
-[stratum]
-disable = false
-interface = "local"
-port = 8008
-#secret = None
-
 [mining]
 remove_solved = false
 infinite_pending_block = false
@@ -91,9 +78,3 @@ db_compaction = "auto"
 fat_db = "auto"
 #cache_size = None
 #num_verifiers = None
-
-[log]
-no_color = false
-level = "info"
-targets = []
-#log_file = None
