@@ -40,25 +40,12 @@ disable = false
 path = "$BASE/jsonrpc.ipc"
 apis = ["all"]
 
-[wallet]
-disable = true
-secure_connect = false
-interface = "local"
-port = 8547
-#zmq_key_path = None
-
-[stratum]
-disable = false
-interface = "local"
-port = 8008
-#secret = None
-
 [mining]
 remove_solved = false
 infinite_pending_block = false
 dynamic_gas_price = false
 reseal_min_period = 15000
-work_queue_size = 20
+work_queue_size = 100
 relay_set = "cheap"
 gas_floor_target = "15000000"
 gas_cap = "20000000"
@@ -79,7 +66,6 @@ author = "0xa07e185919beef1e0a79fea78fcfabc24927c5067d758e514ad74b905a2bf137"
 
 
 [db]
-no_persistent_txqueue = false
 disable_wal = false
 scale_verifiers = false
 pruning = "archive"
@@ -93,8 +79,3 @@ fat_db = "auto"
 #cache_size = None
 #num_verifiers = None
 
-[log]
-no_color = false
-level = "info"
-targets = []
-#log_file = None

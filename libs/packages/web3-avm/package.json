@@ -7,8 +7,8 @@
   "license": "LGPL-3.0",
   "main": "src/index.js",
   "dependencies": {
-    "aion-web3-avm-codec": "1.2.6-beta.0",
-    "aion-web3-avm-contract": "1.2.6-beta.0",
+    "aion-web3-avm-codec": "file:../web3-avm-codec",
+    "aion-web3-avm-contract": "file:../web3-avm-contract",
     "aion-web3-core": "1.2.6-beta.0"
   }
 }

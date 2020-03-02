@@ -355,10 +355,10 @@ Smoke mining pool:	x
 	x		validate response	Smoke-getHeader-vali	validFormat	[matches,VALID_BLOCK_HEADER]			
 	x		Helper – remove 0x prefix	helper	helper.data0xPrefix	[false,headerNonce,solution,headerHash]			
 	x		Smoke-other-10	Smoke-submit-block-no-0x	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
-	x		validate response	Smoke-submit-block-no-0x-vali	validFormat	[equal,true]			
+	x		validate response	Smoke-submit-block-no-0x-vali	validFormat	[equal,false]			
 	x		Helper – add 0x prefix	helper	helper.data0xPrefix	[true,headerNonce,solution,headerHash]			
 	x		Smoke-other-11	Smoke-submit-block-0x	requestMethod.submitblock	[_headerNonce,_solution,_headerHash]			
-	x		validate response	Smoke-submit-block-0x-vali	validFormat	[equal,true]			
+	x		validate response	Smoke-submit-block-0x-vali	validFormat	[equal,false]			
 									
 									
 									
